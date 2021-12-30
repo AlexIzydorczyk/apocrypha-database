@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Apocrypha</h1>
+
+<div id="apocrypha">
+  <% @apocrypha.each do |apocryphon| %>
+    <%= render apocryphon %>
+    <p>
+      <%= link_to "Show this apocryphon", apocryphon %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New apocryphon", new_apocryphon_path %>
