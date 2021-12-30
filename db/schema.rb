@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_180947) do
+ActiveRecord::Schema.define(version: 2021_12_30_181552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "booklets", force: :cascade do |t|
+    t.string "booklet_type", default: "", null: false
+    t.bigint "manuscript_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manuscript_id"], name: "index_booklets_on_manuscript_id"
+  end
 
   create_table "manuscripts", force: :cascade do |t|
     t.integer "manuscript_id", null: false
@@ -48,4 +56,5 @@ ActiveRecord::Schema.define(version: 2021_12_30_180947) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "booklets", "manuscripts"
 end

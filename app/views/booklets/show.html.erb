@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @booklet %>
+
+<div>
+  <%= link_to "Edit this booklet", edit_booklet_path(@booklet) %> |
+  <%= link_to "Back to booklets", booklets_path %>
+
+  <%= button_to "Destroy this booklet", @booklet, method: :delete %>
+</div>
