@@ -5,8 +5,18 @@
   </head>
 
   <body>
+    
     <%= yield %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+
+    <script type="text/javascript">
+      <% if notice.present? %>
+        window.SnackBar({message: "<%= notice %>"})
+      <% end %>
+      <% if alert.present? %>
+        window.SnackBar({message: "<%= alert %>", status: 'error'})
+      <% end %>
+      $(".js-snackbar:has(> .js-snackbar--danger)").addClass('danger');
+    </script>
+
   </body>
 </html>
