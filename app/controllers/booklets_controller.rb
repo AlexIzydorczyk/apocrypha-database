@@ -65,6 +65,6 @@ class BookletsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def booklet_params
-      params.require(:booklet).permit(:booklet_type)
+      params.require(:booklet).permit(:booklet_type, :manuscript_id)
     end
 end
