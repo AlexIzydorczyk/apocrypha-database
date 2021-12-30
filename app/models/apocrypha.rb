@@ -1,0 +1,2 @@
+class Apocrypha < ApplicationRecord
+end

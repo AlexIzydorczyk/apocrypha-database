@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   resources :booklets
   resources :manuscripts
+  resources :apocryphas
 
 end
