@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Manuscripts</h1>
+
+<div id="manuscripts">
+  <% @manuscripts.each do |manuscript| %>
+    <%= render manuscript %>
+    <p>
+      <%= link_to "Show this manuscript", manuscript %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New manuscript", new_manuscript_path %>

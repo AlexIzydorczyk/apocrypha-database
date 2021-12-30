@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @manuscript %>
+
+<div>
+  <%= link_to "Edit this manuscript", edit_manuscript_path(@manuscript) %> |
+  <%= link_to "Back to manuscripts", manuscripts_path %>
+
+  <%= button_to "Destroy this manuscript", @manuscript, method: :delete %>
+</div>

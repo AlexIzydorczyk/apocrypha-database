@@ -1,0 +1,27 @@
+<%= form_with(model: manuscript) do |form| %>
+  <% if manuscript.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(manuscript.errors.count, "error") %> prohibited this manuscript from being saved:</h2>
+
+      <ul>
+        <% manuscript.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :manuscript_id, style: "display: block" %>
+    <%= form.number_field :manuscript_id %>
+  </div>
+
+  <div>
+    <%= form.label :status, style: "display: block" %>
+    <%= form.text_field :status %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
