@@ -1,0 +1,72 @@
+<%= form_with(model: provenance) do |form| %>
+  <% if provenance.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(provenance.errors.count, "error") %> prohibited this provenance from being saved:</h2>
+
+      <ul>
+        <% provenance.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :booklet_id, style: "display: block" %>
+    <%= form.text_field :booklet_id %>
+  </div>
+
+  <div>
+    <%= form.label :person, style: "display: block" %>
+    <%= form.text_field :person %>
+  </div>
+
+  <div>
+    <%= form.label :institution, style: "display: block" %>
+    <%= form.text_field :institution %>
+  </div>
+
+  <div>
+    <%= form.label :location, style: "display: block" %>
+    <%= form.text_field :location %>
+  </div>
+
+  <div>
+    <%= form.label :religious_order, style: "display: block" %>
+    <%= form.text_field :religious_order %>
+  </div>
+
+  <div>
+    <%= form.label :diocese, style: "display: block" %>
+    <%= form.text_field :diocese %>
+  </div>
+
+  <div>
+    <%= form.label :region, style: "display: block" %>
+    <%= form.text_field :region %>
+  </div>
+
+  <div>
+    <%= form.label :owned_from, style: "display: block" %>
+    <%= form.number_field :owned_from %>
+  </div>
+
+  <div>
+    <%= form.label :owned_to, style: "display: block" %>
+    <%= form.number_field :owned_to %>
+  </div>
+
+  <div>
+    <%= form.label :specific_date, style: "display: block" %>
+    <%= form.text_field :specific_date %>
+  </div>
+
+  <div>
+    <%= form.label :notes, style: "display: block" %>
+    <%= form.text_area :notes %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
