@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_184141) do
+ActiveRecord::Schema.define(version: 2021_12_30_211139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,10 +36,17 @@ ActiveRecord::Schema.define(version: 2021_12_30_184141) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.bigint "text_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["text_id"], name: "index_sections_on_text_id"
+  end
+
   create_table "texts", force: :cascade do |t|
     t.string "parent_type"
     t.bigint "parent_id"
-    t.bigint "apocryphon_id", null: false
+    t.bigint "apocryphon_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["apocryphon_id"], name: "index_texts_on_apocryphon_id"
@@ -73,5 +80,6 @@ ActiveRecord::Schema.define(version: 2021_12_30_184141) do
   end
 
   add_foreign_key "booklets", "manuscripts"
+  add_foreign_key "sections", "texts"
   add_foreign_key "texts", "apocrypha"
 end

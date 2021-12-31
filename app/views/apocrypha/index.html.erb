@@ -3,12 +3,26 @@
 <h1>Apocrypha</h1>
 
 <div id="apocrypha">
-  <% @apocrypha.each do |apocryphon| %>
-    <%= render apocryphon %>
-    <p>
-      <%= link_to "Show this apocryphon", apocryphon %>
-    </p>
-  <% end %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @apocrypha.each do |apocryphon| %>
+        <tr>
+          <%= render apocryphon %>
+          <td class="actions">
+            <%= link_to "Show this apocryphon", apocryphon, class: 'btn btn-primary me-2'%>
+            <%= button_to "+ Add text", texts_path, class: 'btn btn-success me-2', params: { text: { apocryphon_id: apocryphon.id } }%>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
 <%= link_to "New apocryphon", new_apocryphon_path %>

@@ -1,12 +1,3 @@
-<div id="<%= dom_id manuscript %>">
-  <p>
-    <strong>Manuscript:</strong>
-    <%= manuscript.manuscript_id %>
-  </p>
-
-  <p>
-    <strong>Status:</strong>
-    <%= manuscript.status %>
-  </p>
-
-</div>
+<th scope="row"  id="<%= dom_id manuscript %>"><%= manuscript.id %></th>
+<td><%= manuscript.manuscript_id %></td>
+<td><%= manuscript.status %></td>

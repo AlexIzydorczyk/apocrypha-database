@@ -1,14 +1,26 @@
-<p style="color: green"><%= notice %></p>
-
 <h1>Booklets</h1>
 
 <div id="booklets">
-  <% @booklets.each do |booklet| %>
-    <%= render booklet %>
-    <p>
-      <%= link_to "Show this booklet", booklet %>
-    </p>
-  <% end %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Booklet Type</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @booklets.each do |booklet| %>
+        <tr>
+          <%= render booklet %>
+          <td class="actions">
+            <%= link_to "Show this booklet", booklet, class: 'btn btn-primary me-2'%>
+            <%= button_to "+ Add text", texts_path, class: 'btn btn-success me-2', params: { text: { parent_type: 'Booklet', parent_id: booklet.id } }%>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
 <%= link_to "New booklet", new_booklet_path %>

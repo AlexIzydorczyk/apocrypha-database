@@ -65,6 +65,6 @@ class TextsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def text_params
-      params.require(:text).permit(:parent_id, :apocryphon_id)
+      params.require(:text).permit(:parent_id, :parent_type, :apocryphon_id)
     end
 end

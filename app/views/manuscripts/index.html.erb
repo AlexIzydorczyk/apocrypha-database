@@ -1,14 +1,28 @@
-<p style="color: green"><%= notice %></p>
-
 <h1>Manuscripts</h1>
 
 <div id="manuscripts">
-  <% @manuscripts.each do |manuscript| %>
-    <%= render manuscript %>
-    <p>
-      <%= link_to "Show this manuscript", manuscript %>
-    </p>
-  <% end %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Manuscript ID</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @manuscripts.each do |manuscript| %>
+        <tr>
+          <%= render manuscript %>
+          <td class="actions">
+            <%= link_to "Show this manuscript", manuscript, class: 'btn btn-primary me-2'%>
+            <%= button_to "+ Add booklet", booklets_path, class: 'btn btn-success me-2', params: { booklet: { manuscript_id: manuscript.id } }%>
+            <%= button_to "+ Add text", texts_path, class: 'btn btn-success me-2', params: { text: { parent_type: 'Manuscript', parent_id: manuscript.id } }%>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
 <%= link_to "New manuscript", new_manuscript_path %>
