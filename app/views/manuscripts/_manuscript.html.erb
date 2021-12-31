@@ -1,3 +1,55 @@
-<th scope="row"  id="<%= dom_id manuscript %>"><%= manuscript.id %></th>
-<td><%= manuscript.manuscript_id %></td>
-<td><%= manuscript.status %></td>
+<div id="<%= dom_id manuscript %>">
+	<h1>Manuscript <%= manuscript.manuscript_id %></h1>
+	<p><strong>Status: </strong> <%= manuscript.status %></p>
+	<p><strong>Manuscript content type: </strong> <%= manuscript.content_type %></p>
+	<p><strong>City: </strong> <%= manuscript.city %></p>
+	<p><strong>Country: </strong> <%= manuscript.country %></p>
+	<p><strong>Repository: </strong> <%= manuscript.repository %></p>
+	<p><strong>Shelfmark: </strong> <%= manuscript.shelfmark %></p>
+	<p><strong>Old shelfmarks: </strong> <%= manuscript.old_shelfmark %></p>
+	<p><strong>Dimensions: </strong> <%= manuscript.dimensions %></p>
+	<p><strong>Number of leaves or pages: </strong> <%= manuscript.num_pages %></p>
+	<p><strong>Date range: </strong><%= manuscript.date_range %></p>
+	<p><strong>Languages:  </strong><%= manuscript.languages.join(', ') %></p>
+
+	<div class="ms-4">
+		<h3>Booklets in this Manuscript: </h3>
+		<table class="table">
+	    <thead>
+	      <tr>
+	        <th scope="col">Booklet Id</th>
+	        <th scope="col">Booklet Type</th>
+	        <th scope="col">Actions</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+				<% manuscript.booklets.each do |booklet| %>
+	        <tr>
+	          <%= render "/booklets/booklet_row", booklet: booklet %>
+	          <td class="actions">
+	            <%= link_to "Show this booklet", booklet, class: 'btn btn-primary me-2'%>
+	            <%= button_to "+ Add text", texts_path, class: 'btn btn-success me-2', params: { text: { parent_type: 'Booklet', parent_id: booklet.id } }%>
+	            <a href="#" class="btn btn-primary me-2" onclick="$('#booklet_<%= booklet.id %>_texts_table').toggle();">Toggle Texts Table</a>
+	          </td>
+	        </tr>
+	        <tr style="display: none" id="booklet_<%= booklet.id %>_texts_table">
+	        	<td colspan="3">
+		        	<table class="table table-bordered">
+		        		<tr>
+		        			<th scope="col">Text Id</th>
+		        			<th scope="col">Actions</th>
+		        		</tr>
+		        		<% booklet.texts.each do |text| %>
+		        			<tr>
+			        			<td><%= text.id %></td>
+			        			<td>nothing for now</td>
+			        		</tr>
+			        	<% end %>
+			        </table>
+			      </td>
+	        </tr>
+				<% end %> 
+			</tbody>
+	  </table>
+	</div>
+</div>

@@ -16,7 +16,7 @@
     <tbody>
       <% @texts.each do |text| %>
         <tr>
-          <%= render text %>
+          <%= render "text_row", text: text %>
           <td class="actions">
             <%= link_to "Show this text", text, class: 'btn btn-primary me-2'%>
             <%= button_to "+ Add section", sections_path, class: 'btn btn-success me-2', params: { section: { text_id: text.id } }%>
