@@ -2,27 +2,6 @@
 <p><%%= link_to "New <%= human_name.downcase %>", <%= new_helper(type: :path) %>, class: "btn btn-outline-success" %></p>
 
 <div id="<%= plural_table_name %>">
-  
-    <table class="table">
-      <thead>
-        <% attributes.reject(&:password_digest?).each do |attribute| -%>
-          <th><%= attribute.human_name %></th>
-        <% end -%>
-        <th>Actions</th>
-      </thead>
-      <tbody>
-        <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
-      	<tr>
-	        <% attributes.reject(&:password_digest?).each do |attribute| -%>
-	          <td><%%= <%= singular_name %>.<%= attribute.column_name %> %></td>
-	        <% end -%>
-        	<td>
-        		<%%= link_to "Open <%= human_name.downcase %>", <%= model_resource_name(singular_table_name) %>, class: "btn btn-outline-primary me-2" %>
-        		<%%= link_to "Edit <%= human_name.downcase %>", edit_<%= model_resource_name(singular_table_name) %>_path(<%= model_resource_name(singular_table_name) %>), class: "btn btn-outline-primary me-2" %>
-        	</td>
-        </tr>
-        <%% end %>
-      </tbody>
-    </table>
+    <%%= render 'table', <%= plural_table_name %>: @<%= plural_table_name %> %>
 </div>
 
