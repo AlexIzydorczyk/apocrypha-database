@@ -1,21 +1,33 @@
-<table class="table">
-  <thead>
-    <% attributes.reject(&:password_digest?).each do |attribute| -%>
-      <th><%= attribute.human_name %></th>
-    <% end -%>
-    <th>Actions</th>
-  </thead>
-  <tbody>
-    <%% <%= plural_table_name %>.each do |<%= singular_table_name %>| %>
-  	<tr>
-      <% attributes.reject(&:password_digest?).each do |attribute| -%>
-        <td><%%= <%= singular_name %>.<%= attribute.column_name %> %></td>
-      <% end -%>
-    	<td>
-    		<%%= link_to "Open <%= human_name.downcase %>", <%= model_resource_name(singular_table_name) %>, class: "btn btn-outline-primary me-2" %>
-    		<%%= link_to "Edit <%= human_name.downcase %>", edit_<%= model_resource_name(singular_table_name) %>_path(<%= model_resource_name(singular_table_name) %>), class: "btn btn-outline-primary me-2" %>
-    	</td>
-    </tr>
-    <%% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th>
+          <% attributes.reject(&:password_digest?).each do |attribute| -%>
+            <th class="col"><input type="text" class="form-control" placeholder="<%= attribute.human_name %>" disabled></th>
+          <% end -%>
+          <th class="col-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%% <%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+      	<tr>
+          <td class="col"><%%= <%= singular_name %>.id %></td>
+          <% attributes.reject(&:password_digest?).each do |attribute| -%>
+            <td class="col"><%%= <%= singular_name %>.<%= attribute.column_name %> %></td>
+          <% end -%>
+        	<td class="col-3">
+        		<%%= link_to "Open", <%= model_resource_name(singular_table_name) %>, class: "btn btn-outline-primary me-2" %>
+        		<%%= link_to "Edit", edit_<%= model_resource_name(singular_table_name) %>_path(<%= model_resource_name(singular_table_name) %>), class: "btn btn-outline-primary me-2" %>
+        	</td>
+        </tr>
+        <%% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>
