@@ -2,6 +2,6 @@
 <p><%%= link_to "New <%= human_name.downcase %>", <%= new_helper(type: :path) %>, class: "btn btn-outline-success" %></p>
 
 <div id="<%= plural_table_name %>">
-    <%%= render 'table', <%= plural_table_name %>: @<%= plural_table_name %> %>
+    <%%= render 'table', <%= plural_table_name %>: @<%= plural_table_name %>, hide_columns: %w(), hide_buttons: %w() %>
 </div>
 

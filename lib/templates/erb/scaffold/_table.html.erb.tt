@@ -6,23 +6,23 @@
     <table class="table table-striped">
       <thead>
         <tr class="filters">
-          <th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th>
+          <%% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><%% end %>
           <% attributes.reject(&:password_digest?).each do |attribute| -%>
-            <th class="col"><input type="text" class="form-control" placeholder="<%= attribute.human_name %>" disabled></th>
+            <%% unless hide_columns.include? '<%= attribute.column_name -%>' %><th class="col"><input type="text" class="form-control" placeholder="<%= attribute.human_name -%>" disabled></th><%% end %>
           <% end -%>
-          <th class="col-3">Actions</th>
+          <%% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><%% end %>
         </tr>
       </thead>
       <tbody>
-        <%% <%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+        <%% <%= plural_table_name -%>.each do |<%= singular_table_name -%>| %>
       	<tr>
-          <td class="col"><%%= <%= singular_name %>.id %></td>
+          <%% unless hide_columns.include? 'id' %><td class="col"><%%= <%= singular_name -%>.id %></td><%% end -%>
           <% attributes.reject(&:password_digest?).each do |attribute| -%>
-            <td class="col"><%%= <%= singular_name %>.<%= attribute.column_name %> %></td>
+            <%% unless hide_columns.include? '<%= attribute.column_name -%>' %><td class="col"><%%= <%= singular_name -%>.<%= attribute.column_name -%> %></td><%% end %>
           <% end -%>
         	<td class="col-3">
-        		<%%= link_to "Open", <%= model_resource_name(singular_table_name) %>, class: "btn btn-outline-primary me-2" %>
-        		<%%= link_to "Edit", edit_<%= model_resource_name(singular_table_name) %>_path(<%= model_resource_name(singular_table_name) %>), class: "btn btn-outline-primary me-2" %>
+        		<%% unless hide_buttons.include? 'open' %><%%= link_to "Open", <%= model_resource_name(singular_table_name) -%>, class: "btn btn-outline-primary me-2" %><%% end %>
+        		<%% unless hide_buttons.include? 'edit' %><%%= link_to "Edit", edit_<%= model_resource_name(singular_table_name) -%>_path(<%= model_resource_name(singular_table_name) -%>), class: "btn btn-outline-primary me-2" %><%% end %>
         	</td>
         </tr>
         <%% end %>
