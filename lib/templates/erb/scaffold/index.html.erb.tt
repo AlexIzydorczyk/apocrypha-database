@@ -4,4 +4,3 @@
 <div id="<%= plural_table_name %>">
     <%%= render 'grid', <%= plural_table_name %>: @<%= plural_table_name %> %>
 </div>
-

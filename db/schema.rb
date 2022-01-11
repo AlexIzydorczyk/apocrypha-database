@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_31_153824) do
+ActiveRecord::Schema.define(version: 2022_01_11_221321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,12 @@ ActiveRecord::Schema.define(version: 2021_12_31_153824) do
     t.index ["manuscript_id"], name: "index_booklets_on_manuscript_id"
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "l_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "manuscripts", force: :cascade do |t|
     t.integer "manuscript_id", null: false
     t.string "status", default: "", null: false
@@ -53,6 +59,23 @@ ActiveRecord::Schema.define(version: 2021_12_31_153824) do
     t.integer "date_from"
     t.integer "date_to"
     t.string "languages", default: [], array: true
+  end
+
+  create_table "provenances", force: :cascade do |t|
+    t.bigint "booklet_id", null: false
+    t.string "person", default: ""
+    t.string "institution", default: ""
+    t.string "location", default: ""
+    t.string "religious_order", default: ""
+    t.string "diocese", default: ""
+    t.string "region", default: ""
+    t.integer "owned_from"
+    t.integer "owned_to"
+    t.string "specific_date", default: ""
+    t.text "notes", default: ""
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booklet_id"], name: "index_provenances_on_booklet_id"
   end
 
   create_table "sections", force: :cascade do |t|
@@ -117,6 +140,7 @@ ActiveRecord::Schema.define(version: 2021_12_31_153824) do
   end
 
   add_foreign_key "booklets", "manuscripts"
+  add_foreign_key "provenances", "booklets"
   add_foreign_key "sections", "texts"
   add_foreign_key "texts", "apocrypha"
 end
