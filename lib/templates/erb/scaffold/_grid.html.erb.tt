@@ -1,0 +1,55 @@
+<div id="<%= plural_table_name -%>_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+    <% attributes.reject(&:password_digest?).each do |attribute| -%>
+      { headerName: "<%= attribute.human_name -%>", field: "<%= attribute.column_name -%>"},
+    <% end -%>
+  ];
+
+  const rowData = [
+    <%% <%= plural_table_name -%>.each do |<%= singular_table_name -%>| %>
+      { id:<%%= <%= singular_name -%>.id %>,
+        <% attributes.reject(&:password_digest?).each do |attribute| -%>
+        <%= attribute.column_name -%>: "<%%= <%= singular_name -%>.<%= attribute.column_name -%> %>",
+      <% end -%>},
+    <%% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/<%= plural_table_name -%>/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#<%= plural_table_name -%>_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

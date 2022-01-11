@@ -37,17 +37,6 @@ ActiveRecord::Schema.define(version: 2021_12_31_153824) do
     t.index ["manuscript_id"], name: "index_booklets_on_manuscript_id"
   end
 
-  create_table "locations", force: :cascade do |t|
-    t.string "country"
-    t.string "city"
-    t.string "region"
-    t.string "diocese"
-    t.string "longitude"
-    t.string "latitude"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "manuscripts", force: :cascade do |t|
     t.integer "manuscript_id", null: false
     t.string "status", default: "", null: false
