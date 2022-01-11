@@ -10,108 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_11_221321) do
+ActiveRecord::Schema.define(version: 2021_12_30_162814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "apocrypha", force: :cascade do |t|
-    t.string "title", default: "", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "booklets", force: :cascade do |t|
-    t.string "booklet_type", default: "", null: false
-    t.bigint "manuscript_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "booklet_id"
-    t.integer "booklet_num"
-    t.integer "date_from"
-    t.integer "date_to"
-    t.string "specific_date", default: ""
-    t.string "scribe_signature", default: ""
-    t.string "scribe_name", default: ""
-    t.text "scribe_notes", default: ""
-    t.index ["manuscript_id"], name: "index_booklets_on_manuscript_id"
-  end
-
-  create_table "locations", force: :cascade do |t|
-    t.string "l_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "manuscripts", force: :cascade do |t|
-    t.integer "manuscript_id", null: false
-    t.string "status", default: "", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "city", default: ""
-    t.string "country", default: ""
-    t.string "repository", default: ""
-    t.string "shelfmark", default: ""
-    t.string "old_shelfmark", default: ""
-    t.string "dimensions", default: ""
-    t.string "num_pages", default: ""
-    t.string "content_type", default: ""
-    t.integer "date_from"
-    t.integer "date_to"
-    t.string "languages", default: [], array: true
-  end
-
-  create_table "provenances", force: :cascade do |t|
-    t.bigint "booklet_id", null: false
-    t.string "person", default: ""
-    t.string "institution", default: ""
-    t.string "location", default: ""
-    t.string "religious_order", default: ""
-    t.string "diocese", default: ""
-    t.string "region", default: ""
-    t.integer "owned_from"
-    t.integer "owned_to"
-    t.string "specific_date", default: ""
-    t.text "notes", default: ""
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["booklet_id"], name: "index_provenances_on_booklet_id"
-  end
-
-  create_table "sections", force: :cascade do |t|
-    t.bigint "text_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "title", default: ""
-    t.string "folios_pages_implicit", default: ""
-    t.string "implicit", default: ""
-    t.string "folios_pages_explicit", default: ""
-    t.string "explicit", default: ""
-    t.index ["text_id"], name: "index_sections_on_text_id"
-  end
-
-  create_table "texts", force: :cascade do |t|
-    t.string "parent_type"
-    t.bigint "parent_id"
-    t.bigint "apocryphon_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "text_id"
-    t.string "folios_pages_text", default: ""
-    t.string "decoration", default: ""
-    t.string "folios_pages_title", default: ""
-    t.string "title", default: ""
-    t.string "folios_pages_colophon", default: ""
-    t.string "colophon", default: ""
-    t.text "notes", default: ""
-    t.string "transcriptions_by", default: ""
-    t.string "version", default: ""
-    t.string "extent", default: ""
-    t.string "online_reproduction", default: ""
-    t.string "online_transcript", default: ""
-    t.index ["apocryphon_id"], name: "index_texts_on_apocryphon_id"
-    t.index ["parent_type", "parent_id"], name: "index_texts_on_parent"
-  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -139,8 +41,4 @@ ActiveRecord::Schema.define(version: 2022_01_11_221321) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "booklets", "manuscripts"
-  add_foreign_key "provenances", "booklets"
-  add_foreign_key "sections", "texts"
-  add_foreign_key "texts", "apocrypha"
 end
