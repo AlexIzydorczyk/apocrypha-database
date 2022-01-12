@@ -1,5 +1,3 @@
-
-
 <%= form_with(model: manuscript) do |form| %>
   <% if manuscript.errors.any? %>
     <div style="color: red">
@@ -14,20 +12,25 @@
   <% end %>
 <div class="row">
   <div class="form-group col-4 mb-2">
-		    <%= form.label :identifier, style: "display: block" %>
+		  <%= form.label :identifier, style: "display: block" %>
 	    <%= form.text_field :identifier, class: "form-control" %>
 		</div>
   <div class="form-group col-4 mb-2">
-		    <%= form.label :census_no, style: "display: block" %>
+		  <%= form.label :census_no, style: "display: block" %>
 	    <%= form.text_field :census_no, class: "form-control" %>
 		</div>
   <div class="form-group col-4 mb-2">
-		    <%= form.label :status, style: "display: block" %>
+		  <%= form.label :status, style: "display: block" %>
 	    <%= form.text_field :status, class: "form-control" %>
 		</div>
   <div class="form-group col-4 mb-2">
-		    <%= form.label :institution_id, style: "display: block" %>
-	    <%= form.text_field :institution_id, class: "form-control" %>
+		  <%= form.label :institution_id, style: "display: block" %>
+			<select id="institution-select" placeholder="Select a person..." autocomplete="off">
+	      <option value="">Select a person...</option>
+	      <% Institution.all.each do |i| %>
+	        <option value="<%= i.id %>"><%= i.name_english %></option>
+	      <% end %>
+	    </select>
 		</div>
   <div class="form-group col-4 mb-2">
 		    <%= form.label :shelfmark, style: "display: block" %>
@@ -71,3 +74,13 @@
   </div>
 <% end %>
 	
+
+<script type="text/javascript">
+  new TomSelect("#institution-select",{
+    create: true,
+    sortField: {
+      field: "text",
+      direction: "asc"
+    }
+  });
+</script>

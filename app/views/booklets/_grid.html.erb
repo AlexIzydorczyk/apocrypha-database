@@ -5,16 +5,16 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+    { headerName: "Id", field: "id", editable: false, hide: true },//cellRenderer: 'agGroupCellRenderer'
         { headerName: "Manuscript", field: "manuscript_id"},
-        { headerName: "Booklet no", field: "booklet_no"},
-        { headerName: "Pages folios", field: "pages_folios"},
-        { headerName: "Date from", field: "date_from"},
-        { headerName: "Date to", field: "date_to"},
-        { headerName: "Specific date", field: "specific_date"},
-        { headerName: "Genesis location", field: "genesis_location_id"},
-        { headerName: "Genesis institution", field: "genesis_institution_id"},
-        { headerName: "Genesis religious order", field: "genesis_religious_order_id"},
+        { headerName: "Booklet no", field: "booklet_no" },
+        { headerName: "Pages folios", field: "pages_folios", hide: true },
+        { headerName: "Date from", field: "date_from", hide: true },
+        { headerName: "Date to", field: "date_to", hide: true },
+        { headerName: "Specific date", field: "specific_date", hide: true },
+        { headerName: "Genesis location", field: "genesis_location_id", hide: true },
+        { headerName: "Genesis institution", field: "genesis_institution_id", hide: true },
+        { headerName: "Genesis religious order", field: "genesis_religious_order_id", hide: true },
         { headerName: "Content type", field: "content_type"},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
       return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
@@ -24,7 +24,7 @@
   const rowData = [
     <% booklets.each do |booklet| %>
       { id:<%= booklet.id %>,
-        manuscript_id: "<%= booklet.manuscript_id %>",booklet_no: "<%= booklet.booklet_no %>",pages_folios: "<%= booklet.pages_folios %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>",genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
+        manuscript_id: "<%= booklet.manuscript.identifier %>",booklet_no: "<%= booklet.booklet_no %>",pages_folios: "<%= booklet.pages_folios %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>",genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
         links: { show: "<%= booklet_path(booklet) %>", edit: "<%= edit_booklet_path(booklet) %>" }
       },
     <% end %>
@@ -35,6 +35,7 @@
     defaultColDef: defaultColDef,
     rowData: rowData,
     onCellValueChanged: onCellValueChanged,
+    sideBar: 'columns',
   };
 
   function onCellValueChanged(event){
@@ -45,7 +46,7 @@
   function saveChange(id, data){
     var my_data = {};
     my_data.authenticity_token = "<%= form_authenticity_token %>";
-    my_data.location = data;
+    my_data.booklet = data;
     console.log('my_data', my_data);
     $.ajax({
       url: "/booklets/"+id,

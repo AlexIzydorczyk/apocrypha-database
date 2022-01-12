@@ -39,7 +39,7 @@
   function saveChange(id, data){
     var my_data = {};
     my_data.authenticity_token = "<%= form_authenticity_token %>";
-    my_data.location = data;
+    my_data.institution = data;
     console.log('my_data', my_data);
     $.ajax({
       url: "/institutions/"+id,
