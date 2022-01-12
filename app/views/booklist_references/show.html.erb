@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @booklist_reference %>
+
+<div>
+  <%= link_to "Edit this booklist reference", edit_booklist_reference_path(@booklist_reference) %> |
+  <%= link_to "Back to booklist references", booklist_references_path %>
+
+  <%= button_to "Destroy this booklist reference", @booklist_reference, method: :delete %>
+</div>

@@ -1,0 +1,61 @@
+
+
+<%= form_with(model: section) do |form| %>
+  <% if section.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(section.errors.count, "error") %> prohibited this section from being saved:</h2>
+
+      <ul>
+        <% section.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :text_id, style: "display: block" %>
+	    <%= form.text_field :text_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :section_name, style: "display: block" %>
+	    <%= form.text_field :section_name, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :pages_folios_incipit, style: "display: block" %>
+	    <%= form.text_field :pages_folios_incipit, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :incipit_orig, style: "display: block" %>
+	    <%= form.text_field :incipit_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :incipit_orig_transliteration, style: "display: block" %>
+	    <%= form.text_field :incipit_orig_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :incipit_translation, style: "display: block" %>
+	    <%= form.text_field :incipit_translation, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :pages_folios_explicit, style: "display: block" %>
+	    <%= form.text_field :pages_folios_explicit, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :explicit_orig, style: "display: block" %>
+	    <%= form.text_field :explicit_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :explicitorig_transliteration, style: "display: block" %>
+	    <%= form.text_field :explicitorig_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :explicit_translation, style: "display: block" %>
+	    <%= form.text_field :explicit_translation, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

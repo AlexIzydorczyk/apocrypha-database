@@ -1,0 +1,61 @@
+
+
+<%= form_with(model: ownership) do |form| %>
+  <% if ownership.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ownership.errors.count, "error") %> prohibited this ownership from being saved:</h2>
+
+      <ul>
+        <% ownership.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :booklet_id, style: "display: block" %>
+	    <%= form.text_field :booklet_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :person_id, style: "display: block" %>
+	    <%= form.text_field :person_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :institution_id, style: "display: block" %>
+	    <%= form.text_field :institution_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :location_id, style: "display: block" %>
+	    <%= form.text_field :location_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :religious_order_id, style: "display: block" %>
+	    <%= form.text_field :religious_order_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :date_from, style: "display: block" %>
+	    <%= form.text_field :date_from, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :date_to, style: "display: block" %>
+	    <%= form.text_field :date_to, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :date_for_owner, style: "display: block" %>
+	    <%= form.text_field :date_for_owner, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :owner_date_is_approximate, style: "display: block" %>
+	    <%= form.check_box :owner_date_is_approximate, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :provenance_notes, style: "display: block" %>
+	    <%= form.text_area :provenance_notes, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'type' %><th class="col"><input type="text" class="form-control" placeholder="Type" disabled></th><% end %>
+                      <% unless hide_columns.include? 'text_id' %><th class="col"><input type="text" class="form-control" placeholder="Text" disabled></th><% end %>
+                      <% unless hide_columns.include? 'url' %><th class="col"><input type="text" class="form-control" placeholder="Url" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% text_urls.each do |text_url| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= text_url.id %></td><% end -%>
+                      <% unless hide_columns.include? 'type' %><td class="col"><%= text_url.type %></td><% end %>
+                      <% unless hide_columns.include? 'text_id' %><td class="col"><%= text_url.text_id %></td><% end %>
+                      <% unless hide_columns.include? 'url' %><td class="col"><%= text_url.url %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", text_url, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_text_url_path(text_url), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

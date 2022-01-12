@@ -1,0 +1,45 @@
+
+
+<%= form_with(model: booklist_reference) do |form| %>
+  <% if booklist_reference.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(booklist_reference.errors.count, "error") %> prohibited this booklist_reference from being saved:</h2>
+
+      <ul>
+        <% booklist_reference.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :booklist_id, style: "display: block" %>
+	    <%= form.text_field :booklist_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :text_id, style: "display: block" %>
+	    <%= form.text_field :text_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :relevant_text_booklist_orig, style: "display: block" %>
+	    <%= form.text_field :relevant_text_booklist_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :relevant_text_booklist_orig_transliteration, style: "display: block" %>
+	    <%= form.text_field :relevant_text_booklist_orig_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :relevant_text_booklist_translation, style: "display: block" %>
+	    <%= form.text_field :relevant_text_booklist_translation, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :apocryphon_id, style: "display: block" %>
+	    <%= form.text_field :apocryphon_id, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

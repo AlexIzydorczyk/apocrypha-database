@@ -1,0 +1,6 @@
+<h1>Sections</h1>
+<p><%= link_to "New section", new_section_path, class: "btn btn-outline-success" %></p>
+
+<div id="sections">
+    <%= render 'grid', sections: @sections %>
+</div>

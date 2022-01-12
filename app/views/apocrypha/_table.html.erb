@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'apocryphon_no' %><th class="col"><input type="text" class="form-control" placeholder="Apocryphon no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'cant_no' %><th class="col"><input type="text" class="form-control" placeholder="Cant no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'bhl_no' %><th class="col"><input type="text" class="form-control" placeholder="Bhl no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'bhg_no' %><th class="col"><input type="text" class="form-control" placeholder="Bhg no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'bho_no' %><th class="col"><input type="text" class="form-control" placeholder="Bho no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'e_clavis_no' %><th class="col"><input type="text" class="form-control" placeholder="E clavis no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'e_clavis_link' %><th class="col"><input type="text" class="form-control" placeholder="E clavis link" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% apocrypha.each do |apocryphon| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= apocryphon.id %></td><% end -%>
+                      <% unless hide_columns.include? 'apocryphon_no' %><td class="col"><%= apocryphon.apocryphon_no %></td><% end %>
+                      <% unless hide_columns.include? 'cant_no' %><td class="col"><%= apocryphon.cant_no %></td><% end %>
+                      <% unless hide_columns.include? 'bhl_no' %><td class="col"><%= apocryphon.bhl_no %></td><% end %>
+                      <% unless hide_columns.include? 'bhg_no' %><td class="col"><%= apocryphon.bhg_no %></td><% end %>
+                      <% unless hide_columns.include? 'bho_no' %><td class="col"><%= apocryphon.bho_no %></td><% end %>
+                      <% unless hide_columns.include? 'e_clavis_no' %><td class="col"><%= apocryphon.e_clavis_no %></td><% end %>
+                      <% unless hide_columns.include? 'e_clavis_link' %><td class="col"><%= apocryphon.e_clavis_link %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", apocryphon, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_apocryphon_path(apocryphon), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+
+
+<%= form_with(model: location) do |form| %>
+  <% if location.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
+
+      <ul>
+        <% location.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :country, style: "display: block" %>
+	    <%= form.text_field :country, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :city_english, style: "display: block" %>
+	    <%= form.text_field :city_english, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :city_orig, style: "display: block" %>
+	    <%= form.text_field :city_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :city_translilteration, style: "display: block" %>
+	    <%= form.text_field :city_translilteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :region_english, style: "display: block" %>
+	    <%= form.text_field :region_english, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :region_orig, style: "display: block" %>
+	    <%= form.text_field :region_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :region_transliteration, style: "display: block" %>
+	    <%= form.text_field :region_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :diocese_english, style: "display: block" %>
+	    <%= form.text_field :diocese_english, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :diocese_orig, style: "display: block" %>
+	    <%= form.text_field :diocese_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :diocese_transliteration, style: "display: block" %>
+	    <%= form.text_field :diocese_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :longitude, style: "display: block" %>
+	    <%= form.number_field :longitude, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :latitude, style: "display: block" %>
+	    <%= form.number_field :latitude, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

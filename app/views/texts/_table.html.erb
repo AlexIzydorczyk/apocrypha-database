@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'content_id' %><th class="col"><input type="text" class="form-control" placeholder="Content" disabled></th><% end %>
+                      <% unless hide_columns.include? 'text_pages_folios' %><th class="col"><input type="text" class="form-control" placeholder="Text pages folios" disabled></th><% end %>
+                      <% unless hide_columns.include? 'decoration' %><th class="col"><input type="text" class="form-control" placeholder="Decoration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_folios_pages' %><th class="col"><input type="text" class="form-control" placeholder="Title folios pages" disabled></th><% end %>
+                      <% unless hide_columns.include? 'manuscript_title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Manuscript title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'manuscript_title_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Manuscript title orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'manuscript_title_translation' %><th class="col"><input type="text" class="form-control" placeholder="Manuscript title translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'pages_folios_colophon' %><th class="col"><input type="text" class="form-control" placeholder="Pages folios colophon" disabled></th><% end %>
+                      <% unless hide_columns.include? 'colophon_orig' %><th class="col"><input type="text" class="form-control" placeholder="Colophon orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'colophon_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Colophon transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'colophon_translation' %><th class="col"><input type="text" class="form-control" placeholder="Colophon translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'notes' %><th class="col"><input type="text" class="form-control" placeholder="Notes" disabled></th><% end %>
+                      <% unless hide_columns.include? 'transcriber_id' %><th class="col"><input type="text" class="form-control" placeholder="Transcriber" disabled></th><% end %>
+                      <% unless hide_columns.include? 'version' %><th class="col"><input type="text" class="form-control" placeholder="Version" disabled></th><% end %>
+                      <% unless hide_columns.include? 'extent' %><th class="col"><input type="text" class="form-control" placeholder="Extent" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% texts.each do |text| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= text.id %></td><% end -%>
+                      <% unless hide_columns.include? 'content_id' %><td class="col"><%= text.content_id %></td><% end %>
+                      <% unless hide_columns.include? 'text_pages_folios' %><td class="col"><%= text.text_pages_folios %></td><% end %>
+                      <% unless hide_columns.include? 'decoration' %><td class="col"><%= text.decoration %></td><% end %>
+                      <% unless hide_columns.include? 'title_folios_pages' %><td class="col"><%= text.title_folios_pages %></td><% end %>
+                      <% unless hide_columns.include? 'manuscript_title_orig' %><td class="col"><%= text.manuscript_title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'manuscript_title_orig_transliteration' %><td class="col"><%= text.manuscript_title_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'manuscript_title_translation' %><td class="col"><%= text.manuscript_title_translation %></td><% end %>
+                      <% unless hide_columns.include? 'pages_folios_colophon' %><td class="col"><%= text.pages_folios_colophon %></td><% end %>
+                      <% unless hide_columns.include? 'colophon_orig' %><td class="col"><%= text.colophon_orig %></td><% end %>
+                      <% unless hide_columns.include? 'colophon_transliteration' %><td class="col"><%= text.colophon_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'colophon_translation' %><td class="col"><%= text.colophon_translation %></td><% end %>
+                      <% unless hide_columns.include? 'notes' %><td class="col"><%= text.notes %></td><% end %>
+                      <% unless hide_columns.include? 'transcriber_id' %><td class="col"><%= text.transcriber_id %></td><% end %>
+                      <% unless hide_columns.include? 'version' %><td class="col"><%= text.version %></td><% end %>
+                      <% unless hide_columns.include? 'extent' %><td class="col"><%= text.extent %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", text, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_text_path(text), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<h1>Text urls</h1>
+<p><%= link_to "New text url", new_text_url_path, class: "btn btn-outline-success" %></p>
+
+<div id="text_urls">
+    <%= render 'grid', text_urls: @text_urls %>
+</div>

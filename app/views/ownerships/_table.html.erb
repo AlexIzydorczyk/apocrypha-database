@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'booklet_id' %><th class="col"><input type="text" class="form-control" placeholder="Booklet" disabled></th><% end %>
+                      <% unless hide_columns.include? 'person_id' %><th class="col"><input type="text" class="form-control" placeholder="Person" disabled></th><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><th class="col"><input type="text" class="form-control" placeholder="Institution" disabled></th><% end %>
+                      <% unless hide_columns.include? 'location_id' %><th class="col"><input type="text" class="form-control" placeholder="Location" disabled></th><% end %>
+                      <% unless hide_columns.include? 'religious_order_id' %><th class="col"><input type="text" class="form-control" placeholder="Religious order" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_from' %><th class="col"><input type="text" class="form-control" placeholder="Date from" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_to' %><th class="col"><input type="text" class="form-control" placeholder="Date to" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_for_owner' %><th class="col"><input type="text" class="form-control" placeholder="Date for owner" disabled></th><% end %>
+                      <% unless hide_columns.include? 'owner_date_is_approximate' %><th class="col"><input type="text" class="form-control" placeholder="Owner date is approximate" disabled></th><% end %>
+                      <% unless hide_columns.include? 'provenance_notes' %><th class="col"><input type="text" class="form-control" placeholder="Provenance notes" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% ownerships.each do |ownership| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= ownership.id %></td><% end -%>
+                      <% unless hide_columns.include? 'booklet_id' %><td class="col"><%= ownership.booklet_id %></td><% end %>
+                      <% unless hide_columns.include? 'person_id' %><td class="col"><%= ownership.person_id %></td><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><td class="col"><%= ownership.institution_id %></td><% end %>
+                      <% unless hide_columns.include? 'location_id' %><td class="col"><%= ownership.location_id %></td><% end %>
+                      <% unless hide_columns.include? 'religious_order_id' %><td class="col"><%= ownership.religious_order_id %></td><% end %>
+                      <% unless hide_columns.include? 'date_from' %><td class="col"><%= ownership.date_from %></td><% end %>
+                      <% unless hide_columns.include? 'date_to' %><td class="col"><%= ownership.date_to %></td><% end %>
+                      <% unless hide_columns.include? 'date_for_owner' %><td class="col"><%= ownership.date_for_owner %></td><% end %>
+                      <% unless hide_columns.include? 'owner_date_is_approximate' %><td class="col"><%= ownership.owner_date_is_approximate %></td><% end %>
+                      <% unless hide_columns.include? 'provenance_notes' %><td class="col"><%= ownership.provenance_notes %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", ownership, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_ownership_path(ownership), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

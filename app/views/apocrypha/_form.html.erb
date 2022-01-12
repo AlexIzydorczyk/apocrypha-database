@@ -1,0 +1,49 @@
+
+
+<%= form_with(model: apocryphon) do |form| %>
+  <% if apocryphon.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(apocryphon.errors.count, "error") %> prohibited this apocryphon from being saved:</h2>
+
+      <ul>
+        <% apocryphon.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :apocryphon_no, style: "display: block" %>
+	    <%= form.text_field :apocryphon_no, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :cant_no, style: "display: block" %>
+	    <%= form.text_field :cant_no, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :bhl_no, style: "display: block" %>
+	    <%= form.text_field :bhl_no, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :bhg_no, style: "display: block" %>
+	    <%= form.text_field :bhg_no, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :bho_no, style: "display: block" %>
+	    <%= form.text_field :bho_no, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :e_clavis_no, style: "display: block" %>
+	    <%= form.text_field :e_clavis_no, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :e_clavis_link, style: "display: block" %>
+	    <%= form.text_field :e_clavis_link, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

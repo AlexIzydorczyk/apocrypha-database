@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><th class="col"><input type="text" class="form-control" placeholder="Institution" disabled></th><% end %>
+                      <% unless hide_columns.include? 'religious_order_id' %><th class="col"><input type="text" class="form-control" placeholder="Religious order" disabled></th><% end %>
+                      <% unless hide_columns.include? 'start_date' %><th class="col"><input type="text" class="form-control" placeholder="Start date" disabled></th><% end %>
+                      <% unless hide_columns.include? 'end_date' %><th class="col"><input type="text" class="form-control" placeholder="End date" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% institutional_affiliations.each do |institutional_affiliation| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= institutional_affiliation.id %></td><% end -%>
+                      <% unless hide_columns.include? 'institution_id' %><td class="col"><%= institutional_affiliation.institution_id %></td><% end %>
+                      <% unless hide_columns.include? 'religious_order_id' %><td class="col"><%= institutional_affiliation.religious_order_id %></td><% end %>
+                      <% unless hide_columns.include? 'start_date' %><td class="col"><%= institutional_affiliation.start_date %></td><% end %>
+                      <% unless hide_columns.include? 'end_date' %><td class="col"><%= institutional_affiliation.end_date %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", institutional_affiliation, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_institutional_affiliation_path(institutional_affiliation), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

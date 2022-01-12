@@ -1,0 +1,6 @@
+<h1>Modern source references</h1>
+<p><%= link_to "New modern source reference", new_modern_source_reference_path, class: "btn btn-outline-success" %></p>
+
+<div id="modern_source_references">
+    <%= render 'grid', modern_source_references: @modern_source_references %>
+</div>

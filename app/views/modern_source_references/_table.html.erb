@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'record_id' %><th class="col"><input type="text" class="form-control" placeholder="Record" disabled></th><% end %>
+                      <% unless hide_columns.include? 'modern_source_id' %><th class="col"><input type="text" class="form-control" placeholder="Modern source" disabled></th><% end %>
+                      <% unless hide_columns.include? 'specific_page' %><th class="col"><input type="text" class="form-control" placeholder="Specific page" disabled></th><% end %>
+                      <% unless hide_columns.include? 'siglum' %><th class="col"><input type="text" class="form-control" placeholder="Siglum" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% modern_source_references.each do |modern_source_reference| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= modern_source_reference.id %></td><% end -%>
+                      <% unless hide_columns.include? 'record_id' %><td class="col"><%= modern_source_reference.record_id %></td><% end %>
+                      <% unless hide_columns.include? 'modern_source_id' %><td class="col"><%= modern_source_reference.modern_source_id %></td><% end %>
+                      <% unless hide_columns.include? 'specific_page' %><td class="col"><%= modern_source_reference.specific_page %></td><% end %>
+                      <% unless hide_columns.include? 'siglum' %><td class="col"><%= modern_source_reference.siglum %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", modern_source_reference, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_modern_source_reference_path(modern_source_reference), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

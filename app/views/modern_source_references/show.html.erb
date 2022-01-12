@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @modern_source_reference %>
+
+<div>
+  <%= link_to "Edit this modern source reference", edit_modern_source_reference_path(@modern_source_reference) %> |
+  <%= link_to "Back to modern source references", modern_source_references_path %>
+
+  <%= button_to "Destroy this modern source reference", @modern_source_reference, method: :delete %>
+</div>

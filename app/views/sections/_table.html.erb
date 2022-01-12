@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'text_id' %><th class="col"><input type="text" class="form-control" placeholder="Text" disabled></th><% end %>
+                      <% unless hide_columns.include? 'section_name' %><th class="col"><input type="text" class="form-control" placeholder="Section name" disabled></th><% end %>
+                      <% unless hide_columns.include? 'pages_folios_incipit' %><th class="col"><input type="text" class="form-control" placeholder="Pages folios incipit" disabled></th><% end %>
+                      <% unless hide_columns.include? 'incipit_orig' %><th class="col"><input type="text" class="form-control" placeholder="Incipit orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'incipit_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Incipit orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'incipit_translation' %><th class="col"><input type="text" class="form-control" placeholder="Incipit translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'pages_folios_explicit' %><th class="col"><input type="text" class="form-control" placeholder="Pages folios explicit" disabled></th><% end %>
+                      <% unless hide_columns.include? 'explicit_orig' %><th class="col"><input type="text" class="form-control" placeholder="Explicit orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'explicitorig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Explicitorig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'explicit_translation' %><th class="col"><input type="text" class="form-control" placeholder="Explicit translation" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% sections.each do |section| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= section.id %></td><% end -%>
+                      <% unless hide_columns.include? 'text_id' %><td class="col"><%= section.text_id %></td><% end %>
+                      <% unless hide_columns.include? 'section_name' %><td class="col"><%= section.section_name %></td><% end %>
+                      <% unless hide_columns.include? 'pages_folios_incipit' %><td class="col"><%= section.pages_folios_incipit %></td><% end %>
+                      <% unless hide_columns.include? 'incipit_orig' %><td class="col"><%= section.incipit_orig %></td><% end %>
+                      <% unless hide_columns.include? 'incipit_orig_transliteration' %><td class="col"><%= section.incipit_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'incipit_translation' %><td class="col"><%= section.incipit_translation %></td><% end %>
+                      <% unless hide_columns.include? 'pages_folios_explicit' %><td class="col"><%= section.pages_folios_explicit %></td><% end %>
+                      <% unless hide_columns.include? 'explicit_orig' %><td class="col"><%= section.explicit_orig %></td><% end %>
+                      <% unless hide_columns.include? 'explicitorig_transliteration' %><td class="col"><%= section.explicitorig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'explicit_translation' %><td class="col"><%= section.explicit_translation %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", section, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_section_path(section), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

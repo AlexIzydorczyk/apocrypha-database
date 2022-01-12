@@ -1,0 +1,6 @@
+<h1>Ownerships</h1>
+<p><%= link_to "New ownership", new_ownership_path, class: "btn btn-outline-success" %></p>
+
+<div id="ownerships">
+    <%= render 'grid', ownerships: @ownerships %>
+</div>

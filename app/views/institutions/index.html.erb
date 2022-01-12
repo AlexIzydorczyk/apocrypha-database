@@ -1,0 +1,6 @@
+<h1>Institutions</h1>
+<p><%= link_to "New institution", new_institution_path, class: "btn btn-outline-success" %></p>
+
+<div id="institutions">
+    <%= render 'grid', institutions: @institutions %>
+</div>

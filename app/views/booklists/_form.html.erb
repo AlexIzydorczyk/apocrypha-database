@@ -1,0 +1,93 @@
+
+
+<%= form_with(model: booklist) do |form| %>
+  <% if booklist.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(booklist.errors.count, "error") %> prohibited this booklist from being saved:</h2>
+
+      <ul>
+        <% booklist.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :booklist_type, style: "display: block" %>
+	    <%= form.text_field :booklist_type, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :manuscript_source, style: "display: block" %>
+	    <%= form.text_field :manuscript_source, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :library_owner_id, style: "display: block" %>
+	    <%= form.text_field :library_owner_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :institution_id, style: "display: block" %>
+	    <%= form.text_field :institution_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :location_id, style: "display: block" %>
+	    <%= form.text_field :location_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :religious_order_id, style: "display: block" %>
+	    <%= form.text_field :religious_order_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :scribe_id, style: "display: block" %>
+	    <%= form.text_field :scribe_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :language_id, style: "display: block" %>
+	    <%= form.text_field :language_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :title_orig, style: "display: block" %>
+	    <%= form.text_field :title_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :title_orig_transliteration, style: "display: block" %>
+	    <%= form.text_field :title_orig_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :title_orig_translation, style: "display: block" %>
+	    <%= form.text_field :title_orig_translation, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :chapter_orig, style: "display: block" %>
+	    <%= form.text_field :chapter_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :chapter_orig_transliteration, style: "display: block" %>
+	    <%= form.text_field :chapter_orig_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :chapter_translation, style: "display: block" %>
+	    <%= form.text_field :chapter_translation, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :date_from, style: "display: block" %>
+	    <%= form.text_field :date_from, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :date_to, style: "display: block" %>
+	    <%= form.text_field :date_to, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :specific_date, style: "display: block" %>
+	    <%= form.text_field :specific_date, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :notes, style: "display: block" %>
+	    <%= form.text_area :notes, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

@@ -1,0 +1,6 @@
+<h1>Manuscripts</h1>
+<p><%= link_to "New manuscript", new_manuscript_path, class: "btn btn-outline-success" %></p>
+
+<div id="manuscripts">
+    <%= render 'grid', manuscripts: @manuscripts %>
+</div>

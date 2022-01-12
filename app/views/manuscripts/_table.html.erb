@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'identifier' %><th class="col"><input type="text" class="form-control" placeholder="Identifier" disabled></th><% end %>
+                      <% unless hide_columns.include? 'census_no' %><th class="col"><input type="text" class="form-control" placeholder="Census no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'status' %><th class="col"><input type="text" class="form-control" placeholder="Status" disabled></th><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><th class="col"><input type="text" class="form-control" placeholder="Institution" disabled></th><% end %>
+                      <% unless hide_columns.include? 'shelfmark' %><th class="col"><input type="text" class="form-control" placeholder="Shelfmark" disabled></th><% end %>
+                      <% unless hide_columns.include? 'old_shelfmark' %><th class="col"><input type="text" class="form-control" placeholder="Old shelfmark" disabled></th><% end %>
+                      <% unless hide_columns.include? 'material' %><th class="col"><input type="text" class="form-control" placeholder="Material" disabled></th><% end %>
+                      <% unless hide_columns.include? 'dimensions' %><th class="col"><input type="text" class="form-control" placeholder="Dimensions" disabled></th><% end %>
+                      <% unless hide_columns.include? 'leaf_page_no' %><th class="col"><input type="text" class="form-control" placeholder="Leaf page no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_from' %><th class="col"><input type="text" class="form-control" placeholder="Date from" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_to' %><th class="col"><input type="text" class="form-control" placeholder="Date to" disabled></th><% end %>
+                      <% unless hide_columns.include? 'content_type' %><th class="col"><input type="text" class="form-control" placeholder="Content type" disabled></th><% end %>
+                      <% unless hide_columns.include? 'notes' %><th class="col"><input type="text" class="form-control" placeholder="Notes" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% manuscripts.each do |manuscript| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= manuscript.id %></td><% end -%>
+                      <% unless hide_columns.include? 'identifier' %><td class="col"><%= manuscript.identifier %></td><% end %>
+                      <% unless hide_columns.include? 'census_no' %><td class="col"><%= manuscript.census_no %></td><% end %>
+                      <% unless hide_columns.include? 'status' %><td class="col"><%= manuscript.status %></td><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><td class="col"><%= manuscript.institution_id %></td><% end %>
+                      <% unless hide_columns.include? 'shelfmark' %><td class="col"><%= manuscript.shelfmark %></td><% end %>
+                      <% unless hide_columns.include? 'old_shelfmark' %><td class="col"><%= manuscript.old_shelfmark %></td><% end %>
+                      <% unless hide_columns.include? 'material' %><td class="col"><%= manuscript.material %></td><% end %>
+                      <% unless hide_columns.include? 'dimensions' %><td class="col"><%= manuscript.dimensions %></td><% end %>
+                      <% unless hide_columns.include? 'leaf_page_no' %><td class="col"><%= manuscript.leaf_page_no %></td><% end %>
+                      <% unless hide_columns.include? 'date_from' %><td class="col"><%= manuscript.date_from %></td><% end %>
+                      <% unless hide_columns.include? 'date_to' %><td class="col"><%= manuscript.date_to %></td><% end %>
+                      <% unless hide_columns.include? 'content_type' %><td class="col"><%= manuscript.content_type %></td><% end %>
+                      <% unless hide_columns.include? 'notes' %><td class="col"><%= manuscript.notes %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", manuscript, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_manuscript_path(manuscript), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

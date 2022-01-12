@@ -1,0 +1,73 @@
+<div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+        { headerName: "Booklist type", field: "booklist_type"},
+        { headerName: "Manuscript source", field: "manuscript_source"},
+        { headerName: "Library owner", field: "library_owner_id"},
+        { headerName: "Institution", field: "institution_id"},
+        { headerName: "Location", field: "location_id"},
+        { headerName: "Religious order", field: "religious_order_id"},
+        { headerName: "Scribe", field: "scribe_id"},
+        { headerName: "Language", field: "language_id"},
+        { headerName: "Title orig", field: "title_orig"},
+        { headerName: "Title orig transliteration", field: "title_orig_transliteration"},
+        { headerName: "Title orig translation", field: "title_orig_translation"},
+        { headerName: "Chapter orig", field: "chapter_orig"},
+        { headerName: "Chapter orig transliteration", field: "chapter_orig_transliteration"},
+        { headerName: "Chapter translation", field: "chapter_translation"},
+        { headerName: "Date from", field: "date_from"},
+        { headerName: "Date to", field: "date_to"},
+        { headerName: "Specific date", field: "specific_date"},
+        { headerName: "Notes", field: "notes"},
+        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+    } }
+  ];
+
+  const rowData = [
+    <% booklists.each do |booklist| %>
+      { id:<%= booklist.id %>,
+        booklist_type: "<%= booklist.booklist_type %>",manuscript_source: "<%= booklist.manuscript_source %>",library_owner_id: "<%= booklist.library_owner_id %>",institution_id: "<%= booklist.institution_id %>",location_id: "<%= booklist.location_id %>",religious_order_id: "<%= booklist.religious_order_id %>",scribe_id: "<%= booklist.scribe_id %>",language_id: "<%= booklist.language_id %>",title_orig: "<%= booklist.title_orig %>",title_orig_transliteration: "<%= booklist.title_orig_transliteration %>",title_orig_translation: "<%= booklist.title_orig_translation %>",chapter_orig: "<%= booklist.chapter_orig %>",chapter_orig_transliteration: "<%= booklist.chapter_orig_transliteration %>",chapter_translation: "<%= booklist.chapter_translation %>",date_from: "<%= booklist.date_from %>",date_to: "<%= booklist.date_to %>",specific_date: "<%= booklist.specific_date %>",notes: "<%= booklist.notes %>",
+        links: { show: "<%= booklist_path(booklist) %>", edit: "<%= edit_booklist_path(booklist) %>" }
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/booklists/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#booklists_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

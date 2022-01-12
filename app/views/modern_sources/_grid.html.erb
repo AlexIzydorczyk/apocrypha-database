@@ -1,0 +1,82 @@
+<div id="modern_sources_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+        { headerName: "Publication title orig", field: "publication_title_orig"},
+        { headerName: "Publication title transliteration", field: "publication_title_transliteration"},
+        { headerName: "Publication title translation", field: "publication_title_translation"},
+        { headerName: "Title orig", field: "title_orig"},
+        { headerName: "Title transliteration", field: "title_transliteration"},
+        { headerName: "Title translation", field: "title_translation"},
+        { headerName: "Source type", field: "source_type"},
+        { headerName: "Num volumes", field: "num_volumes"},
+        { headerName: "Volume no", field: "volume_no"},
+        { headerName: "Volume title orig", field: "volume_title_orig"},
+        { headerName: "Volume title transliteration", field: "volume_title_transliteration"},
+        { headerName: "Volume title translation", field: "volume_title_translation"},
+        { headerName: "Part no", field: "part_no"},
+        { headerName: "Part title orig", field: "part_title_orig"},
+        { headerName: "Part title transliteration", field: "part_title_transliteration"},
+        { headerName: "Part title translation", field: "part_title_translation"},
+        { headerName: "Series no", field: "series_no"},
+        { headerName: "Series title orig", field: "series_title_orig"},
+        { headerName: "Series title transliteration", field: "series_title_transliteration"},
+        { headerName: "Series title translation", field: "series_title_translation"},
+        { headerName: "Edition", field: "edition"},
+        { headerName: "Publication location", field: "publication_location_id"},
+        { headerName: "Publisher", field: "publisher"},
+        { headerName: "Publication creation date", field: "publication_creation_date"},
+        { headerName: "Shelfmark", field: "shelfmark"},
+        { headerName: "Isbn", field: "ISBN"},
+        { headerName: "Doi", field: "DOI"},
+        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+    } }
+  ];
+
+  const rowData = [
+    <% modern_sources.each do |modern_source| %>
+      { id:<%= modern_source.id %>,
+        publication_title_orig: "<%= modern_source.publication_title_orig %>",publication_title_transliteration: "<%= modern_source.publication_title_transliteration %>",publication_title_translation: "<%= modern_source.publication_title_translation %>",title_orig: "<%= modern_source.title_orig %>",title_transliteration: "<%= modern_source.title_transliteration %>",title_translation: "<%= modern_source.title_translation %>",source_type: "<%= modern_source.source_type %>",num_volumes: "<%= modern_source.num_volumes %>",volume_no: "<%= modern_source.volume_no %>",volume_title_orig: "<%= modern_source.volume_title_orig %>",volume_title_transliteration: "<%= modern_source.volume_title_transliteration %>",volume_title_translation: "<%= modern_source.volume_title_translation %>",part_no: "<%= modern_source.part_no %>",part_title_orig: "<%= modern_source.part_title_orig %>",part_title_transliteration: "<%= modern_source.part_title_transliteration %>",part_title_translation: "<%= modern_source.part_title_translation %>",series_no: "<%= modern_source.series_no %>",series_title_orig: "<%= modern_source.series_title_orig %>",series_title_transliteration: "<%= modern_source.series_title_transliteration %>",series_title_translation: "<%= modern_source.series_title_translation %>",edition: "<%= modern_source.edition %>",publication_location_id: "<%= modern_source.publication_location_id %>",publisher: "<%= modern_source.publisher %>",publication_creation_date: "<%= modern_source.publication_creation_date %>",shelfmark: "<%= modern_source.shelfmark %>",ISBN: "<%= modern_source.ISBN %>",DOI: "<%= modern_source.DOI %>",
+        links: { show: "<%= modern_source_path(modern_source) %>", edit: "<%= edit_modern_source_path(modern_source) %>" }
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/modern_sources/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#modern_sources_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @person_reference %>
+
+<div>
+  <%= link_to "Edit this person reference", edit_person_reference_path(@person_reference) %> |
+  <%= link_to "Back to person references", person_references_path %>
+
+  <%= button_to "Destroy this person reference", @person_reference, method: :delete %>
+</div>

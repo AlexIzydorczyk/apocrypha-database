@@ -1,0 +1,6 @@
+<h1>Language references</h1>
+<p><%= link_to "New language reference", new_language_reference_path, class: "btn btn-outline-success" %></p>
+
+<div id="language_references">
+    <%= render 'grid', language_references: @language_references %>
+</div>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @ownership %>
+
+<div>
+  <%= link_to "Edit this ownership", edit_ownership_path(@ownership) %> |
+  <%= link_to "Back to ownerships", ownerships_path %>
+
+  <%= button_to "Destroy this ownership", @ownership, method: :delete %>
+</div>

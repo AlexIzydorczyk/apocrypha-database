@@ -1,0 +1,6 @@
+<h1>Institutional affiliations</h1>
+<p><%= link_to "New institutional affiliation", new_institutional_affiliation_path, class: "btn btn-outline-success" %></p>
+
+<div id="institutional_affiliations">
+    <%= render 'grid', institutional_affiliations: @institutional_affiliations %>
+</div>

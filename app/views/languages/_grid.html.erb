@@ -1,0 +1,56 @@
+<div id="languages_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+        { headerName: "Language name", field: "language_name"},
+        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+    } }
+  ];
+
+  const rowData = [
+    <% languages.each do |language| %>
+      { id:<%= language.id %>,
+        language_name: "<%= language.language_name %>",
+        links: { show: "<%= language_path(language) %>", edit: "<%= edit_language_path(language) %>" }
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/languages/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#languages_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

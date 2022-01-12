@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @language_reference %>
+
+<div>
+  <%= link_to "Edit this language reference", edit_language_reference_path(@language_reference) %> |
+  <%= link_to "Back to language references", language_references_path %>
+
+  <%= button_to "Destroy this language reference", @language_reference, method: :delete %>
+</div>

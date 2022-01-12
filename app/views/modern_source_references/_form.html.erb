@@ -1,0 +1,37 @@
+
+
+<%= form_with(model: modern_source_reference) do |form| %>
+  <% if modern_source_reference.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(modern_source_reference.errors.count, "error") %> prohibited this modern_source_reference from being saved:</h2>
+
+      <ul>
+        <% modern_source_reference.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :record_id, style: "display: block" %>
+	    <%= form.text_field :record_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :modern_source_id, style: "display: block" %>
+	    <%= form.text_field :modern_source_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :specific_page, style: "display: block" %>
+	    <%= form.text_field :specific_page, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :siglum, style: "display: block" %>
+	    <%= form.text_field :siglum, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

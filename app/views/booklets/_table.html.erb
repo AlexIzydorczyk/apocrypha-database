@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'manuscript_id' %><th class="col"><input type="text" class="form-control" placeholder="Manuscript" disabled></th><% end %>
+                      <% unless hide_columns.include? 'booklet_no' %><th class="col"><input type="text" class="form-control" placeholder="Booklet no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'pages_folios' %><th class="col"><input type="text" class="form-control" placeholder="Pages folios" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_from' %><th class="col"><input type="text" class="form-control" placeholder="Date from" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_to' %><th class="col"><input type="text" class="form-control" placeholder="Date to" disabled></th><% end %>
+                      <% unless hide_columns.include? 'specific_date' %><th class="col"><input type="text" class="form-control" placeholder="Specific date" disabled></th><% end %>
+                      <% unless hide_columns.include? 'genesis_location_id' %><th class="col"><input type="text" class="form-control" placeholder="Genesis location" disabled></th><% end %>
+                      <% unless hide_columns.include? 'genesis_institution_id' %><th class="col"><input type="text" class="form-control" placeholder="Genesis institution" disabled></th><% end %>
+                      <% unless hide_columns.include? 'genesis_religious_order_id' %><th class="col"><input type="text" class="form-control" placeholder="Genesis religious order" disabled></th><% end %>
+                      <% unless hide_columns.include? 'content_type' %><th class="col"><input type="text" class="form-control" placeholder="Content type" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% booklets.each do |booklet| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= booklet.id %></td><% end -%>
+                      <% unless hide_columns.include? 'manuscript_id' %><td class="col"><%= booklet.manuscript_id %></td><% end %>
+                      <% unless hide_columns.include? 'booklet_no' %><td class="col"><%= booklet.booklet_no %></td><% end %>
+                      <% unless hide_columns.include? 'pages_folios' %><td class="col"><%= booklet.pages_folios %></td><% end %>
+                      <% unless hide_columns.include? 'date_from' %><td class="col"><%= booklet.date_from %></td><% end %>
+                      <% unless hide_columns.include? 'date_to' %><td class="col"><%= booklet.date_to %></td><% end %>
+                      <% unless hide_columns.include? 'specific_date' %><td class="col"><%= booklet.specific_date %></td><% end %>
+                      <% unless hide_columns.include? 'genesis_location_id' %><td class="col"><%= booklet.genesis_location_id %></td><% end %>
+                      <% unless hide_columns.include? 'genesis_institution_id' %><td class="col"><%= booklet.genesis_institution_id %></td><% end %>
+                      <% unless hide_columns.include? 'genesis_religious_order_id' %><td class="col"><%= booklet.genesis_religious_order_id %></td><% end %>
+                      <% unless hide_columns.include? 'content_type' %><td class="col"><%= booklet.content_type %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", booklet, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_booklet_path(booklet), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

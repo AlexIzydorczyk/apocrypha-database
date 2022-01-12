@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @text_url %>
+
+<div>
+  <%= link_to "Edit this text url", edit_text_url_path(@text_url) %> |
+  <%= link_to "Back to text urls", text_urls_path %>
+
+  <%= button_to "Destroy this text url", @text_url, method: :delete %>
+</div>

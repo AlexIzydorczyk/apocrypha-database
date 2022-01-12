@@ -1,0 +1,6 @@
+<h1>Booklets</h1>
+<p><%= link_to "New booklet", new_booklet_path, class: "btn btn-outline-success" %></p>
+
+<div id="booklets">
+    <%= render 'grid', booklets: @booklets %>
+</div>

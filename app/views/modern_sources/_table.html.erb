@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'publication_title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Publication title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'publication_title_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Publication title transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'publication_title_translation' %><th class="col"><input type="text" class="form-control" placeholder="Publication title translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Title transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_translation' %><th class="col"><input type="text" class="form-control" placeholder="Title translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'source_type' %><th class="col"><input type="text" class="form-control" placeholder="Source type" disabled></th><% end %>
+                      <% unless hide_columns.include? 'num_volumes' %><th class="col"><input type="text" class="form-control" placeholder="Num volumes" disabled></th><% end %>
+                      <% unless hide_columns.include? 'volume_no' %><th class="col"><input type="text" class="form-control" placeholder="Volume no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'volume_title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Volume title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'volume_title_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Volume title transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'volume_title_translation' %><th class="col"><input type="text" class="form-control" placeholder="Volume title translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'part_no' %><th class="col"><input type="text" class="form-control" placeholder="Part no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'part_title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Part title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'part_title_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Part title transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'part_title_translation' %><th class="col"><input type="text" class="form-control" placeholder="Part title translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'series_no' %><th class="col"><input type="text" class="form-control" placeholder="Series no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'series_title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Series title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'series_title_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Series title transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'series_title_translation' %><th class="col"><input type="text" class="form-control" placeholder="Series title translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'edition' %><th class="col"><input type="text" class="form-control" placeholder="Edition" disabled></th><% end %>
+                      <% unless hide_columns.include? 'publication_location_id' %><th class="col"><input type="text" class="form-control" placeholder="Publication location" disabled></th><% end %>
+                      <% unless hide_columns.include? 'publisher' %><th class="col"><input type="text" class="form-control" placeholder="Publisher" disabled></th><% end %>
+                      <% unless hide_columns.include? 'publication_creation_date' %><th class="col"><input type="text" class="form-control" placeholder="Publication creation date" disabled></th><% end %>
+                      <% unless hide_columns.include? 'shelfmark' %><th class="col"><input type="text" class="form-control" placeholder="Shelfmark" disabled></th><% end %>
+                      <% unless hide_columns.include? 'ISBN' %><th class="col"><input type="text" class="form-control" placeholder="Isbn" disabled></th><% end %>
+                      <% unless hide_columns.include? 'DOI' %><th class="col"><input type="text" class="form-control" placeholder="Doi" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% modern_sources.each do |modern_source| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= modern_source.id %></td><% end -%>
+                      <% unless hide_columns.include? 'publication_title_orig' %><td class="col"><%= modern_source.publication_title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'publication_title_transliteration' %><td class="col"><%= modern_source.publication_title_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'publication_title_translation' %><td class="col"><%= modern_source.publication_title_translation %></td><% end %>
+                      <% unless hide_columns.include? 'title_orig' %><td class="col"><%= modern_source.title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'title_transliteration' %><td class="col"><%= modern_source.title_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'title_translation' %><td class="col"><%= modern_source.title_translation %></td><% end %>
+                      <% unless hide_columns.include? 'source_type' %><td class="col"><%= modern_source.source_type %></td><% end %>
+                      <% unless hide_columns.include? 'num_volumes' %><td class="col"><%= modern_source.num_volumes %></td><% end %>
+                      <% unless hide_columns.include? 'volume_no' %><td class="col"><%= modern_source.volume_no %></td><% end %>
+                      <% unless hide_columns.include? 'volume_title_orig' %><td class="col"><%= modern_source.volume_title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'volume_title_transliteration' %><td class="col"><%= modern_source.volume_title_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'volume_title_translation' %><td class="col"><%= modern_source.volume_title_translation %></td><% end %>
+                      <% unless hide_columns.include? 'part_no' %><td class="col"><%= modern_source.part_no %></td><% end %>
+                      <% unless hide_columns.include? 'part_title_orig' %><td class="col"><%= modern_source.part_title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'part_title_transliteration' %><td class="col"><%= modern_source.part_title_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'part_title_translation' %><td class="col"><%= modern_source.part_title_translation %></td><% end %>
+                      <% unless hide_columns.include? 'series_no' %><td class="col"><%= modern_source.series_no %></td><% end %>
+                      <% unless hide_columns.include? 'series_title_orig' %><td class="col"><%= modern_source.series_title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'series_title_transliteration' %><td class="col"><%= modern_source.series_title_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'series_title_translation' %><td class="col"><%= modern_source.series_title_translation %></td><% end %>
+                      <% unless hide_columns.include? 'edition' %><td class="col"><%= modern_source.edition %></td><% end %>
+                      <% unless hide_columns.include? 'publication_location_id' %><td class="col"><%= modern_source.publication_location_id %></td><% end %>
+                      <% unless hide_columns.include? 'publisher' %><td class="col"><%= modern_source.publisher %></td><% end %>
+                      <% unless hide_columns.include? 'publication_creation_date' %><td class="col"><%= modern_source.publication_creation_date %></td><% end %>
+                      <% unless hide_columns.include? 'shelfmark' %><td class="col"><%= modern_source.shelfmark %></td><% end %>
+                      <% unless hide_columns.include? 'ISBN' %><td class="col"><%= modern_source.ISBN %></td><% end %>
+                      <% unless hide_columns.include? 'DOI' %><td class="col"><%= modern_source.DOI %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", modern_source, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_modern_source_path(modern_source), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

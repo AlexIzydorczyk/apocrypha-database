@@ -1,0 +1,57 @@
+<div id="language_references_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+        { headerName: "Record", field: "record_id"},
+        { headerName: "Language", field: "language_id"},
+        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+    } }
+  ];
+
+  const rowData = [
+    <% language_references.each do |language_reference| %>
+      { id:<%= language_reference.id %>,
+        record_id: "<%= language_reference.record_id %>",language_id: "<%= language_reference.language_id %>",
+        links: { show: "<%= language_reference_path(language_reference) %>", edit: "<%= edit_language_reference_path(language_reference) %>" }
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/language_references/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#language_references_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

@@ -1,0 +1,6 @@
+<h1>Person references</h1>
+<p><%= link_to "New person reference", new_person_reference_path, class: "btn btn-outline-success" %></p>
+
+<div id="person_references">
+    <%= render 'grid', person_references: @person_references %>
+</div>

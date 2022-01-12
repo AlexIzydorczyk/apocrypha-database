@@ -1,0 +1,70 @@
+<div id="texts_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+        { headerName: "Content", field: "content_id"},
+        { headerName: "Text pages folios", field: "text_pages_folios"},
+        { headerName: "Decoration", field: "decoration"},
+        { headerName: "Title folios pages", field: "title_folios_pages"},
+        { headerName: "Manuscript title orig", field: "manuscript_title_orig"},
+        { headerName: "Manuscript title orig transliteration", field: "manuscript_title_orig_transliteration"},
+        { headerName: "Manuscript title translation", field: "manuscript_title_translation"},
+        { headerName: "Pages folios colophon", field: "pages_folios_colophon"},
+        { headerName: "Colophon orig", field: "colophon_orig"},
+        { headerName: "Colophon transliteration", field: "colophon_transliteration"},
+        { headerName: "Colophon translation", field: "colophon_translation"},
+        { headerName: "Notes", field: "notes"},
+        { headerName: "Transcriber", field: "transcriber_id"},
+        { headerName: "Version", field: "version"},
+        { headerName: "Extent", field: "extent"},
+        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+    } }
+  ];
+
+  const rowData = [
+    <% texts.each do |text| %>
+      { id:<%= text.id %>,
+        content_id: "<%= text.content_id %>",text_pages_folios: "<%= text.text_pages_folios %>",decoration: "<%= text.decoration %>",title_folios_pages: "<%= text.title_folios_pages %>",manuscript_title_orig: "<%= text.manuscript_title_orig %>",manuscript_title_orig_transliteration: "<%= text.manuscript_title_orig_transliteration %>",manuscript_title_translation: "<%= text.manuscript_title_translation %>",pages_folios_colophon: "<%= text.pages_folios_colophon %>",colophon_orig: "<%= text.colophon_orig %>",colophon_transliteration: "<%= text.colophon_transliteration %>",colophon_translation: "<%= text.colophon_translation %>",notes: "<%= text.notes %>",transcriber_id: "<%= text.transcriber_id %>",version: "<%= text.version %>",extent: "<%= text.extent %>",
+        links: { show: "<%= text_path(text) %>", edit: "<%= edit_text_path(text) %>" }
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/texts/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#texts_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

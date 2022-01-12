@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @religious_order %>
+
+<div>
+  <%= link_to "Edit this religious order", edit_religious_order_path(@religious_order) %> |
+  <%= link_to "Back to religious orders", religious_orders_path %>
+
+  <%= button_to "Destroy this religious order", @religious_order, method: :delete %>
+</div>

@@ -1,0 +1,6 @@
+<h1>Locations</h1>
+<p><%= link_to "New location", new_location_path, class: "btn btn-outline-success" %></p>
+
+<div id="locations">
+    <%= render 'grid', locations: @locations %>
+</div>

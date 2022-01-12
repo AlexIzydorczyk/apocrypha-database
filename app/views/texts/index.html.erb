@@ -1,0 +1,6 @@
+<h1>Texts</h1>
+<p><%= link_to "New text", new_text_path, class: "btn btn-outline-success" %></p>
+
+<div id="texts">
+    <%= render 'grid', texts: @texts %>
+</div>

@@ -1,0 +1,37 @@
+
+
+<%= form_with(model: institution) do |form| %>
+  <% if institution.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(institution.errors.count, "error") %> prohibited this institution from being saved:</h2>
+
+      <ul>
+        <% institution.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :name_english, style: "display: block" %>
+	    <%= form.text_field :name_english, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :name_orig, style: "display: block" %>
+	    <%= form.text_field :name_orig, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :name_orig_transliteration, style: "display: block" %>
+	    <%= form.text_field :name_orig_transliteration, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :location_id, style: "display: block" %>
+	    <%= form.text_field :location_id, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

@@ -1,0 +1,29 @@
+
+
+<%= form_with(model: person_reference) do |form| %>
+  <% if person_reference.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(person_reference.errors.count, "error") %> prohibited this person_reference from being saved:</h2>
+
+      <ul>
+        <% person_reference.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :record_id, style: "display: block" %>
+	    <%= form.text_field :record_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :person_id, style: "display: block" %>
+	    <%= form.text_field :person_id, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

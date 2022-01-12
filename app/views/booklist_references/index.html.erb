@@ -1,0 +1,6 @@
+<h1>Booklist references</h1>
+<p><%= link_to "New booklist reference", new_booklist_reference_path, class: "btn btn-outline-success" %></p>
+
+<div id="booklist_references">
+    <%= render 'grid', booklist_references: @booklist_references %>
+</div>

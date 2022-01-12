@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'booklist_type' %><th class="col"><input type="text" class="form-control" placeholder="Booklist type" disabled></th><% end %>
+                      <% unless hide_columns.include? 'manuscript_source' %><th class="col"><input type="text" class="form-control" placeholder="Manuscript source" disabled></th><% end %>
+                      <% unless hide_columns.include? 'library_owner_id' %><th class="col"><input type="text" class="form-control" placeholder="Library owner" disabled></th><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><th class="col"><input type="text" class="form-control" placeholder="Institution" disabled></th><% end %>
+                      <% unless hide_columns.include? 'location_id' %><th class="col"><input type="text" class="form-control" placeholder="Location" disabled></th><% end %>
+                      <% unless hide_columns.include? 'religious_order_id' %><th class="col"><input type="text" class="form-control" placeholder="Religious order" disabled></th><% end %>
+                      <% unless hide_columns.include? 'scribe_id' %><th class="col"><input type="text" class="form-control" placeholder="Scribe" disabled></th><% end %>
+                      <% unless hide_columns.include? 'language_id' %><th class="col"><input type="text" class="form-control" placeholder="Language" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_orig' %><th class="col"><input type="text" class="form-control" placeholder="Title orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Title orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'title_orig_translation' %><th class="col"><input type="text" class="form-control" placeholder="Title orig translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'chapter_orig' %><th class="col"><input type="text" class="form-control" placeholder="Chapter orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'chapter_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Chapter orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'chapter_translation' %><th class="col"><input type="text" class="form-control" placeholder="Chapter translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_from' %><th class="col"><input type="text" class="form-control" placeholder="Date from" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_to' %><th class="col"><input type="text" class="form-control" placeholder="Date to" disabled></th><% end %>
+                      <% unless hide_columns.include? 'specific_date' %><th class="col"><input type="text" class="form-control" placeholder="Specific date" disabled></th><% end %>
+                      <% unless hide_columns.include? 'notes' %><th class="col"><input type="text" class="form-control" placeholder="Notes" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% booklists.each do |booklist| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= booklist.id %></td><% end -%>
+                      <% unless hide_columns.include? 'booklist_type' %><td class="col"><%= booklist.booklist_type %></td><% end %>
+                      <% unless hide_columns.include? 'manuscript_source' %><td class="col"><%= booklist.manuscript_source %></td><% end %>
+                      <% unless hide_columns.include? 'library_owner_id' %><td class="col"><%= booklist.library_owner_id %></td><% end %>
+                      <% unless hide_columns.include? 'institution_id' %><td class="col"><%= booklist.institution_id %></td><% end %>
+                      <% unless hide_columns.include? 'location_id' %><td class="col"><%= booklist.location_id %></td><% end %>
+                      <% unless hide_columns.include? 'religious_order_id' %><td class="col"><%= booklist.religious_order_id %></td><% end %>
+                      <% unless hide_columns.include? 'scribe_id' %><td class="col"><%= booklist.scribe_id %></td><% end %>
+                      <% unless hide_columns.include? 'language_id' %><td class="col"><%= booklist.language_id %></td><% end %>
+                      <% unless hide_columns.include? 'title_orig' %><td class="col"><%= booklist.title_orig %></td><% end %>
+                      <% unless hide_columns.include? 'title_orig_transliteration' %><td class="col"><%= booklist.title_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'title_orig_translation' %><td class="col"><%= booklist.title_orig_translation %></td><% end %>
+                      <% unless hide_columns.include? 'chapter_orig' %><td class="col"><%= booklist.chapter_orig %></td><% end %>
+                      <% unless hide_columns.include? 'chapter_orig_transliteration' %><td class="col"><%= booklist.chapter_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'chapter_translation' %><td class="col"><%= booklist.chapter_translation %></td><% end %>
+                      <% unless hide_columns.include? 'date_from' %><td class="col"><%= booklist.date_from %></td><% end %>
+                      <% unless hide_columns.include? 'date_to' %><td class="col"><%= booklist.date_to %></td><% end %>
+                      <% unless hide_columns.include? 'specific_date' %><td class="col"><%= booklist.specific_date %></td><% end %>
+                      <% unless hide_columns.include? 'notes' %><td class="col"><%= booklist.notes %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", booklist, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_booklist_path(booklist), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>
