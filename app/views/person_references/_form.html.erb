@@ -18,12 +18,25 @@
 	    <%= form.text_field :record_id, class: "form-control" %>
 		</div>
   <div class="form-group col-4 mb-2">
-		    <%= form.label :person_id, style: "display: block" %>
-	    <%= form.text_field :person_id, class: "form-control" %>
-		</div>
+    <select id="person-select" placeholder="Select a person..." autocomplete="off">
+      <option value="">Select a person...</option>
+      <% Person.all.each do |person| %>
+        <option value="<%= person.id %>"><%= person.first_name %> <%= person.last_name %></option>
+      <% end %>
+    </select>
+	</div>
 </div>
   <div>
     <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
   </div>
 <% end %>
 	
+<script type="text/javascript">
+  new TomSelect("#person-select",{
+    create: true,
+    sortField: {
+      field: "text",
+      direction: "asc"
+    }
+  });
+</script>
