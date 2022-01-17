@@ -48,6 +48,6 @@ class OwnershipsController < ApplicationController
     end
 
     def ownership_params
-      params.require(:ownership).permit(:booklet_id, :person_id, :institution_id, :location_id, :religious_order_id, :date_from, :date_to, :date_for_owner, :owner_date_is_approximate, :provenance_notes)
+      params.require(:ownership).permit(:booklet_id, :person_id, :institution_id, :location_id, :religious_order_id, :date_from, :date_to, :date_for_owner, :owner_date_is_approximate, :provenance_notes, :manuscript_id)
     end
 end

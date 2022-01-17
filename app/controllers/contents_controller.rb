@@ -48,6 +48,6 @@ class ContentsController < ApplicationController
     end
 
     def content_params
-      params.require(:content).permit(:booklet_id, :sequence_no, :title_id, :author_id)
+      params.require(:content).permit(:booklet_id, :sequence_no, :title_id, :author_id, :manuscript_id)
     end
 end

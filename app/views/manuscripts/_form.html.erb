@@ -14,8 +14,8 @@
 		</div>
 		<div class="form-group col-md-12 mb-2">
 		  <%= form.label :institution_id, "Repository", style: "display: block" %>
-			<select id="institution-select" placeholder="Select a person..." autocomplete="off">
-	      <option value="">Select a person...</option>
+			<select id="institution-select" placeholder="Select an institution..." autocomplete="off">
+	      <option value="">Select an institution...</option>
 	      <% Institution.all.each do |i| %>
 	        <option value="<%= i.id %>"><%= i.name_english %></option>
 	      <% end %>
@@ -106,23 +106,7 @@
 <% end %>
 
 <!-- Modals -->
-<div class="modal fade" id="addProvenanceModal" tabindex="-1" aria-labelledby="addProvenanceModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addProvenanceModalLabel">Add Provenance</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        form goes here
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
 
 <script type="text/javascript">
   new TomSelect("#institution-select",{
