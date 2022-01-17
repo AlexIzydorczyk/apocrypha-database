@@ -30,6 +30,7 @@
 	    <%= form.text_field :old_shelfmark, class: "form-control" %>
 		</div>
 	</div>
+
 	<h2>Description</h2>
 	<div class="row">
   	<div class="form-group col-md-6 mb-2">
@@ -66,13 +67,63 @@
 		  <%= form.label :dimensions, style: "display: block" %>
 	    <%= form.text_field :dimensions, class: "form-control" %>
 		</div>
+	</div>
 
-  	
-</div>
+	<h2>Booklets <%= link_to "Add booklet", new_booklet_path(manuscript: @manuscript), class: "btn btn-action" %></h2>
+	<div class="row">
+		<p>Booklet compositon is: <strong><%= @manuscript.booklets.any? ? 'Known' : 'Unknown' %></strong></p>
+		<div class="col grey-bubble">
+			<p>Booklet composition is unknown, to change this please click Add Booklet</p>
+		</div>
+	</div>
+
+	<% if !@manuscript.booklets.any? %>
+		<h2>Provenances of manuscript <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+		<div class="row">
+			<% @manuscript.ownerships.each do |ownership| %>
+			<div class="col grey-bubble">
+				<p>Ownership details goes here : <%= ownership.id %></p>
+			</div>
+			<% end %>
+		</div>
+
+		<h2>Contents of manuscript <%= link_to "Add content", '#', class: "btn btn-action" %></h2>
+		<div class="row">
+			<% @manuscript.contents.each do |content| %>
+			<div class="col grey-bubble">
+				<p>Content details goes here : <%= content.id %></p>
+			</div>
+			<% end %>
+		</div>
+	<% end %>
+
   <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+    <%= form.submit "Submit", class: "btn btn-action mt-2" %>
   </div>
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addProvenanceModal" tabindex="-1" aria-labelledby="addProvenanceModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProvenanceModalLabel">Add Provenance</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        form goes here
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
   
 
 
