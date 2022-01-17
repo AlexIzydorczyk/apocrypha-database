@@ -4,3 +4,4 @@
 //= link_tree ../../../vendor/javascript .js
 //= link js-snackbar.js
 //= link Filter.js
+//= link additional.js

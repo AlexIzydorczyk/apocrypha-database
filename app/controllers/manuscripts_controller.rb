@@ -10,9 +10,11 @@ class ManuscriptsController < ApplicationController
 
   def new
     @manuscript = Manuscript.new
+    @languages = Language.all
   end
 
   def edit
+    @languages = Language.all
   end
 
   def create
@@ -30,6 +32,7 @@ class ManuscriptsController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
+        puts @manuscript.language_references
         redirect_to manuscripts_url, notice: "Manuscript was successfully updated."
       end
     else
@@ -48,6 +51,6 @@ class ManuscriptsController < ApplicationController
     end
 
     def manuscript_params
-      params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes)
+      params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :languages)
     end
 end

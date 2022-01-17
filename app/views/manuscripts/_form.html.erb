@@ -1,30 +1,19 @@
 <%= form_with(model: manuscript) do |form| %>
-  <% if manuscript.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(manuscript.errors.count, "error") %> prohibited this manuscript from being saved:</h2>
-
-      <ul>
-        <% manuscript.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<div class="row">
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :identifier, style: "display: block" %>
+	<div class="row">
+  	<div class="form-group col-md-2 mb-2">
+		  <%= form.label :identifier, "Manuscript ID", style: "display: block" %>
 	    <%= form.text_field :identifier, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
+  	<div class="form-group col-md-2 mb-2">
 		  <%= form.label :census_no, style: "display: block" %>
 	    <%= form.text_field :census_no, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
+  	<div class="form-group col-md-3 mb-2">
 		  <%= form.label :status, style: "display: block" %>
-	    <%= form.text_field :status, class: "form-control" %>
+	    <%= form.select :status, options_for_select(%w(extant lost destroyed)), {include_blank: true}, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :institution_id, style: "display: block" %>
+		<div class="form-group col-md-12 mb-2">
+		  <%= form.label :institution_id, "Repository", style: "display: block" %>
 			<select id="institution-select" placeholder="Select a person..." autocomplete="off">
 	      <option value="">Select a person...</option>
 	      <% Institution.all.each do |i| %>
@@ -32,46 +21,61 @@
 	      <% end %>
 	    </select>
 		</div>
-  <div class="form-group col-4 mb-2">
+  	<div class="form-group col-md-12 mb-2">
 		    <%= form.label :shelfmark, style: "display: block" %>
 	    <%= form.text_field :shelfmark, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :old_shelfmark, style: "display: block" %>
+  	<div class="form-group col-md-12 mb-2">
+		    <%= form.label :old_shelfmark, "Old shelfmarks", style: "display: block" %>
 	    <%= form.text_field :old_shelfmark, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :material, style: "display: block" %>
-	    <%= form.text_field :material, class: "form-control" %>
+	</div>
+	<h2>Description</h2>
+	<div class="row">
+  	<div class="form-group col-md-6 mb-2">
+	    <%= form.label :material, style: "display: block" %>
+    	<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper"]), {include_blank: true}, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :dimensions, style: "display: block" %>
-	    <%= form.text_field :dimensions, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :leaf_page_no, style: "display: block" %>
-	    <%= form.text_field :leaf_page_no, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_from, style: "display: block" %>
-	    <%= form.text_field :date_from, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_to, style: "display: block" %>
-	    <%= form.text_field :date_to, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
+		<div class="form-group col-md-6 mb-2">
 		    <%= form.label :content_type, style: "display: block" %>
 	    <%= form.text_field :content_type, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :notes, style: "display: block" %>
+		<div class="form-group col-md-6 mb-2">
+			<!-- needs to be built the new way still!!! -->
+		  <%= form.label :leaf_page_no, style: "display: block" %>
+	    <%= form.text_field :leaf_page_no, class: "form-control" %>
+		</div>
+		<div class="form-group col-md-6 mb-2">
+		  <%= form.label :notes, style: "display: block" %>
 	    <%= form.text_area :notes, class: "form-control" %>
 		</div>
+		<!-- need to come back and fix the date range inputs! -->
+		<div class="form-group col-md-3 mb-2">
+		  <%= form.label :date_from, style: "display: block" %>
+	    <%= form.text_field :date_from, class: "form-control" %>
+		</div>
+  	<div class="form-group col-md-3 mb-2">
+		  <%= form.label :date_to, style: "display: block" %>
+	    <%= form.text_field :date_to, class: "form-control" %>
+		</div>
+		<div class="form-group col-md-6 mb-2">
+			<%= form.label :languages, "Languages in manuscript", style: "display: block" %>
+			<%= form.select :languages, options_from_collection_for_select(@languages, "id", "language_name"), {include_blank: true}, class: "form-control", multiple: true %>
+		</div>
+		<div class="form-group col-md-6 mb-2">
+		  <%= form.label :dimensions, style: "display: block" %>
+	    <%= form.text_field :dimensions, class: "form-control" %>
+		</div>
+
+  	
 </div>
   <div>
     <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
   </div>
+
+  
+
+
 <% end %>
 	
 
@@ -82,5 +86,27 @@
       field: "text",
       direction: "asc"
     }
+  });
+
+  new TomSelect("#manuscript_status",{
+    sortField: {
+      field: "text",
+      direction: "asc"
+    }
+  });
+
+  new TomSelect("#manuscript_material",{
+    sortField: {
+      field: "text",
+      direction: "asc"
+    }
+  });
+
+  new TomSelect("#manuscript_languages",{
+    sortField: {
+      field: "text",
+      direction: "asc"
+    },
+    maxItems: null
   });
 </script>

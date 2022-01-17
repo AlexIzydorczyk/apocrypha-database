@@ -3,9 +3,6 @@
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 
-<%= stylesheet_link_tag "application" %>
-<%= javascript_importmap_tags %>
-
 <!-- font awesome - free version -->
 <script src="https://kit.fontawesome.com/a940ec9c34.js" crossorigin="anonymous"></script>
 
@@ -36,6 +33,7 @@
 <!-- snackbar -->
 <%= javascript_include_tag "js-snackbar" %>
 <%= javascript_include_tag "Filter" %>
+<%= javascript_include_tag "additional" %>
 
 <!-- ag-grid -->
 <script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js"></script>
@@ -45,3 +43,6 @@
 <!-- Tom-Select.js.org -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0/css/tom-select.bootstrap5.min.css" integrity="sha512-UJy/ItiveaheFLF2h77Suzq5Y31Pd51KxYMhyJqManLy2PxqA9ZdbszEPdUk3g/IQeQ/hzrtMIaM/PppFnuDEw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0/js/tom-select.complete.js" integrity="sha512-NQk8YzGB9ij0KtPO4mj8FVmBD1/g89L55qDowKf2VEbIzgIboMnwa/P11/HtYVEOQ4PsJb3zC1GbbEeiQpte7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<%= stylesheet_link_tag "application" %>
+<%= javascript_importmap_tags %>
