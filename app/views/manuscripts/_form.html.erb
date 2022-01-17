@@ -1,4 +1,4 @@
-<%= form_with(model: manuscript) do |form| %>
+<%= form_with(model: manuscript, id: "manuscript-form") do |form| %>
 	<div class="row">
   	<div class="form-group col-md-2 mb-2">
 		  <%= form.label :identifier, "Manuscript ID", style: "display: block" %>
@@ -58,10 +58,12 @@
 		  <%= form.label :date_to, style: "display: block" %>
 	    <%= form.text_field :date_to, class: "form-control" %>
 		</div>
-		<div class="form-group col-md-6 mb-2">
-			<%= form.label :languages, "Languages in manuscript", style: "display: block" %>
-			<%= form.select :languages, options_from_collection_for_select(@languages, "id", "language_name"), {include_blank: true}, class: "form-control", multiple: true %>
-		</div>
+		<%= fields_for(@language_references) do |lr| %>
+			<div class="form-group col-md-6 mb-2">
+				<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
+				<%= lr.collection_select :id, @languages, "id", "language_name", {selected: @manuscript.languages.map(&:id)}, {class: "form-control", multiple: true} %>
+			</div>
+		<% end %>
 		<div class="form-group col-md-6 mb-2">
 		  <%= form.label :dimensions, style: "display: block" %>
 	    <%= form.text_field :dimensions, class: "form-control" %>
@@ -73,11 +75,8 @@
     <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
   </div>
 
-  
-
-
 <% end %>
-	
+
 
 <script type="text/javascript">
   new TomSelect("#institution-select",{
@@ -102,7 +101,7 @@
     }
   });
 
-  new TomSelect("#manuscript_languages",{
+  new TomSelect("#language_reference_id",{
     sortField: {
       field: "text",
       direction: "asc"
