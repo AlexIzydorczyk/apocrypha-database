@@ -9,4 +9,9 @@ class Manuscript < ApplicationRecord
   has_many :correspondents, class_name: "Person", through: :person_references
   has_many :ownerships
   has_many :contents
+
+  def display_name
+    self.identifier.present? ? self.identifier : "Edit"
+  end
+
 end

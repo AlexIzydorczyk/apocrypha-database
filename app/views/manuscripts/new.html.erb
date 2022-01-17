@@ -1,3 +1,11 @@
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= link_to 'Manuscripts', manuscripts_path %>
+  <i class="far fa-chevron-right"></i>
+  New
+</div>
+
 <h1>Manuscript</h1>
 
 <%= render "form", manuscript: @manuscript %>
