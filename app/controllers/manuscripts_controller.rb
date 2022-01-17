@@ -24,7 +24,7 @@ class ManuscriptsController < ApplicationController
     build_language_references_for params[:language_reference][:id]
 
     if @manuscript.save
-      redirect_to manuscripts_url, notice: "Manuscript was successfully created."
+      render :json => { new_url: manuscript_path(@manuscript) }
     else
       render :new, status: :unprocessable_entity
     end

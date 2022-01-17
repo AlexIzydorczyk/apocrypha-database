@@ -5,10 +5,11 @@ var changeMade = false;
 var autoSaveFun = function autosave() {
   if(changeMade){
     $('form').each(function () {
-      $(this).ajaxSubmit(function() {
+      $(this).ajaxSubmit(function(data) {
         changeMade = false;
+        if(data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
         window.SnackBar({message: "Autosaved form"})
-      })
+      }.bind($(this)))
     });
   }
 }
@@ -25,7 +26,10 @@ $(document).ready(function() {
     this.style.height = (this.scrollHeight) + "px";
   });
 
-  $('form').ajaxForm({success: function() {
+  $('form').ajaxForm({success: function(data, x, y, form) {
+    changeMade = false;
+    console.log($(this));
+    if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
     window.SnackBar({message: "Saved form"})
   }});
 
