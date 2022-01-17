@@ -39,7 +39,6 @@ class ManuscriptsController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        puts @manuscript.language_references
         redirect_to manuscripts_url, notice: "Manuscript was successfully updated."
       end
     else
