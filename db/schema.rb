@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_17_192548) do
+ActiveRecord::Schema.define(version: 2022_01_17_211436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2022_01_17_192548) do
     t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "manuscript_id", null: false
+    t.bigint "manuscript_id"
     t.index ["author_id"], name: "index_contents_on_author_id"
     t.index ["booklet_id"], name: "index_contents_on_booklet_id"
     t.index ["manuscript_id"], name: "index_contents_on_manuscript_id"
@@ -222,7 +222,7 @@ ActiveRecord::Schema.define(version: 2022_01_17_192548) do
   end
 
   create_table "ownerships", force: :cascade do |t|
-    t.bigint "booklet_id", null: false
+    t.bigint "booklet_id"
     t.bigint "person_id"
     t.bigint "institution_id"
     t.bigint "location_id"
@@ -234,7 +234,7 @@ ActiveRecord::Schema.define(version: 2022_01_17_192548) do
     t.text "provenance_notes", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "manuscript_id", null: false
+    t.bigint "manuscript_id"
     t.index ["booklet_id"], name: "index_ownerships_on_booklet_id"
     t.index ["institution_id"], name: "index_ownerships_on_institution_id"
     t.index ["location_id"], name: "index_ownerships_on_location_id"
