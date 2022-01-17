@@ -4,4 +4,5 @@ class Ownership < ApplicationRecord
   belongs_to :institution, optional: true
   belongs_to :location, optional: true
   belongs_to :religious_order, optional: true
+  belongs_to :manuscript, optional: true
 end

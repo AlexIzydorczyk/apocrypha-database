@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_12_005513) do
+ActiveRecord::Schema.define(version: 2022_01_17_192548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,8 +96,10 @@ ActiveRecord::Schema.define(version: 2022_01_12_005513) do
     t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "manuscript_id", null: false
     t.index ["author_id"], name: "index_contents_on_author_id"
     t.index ["booklet_id"], name: "index_contents_on_booklet_id"
+    t.index ["manuscript_id"], name: "index_contents_on_manuscript_id"
     t.index ["title_id"], name: "index_contents_on_title_id"
   end
 
@@ -232,9 +234,11 @@ ActiveRecord::Schema.define(version: 2022_01_12_005513) do
     t.text "provenance_notes", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "manuscript_id", null: false
     t.index ["booklet_id"], name: "index_ownerships_on_booklet_id"
     t.index ["institution_id"], name: "index_ownerships_on_institution_id"
     t.index ["location_id"], name: "index_ownerships_on_location_id"
+    t.index ["manuscript_id"], name: "index_ownerships_on_manuscript_id"
     t.index ["person_id"], name: "index_ownerships_on_person_id"
     t.index ["religious_order_id"], name: "index_ownerships_on_religious_order_id"
   end
@@ -378,6 +382,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_005513) do
   add_foreign_key "booklists", "people", column: "scribe_id"
   add_foreign_key "booklists", "religious_orders"
   add_foreign_key "contents", "booklets"
+  add_foreign_key "contents", "manuscripts"
   add_foreign_key "contents", "people", column: "author_id"
   add_foreign_key "contents", "titles"
   add_foreign_key "institutional_affiliations", "institutions"
@@ -390,6 +395,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_005513) do
   add_foreign_key "ownerships", "booklets"
   add_foreign_key "ownerships", "institutions"
   add_foreign_key "ownerships", "locations"
+  add_foreign_key "ownerships", "manuscripts"
   add_foreign_key "ownerships", "people"
   add_foreign_key "ownerships", "religious_orders"
   add_foreign_key "person_references", "people"
