@@ -1,1 +1,30 @@
-<h1>Main menu</h1>
+<h1>Apocrypha Database</h1>
+<div class="row">
+	<div class="col-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Manuscripts</h5>
+				<p class="pt-2"><%= link_to "View Manuscripts Grid", manuscripts_path,  class: "card-link" %></p>
+				<p><%= link_to "New Manuscript", new_manuscript_path,  class: "card-link" %></p>
+			</div>
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Booklets</h5>
+				<p class="pt-2"><%= link_to "View Booklets Grid", booklets_path,  class: "card-link" %></p>
+				<p><%= link_to "New Booklet", new_booklet_path,  class: "card-link" %></p>
+			</div>
+		</div>
+	</div>
+		<div class="col-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Apocrypha</h5>
+				<p class="pt-2"><%= link_to "View Apocrypha Grid", apocrypha_path,  class: "card-link" %></p>
+				<p><%= link_to "New Apocryphon", new_apocryphon_path,  class: "card-link" %></p>
+			</div>
+		</div>
+	</div>
+</div>

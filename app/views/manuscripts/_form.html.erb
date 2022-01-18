@@ -74,9 +74,9 @@
 	<h2>Booklets <%= link_to "Add booklet", new_manuscript_booklet_path(@manuscript), class: "btn btn-action" %></h2>
 <div class="row">
 	<p>Booklet compositon is: 
-		<input class="form-check-input" name="manuscript[known_booklet_composition]" value="true" type="radio" v-model="known_booklet_composition" id="known">
+		<input class="form-check-input" name="manuscript[known_booklet_composition]" :value="true" type="radio" v-model="known_booklet_composition" id="known">
 		<label class="form-check-label" for="known">Known</label>
-		<input class="form-check-input" name="manuscript[known_booklet_composition]" value="false" type="radio" v-model="known_booklet_composition" id="unknown">
+		<input class="form-check-input" name="manuscript[known_booklet_composition]" :value="false" type="radio" v-model="known_booklet_composition" id="unknown">
 		<label class="form-check-label" for="unknown">Unkown</label>
 		<div class="col grey-bubble" v-show="!known_booklet_composition">
 			<p>Booklets structure has not been determined for this manuscript.</p>
