@@ -1,43 +1,50 @@
+var formChanges;
+
 // --------- declarations ---------
 
-var changeMade = false;
-
 var autoSaveFun = function autosave() {
-  if(changeMade){
-    $('.in-app form').each(function () {
+  $('.in-app form').each(function(index) {
+    if(formChanges[index]){
       $(this).ajaxSubmit(function(data) {
-        changeMade = false;
+        formChanges[index] = false;
         if(data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
         window.SnackBar({message: "Autosaved form"})
       }.bind($(this)))
-    });
-  }
+    }
+  });
 }
 
 // --------- rdy ---------
 
-$(document).ready(function() {
-  
-  $("textarea").each(function () {
-    this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
-  }).on("input", function () {
-    console.log("input detected");
-    this.style.height = "auto";
-    this.style.height = (this.scrollHeight) + "px";
-  });
+$(function() {
+  setTimeout(function() {
 
-  $('.in-app form').ajaxForm({success: function(data, x, y, form) {
-    changeMade = false;
-    console.log($(this));
-    if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
-    window.SnackBar({message: "Saved form"})
-  }});
+    $('.in-app form').each(function(index) {
+      $(this).ajaxForm({
+        success: function(data, x, y, form) {
+          formChanges[index] = false
+          if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
+          window.SnackBar({message: "Saved form"})
+        }
+      });
+    });
 
-  setInterval(autoSaveFun,10000);
+    formChanges = $('.in-app form').map(function() { return false; });
 
-  $('input, select').change(function() {
-    changeMade = true;
-  });
+    $('.in-app form').each(function(index) {
+      $(this).find('input, select, textarea').change(function() {
+        formChanges[index] = true;
+      });
+    });
+      
+    $("textarea").each(function () {
+      this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+    }).on("input", function () {
+      this.style.height = "auto";
+      this.style.height = (this.scrollHeight) + "px";
+    });
 
+    setInterval(autoSaveFun,10000);
 
-})
+  }, 250);
+});
