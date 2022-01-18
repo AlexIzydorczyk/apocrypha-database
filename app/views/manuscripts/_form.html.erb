@@ -72,14 +72,18 @@
 	</div>
 
 	<h2>Booklets <%= link_to "Add booklet", new_manuscript_booklet_path(@manuscript), class: "btn btn-action" %></h2>
-	<div class="row">
-		<p>Booklet compositon is: <strong><%= @manuscript.booklets.any? ? 'Known' : 'Unknown' %></strong></p>
-		<div class="col grey-bubble">
-			<p>Booklet composition is unknown, to change this please click Add Booklet</p>
+<div class="row">
+	<p>Booklet compositon is: 
+		<input class="form-check-input" name="manuscript[known_booklet_composition]" value="true" type="radio" v-model="known_booklet_composition" id="known">
+		<label class="form-check-label" for="known">Known</label>
+		<input class="form-check-input" name="manuscript[known_booklet_composition]" value="false" type="radio" v-model="known_booklet_composition" id="unknown">
+		<label class="form-check-label" for="unknown">Unkown</label>
+		<div class="col grey-bubble" v-show="!known_booklet_composition">
+			<p>Booklets structure has not been determined for this manuscript.</p>
 		</div>
 	</div>
 
-	<% if !@manuscript.booklets.any? %>
+	<div v-show="!known_booklet_composition">
 		<h2>Provenances of manuscript <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 		<div class="row">
 			<% @manuscript.ownerships.each do |ownership| %>
@@ -97,7 +101,7 @@
 			</div>
 			<% end %>
 		</div>
-	<% end %>
+	</div>
 
   <div>
     <%= form.submit "Save now", class: "btn btn-action mt-2" %>
@@ -109,33 +113,5 @@
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
 
 <script type="text/javascript">
-  new TomSelect("#institution-select",{
-    create: true,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-
-  new TomSelect("#manuscript_status",{
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-
-  new TomSelect("#manuscript_material",{
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-
-  new TomSelect("#language_reference_id",{
-    sortField: {
-      field: "text",
-      direction: "asc"
-    },
-    maxItems: null
-  });
+	<%= render '/manuscripts/scripts', manuscript: @manuscript %>
 </script>

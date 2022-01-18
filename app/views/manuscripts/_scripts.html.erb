@@ -1,0 +1,54 @@
+new TomSelect("#institution-select",{
+  sortField: {
+    field: "text",
+    direction: "asc"
+  }
+});
+
+new TomSelect("#manuscript_status",{
+  sortField: {
+    field: "text",
+    direction: "asc"
+  }
+});
+
+new TomSelect("#manuscript_material",{
+  sortField: {
+    field: "text",
+    direction: "asc"
+  }
+});
+
+new TomSelect("#language_reference_id",{
+  sortField: {
+    field: "text",
+    direction: "asc"
+  },
+  maxItems: null
+});
+
+let manuscriptVue;
+$(document).ready(function(){
+	manuscriptVue = new Vue({
+		name: 'manuscriptVue',
+		el: '#manuscript-form',
+		data: {
+			known_booklet_composition: <%= manuscript.known_booklet_composition.to_s %>
+		},
+		watch:{
+
+		},
+		methods:{
+
+		},
+		computed:{
+
+		},
+		created(){
+
+		},
+		mounted(){
+
+		},
+	});
+});
