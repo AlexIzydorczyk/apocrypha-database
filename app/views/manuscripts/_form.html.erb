@@ -1,4 +1,4 @@
-<%= form_with(model: manuscript, id: "manuscript-form") do |form| %>
+<%= form_with(model: manuscript, id: "manuscript-form", class: "autosave") do |form| %>
 	<div class="row">
   	<div class="form-group col-md-2 mb-2">
 		  <%= form.label :identifier, "Manuscript ID", style: "display: block" %>

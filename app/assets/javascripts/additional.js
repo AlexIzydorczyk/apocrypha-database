@@ -3,7 +3,7 @@ var formChanges;
 // --------- declarations ---------
 
 var autoSaveFun = function autosave() {
-  $('.in-app form').each(function(index) {
+  $('form.autosave').each(function(index) {
     if(formChanges[index]){
       $(this).ajaxSubmit(function(data) {
         formChanges[index] = false;
@@ -19,7 +19,7 @@ var autoSaveFun = function autosave() {
 $(function() {
   setTimeout(function() {
 
-    $('.in-app form').each(function(index) {
+    $('form.autosave').each(function(index) {
       $(this).ajaxForm({
         success: function(data, x, y, form) {
           formChanges[index] = false
@@ -29,9 +29,9 @@ $(function() {
       });
     });
 
-    formChanges = $('.in-app form').map(function() { return false; });
+    formChanges = $('form.autosave').map(function() { return false; });
 
-    $('.in-app form').each(function(index) {
+    $('form.autosave').each(function(index) {
       $(this).find('input, select, textarea').change(function() {
         formChanges[index] = true;
       });

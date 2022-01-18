@@ -5,7 +5,7 @@
 </div>
 
 <h1>Manuscripts</h1>
-<p><%= link_to "New manuscript", new_manuscript_path, class: "btn btn-outline-success" %></p>
+<%= button_to 'New manuscript', manuscripts_path, class: "btn btn-outline-success mb-2", params: { manuscript: { identifier: "" } } %>
 
 <div id="manuscripts">
     <%= render 'grid', manuscripts: @manuscripts %>

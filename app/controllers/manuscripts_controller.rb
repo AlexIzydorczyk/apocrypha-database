@@ -21,10 +21,11 @@ class ManuscriptsController < ApplicationController
 
   def create
     @manuscript = Manuscript.new(manuscript_params)
-    build_language_references_for params[:language_reference][:id]
+    build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @manuscript.save
-      render :json => { new_url: manuscript_path(@manuscript) }
+      # render :json => { new_url: manuscript_path(@manuscript) }
+      redirect_to edit_manuscript_path(@manuscript)
     else
       render :new, status: :unprocessable_entity
     end
