@@ -19,7 +19,8 @@ class OwnershipsController < ApplicationController
     @ownership = Ownership.new(ownership_params)
 
     if @ownership.save
-      redirect_to ownerships_url, notice: "Ownership was successfully created."
+      render :json => { new_url: ownership_path(@ownership) }
+      #redirect_to ownerships_url, notice: "Ownership was successfully created."
     else
       render :new, status: :unprocessable_entity
     end

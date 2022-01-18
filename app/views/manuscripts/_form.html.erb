@@ -1,115 +1,126 @@
 <%= form_with(model: manuscript, id: "manuscript-form", class: "autosave") do |form| %>
-	<div class="row">
-  	<div class="form-group col-md-2 mb-2">
-		  <%= form.label :identifier, "Manuscript ID", style: "display: block" %>
-	    <%= form.text_field :identifier, class: "form-control" %>
-		</div>
-  	<div class="form-group col-md-2 mb-2">
-		  <%= form.label :census_no, style: "display: block" %>
-	    <%= form.text_field :census_no, class: "form-control" %>
-		</div>
-  	<div class="form-group col-md-3 mb-2">
-		  <%= form.label :status, style: "display: block" %>
-	    <%= form.select :status, options_for_select(%w(extant lost destroyed)), {include_blank: true}, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-12 mb-2">
-		  <%= form.label :institution_id, "Repository", style: "display: block" %>
-			<select id="institution-select" placeholder="Select an institution..." autocomplete="off">
-	      <option value="">Select an institution...</option>
-	      <% Institution.all.each do |i| %>
-	        <option value="<%= i.id %>"><%= i.name_english %></option>
-	      <% end %>
-	    </select>
-		</div>
-  	<div class="form-group col-md-12 mb-2">
-		    <%= form.label :shelfmark, style: "display: block" %>
-	    <%= form.text_field :shelfmark, class: "form-control" %>
-		</div>
-  	<div class="form-group col-md-12 mb-2">
-		    <%= form.label :old_shelfmark, "Old shelfmarks", style: "display: block" %>
-	    <%= form.text_field :old_shelfmark, class: "form-control" %>
-		</div>
+<div class="row">
+	<div class="form-group col-md-2 mb-2">
+		<%= form.label :identifier, "Manuscript ID", style: "display: block" %>
+		<%= form.text_field :identifier, class: "form-control" %>
 	</div>
-
-	<h2>Description</h2>
-	<div class="row">
-  	<div class="form-group col-md-6 mb-2">
-	    <%= form.label :material, style: "display: block" %>
-    	<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper"]), {include_blank: true}, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-6 mb-2">
-		    <%= form.label :content_type, style: "display: block" %>
-	    <%= form.text_field :content_type, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-6 mb-2">
-			<!-- needs to be built the new way still!!! -->
-		  <%= form.label :leaf_page_no, style: "display: block" %>
-	    <%= form.text_field :leaf_page_no, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-6 mb-2">
-		  <%= form.label :notes, style: "display: block" %>
-	    <%= form.text_area :notes, class: "form-control" %>
-		</div>
-		<!-- need to come back and fix the date range inputs! -->
-		<div class="form-group col-md-3 mb-2">
-		  <%= form.label :date_from, style: "display: block" %>
-	    <%= form.text_field :date_from, class: "form-control" %>
-		</div>
-  	<div class="form-group col-md-3 mb-2">
-		  <%= form.label :date_to, style: "display: block" %>
-	    <%= form.text_field :date_to, class: "form-control" %>
-		</div>
-		<%= fields_for(@language_references) do |lr| %>
-			<div class="form-group col-md-6 mb-2">
-				<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
-				<%= lr.collection_select :id, @languages, "id", "language_name", {selected: @manuscript.languages.map(&:id)}, {class: "form-control", multiple: true} %>
-			</div>
-		<% end %>
-		<div class="form-group col-md-6 mb-2">
-		  <%= form.label :dimensions, style: "display: block" %>
-	    <%= form.text_field :dimensions, class: "form-control" %>
-		</div>
+	<div class="form-group col-md-2 mb-2">
+		<%= form.label :census_no, style: "display: block" %>
+		<%= form.text_field :census_no, class: "form-control" %>
 	</div>
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :status, style: "display: block" %>
+		<%= form.select :status, options_for_select(%w(extant lost destroyed)), {include_blank: true}, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :institution_id, "Repository", style: "display: block" %>
+		<select id="manuscript-institution-select" placeholder="Select an institution..." autocomplete="off">
+			<option value="">Select an institution...</option>
+			<% Institution.all.each do |i| %>
+			<option value="<%= i.id %>"><%= i.name_english %></option>
+			<% end %>
+		</select>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :shelfmark, style: "display: block" %>
+		<%= form.text_field :shelfmark, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :old_shelfmark, "Old shelfmarks", style: "display: block" %>
+		<%= form.text_field :old_shelfmark, class: "form-control" %>
+	</div>
+</div>
 
-	<h2>Booklets <%= link_to "Add booklet", new_manuscript_booklet_path(@manuscript), class: "btn btn-action" %></h2>
+<h2>Description</h2>
+<div class="row">
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :material, style: "display: block" %>
+		<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper"]), {include_blank: true}, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :content_type, style: "display: block" %>
+		<%= form.text_field :content_type, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<!-- needs to be built the new way still!!! -->
+		<%= form.label :leaf_page_no, style: "display: block" %>
+		<%= form.text_field :leaf_page_no, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :notes, style: "display: block" %>
+		<%= form.text_area :notes, class: "form-control" %>
+	</div>
+	<!-- need to come back and fix the date range inputs! -->
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :date_from, style: "display: block" %>
+		<%= form.text_field :date_from, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :date_to, style: "display: block" %>
+		<%= form.text_field :date_to, class: "form-control" %>
+	</div>
+	<%= fields_for(@language_references) do |lr| %>
+	<div class="form-group col-md-6 mb-2">
+		<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
+		<%= lr.collection_select :id, @languages, "id", "language_name", {selected: @manuscript.languages.map(&:id)}, {class: "form-control", multiple: true} %>
+	</div>
+	<% end %>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :dimensions, style: "display: block" %>
+		<%= form.text_field :dimensions, class: "form-control" %>
+	</div>
+</div>
+
+<h2>Booklets <%= link_to "Add booklet", new_manuscript_booklet_path(@manuscript), class: "btn btn-action" %></h2>
 <div class="row">
 	<p>Booklet compositon is: 
 		<input class="form-check-input" name="manuscript[known_booklet_composition]" :value="true" type="radio" v-model="known_booklet_composition" id="known">
 		<label class="form-check-label" for="known">Known</label>
 		<input class="form-check-input" name="manuscript[known_booklet_composition]" :value="false" type="radio" v-model="known_booklet_composition" id="unknown">
 		<label class="form-check-label" for="unknown">Unkown</label>
-		<div class="col grey-bubble" v-show="!known_booklet_composition">
-			<p>Booklets structure has not been determined for this manuscript.</p>
+	</p>
+	<div class="col grey-bubble" v-show="!known_booklet_composition">
+		<p>Booklets structure has not been determined for this manuscript.</p>
+	</div>
+</div>
+
+<div v-show="!known_booklet_composition">
+
+	<h2>Provenances of manuscript <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<% @manuscript.ownerships.each do |ownership| %>
+	<div class="row grey-bubble">
+		<div class="row">
+			<div class="col-3 text-end strong"><%= ownership.written_date_range %><span class="ms-3">&#124;</span></div>
+			<div class="col-7">
+				<span class="strong"><%= [ownership.person.try(:full_name), ownership.institution.try(:name_english), ownership.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ') %></span><br>
+				<%= ownership.location.try(:city_region_country) %><br>
+				<%= ownership.provenance_notes %>
+			</div>
+			<div class="col text-end"><%= link_to "Edit", '#', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+ownership.id.to_s} %></div>
 		</div>
 	</div>
+	<% end %>
 
-	<div v-show="!known_booklet_composition">
-		<h2>Provenances of manuscript <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
-		<div class="row">
-			<% @manuscript.ownerships.each do |ownership| %>
-			<div class="col grey-bubble">
-				<p>Ownership details goes here : <%= ownership.id %></p>
-			</div>
-			<% end %>
+	<h2>Contents of manuscript <%= link_to "Add content", '#', class: "btn btn-action" %></h2>
+	<div class="row">
+		<% @manuscript.contents.each do |content| %>
+		<div class="col grey-bubble">
+			<p>Content details goes here : <%= content.id %></p>
 		</div>
-
-		<h2>Contents of manuscript <%= link_to "Add content", '#', class: "btn btn-action" %></h2>
-		<div class="row">
-			<% @manuscript.contents.each do |content| %>
-			<div class="col grey-bubble">
-				<p>Content details goes here : <%= content.id %></p>
-			</div>
-			<% end %>
-		</div>
+		<% end %>
 	</div>
+</div>
 
-  <div>
-    <%= form.submit "Save now", class: "btn btn-action mt-2" %>
-  </div>
-  
+<div>
+	<%= form.submit "Save now", class: "btn btn-action mt-2" %>
+</div>
+
 <% end %>
 
 <!-- Modals -->
+<% @manuscript.ownerships.each do |ownership| %>
+	<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: ownership %>
+<% end %>
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
 
 <script type="text/javascript">
