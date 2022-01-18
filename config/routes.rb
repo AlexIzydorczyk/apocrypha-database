@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   resources :ownerships
   resources :people
   resources :booklets
-  resources :manuscripts
+  resources :manuscripts do
+      resources :booklets
+  end
   resources :language_references
   resources :institutional_affiliations
   resources :religious_orders

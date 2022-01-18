@@ -4,7 +4,7 @@ var changeMade = false;
 
 var autoSaveFun = function autosave() {
   if(changeMade){
-    $('form').each(function () {
+    $('.in-app form').each(function () {
       $(this).ajaxSubmit(function(data) {
         changeMade = false;
         if(data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
@@ -26,7 +26,7 @@ $(document).ready(function() {
     this.style.height = (this.scrollHeight) + "px";
   });
 
-  $('form').ajaxForm({success: function(data, x, y, form) {
+  $('.in-app form').ajaxForm({success: function(data, x, y, form) {
     changeMade = false;
     console.log($(this));
     if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');

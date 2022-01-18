@@ -10,6 +10,8 @@ class Manuscript < ApplicationRecord
   has_many :ownerships
   has_many :contents
 
+  before_destroy :destroy_children
+
   def display_name
     self.identifier.present? ? self.identifier : "Edit"
   end

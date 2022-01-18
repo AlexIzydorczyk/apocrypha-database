@@ -75,7 +75,7 @@
         </li>
       </ul>
     </div>
-    <main class="container" style="margin-left: 330px">
+    <main class="container <%= 'in-app' if user_signed_in? %>" style="margin-left: 330px">
       <%= yield %>
 
       <script type="text/javascript">

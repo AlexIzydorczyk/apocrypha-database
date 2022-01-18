@@ -71,7 +71,7 @@
 		</div>
 	</div>
 
-	<h2>Booklets <%= link_to "Add booklet", new_booklet_path(manuscript: @manuscript), class: "btn btn-action" %></h2>
+	<h2>Booklets <%= link_to "Add booklet", new_manuscript_booklet_path(@manuscript), class: "btn btn-action" %></h2>
 	<div class="row">
 		<p>Booklet compositon is: <strong><%= @manuscript.booklets.any? ? 'Known' : 'Unknown' %></strong></p>
 		<div class="col grey-bubble">
