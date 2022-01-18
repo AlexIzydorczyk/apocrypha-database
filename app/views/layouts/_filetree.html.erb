@@ -1,0 +1,52 @@
+<div id="filetree" class="card">
+	<div class="card-body px-2">
+		<file v-for="file in files" v-bind="file" :key="file.url" :initial_expanded="true"></file>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	$( document ).ready(function() {
+		vue_name = new Vue({
+			el: "#filetree",
+			name: "fileTree",
+			data: {
+				files: <%= tree.to_json.html_safe %>
+			}
+		});
+	});
+
+	Vue.component('file', {
+		props: {
+			name: {},
+			url: {},
+			children: {
+				type: Array,
+				default(){
+					return []
+				}
+			},
+			depth: { default: 0 },
+			initial_expanded: { default: false },
+		},
+		data(){ return {
+			expanded: this.initial_expanded,
+		}},
+		computed: {
+			style() { return {
+				paddingLeft: (this.depth + 1) + "rem",
+			}},
+			has_children(){ return this.children.length > 0 },
+			isActive(){ return window.location.pathname == this.url },
+		},
+		template: `<div>
+			<div class="file" :style="style" :class="{ 'active' : isActive }">
+				<i v-if="has_children" class="far pointer" :class="expanded ? 'fa-caret-down' : 'fa-caret-right'" @click="expanded = !expanded"></i>
+				<span v-else>·</span>
+				<a :href="url">{{ name }}</a>
+			</div>
+			<file v-show="expanded" v-for="file in children" v-bind="file" :depth="depth+1" :key="file.url"></file>
+		</div>`
+	});
+
+</script>

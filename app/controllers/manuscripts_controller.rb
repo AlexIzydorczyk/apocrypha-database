@@ -17,6 +17,9 @@ class ManuscriptsController < ApplicationController
   def edit
     @languages = Language.all
     @language_references = @manuscript.language_references.build
+    @filetree = [{name: "Manuscript " + @manuscript.display_name, url: edit_manuscript_path(@manuscript), children: @manuscript.booklets.map{ |b| {
+      name: "Booklet " + b.display_name, url: edit_booklet_path(b)
+    }}}]
   end
 
   def create

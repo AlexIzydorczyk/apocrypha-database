@@ -6,9 +6,15 @@
   <%= @manuscript.display_name %>
 </div>
 
-<h1>Manuscript</h1>
-
-<%= render "form", manuscript: @manuscript %>
+<div class="d-flex mt-3">
+  <div style="width: 500px" class="me-5">
+    <%= render 'layouts/filetree', tree: @filetree %>
+  </div>
+  <div>
+    <h1>Manuscript</h1>
+    <%= render "form", manuscript: @manuscript %>
+  </div>
+</div>
 
 <br>
 

@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-md navbar-light bg-white">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <%= link_to "Manuscripts of the New Testament Apocrypha", root_path, class: "navbar-brand" %>
+    <% if user_signed_in? %>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="navbar-nav nav-pills ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <%= link_to "Home", root_path, class: "nav-link #{ 'active' if current_page? root_path }" %>
+          </li>
+        </ul>
+      </div>
+      <div class="dropdown">
+        <div class="user-icon ms-2 pointer" data-bs-toggle="dropdown" aria-expanded="false" id="user-dropdown-button">
+          <%= current_user.email.upcase.first %>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown-button">
+          <li><%= link_to "Sign out", destroy_user_session_path, class: "dropdown-item" %></li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</nav>

@@ -7,6 +7,7 @@
 
 :root {
   --orange: #9F492D;
+  --faded-orange: #9F492D15;
 }
 
 body,h1,h2,h3,h4,h5,h6,p,a,span,div{
@@ -21,7 +22,7 @@ td.actions{
 
 h1 {
   border-bottom: 3px solid #000;
-  margin: 1.5rem 0;
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   font-size: 26px;
 }
@@ -35,6 +36,21 @@ h2 {
 
 textarea {
   resize: none;
+}
+
+body {
+  background-color: #F9F9F9;
+}
+
+// -------------- bootstrap edits -----------
+
+.nav-link.active {
+  background-color: var(--faded-orange) !important;
+  border-radius: 8px;
+}
+
+.navbar-brand {
+  font-weight: 500;
 }
 
 // -------------- custom classes -----------
@@ -86,10 +102,39 @@ h2{
 }
 
 .breadcrumbs{
-  height: 48px;
-  line-height: 48px;
+  height: 32px;
+  line-height: 32px;
   font-size: 16px;
   a {
     color: var(--orange);
   }
+}
+
+#filetree {
+  border: none;
+  .file {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+  }
+  .file, .file a {
+    color: black;
+  }
+  .file.active {
+    background-color: var(--faded-orange);
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.user-icon {
+  width: calc(56px - 0.5rem - 10px);
+  height: calc(56px - 0.5rem - 10px);
+  background-color: var(--orange);
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  font-size: calc((56px - 0.5rem - 10px)/2);
+  padding: calc((56px - 0.5rem - 10px)/8);
 }
