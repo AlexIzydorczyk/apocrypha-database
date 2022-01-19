@@ -1,39 +1,12 @@
-new TomSelect("#manuscript-institution-select",{
-  sortField: {
-    field: "text",
-    direction: "asc"
-  }
-});
-
-new TomSelect("#manuscript_status",{
-  sortField: {
-    field: "text",
-    direction: "asc"
-  }
-});
-
-new TomSelect("#manuscript_material",{
-  sortField: {
-    field: "text",
-    direction: "asc"
-  }
-});
-
-new TomSelect("#language_reference_id",{
-  sortField: {
-    field: "text",
-    direction: "asc"
-  },
-  maxItems: null
-});
-
 let manuscriptVue;
 $(document).ready(function(){
 	manuscriptVue = new Vue({
 		name: 'manuscriptVue',
 		el: '#manuscript-form',
 		data: {
-			known_booklet_composition: <%= manuscript.known_booklet_composition.to_s %>
+			known_booklet_composition: <%= manuscript.known_booklet_composition.to_s %>,
+			new_manuscript_content: false,
+			next_content_sequence: 1,
 		},
 		watch:{
 
@@ -48,7 +21,15 @@ $(document).ready(function(){
 
 		},
 		mounted(){
-
+			runTomSelects();
 		},
 	});
 });
+
+function runTomSelects(){
+	new TomSelect("#manuscript-institution-select",{ sortField: {field: "text", direction: "asc"} });
+	new TomSelect("#manuscript_status",{ sortField: {field: "text", direction: "asc"} });
+	new TomSelect("#manuscript_material",{ sortField: {field: "text", direction: "asc"}	});
+	new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });
+	new TomSelect("#content-double-select",{ sortField: {field: "text", direction: "asc"}});
+};

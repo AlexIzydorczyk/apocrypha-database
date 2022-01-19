@@ -101,25 +101,38 @@
 	</div>
 	<% end %>
 
-	<h2>Contents of manuscript <%= link_to "Add content", '#', class: "btn btn-action" %></h2>
-	<div class="row">
-		<% @manuscript.contents.each do |content| %>
-		<div class="col grey-bubble">
-			<p>Content details goes here : <%= content.id %></p>
+	<h2 id="contents">Contents of manuscript <button type="button" class="btn btn-action" @click="new_manuscript_content = true">Add content</button></h2>
+	<% @manuscript.contents.each do |content| %>
+	<div class="row grey-bubble">
+		<p>Content details goes here : <%= content.id %></p>
+	</div>
+	<% end %>
+	<div  class="row" v-show="new_manuscript_content">
+		<div class="col-1 text-end"><i class="fas fa-bars"></i> {{ next_content_sequence }}</div>
+		<div class="col-10">
+			<select id="content-double-select" placeholder="Search author, title, incipit" autocomplete="off">
+				<option value="">Search author, title, incipit</option>
+				<% Title.all.each do |i| %>
+				<option value="title_<%= i.id %>">Title: <%= i.title_english %></option>
+				<% end %>
+				<% Person.all.each do |i| %>
+				<option value="author_<%= i.id %>">Author: <%= i.full_name %></option>
+				<% end %>
+			</select>
 		</div>
-		<% end %>
+		<div class="col"><button class="btn btn-outline-action">Add</button></div>
 	</div>
 </div>
 
 <div>
-	<%= form.submit "Save now", class: "btn btn-action mt-2" %>
+	<%= form.submit "Save now", class: "btn btn-action mt-5" %>
 </div>
 
 <% end %>
 
 <!-- Modals -->
 <% @manuscript.ownerships.each do |ownership| %>
-	<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: ownership %>
+<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: ownership %>
 <% end %>
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
 
