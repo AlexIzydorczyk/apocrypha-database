@@ -5,4 +5,8 @@ class Booklet < ApplicationRecord
   belongs_to :genesis_religious_order, class_name: "ReligiousOrder", optional: true
   has_many :ownerships
   has_many :contents
+
+  def display_name
+    self.booklet_no
+  end
 end
