@@ -8,17 +8,10 @@
 
 <div class="d-flex mt-3">
   <div style="width: 500px" class="me-5">
-    <%= render 'layouts/filetree', tree: @filetree %>
+    <%= render 'layouts/filetree', tree: manuscript_family_tree(@manuscript) %>
   </div>
   <div>
     <h1>Manuscript</h1>
     <%= render "form", manuscript: @manuscript %>
   </div>
-</div>
-
-<br>
-
-<div>
-  <%= link_to "Show this manuscript", @manuscript %> |
-  <%= link_to "Back to manuscripts", manuscripts_path %>
 </div>

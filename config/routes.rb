@@ -19,7 +19,9 @@ Rails.application.routes.draw do
   resources :people
   resources :booklets
   resources :manuscripts do
-      resources :booklets
+      resources :booklets do
+        resources :contents
+      end
   end
   resources :language_references
   resources :institutional_affiliations
