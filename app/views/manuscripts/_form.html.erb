@@ -82,6 +82,13 @@
 	<div class="col grey-bubble" v-show="!known_booklet_composition">
 		<p>Booklets structure has not been determined for this manuscript.</p>
 	</div>
+	<div id="booklets-list" v-show="known_booklet_composition">
+		<% @manuscript.booklets.each_with_index do |booklet, index| %>
+		<div class="row grey-bubble">
+			Booklet <%= index+1 %>
+		</div>
+		<% end %>
+	</div>
 </div>
 
 <div v-show="!known_booklet_composition">
@@ -102,15 +109,19 @@
 	<% end %>
 
 	<h2 id="contents">Contents of manuscript <button type="button" class="btn btn-action" @click="new_manuscript_content = true">Add content</button></h2>
-	<% @manuscript.contents.each do |content| %>
-	<div class="row grey-bubble">
-		<p>Content details goes here : <%= content.id %></p>
-	</div>
-	<% end %>
+	<ul class="sortable">
+		<li  class="row pb-1" v-for="c in manuscript_contents">
+			<div class="col-1"><i class="fas fa-bars"></i> {{ c[0] }}</div>
+			<div class="col-10">
+				{{ c[1] ? 'Title: '+c[1] : 'Author: '+c[2] }}
+			</div>
+			<div class="col"><button class="btn btn-outline-action" @click="AddContentToManuscript($event.target)">Edit</button></div>
+		</li>
+	</ul>
 	<div  class="row" v-show="new_manuscript_content">
-		<div class="col-1 text-end"><i class="fas fa-bars"></i> {{ next_content_sequence }}</div>
+		<div class="col-1"><i class="fas fa-bars"></i> {{ next_content_sequence }}</div>
 		<div class="col-10">
-			<select id="content-double-select" placeholder="Search author, title, incipit" autocomplete="off">
+			<select id="content-double-select" placeholder="Search author, title, incipit" autocomplete="off" v-model="new_manuscript_content_selected">
 				<option value="">Search author, title, incipit</option>
 				<% Title.all.each do |i| %>
 				<option value="title_<%= i.id %>">Title: <%= i.title_english %></option>
@@ -120,7 +131,7 @@
 				<% end %>
 			</select>
 		</div>
-		<div class="col"><button class="btn btn-outline-action">Add</button></div>
+		<div class="col"><button class="btn btn-outline-action" @click="AddContentToManuscript($event.target)">Add</button></div>
 	</div>
 </div>
 
