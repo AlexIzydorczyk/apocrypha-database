@@ -6,7 +6,7 @@ module ManuscriptsHelper
 				url: edit_manuscript_path(manuscript),
 				children: manuscript.booklets.map{ |b| 
 					{
-						name: "Booklet " + b.display_name,
+						name: b.display_name,
 						url: edit_manuscript_booklet_path(manuscript, b),
 						children: b.contents.map{ |c|
 							{

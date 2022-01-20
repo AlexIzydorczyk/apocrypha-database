@@ -60,7 +60,7 @@ class ManuscriptsController < ApplicationController
   end
 
   def manuscript_params
-    params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :known_booklet_composition, languages_attributes: [:id])
+    params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :known_booklet_composition, :is_folios, languages_attributes: [:id])
   end
 
   def build_language_references_for ids

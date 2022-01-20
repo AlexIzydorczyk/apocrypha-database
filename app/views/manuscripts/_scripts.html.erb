@@ -10,6 +10,8 @@ $(document).ready(function(){
 			next_content_sequence: <%= manuscript.contents.count %>+1,
 			new_manuscript_content_selected: null,
 			manuscript_contents: <%= @contents.to_json.html_safe %>,
+			next_content_sequence: 1,
+			is_folios: <%= manuscript.is_folios %>,
 		},
 		watch:{
 

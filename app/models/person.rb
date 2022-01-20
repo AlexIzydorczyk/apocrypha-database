@@ -9,6 +9,6 @@ class Person < ApplicationRecord
 	has_many :manuscripts, through: :person_references
 
 	def full_name
-		self.first_name + ' ' + self.last_name
+		self.first_name + ' ' + self.middle_name + ' ' + self.last_name
 	end
 end
