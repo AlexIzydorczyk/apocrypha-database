@@ -13,6 +13,12 @@ class BookletsController < ApplicationController
   end
 
   def edit
+    @content_types = Booklet.all.pluck(:content_type).uniq.select{ |c| c.present? }.map{ |c| {value: c, text: c} }
+    @scribe_reference = PersonReference.new(record_type: "Booklet", record_id: @booklet.id)
+    @scribes = Person.all
+    @religious_orders = ReligiousOrder.all
+    @institutions = Institution.all
+    @locations = Location.all
   end
 
   def create

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_154243) do
+ActiveRecord::Schema.define(version: 2022_01_20_155022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(version: 2022_01_18_154243) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "known_booklet_composition", default: true, null: false
+    t.boolean "is_folios", default: true, null: false
     t.index ["institution_id"], name: "index_manuscripts_on_institution_id"
   end
 

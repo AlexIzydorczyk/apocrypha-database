@@ -6,4 +6,8 @@ class Institution < ApplicationRecord
   has_many :booklets
   has_many :ownerships
   has_many :booklists
+
+  def display_name
+    self.name_english
+  end
 end

@@ -4,4 +4,8 @@ class ReligiousOrder < ApplicationRecord
 	has_many :booklets
 	has_many :ownerships
 	has_many :booklists
+
+	def display_name 
+		self.order_name
+	end
 end

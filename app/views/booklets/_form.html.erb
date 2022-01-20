@@ -1,110 +1,89 @@
 <%= form_with(model: booklet) do |form| %>
-  <% if booklet.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(booklet.errors.count, "error") %> prohibited this booklet from being saved:</h2>
-
-      <ul>
-        <% booklet.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<div class="row">
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :manuscript_id, style: "display: block" %>
-		  <select id="manuscript-select" placeholder="Select a manuscript" name="booklet[manuscript_id]" autocomplete="off">
-	      <option value="">Select a manuscript</option>
-	      <% Manuscript.all.each do |m| %>
-	        <option value="<%= m.id %>"><%= m.identifier || "" %> - <%= m.shelfmark || "" %></option>
-	      <% end %>
-	    </select>
+	<div class="row">
+		<div class="form-group col-md-2 mb-2">
+			<%= form.label :booklet_no, style: "display: block" %>
+			<%= form.text_field :booklet_no, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :booklet_no, style: "display: block" %>
-	    <%= form.text_field :booklet_no, class: "form-control" %>
+		<div class="form-group col-md-4 mb-2">
+			<!-- this needs to include to, from, and folios type -->
+			<%= form.label :pages_folios, style: "display: block" %>
+			<%= form.text_field :pages_folios, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :pages_folios, style: "display: block" %>
-	    <%= form.text_field :pages_folios, class: "form-control" %>
+		<div class="form-group col-md-2 mb-2">
+			<%= form.label :date_from, style: "display: block" %>
+			<%= form.text_field :date_from, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_from, style: "display: block" %>
-	    <%= form.text_field :date_from, class: "form-control" %>
+		<div class="form-group col-md-2 mb-2">
+			<%= form.label :date_to, style: "display: block" %>
+			<%= form.text_field :date_to, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_to, style: "display: block" %>
-	    <%= form.text_field :date_to, class: "form-control" %>
+		<div class="form-group col-md-2 mb-2">
+			<%= form.label :specific_date, style: "display: block" %>
+			<%= form.text_field :specific_date, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :specific_date, style: "display: block" %>
-	    <%= form.text_field :specific_date, class: "form-control" %>
+		<div class="form-group col-md-6 mb-2">
+			<%= form.label :content_type, style: "display: block" %>
+			<%= form.text_field :content_type, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :genesis_location_id, style: "display: block" %>
-	    <select id="location-select" placeholder="Select a location" autocomplete="off">
-	      <option value="">Select a location</option>
-	      <% Location.all.each do |l| %>
-	        <option value="<%= l.id %>"><%= l.city_english %></option>
-	      <% end %>
-	    </select>
+	</div>
+	<h2>Booklet origin</h2>
+	<div class="row">
+		<%= fields_for(@scribe_reference) do |sr| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= sr.label :id, "Scribe", style: "display: block" %>
+				<%= sr.collection_select :id, @scribes, :id, :full_name, {selected: booklet.scribe.try(:id), include_blank: true}, {class: "form-control", placeholder: "Search or add new scribe"} %>
+			</div>
+		<% end %>
+		<div class="form-group col-md-12 mb-2">
+			<%= form.label :genesis_religious_order_id, "Religious Order", style: "display: block" %>
+			<%= form.collection_select :genesis_religious_order_id, @religious_orders, :id, :display_name, {selected: booklet.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new religious order"} %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		   <%= form.label :genesis_institution_id, style: "display: block" %>
-	    <select id="institution-select" placeholder="Select an institution" autocomplete="off">
-	      <option value="">Select an institution</option>
-	      <% Institution.all.each do |i| %>
-	        <option value="<%= i.id %>"><%= i.name_english %></option>
-	      <% end %>
-	    </select>
+		<div class="form-group col-md-12 mb-2">
+			<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
+			<%= form.collection_select :genesis_institution_id, @institutions, :id, :display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new institution"} %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :genesis_religious_order_id, style: "display: block" %>
-	    <select id="religious-order-select" placeholder="Select an order" autocomplete="off">
-	      <option value="">Select an order</option>
-	      <% ReligiousOrder.all.each do |o| %>
-	        <option value="<%= o.id %>"><%= o.order_name %></option>
-	      <% end %>
-	    </select>
+		<div class="form-group col-md-12 mb-2">
+			<%= form.label :genesis_location_id, "Location", style: "display: block" %>
+			<%= form.collection_select :genesis_location_id, @locations, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new location"} %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :content_type, style: "display: block" %>
-	    <%= form.text_field :content_type, class: "form-control" %>
-		</div>
-</div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
+	</div>
+	<div>
+		<%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+	</div>
 <% end %>
-	
 
 <script type="text/javascript">
-  new TomSelect("#manuscript-select",{
-    create: true,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-  new TomSelect("#location-select",{
-    create: true,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-  new TomSelect("#institution-select",{
-    create: true,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-  new TomSelect("#religious-order-select",{
-    create: true,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
+	new TomSelect("#person_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_genesis_location_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_genesis_institution_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_genesis_religious_order_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_content_type",{
+		options: <%= @content_types.to_json.html_safe %>,
+		create: true,
+		maxItems: 1,
+	});
 </script>
