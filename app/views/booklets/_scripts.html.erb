@@ -1,0 +1,78 @@
+let bookletVue;
+$(document).ready(function(){
+	bookletVue = new Vue({
+		name: 'bookletVue',
+		el: '#booklet-form',
+		data: {
+			next_content_sequence: <%= booklet.contents.count %>+1,
+			new_content: false,
+			new_content_selected: null,
+			next_content_sequence: 1,
+			contents: <%= @contents.to_json.html_safe %>,
+		},
+		methods:{
+			AddContent: function(obj){
+				let vue = this;
+				let split = this.new_manuscript_content_selected.split('_'); //split[0] is 'author' or 'title', split[1] is the id
+				let my_data = {};
+				my_data.authenticity_token = "<%= form_authenticity_token %>";
+				my_data.booklet_id = <%= booklet.id %>;
+				my_data.sequence_no = this.next_content_sequence;
+				split[0] == 'author' ? my_data.author_id = parseInt(split[1]) : my_data.title_id = parseInt(split[1]);
+				$.ajax({
+					url: "/contents/",
+					type: 'POST',
+					data: JSON.stringify(my_data),
+					contentType: 'application/json',
+					success: function(data) {
+						var text = $('#content-double-select option[value="'+vue.new_manuscript_content_selected+'"]').text().split(':')[1];
+						var array = (split[0] == 'author' ? [vue.next_content_sequence, null, text] : [vue.next_content_sequence, text, null]);
+						vue.new_content = false;
+						vue.next_content_sequence += 1;
+						vue.new_content_selected = null;
+					}
+				});
+			},
+		},
+		mounted(){
+			runTomSelects();
+			$('.sortable').sortable();
+		},
+	});
+});
+
+function runTomSelects(){
+	new TomSelect("#person_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_genesis_location_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_genesis_institution_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_genesis_religious_order_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#booklet_content_type",{
+		options: <%= @content_types.to_json.html_safe %>,
+		create: true,
+		maxItems: 1,
+	});
+};

@@ -10,7 +10,7 @@ module ManuscriptsHelper
 						url: edit_manuscript_booklet_path(manuscript, b),
 						children: b.contents.map{ |c|
 							{
-								name: c.manuscript_title_translation,
+								name: c.display_name,
 								url: edit_manuscript_booklet_content_path(manuscript, b, c)
 							}
 						}

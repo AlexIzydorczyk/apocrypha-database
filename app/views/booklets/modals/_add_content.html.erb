@@ -1,0 +1,43 @@
+<div class="modal fade" id="addContentModal<%= content.try(:id) %>" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: content, class: "autosave") do |form| %>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><%= content.id.present? ? 'Edit' : 'Add' %> Content</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+
+					<div class="form-group col-12 mb-2">
+						<%= form.label :author_id, "Author", style: "display: block" %>
+						<%= form.collection_select :author_id, Person.all, :id, :full_name, {selected: content.author_id, include_blank: true}, {class: "form-control", placeholder: "Select an author"} %>
+					</div>
+					
+					<div class="form-group col-12 mb-2">
+						<%= form.label :title_id, "Title", style: "display: block" %>
+						<%= form.collection_select :title_id, Title.all, :id, :title_english, {selected: content.title_id, include_blank: true}, {class: "form-control", placeholder: "Select a title"} %>
+					</div>
+
+					<%= form.hidden_field :sequence_no, value: booklet.contents.count+1 %>
+					<%= form.hidden_field :booklet_id %>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	new TomSelect("#addContentModal<%= content.id %> #content_author_id",{
+		sortField: { field: "text", direction: "asc" }
+	});
+
+	new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
+		sortField: { field: "text", direction: "asc" }
+	});
+</script>

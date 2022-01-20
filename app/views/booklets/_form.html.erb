@@ -1,4 +1,4 @@
-<%= form_with(model: booklet) do |form| %>
+<%= form_with(model: booklet, id: 'booklet-form') do |form| %>
 	<div class="row">
 		<div class="form-group col-md-2 mb-2">
 			<%= form.label :booklet_no, style: "display: block" %>
@@ -57,46 +57,46 @@
 			<%= form.collection_select :genesis_location_id, @locations, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new location"} %>
 		</div>
 	</div>
-	<h2>Booklet provenances <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
-
+	<h2 id="provenances">Booklet provenances <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<% booklet.provenances.each do |provenance| %>
+		<div class="row grey-bubble">
+			<div class="row">
+				<div class="col-3 text-end strong"><%= provenance.written_date_range %><span class="ms-3">&#124;</span></div>
+				<div class="col-7">
+					<span class="strong"><%= [provenance.person.try(:full_name), provenance.institution.try(:name_english), provenance.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ') %></span><br>
+					<%= provenance.location.try(:city_region_country) %><br>
+					<%= provenance.provenance_notes %>
+				</div>
+				<div class="col text-end"><%= link_to "Edit", '#', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+provenance.id.to_s} %></div>
+			</div>
+		</div>
+	<% end %>
+	<h2 id="contents">Booklet content<%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
+	<ul class="sortable">
+		<li class="row pb-1" v-for="c in contents">
+			<div class="col-1"><i class="fas fa-bars"></i> {{ c.seq }}</div>
+			<div class="col-10">
+				{{ c.title ? 'Title: '+c.title : '' }} {{ c.title && c.author ? '|' : '' }} {{ c.author ? 'Author: '+c.author : '' }}
+			</div>
+			<div class="col">
+				<a href="#contents" data-bs-toggle="modal" :data-bs-target="'#addContentModal'+c.id" class="btn btn-outline-action">Edit</a>
+		</li>
+	</ul>
 	<div>
 		<%= form.submit "Submit", class: "btn btn-primary mt-2" %>
 	</div>
 <% end %>
 
+<!-- Modals -->
+<% booklet.provenances.each do |provenance| %>
+	<%= render 'booklets/modals/add_ownership', booklet: booklet, ownership: provenance %>
+<% end %>
+<%= render 'booklets/modals/add_ownership', booklet: booklet, ownership: booklet.provenances.new %>
+<% booklet.contents.each do |content| %>
+<%= render 'booklets/modals/add_content', booklet: booklet, content: content %>
+<% end %>
+<%= render 'booklets/modals/add_content', booklet: booklet, content: booklet.contents.new %>
 
 <script type="text/javascript">
-	new TomSelect("#person_reference_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_genesis_location_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_genesis_institution_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_genesis_religious_order_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_content_type",{
-		options: <%= @content_types.to_json.html_safe %>,
-		create: true,
-		maxItems: 1,
-	});
+	<%= render '/booklets/scripts', booklet: booklet %>
 </script>

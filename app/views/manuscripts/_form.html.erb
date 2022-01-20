@@ -109,7 +109,7 @@
 <div v-show="!known_booklet_composition">
 
 	<h2 id="manuscripts">Provenances of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
-	<% @manuscript.ownerships.each do |ownership| %>
+	<% @manuscript.provenances.each do |ownership| %>
 	<div class="row grey-bubble">
 		<div class="row">
 			<div class="col-3 text-end strong"><%= ownership.written_date_range %><span class="ms-3">&#124;</span></div>

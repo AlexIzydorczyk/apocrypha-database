@@ -9,12 +9,13 @@ class BookletsController < ApplicationController
   end
 
   def new
-    @booklet = Booklet.new
+    @booklet = Booklet.new(manuscript_id: params[:manuscript_id] || '')
   end
 
   def edit
     @content_types = Booklet.all.pluck(:content_type).uniq.select{ |c| c.present? }.map{ |c| {value: c, text: c} }
     @scribe_reference = PersonReference.new(record_type: "Booklet", record_id: @booklet.id)
+    @contents = @booklet.contents.map{ |c| {id: c.id, seq: c.sequence_no, title: c.title.try(:title_english), author: c.author.try(:full_name)} }
     @scribes = Person.all
     @religious_orders = ReligiousOrder.all
     @institutions = Institution.all
