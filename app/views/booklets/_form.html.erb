@@ -58,23 +58,12 @@
 		</div>
 	</div>
 	<h2>Booklet provenances <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
-	<% @booklet.ownerships.each do |ownership| %>
-		<div class="row grey-bubble">
-			<div class="row">
-				<div class="col-3 text-end strong"><%= ownership.written_date_range %><span class="ms-3">&#124;</span></div>
-				<div class="col-7">
-					<span class="strong"><%= [ownership.person.try(:full_name), ownership.institution.try(:name_english), ownership.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ') %></span><br>
-					<%= ownership.location.try(:city_region_country) %><br>
-					<%= ownership.provenance_notes %>
-				</div>
-				<div class="col text-end"><%= link_to "Edit", '#', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+ownership.id.to_s} %></div>
-			</div>
-		</div>
-	<% end %>
+
 	<div>
 		<%= form.submit "Submit", class: "btn btn-primary mt-2" %>
 	</div>
 <% end %>
+
 
 <script type="text/javascript">
 	new TomSelect("#person_reference_id",{

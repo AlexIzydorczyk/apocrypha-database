@@ -143,10 +143,10 @@
 <% end %>
 
 <!-- Modals -->
-<% @manuscript.ownerships.each do |ownership| %>
-<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: ownership %>
+<% @manuscript.provenances.each do |provenance| %>
+<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: provenance %>
 <% end %>
-<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
+<%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.provenances.new %>
 <% @manuscript.contents.each do |content| %>
 <%= render 'manuscripts/modals/add_content', manuscript: @manuscript, content: content %>
 <% end %>

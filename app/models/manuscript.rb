@@ -7,7 +7,7 @@ class Manuscript < ApplicationRecord
   has_many :modern_sources, through: :modern_source_references
   has_many :person_references
   has_many :correspondents, class_name: "Person", through: :person_references
-  has_many :ownerships
+  has_many :provenances, class_name: "Ownership"
   has_many :contents
 
   before_destroy :destroy_children
