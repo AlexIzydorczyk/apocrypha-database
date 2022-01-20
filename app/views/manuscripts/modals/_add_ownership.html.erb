@@ -26,39 +26,19 @@
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :person_id, "Person", style: "display: block" %>
-						<select id="person-select" placeholder="Select a person..." autocomplete="off">
-							<option value="">Select a person...</option>
-							<% Person.all.each do |i| %>
-							<option value="<%= i.id %>" <%= 'selected' if ownership.person_id == i.id %>><%= i.full_name %></option>
-							<% end %>
-						</select>
+						<%= form.collection_select :person_id, Person.all, :id, :full_name, {selected: ownership.person_id, include_blank: true}, {class: "form-control", placeholder: "Select a person"} %>
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :institution_id, "Institution", style: "display: block" %>
-						<select id="institution-select" placeholder="Select an institution..." autocomplete="off">
-							<option value="">Select an institution...</option>
-							<% Institution.all.each do |i| %>
-							<option value="<%= i.id %>" <%= 'selected' if ownership.institution_id == i.id %>><%= i.name_english %></option>
-							<% end %>
-						</select>
+						<%= form.collection_select :institution_id, Institution.all, :id, :name_english, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :religious_order_id, "Religious Order", style: "display: block" %>
-						<select id="religious-order-select" placeholder="Select a religious order..." autocomplete="off">
-							<option value="">Select a religious order...</option>
-							<% ReligiousOrder.all.each do |i| %>
-							<option value="<%= i.id %>" <%= 'selected' if ownership.religious_order_id == i.id %>><%= i.order_name %></option>
-							<% end %>
-						</select>
+						<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: ownership.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :location_id, "Location", style: "display: block" %>
-						<select id="location-select" placeholder="Select an location..." autocomplete="off">
-							<option value="">Select an location...</option>
-							<% Location.all.each do |i| %>
-							<option value="<%= i.id %>" <%= 'selected' if ownership.location_id == i.id %>><%= i.city_region_country %></option>
-							<% end %>
-						</select>
+						<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: ownership.location_id, include_blank: true}, {class: "form-control", placeholder: "Select a location"} %>
 					</div>
 					
 					<div class="form-group col-12 mb-2">
@@ -70,7 +50,7 @@
 
 			</div>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "location.reload()" %>
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
 			</div>
 		</div>
 	</div>
@@ -78,28 +58,28 @@
 </div>
 
 <script type="text/javascript">
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #person-select",{
+	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id",{
 		sortField: {
 			field: "text",
 			direction: "asc"
 		}
 	});
 
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #religious-order-select",{
+	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id",{
 		sortField: {
 			field: "text",
 			direction: "asc"
 		}
 	});
 
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #institution-select",{
+	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id",{
 		sortField: {
 			field: "text",
 			direction: "asc"
 		}
 	});
 
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #location-select",{
+	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id",{
 		sortField: {
 			field: "text",
 			direction: "asc"

@@ -93,7 +93,7 @@
 
 <div v-show="!known_booklet_composition">
 
-	<h2>Provenances of manuscript <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<h2 id="manuscripts">Provenances of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 	<% @manuscript.ownerships.each do |ownership| %>
 	<div class="row grey-bubble">
 		<div class="row">
@@ -103,36 +103,22 @@
 				<%= ownership.location.try(:city_region_country) %><br>
 				<%= ownership.provenance_notes %>
 			</div>
-			<div class="col text-end"><%= link_to "Edit", '#', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+ownership.id.to_s} %></div>
+			<div class="col text-end"><%= link_to "Edit", '#manuscripts', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+ownership.id.to_s} %></div>
 		</div>
 	</div>
 	<% end %>
 
-	<h2 id="contents">Contents of manuscript <button type="button" class="btn btn-action" @click="new_manuscript_content = true">Add content</button></h2>
+	<h2 id="contents">Contents of manuscript <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 	<ul class="sortable">
 		<li  class="row pb-1" v-for="c in manuscript_contents">
-			<div class="col-1"><i class="fas fa-bars"></i> {{ c[0] }}</div>
+			<div class="col-1"><i class="fas fa-bars"></i> {{ c.seq }}</div>
 			<div class="col-10">
-				{{ c[1] ? 'Title: '+c[1] : 'Author: '+c[2] }}
+				{{ c.title ? 'Title: '+c.title : '' }} {{ c.title && c.author ? '|' : '' }} {{ c.author ? 'Author: '+c.author : '' }}
 			</div>
-			<div class="col"><button class="btn btn-outline-action" @click="AddContentToManuscript($event.target)">Edit</button></div>
+			<div class="col">
+				<a href="#contents" data-bs-toggle="modal" :data-bs-target="'#addContentModal'+c.id" class="btn btn-outline-action">Edit</a>
 		</li>
 	</ul>
-	<div  class="row" v-show="new_manuscript_content">
-		<div class="col-1"><i class="fas fa-bars"></i> {{ next_content_sequence }}</div>
-		<div class="col-10">
-			<select id="content-double-select" placeholder="Search author, title, incipit" autocomplete="off" v-model="new_manuscript_content_selected">
-				<option value="">Search author, title, incipit</option>
-				<% Title.all.each do |i| %>
-				<option value="title_<%= i.id %>">Title: <%= i.title_english %></option>
-				<% end %>
-				<% Person.all.each do |i| %>
-				<option value="author_<%= i.id %>">Author: <%= i.full_name %></option>
-				<% end %>
-			</select>
-		</div>
-		<div class="col"><button class="btn btn-outline-action" @click="AddContentToManuscript($event.target)">Add</button></div>
-	</div>
 </div>
 
 <div>
@@ -146,6 +132,10 @@
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: ownership %>
 <% end %>
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
+<% @manuscript.contents.each do |content| %>
+<%= render 'manuscripts/modals/add_content', manuscript: @manuscript, content: content %>
+<% end %>
+<%= render 'manuscripts/modals/add_content', manuscript: @manuscript, content: @manuscript.contents.new %>
 
 <script type="text/javascript">
 	<%= render '/manuscripts/scripts', manuscript: @manuscript %>

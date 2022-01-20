@@ -17,6 +17,7 @@ class ManuscriptsController < ApplicationController
   def edit
     @languages = Language.all
     @language_references = @manuscript.language_references.build
+    @contents = @manuscript.contents.map{ |c| {id: c.id, seq: c.sequence_no, title: c.title.try(:title_english), author: c.author.try(:full_name)} }
   end
 
   def create

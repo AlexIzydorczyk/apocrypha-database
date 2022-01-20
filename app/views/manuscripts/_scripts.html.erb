@@ -9,7 +9,7 @@ $(document).ready(function(){
 			new_manuscript_content: false,
 			next_content_sequence: <%= manuscript.contents.count %>+1,
 			new_manuscript_content_selected: null,
-			manuscript_contents: <%= manuscript.contents.map{ |c| [c.sequence_no, c.title.try(:title_english), c.author.try(:full_name)]}.to_json.html_safe %>
+			manuscript_contents: <%= @contents.to_json.html_safe %>,
 		},
 		watch:{
 
@@ -31,11 +31,11 @@ $(document).ready(function(){
 	        success: function(data) {
 	        	var text = $('#content-double-select option[value="'+vue.new_manuscript_content_selected+'"]').text().split(':')[1];
 	          var array = (split[0] == 'author' ? [vue.next_content_sequence, null, text] : [vue.next_content_sequence, text, null]);
-						vue.manuscript_contents.push(array);
+						//vue.manuscript_contents.push(array);
 						vue.new_manuscript_content = false;
 	          vue.next_content_sequence += 1;
 	          vue.new_manuscript_content_selected = null;
-	          new_content_select.clear();
+	          //new_content_select.clear();
 	        }
 	      });
 			},
@@ -58,5 +58,11 @@ function runTomSelects(){
 	new TomSelect("#manuscript_status",{ sortField: {field: "text", direction: "asc"} });
 	new TomSelect("#manuscript_material",{ sortField: {field: "text", direction: "asc"}	});
 	new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });
-	new_content_select = new TomSelect("#content-double-select",{ sortField: {field: "text", direction: "asc"}});
+	//new_content_select = new TomSelect("#content-double-select",{ sortField: {field: "text", direction: "asc"}});
 };
+
+function timeoutReload(){
+	setTimeout(function(){
+		location.reload();
+	}, 200)
+}
