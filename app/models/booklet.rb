@@ -5,7 +5,7 @@ class Booklet < ApplicationRecord
   belongs_to :genesis_religious_order, class_name: "ReligiousOrder", optional: true
   has_one :scribe_reference, class_name: "PersonReference", as: :record
   has_one :scribe, through: :scribe_reference, source: :person
-  has_many :ownerships
+  has_many :provenances, class_name: "Ownership"
   has_many :contents
 
   def display_name

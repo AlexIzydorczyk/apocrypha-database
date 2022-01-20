@@ -44,15 +44,19 @@
 	<div class="form-group col-md-3 mb-2">
 		<!-- needs to be built the new way still!!! -->
 		<%= form.label :leaf_page_no, style: "display: block" %>
-		<%= form.text_field :leaf_page_no, class: "form-control" %>
+		<div class="input-group">
+			<span class="input-group-text bg-white" v-if="!is_folios">pp.</span>
+			<%= form.text_field :leaf_page_no, class: "form-control", ":class": "is_folios ? 'border-end-0' : 'border-start-0'" %>
+			<span class="input-group-text bg-white" v-if="is_folios">ff.</span>
+		</div>
 	</div>
-	<div class="form-group col-md-3 mb-2">
-		<%= form.hidden_field :is_folios %>
+	<div class="form-group col-md-3 mb-2 d-flex align-items-center">
+		<%= form.hidden_field :is_folios, "v-model": "is_folios" %>
 		<span @click="is_folios = true" class="pointer">
 			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-dot-circle' : 'fa-circle'"></i>
 			<label>Folios</label>
 		</span>
-		<span @click="is_folios = false" class="pointer">
+		<span @click="is_folios = false" class="pointer ms-3">
 			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-circle' : 'fa-dot-circle'"></i>
 			<label>Pages</label>
 		</span>

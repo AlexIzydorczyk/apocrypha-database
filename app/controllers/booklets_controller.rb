@@ -54,6 +54,6 @@ class BookletsController < ApplicationController
     end
 
     def booklet_params
-      params.require(:booklet).permit(:manuscript_id, :booklet_no, :pages_folios, :date_from, :date_to, :specific_date, :genesis_location_id, :genesis_institution_id, :genesis_religious_order_id, :content_type)
+      params.require(:booklet).permit(:manuscript_id, :booklet_no, :pages_folios_from, :pages_folios_to, :date_from, :date_to, :specific_date, :genesis_location_id, :genesis_institution_id, :genesis_religious_order_id, :content_type)
     end
 end

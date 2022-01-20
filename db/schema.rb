@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_155022) do
+ActiveRecord::Schema.define(version: 2022_01_20_170434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_155022) do
   create_table "booklets", force: :cascade do |t|
     t.bigint "manuscript_id"
     t.string "booklet_no", default: "", null: false
-    t.string "pages_folios", default: "", null: false
+    t.string "pages_folios_from", default: "", null: false
     t.string "date_from", default: "", null: false
     t.string "date_to", default: "", null: false
     t.string "specific_date", default: "", null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_155022) do
     t.string "content_type", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "pages_folios_to", default: "", null: false
     t.index ["genesis_institution_id"], name: "index_booklets_on_genesis_institution_id"
     t.index ["genesis_location_id"], name: "index_booklets_on_genesis_location_id"
     t.index ["genesis_religious_order_id"], name: "index_booklets_on_genesis_religious_order_id"
