@@ -1,0 +1,53 @@
+<div class="modal fade" id="addContentModal<%= content.try(:id) %>" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: content, class: "autosave") do |form| %>
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><%= content.id.present? ? 'Edit' : 'Add' %> Content</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+
+					<div class="form-group col-12 mb-2">
+						<%= form.label :author_id, "Author", style: "display: block" %>
+						<select id="author-select" placeholder="Select an author..." autocomplete="off">
+							<option value="">Select an author...</option>
+							<% Person.all.each do |i| %>
+							<option value="<%= i.id %>" <%= 'selected' if content.author_id == i.id %>><%= i.full_name %></option>
+							<% end %>
+						</select>
+					</div>
+					
+					<div class="form-group col-12 mb-2">
+						<%= form.label :title_id, "Title", style: "display: block" %>
+						<select id="title-select" placeholder="Select a title..." autocomplete="off">
+							<option value="">Select a title...</option>
+							<% Title.all.each do |i| %>
+							<option value="<%= i.id %>" <%= 'selected' if content.title_id == i.id %>><%= i.title_english %></option>
+							<% end %>
+						</select>
+					</div>
+					
+					<%= form.hidden_field :sequence_no, value: manuscript.contents.count+1 %>
+					<%= form.hidden_field :manuscript_id %>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "location.reload()" %>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	new TomSelect("#addContentModal<%= content.id %> #author-select",{
+		sortField: { field: "text", direction: "asc" }
+	});
+
+	new TomSelect("#addContentModal<%= content.id %> #title-select",{
+		sortField: { field: "text", direction: "asc" }
+	});
+</script>
