@@ -93,7 +93,7 @@
 
 <div v-show="!known_booklet_composition">
 
-	<h2>Provenances of manuscript <%= link_to "Add provenance", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<h2 id="manuscripts">Provenances of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 	<% @manuscript.ownerships.each do |ownership| %>
 	<div class="row grey-bubble">
 		<div class="row">
@@ -103,22 +103,20 @@
 				<%= ownership.location.try(:city_region_country) %><br>
 				<%= ownership.provenance_notes %>
 			</div>
-			<div class="col text-end"><%= link_to "Edit", '#', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+ownership.id.to_s} %></div>
+			<div class="col text-end"><%= link_to "Edit", '#manuscripts', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+ownership.id.to_s} %></div>
 		</div>
 	</div>
 	<% end %>
 
-	<h2 id="contents">Contents of manuscript <%= link_to "Add content", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
-	<%= manuscript.contents.map{ |c| {seq: c.sequence_no, title: c.title.try(:title_english), author: c.author.try(:full_name)} }.to_json.html_safe %>
-	<br><br>
-	{{ manuscript_contents }}
+	<h2 id="contents">Contents of manuscript <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 	<ul class="sortable">
 		<li  class="row pb-1" v-for="c in manuscript_contents">
 			<div class="col-1"><i class="fas fa-bars"></i> {{ c.seq }}</div>
 			<div class="col-10">
-				{{ c.title ? 'Title: '+c.title : 'Author: '+c.author }}
+				{{ c.title ? 'Title: '+c.title : '' }} {{ c.title && c.author ? '|' : '' }} {{ c.author ? 'Author: '+c.author : '' }}
 			</div>
-			<div class="col"><button class="btn btn-outline-action">Edit</button></div>
+			<div class="col">
+				<a href="#contents" data-bs-toggle="modal" :data-bs-target="'#addContentModal'+c.id" class="btn btn-outline-action">Edit</a>
 		</li>
 	</ul>
 </div>
@@ -134,6 +132,9 @@
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: ownership %>
 <% end %>
 <%= render 'manuscripts/modals/add_ownership', manuscript: @manuscript, ownership: @manuscript.ownerships.new %>
+<% @manuscript.contents.each do |content| %>
+<%= render 'manuscripts/modals/add_content', manuscript: @manuscript, content: content %>
+<% end %>
 <%= render 'manuscripts/modals/add_content', manuscript: @manuscript, content: @manuscript.contents.new %>
 
 <script type="text/javascript">
