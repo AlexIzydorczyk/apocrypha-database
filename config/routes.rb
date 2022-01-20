@@ -20,7 +20,12 @@ Rails.application.routes.draw do
   resources :booklets
   resources :manuscripts do
       resources :booklets do
-        resources :contents
+        resources :contents do
+          resources :texts
+        end
+      end
+      resources :contents do
+        resources :texts
       end
   end
   resources :language_references

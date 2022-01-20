@@ -127,11 +127,13 @@
 	<ul class="sortable">
 		<li  class="row pb-1" v-for="c in manuscript_contents">
 			<div class="col-1"><i class="fas fa-bars"></i> {{ c.seq }}</div>
-			<div class="col-10">
+			<div class="col-7">
 				{{ c.title ? 'Title: '+c.title : '' }} {{ c.title && c.author ? '|' : '' }} {{ c.author ? 'Author: '+c.author : '' }}
 			</div>
-			<div class="col">
-				<a href="#contents" data-bs-toggle="modal" :data-bs-target="'#addContentModal'+c.id" class="btn btn-outline-action">Edit</a>
+			<div class="col text-end">
+				<a href="#contents" data-bs-toggle="modal" :data-bs-target="'#addContentModal'+c.id" class="btn btn-outline-action">Edit content</a>
+				<a :href="'/manuscripts/<%= manuscript.id %>/contents/' + c.id + '/texts/new'" class="btn btn-outline-action">Add text details</a>
+			</div>
 		</li>
 	</ul>
 </div>
