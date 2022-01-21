@@ -35,7 +35,6 @@ Rails.application.routes.draw do
       resources :contents do
         resources :texts
       end
-      resources :contents
   end
   resources :language_references
   resources :institutional_affiliations
