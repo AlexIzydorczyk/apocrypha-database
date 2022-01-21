@@ -118,6 +118,20 @@ h1 .btn-action{
   }
 }
 
+.link-action{
+  color: var(--orange);
+  &:hover{
+    color: var(--orange);
+    text-decoration: none;
+  }
+}
+
+.sideway-title{
+  transform: rotate(-90deg);
+  transform-origin: bottom right;
+  font-weight: bold;
+}
+
 .grey-bubble{
   background: rgba(245,245,245,0.4);
   border: 1px solid rgba(0, 0, 0, 0.3);

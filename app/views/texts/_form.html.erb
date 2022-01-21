@@ -1,81 +1,115 @@
+<%= form_with(model: text, id: 'text-form', class: "autosave") do |form| %>
 
-
-<%= form_with(model: text) do |form| %>
-  <% if text.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(text.errors.count, "error") %> prohibited this text from being saved:</h2>
-
-      <ul>
-        <% text.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 <div class="row">
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :content_id, style: "display: block" %>
-	    <%= form.text_field :content_id, class: "form-control" %>
+	<%= form.hidden_field :content_id%>
+	<div class="form-group col-4 mb-2">
+		<%= form.label :text_pages_folios, style: "display: block" %>
+		<%= form.text_field :text_pages_folios, class: "form-control" %>
+	</div>
+	<div class="form-group col-4 mb-2">
+		<%= form.label :decoration, style: "display: block" %>
+		<%= form.text_field :decoration, class: "form-control" %>
+	</div>
+
+
+	<div class="row pt-4">
+		<div class="col-1" style="border-right: 3px solid rgba(0,0,0,0.3)">
+				<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Title</div>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :text_pages_folios, style: "display: block" %>
-	    <%= form.text_field :text_pages_folios, class: "form-control" %>
+		<div class="col">
+			<div class="row">
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :title_folios_pages, style: "display: block" %>
+					<%= form.text_field :title_folios_pages, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :manuscript_title_orig, style: "display: block" %>
+					<%= form.text_field :manuscript_title_orig, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :manuscript_title_orig_transliteration, style: "display: block" %>
+					<%= form.text_field :manuscript_title_orig_transliteration, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :manuscript_title_translation, style: "display: block" %>
+					<%= form.text_field :manuscript_title_translation, class: "form-control" %>
+				</div>
+			</div>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :decoration, style: "display: block" %>
-	    <%= form.text_field :decoration, class: "form-control" %>
+	</div>
+
+
+	<div class="row pt-4">
+		<div class="col-1" style="border-right: 3px solid rgba(0,0,0,0.3)">
+				<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Colophon</div>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_folios_pages, style: "display: block" %>
-	    <%= form.text_field :title_folios_pages, class: "form-control" %>
+		<div class="col">
+			<div class="row">
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :pages_folios_colophon, style: "display: block" %>
+					<%= form.text_field :pages_folios_colophon, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :colophon_orig, style: "display: block" %>
+					<%= form.text_field :colophon_orig, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :colophon_transliteration, style: "display: block" %>
+					<%= form.text_field :colophon_transliteration, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :colophon_translation, style: "display: block" %>
+					<%= form.text_field :colophon_translation, class: "form-control" %>
+				</div>
+			</div>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :manuscript_title_orig, style: "display: block" %>
-	    <%= form.text_field :manuscript_title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :manuscript_title_orig_transliteration, style: "display: block" %>
-	    <%= form.text_field :manuscript_title_orig_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :manuscript_title_translation, style: "display: block" %>
-	    <%= form.text_field :manuscript_title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :pages_folios_colophon, style: "display: block" %>
-	    <%= form.text_field :pages_folios_colophon, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :colophon_orig, style: "display: block" %>
-	    <%= form.text_field :colophon_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :colophon_transliteration, style: "display: block" %>
-	    <%= form.text_field :colophon_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :colophon_translation, style: "display: block" %>
-	    <%= form.text_field :colophon_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :notes, style: "display: block" %>
-	    <%= form.text_area :notes, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :transcriber_id, style: "display: block" %>
-	    <%= form.text_field :transcriber_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :version, style: "display: block" %>
-	    <%= form.text_field :version, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :extent, style: "display: block" %>
-	    <%= form.text_field :extent, class: "form-control" %>
-		</div>
-</div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
-<% end %>
+	</div>
 	
+	<div class="block-section"style="position: relative;">
+		
+		
+	</div>
+	
+	
+</div>
+
+<h2 id="research-notes">Research Notes</h2>
+<div class="row">
+	<div class="form-group col-4 mb-2">
+		<%= form.label :version, "Version of text", style: "display: block" %>
+		<%= form.text_field :version, class: "form-control" %>
+	</div>
+	<div class="form-group col-4 mb-2">
+		<%= form.label :extent, "Extent of text", style: "display: block" %>
+		<%= form.text_field :extent, class: "form-control" %>
+	</div>
+	<div class="form-group col-8 mb-2">
+		<%= form.label :notes, style: "display: block" %>
+		<%= form.text_area :notes, class: "form-control" %>
+	</div>
+</div>
+
+<h2 id="credit">Credit & correspondance</h2>
+<div class="row">
+	<div class="form-group col-4 mb-2">
+		<%= form.label :transcriber_id, "Transcribed by", style: "display: block" %>
+		<%= form.collection_select :transcriber_id, Person.all, :id, :full_name, {selected: text.transcriber_id, include_blank: true}, {class: "form-control", placeholder: "Select a transcriber"} %>
+	</div>
+</div>
+
+<div class="fixed-bottom text-end pb-3 pe-3" style="z-index: 0">
+	<%= form.submit "Save now", class: "btn btn-action px-5"%>
+</div>
+<% end %>
+
+<script type="text/javascript">
+	$(function() {
+		new TomSelect("#text_transcriber_id",{
+			sortField: {
+				field: "text",
+				direction: "asc"
+			},
+			maxItems: 1,
+		});
+	});
+</script>

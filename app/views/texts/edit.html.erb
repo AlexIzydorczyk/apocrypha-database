@@ -1,10 +1,39 @@
-<h1>Editing text</h1>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  <!-- if accessed through manuscript with booklet -->
+  <% if @text.content.parent.class == Booklet && current_page?(edit_manuscript_booklet_content_text_path(@text.find_manuscript, @text.content.booklet, @text.content, @text)) %>
+    <%= link_to 'Manuscripts', manuscripts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to @text.find_manuscript.display_name, edit_manuscript_path(@text.find_manuscript) %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to 'Booklets', booklets_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to @text.content.booklet.display_name, edit_manuscript_booklet_path(@text.find_manuscript, @text.content.booklet) %>
+    <i class="far fa-chevron-right"></i>
+    <%= @text.content.display_name %>
+  <!-- else accessed through manuscript without booklet -->
+  <% elsif current_page?(edit_manuscript_content_text_path(@text.find_manuscript, @text.content, @text)) %>
+    <%= link_to 'Manuscripts', manuscripts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to @text.find_manuscript.display_name, edit_manuscript_path(@text.find_manuscript) %>
+    <i class="far fa-chevron-right"></i>
+    <%= @text.content.display_name %>
+  <!-- else accessed through texts grid -->
+  <% else %>
+    <%= link_to 'Texts', texts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= @text.content.display_name %>
+  <% end %>
+</div>
 
-<%= render "form", text: @text %>
 
-<br>
-
-<div>
-  <%= link_to "Show this text", @text %> |
-  <%= link_to "Back to texts", texts_path %>
+<div class="d-flex mt-2">
+  <div style="width: 500px" class="me-5">
+    <%= render 'layouts/filetree', tree: manuscript_family_tree(@text.find_manuscript) %>
+  </div>
+  <div>
+    <h1><%= @text.content.display_name %></h1>
+    <%= render "form", text: @text %>
+  </div>
 </div>

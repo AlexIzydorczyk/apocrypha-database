@@ -15,7 +15,7 @@ module ManuscriptsHelper
 					}
 				} + manuscript.contents.map{ |c| {
 					name: c.short_name,
-					url: edit_manuscript_content_path(manuscript, c)
+					url: (c.text.present? ? edit_manuscript_content_text_path(manuscript, c, c.text) : edit_manuscript_content_path(manuscript, c)) #todo-change this to new text for content
 				} }
 			}
 		]
