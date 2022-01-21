@@ -28,7 +28,12 @@ Rails.application.routes.draw do
   end
   resources :manuscripts do
       resources :booklets do
-        resources :contents
+        resources :contents do
+          resources :texts
+        end
+      end
+      resources :contents do
+        resources :texts
       end
       resources :contents
   end

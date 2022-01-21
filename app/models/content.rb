@@ -3,7 +3,7 @@ class Content < ApplicationRecord
   belongs_to :title, optional: true
   belongs_to :author, class_name: "Person", optional: true
   belongs_to :manuscript, optional: true
-  has_many :texts
+  has_one :text
 
   def display_name
     # needs to be updated to include incipit
