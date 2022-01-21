@@ -19,7 +19,7 @@ class OwnershipsController < ApplicationController
     @ownership = Ownership.new(ownership_params)
 
     if @ownership.save
-      render :json => { new_url: ownership_path(@ownership) }
+      # render :json => { new_url: ownership_path(@ownership) }
       #redirect_to ownerships_url, notice: "Ownership was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -31,7 +31,9 @@ class OwnershipsController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_to ownerships_url, notice: "Ownership was successfully updated."
+        redirect_path = params[:moved_to_booklet] ? edit_manuscript_path(@ownership.booklet.manuscript) : ownerships_path
+        notice = params[:moved_to_booklet] ? "Provenance was successfully moved to booklet." : "Ownership was successfully updated."
+        redirect_to redirect_path, notice: notice
       end
     else
       render :edit, status: :unprocessable_entity

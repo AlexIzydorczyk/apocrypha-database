@@ -1,9 +1,32 @@
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  <!-- if accessed through manuscript -->
+  <% if current_page?(edit_manuscript_booklet_path(@booklet.manuscript, @booklet)) %>
+    <%= link_to 'Manuscripts', manuscripts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to @booklet.manuscript.display_name, edit_manuscript_path(@booklet.manuscript) %>
+    <i class="far fa-chevron-right"></i>
+    <%= @booklet.display_name %>
+  <!-- else accessed through booklets grid -->
+  <% else %>
+    <%= link_to 'Booklets', manuscripts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= @booklet.display_name %>
+  <% end %>
+</div>
+
 <div class="d-flex mt-3">
   <div style="width: 500px" class="me-5">
     <%= render 'layouts/filetree', tree: manuscript_family_tree(@booklet.manuscript) %>
   </div>
   <div>
-    <h1><%= @booklet.display_name %></h1>
+    <h1>
+      <%= @booklet.display_name %>
+      <% if current_page?(edit_manuscript_booklet_path(@booklet.manuscript, @booklet)) %>
+        <%= link_to "Close", edit_manuscript_path(@booklet.manuscript), class: "btn btn-action" %>
+      <% end %>
+    </h1>
     <%= render "form", booklet: @booklet %>
   </div>
 </div>

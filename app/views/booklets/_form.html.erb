@@ -1,102 +1,98 @@
-<%= form_with(model: booklet, id: 'booklet-form') do |form| %>
-	<div class="row">
-		<div class="form-group col-md-2 mb-2">
-			<%= form.label :booklet_no, style: "display: block" %>
-			<%= form.text_field :booklet_no, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-4 mb-2">
-			<!-- this needs to include to, from, and folios type -->
-			<%= form.label "Location of #{booklet.manuscript.is_folios ? "folios" : "pages"} of the booklet", style: "display: block" %>
-			<div class="d-flex align-items-baseline">
-				<div class="input-group">
-					<span class="input-group-text bg-white"><%= booklet.manuscript.is_folios ? 'f' : 'p' %>.</span>
-					<%= form.text_field :pages_folios_from, class: "form-control border-start-0" %>
-				</div>
-				<span class="mx-2">to</span>
-				<div class="input-group">
-					<span class="input-group-text bg-white"><%= booklet.manuscript.is_folios ? 'f' : 'p' %>.</span>
-					<%= form.text_field :pages_folios_to, class: "form-control border-start-0" %>
-				</div>
+<%= form_with(model: booklet, id: 'booklet-form', class: "autosave") do |form| %>
+	
+<div class="row">
+	<div class="form-group col-md-2 mb-2" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Based on order in manuscript">
+		<%= form.label :booklet_no, style: "display: block" %>
+		<%= form.text_field :booklet_no, disabled: true, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-4 mb-2">
+		<!-- this needs to include to, from, and folios type -->
+		<%= form.label "Location of #{booklet.manuscript.is_folios ? "folios" : "pages"} of the booklet", style: "display: block" %>
+		<div class="d-flex align-items-baseline">
+			<div class="input-group">
+				<span class="input-group-text bg-white"><%= booklet.manuscript.is_folios ? 'f' : 'p' %>.</span>
+				<%= form.text_field :pages_folios_from, class: "form-control border-start-0" %>
 			</div>
-		</div>
-		<div class="form-group col-md-2 mb-2">
-			<%= form.label :date_from, style: "display: block" %>
-			<%= form.text_field :date_from, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-2 mb-2">
-			<%= form.label :date_to, style: "display: block" %>
-			<%= form.text_field :date_to, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-2 mb-2">
-			<%= form.label :specific_date, style: "display: block" %>
-			<%= form.text_field :specific_date, class: "form-control" %>
-		</div>
-		<div class="form-group col-md-6 mb-2">
-			<%= form.label :content_type, style: "display: block" %>
-			<%= form.text_field :content_type, class: "form-control" %>
+			<span class="mx-2">to</span>
+			<div class="input-group">
+				<span class="input-group-text bg-white"><%= booklet.manuscript.is_folios ? 'f' : 'p' %>.</span>
+				<%= form.text_field :pages_folios_to, class: "form-control border-start-0" %>
+			</div>
 		</div>
 	</div>
-	<h2>Booklet origin</h2>
-	<div class="row">
-		<%= fields_for(@scribe_reference) do |sr| %>
-			<div class="form-group col-md-12 mb-2">
-				<%= sr.label :id, "Scribe", style: "display: block" %>
-				<%= sr.collection_select :id, @scribes, :id, :full_name, {selected: booklet.scribe.try(:id), include_blank: true}, {class: "form-control", placeholder: "Search or add new scribe"} %>
-			</div>
-		<% end %>
-		<div class="form-group col-md-12 mb-2">
-			<%= form.label :genesis_religious_order_id, "Religious Order", style: "display: block" %>
-			<%= form.collection_select :genesis_religious_order_id, @religious_orders, :id, :display_name, {selected: booklet.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new religious order"} %>
-		</div>
-		<div class="form-group col-md-12 mb-2">
-			<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
-			<%= form.collection_select :genesis_institution_id, @institutions, :id, :display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new institution"} %>
-		</div>
-		<div class="form-group col-md-12 mb-2">
-			<%= form.label :genesis_location_id, "Location", style: "display: block" %>
-			<%= form.collection_select :genesis_location_id, @locations, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Search or add new location"} %>
-		</div>
+	<div class="form-group col-md-2 mb-2">
+		<%= form.label :date_from, style: "display: block" %>
+		<%= form.text_field :date_from, class: "form-control" %>
 	</div>
-	<h2 id="provenances">Booklet provenances <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
-	<% booklet.provenances.each do |provenance| %>
-		<div class="row grey-bubble">
-			<div class="row">
-				<div class="col-3 text-end strong"><%= provenance.written_date_range %><span class="ms-3">&#124;</span></div>
-				<div class="col-7">
-					<span class="strong"><%= [provenance.person.try(:full_name), provenance.institution.try(:name_english), provenance.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ') %></span><br>
-					<%= provenance.location.try(:city_region_country) %><br>
-					<%= provenance.provenance_notes %>
-				</div>
-				<div class="col text-end"><%= link_to "Edit", '#', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+provenance.id.to_s} %></div>
-			</div>
+	<div class="form-group col-md-2 mb-2">
+		<%= form.label :date_to, style: "display: block" %>
+		<%= form.text_field :date_to, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-2 mb-2">
+		<%= form.label :specific_date, style: "display: block" %>
+		<%= form.text_field :specific_date, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :content_type, style: "display: block" %>
+		<%= form.text_field :content_type, class: "form-control" %>
+	</div>
+</div>
+
+<h2>Booklet origin</h2>
+<div class="row">
+	<%= fields_for(@scribe_reference) do |sr| %>
+		<div class="form-group col-md-12 mb-2">
+			<%= sr.label :id, "Scribe", style: "display: block" %>
+			<%= sr.collection_select :id, Person.all, :id, :full_name, {selected: booklet.scribe.try(:id), include_blank: true}, {class: "form-control", placeholder: "Search scribe"} %>
 		</div>
 	<% end %>
-	<h2 id="contents">Booklet content<%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
-	<ul class="sortable">
-		<li class="row pb-1" v-for="c in contents">
-			<div class="col-1"><i class="fas fa-bars"></i> {{ c.seq }}</div>
-			<div class="col-10">
-				{{ c.title ? 'Title: '+c.title : '' }} {{ c.title && c.author ? '|' : '' }} {{ c.author ? 'Author: '+c.author : '' }}
-			</div>
-			<div class="col">
-				<a href="#contents" data-bs-toggle="modal" :data-bs-target="'#addContentModal'+c.id" class="btn btn-outline-action">Edit</a>
-		</li>
-	</ul>
-	<div>
-		<%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :genesis_religious_order_id, "Religious Order", style: "display: block" %>
+		<div class="d-flex">
+			<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: booklet.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Search religious order"} %>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
+		</div>
 	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
+		<div class="d-flex">
+			<%= form.collection_select :genesis_institution_id, Institution.all, :id, :display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Search institution"} %>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-institution-modal">New</button>
+		</div>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :genesis_location_id, "Location", style: "display: block" %>
+		<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Search location"} %>
+	</div>
+</div>
+
+<h2 id="provenances">Booklet provenances <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+<%= render 'ownerships/list', parent: booklet %>
+
+<h2 id="contents">Booklet content<%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
+<%= render 'contents/list', parent: booklet %>
+
+<%= form.submit "Save now", class: "btn btn-action px-5 fixed-bottom", style: "left: 24px; bottom: 24px;" %>
 <% end %>
+
+<!-- Additional forms -->
+<%= form_with(url: sort_contents_path, method: 'PUT', remote: true, id: 'sort-content-form') do |f| %><% end %>
 
 <!-- Modals -->
-<% booklet.provenances.each do |provenance| %>
-	<%= render 'booklets/modals/add_ownership', booklet: booklet, ownership: provenance %>
+<% booklet.ownerships.each do |ownership| %>
+<%= render 'ownerships/modals/form', parent: booklet, ownership: ownership %>
 <% end %>
-<%= render 'booklets/modals/add_ownership', booklet: booklet, ownership: booklet.provenances.new %>
+<%= render 'ownerships/modals/form', parent: booklet, ownership: booklet.ownerships.new %>
 <% booklet.contents.each do |content| %>
-<%= render 'booklets/modals/add_content', booklet: booklet, content: content %>
+<%= render 'contents/modals/form', parent: booklet, content: content %>
 <% end %>
-<%= render 'booklets/modals/add_content', booklet: booklet, content: booklet.contents.new %>
+<%= render 'contents/modals/form', parent: booklet, content: booklet.contents.new %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: booklet %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet %>
 
+<!-- Scripts -->
 <script type="text/javascript">
 	<%= render '/booklets/scripts', booklet: booklet %>
+	<%= render '/contents/list_script' %>
+	<%= render '/ownerships/list_script' %>
 </script>

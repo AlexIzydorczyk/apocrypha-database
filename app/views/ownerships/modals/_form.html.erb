@@ -1,10 +1,10 @@
 <div class="modal fade" id="addProvenanceModal<%= ownership.try(:id) %>" tabindex="-1" aria-hidden="true">
-	<%= form_with(model: ownership, class: "autosave") do |form| %>
-	<div class="modal-dialog modal-dialog-centered">
+	<%= form_with(model: ownership, class: "#{'autosave' unless ownership.new_record?}") do |form| %>
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title"><%= ownership.id.present? ? 'Edit' : 'Add' %> Provenance</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal">Cancel</button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -45,7 +45,7 @@
 						<%= form.label :provenance_notes, style: "display: block" %>
 						<%= form.text_area :provenance_notes, class: "form-control" %>
 					</div>
-					<%= form.hidden_field :booklet_id %>
+					<%= form.hidden_field parent.class == Manuscript ? :manuscript_id : :booklet_id %>
 				</div>
 
 			</div>
@@ -85,4 +85,10 @@
 			direction: "asc"
 		}
 	});
+
+	<% unless ownership.new_record? %>
+		$("#addProvenanceModal<%= ownership.try(:id) %>").on("hidden.bs.modal", function () {
+			$(this).find('input[type=submit]').click();
+		});
+	<% end %>
 </script>

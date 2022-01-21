@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_20_170434) do
+ActiveRecord::Schema.define(version: 2022_01_21_124342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_170434) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "manuscript_id"
+    t.boolean "has_details", default: false, null: false
     t.index ["author_id"], name: "index_contents_on_author_id"
     t.index ["booklet_id"], name: "index_contents_on_booklet_id"
     t.index ["manuscript_id"], name: "index_contents_on_manuscript_id"
@@ -122,6 +123,8 @@ ActiveRecord::Schema.define(version: 2022_01_20_170434) do
     t.bigint "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "language_id"
+    t.index ["language_id"], name: "index_institutions_on_language_id"
     t.index ["location_id"], name: "index_institutions_on_location_id"
   end
 
@@ -276,6 +279,8 @@ ActiveRecord::Schema.define(version: 2022_01_20_170434) do
     t.string "order_name", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "abbreviation", default: "", null: false
+    t.text "notes", default: "", null: false
   end
 
   create_table "sections", force: :cascade do |t|
@@ -390,6 +395,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_170434) do
   add_foreign_key "contents", "titles"
   add_foreign_key "institutional_affiliations", "institutions"
   add_foreign_key "institutional_affiliations", "religious_orders"
+  add_foreign_key "institutions", "languages"
   add_foreign_key "institutions", "locations"
   add_foreign_key "language_references", "languages"
   add_foreign_key "manuscripts", "institutions"

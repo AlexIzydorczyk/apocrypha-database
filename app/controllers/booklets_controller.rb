@@ -15,18 +15,14 @@ class BookletsController < ApplicationController
   def edit
     @content_types = Booklet.all.pluck(:content_type).uniq.select{ |c| c.present? }.map{ |c| {value: c, text: c} }
     @scribe_reference = PersonReference.new(record_type: "Booklet", record_id: @booklet.id)
-    @contents = @booklet.contents.map{ |c| {id: c.id, seq: c.sequence_no, title: c.title.try(:title_english), author: c.author.try(:full_name)} }
-    @scribes = Person.all
-    @religious_orders = ReligiousOrder.all
-    @institutions = Institution.all
-    @locations = Location.all
   end
 
   def create
     @booklet = Booklet.new(booklet_params)
 
     if @booklet.save
-      redirect_to booklets_url, notice: "Booklet was successfully created."
+      redirect_path = params[:in_manuscript] ? edit_manuscript_booklet_path(@booklet.manuscript, @booklet) : booklets_path
+      redirect_to redirect_path, notice: "Booklet was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -47,6 +43,12 @@ class BookletsController < ApplicationController
   def destroy
     @booklet.destroy
     redirect_to booklets_url, notice: "Booklet was successfully destroyed."
+  end
+
+  def sort
+    params[:booklet].each_with_index do |id, index|
+      Booklet.where(id: id).update_all(booklet_no: index + 1)
+    end
   end
 
   private

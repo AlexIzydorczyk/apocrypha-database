@@ -1,5 +1,6 @@
 class Institution < ApplicationRecord
   belongs_to :location, optional: true
+  belongs_to :language, optional: true
   has_many :manuscripts
   has_many :institutional_affiliations
   has_many :religious_orders, through: :institutional_affiliations
@@ -8,6 +9,6 @@ class Institution < ApplicationRecord
   has_many :booklists
 
   def display_name
-    self.name_english
+    self.name_english || self.name_orig
   end
 end

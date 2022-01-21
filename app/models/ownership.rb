@@ -12,6 +12,10 @@ class Ownership < ApplicationRecord
       text += 'circa ' if self.owner_date_is_approximate?
       text += self.date_from + ' to ' + self.date_to
     end
-
   end
+
+  def display_name
+    [self.person.try(:full_name), self.institution.try(:name_english), self.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ')
+  end
+
 end

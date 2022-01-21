@@ -1,6 +1,6 @@
 <div class="d-flex mt-3">
   <div style="width: 500px" class="me-5">
-    <%= render 'layouts/filetree', tree: manuscript_family_tree(@content.booklet.manuscript) %>
+    <%= render 'layouts/filetree', tree: manuscript_family_tree(@content.manuscript.present? ? @content.manuscript : @content.booklet.manuscript) %>
   </div>
   <div>
     <h1>Content</h1>

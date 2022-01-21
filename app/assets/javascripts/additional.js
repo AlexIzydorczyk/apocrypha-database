@@ -8,7 +8,7 @@ var autoSaveFun = function autosave() {
       $(this).ajaxSubmit(function(data) {
         formChanges[index] = false;
         if(data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
-        window.SnackBar({message: "Autosaved form"})
+        window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
       }.bind($(this)))
     }
   });
@@ -30,7 +30,7 @@ $(function() {
         success: function(data, x, y, form) {
           formChanges[index] = false
           if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
-          window.SnackBar({message: "Saved form"})
+          window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
         }
       });
     });
@@ -53,4 +53,7 @@ $(function() {
     setInterval(autoSaveFun,10000);
 
   }, 250);
+
+  $('[data-bs-toggle="popover"]').popover();
+
 });

@@ -12,16 +12,25 @@ Rails.application.routes.draw do
   resources :booklists
   resources :text_urls
   resources :texts
-  resources :contents
+  resources :contents do
+    collection do
+      put :sort
+    end
+  end
   resources :titles
   resources :apocrypha
   resources :ownerships
   resources :people
-  resources :booklets
+  resources :booklets do
+    collection do
+        put :sort
+      end
+  end
   resources :manuscripts do
       resources :booklets do
         resources :contents
       end
+      resources :contents
   end
   resources :language_references
   resources :institutional_affiliations

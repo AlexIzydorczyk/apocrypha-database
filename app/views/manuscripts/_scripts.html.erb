@@ -5,58 +5,20 @@ $(document).ready(function(){
 		name: 'manuscriptVue',
 		el: '#manuscript-form',
 		data: {
-			known_booklet_composition: <%= manuscript.known_booklet_composition.to_s %>,
-			new_manuscript_content: false,
-			next_content_sequence: <%= manuscript.contents.count %>+1,
-			new_manuscript_content_selected: null,
-			manuscript_contents: <%= @contents.to_json.html_safe %>,
-			next_content_sequence: 1,
+			known_booklet_composition: <%= manuscript.known_booklet_composition %>,
 			is_folios: <%= manuscript.is_folios %>,
-		},
-		watch:{
-
-		},
-		methods:{
-			AddContentToManuscript: function(obj){
-				var vue = this;
-				let split = this.new_manuscript_content_selected.split('_'); //split[0] is 'author' or 'title', split[1] is the id
-				var my_data = {};
-	      my_data.authenticity_token = "<%= form_authenticity_token %>";
-	      my_data.manuscript_id = <%= manuscript.id %>;
-	      my_data.sequence_no = this.next_content_sequence;
-	      split[0] == 'author' ? my_data.author_id = parseInt(split[1]) : my_data.title_id = parseInt(split[1]);
-				$.ajax({
-	        url: "/contents/",
-	        type: 'POST',
-	        data: JSON.stringify(my_data),
-	        contentType: 'application/json',
-	        success: function(data) {
-	        	var text = $('#content-double-select option[value="'+vue.new_manuscript_content_selected+'"]').text().split(':')[1];
-	          var array = (split[0] == 'author' ? [vue.next_content_sequence, null, text] : [vue.next_content_sequence, text, null]);
-						//vue.manuscript_contents.push(array);
-						vue.new_manuscript_content = false;
-	          vue.next_content_sequence += 1;
-	          vue.new_manuscript_content_selected = null;
-	          //new_content_select.clear();
-	        }
-	      });
-			},
-		},
-		computed:{
-
-		},
-		created(){
-
+			has_contents: <%= manuscript.contents.count > 0 %>,
+			has_ownerships: <%= manuscript.ownerships.count > 0 %>,
+			has_booklets: <%= manuscript.booklets.count > 0 %>,
 		},
 		mounted(){
 			runTomSelects();
-			$('.sortable').sortable();
 		},
 	});
 });
 
 function runTomSelects(){
-	new TomSelect("#manuscript-institution-select",{ sortField: {field: "text", direction: "asc"} });
+	new TomSelect("#manuscript_institution_id",{ sortField: {field: "text", direction: "asc"} });
 	new TomSelect("#manuscript_status",{ sortField: {field: "text", direction: "asc"} });
 	new TomSelect("#manuscript_material",{ sortField: {field: "text", direction: "asc"}	});
 	new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });

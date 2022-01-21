@@ -13,13 +13,15 @@ class ContentsController < ApplicationController
   end
 
   def edit
+    @content.update(has_details: true) unless @content.has_details
   end
 
   def create
     @content = Content.new(content_params)
 
     if @content.save
-      redirect_to contents_url, notice: "Content was successfully created."
+      # render :json => { new_url: ownership_path(@ownership) }
+      # redirect_to contents_url, notice: "Content was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -30,7 +32,9 @@ class ContentsController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_to contents_url, notice: "Content was successfully updated."
+        redirect_path = params[:moved_to_booklet] ? edit_manuscript_path(@content.booklet.manuscript) : contents_path
+        notice = params[:moved_to_booklet] ? "Content was successfully moved to booklet." : "Content was successfully updated."
+        redirect_to redirect_path, notice: notice
       end
     else
       render :edit, status: :unprocessable_entity
@@ -40,6 +44,12 @@ class ContentsController < ApplicationController
   def destroy
     @content.destroy
     redirect_to contents_url, notice: "Content was successfully destroyed."
+  end
+
+  def sort
+    params[:content].each_with_index do |id, index|
+      Content.where(id: id).update_all(sequence_no: index + 1)
+    end
   end
 
   private

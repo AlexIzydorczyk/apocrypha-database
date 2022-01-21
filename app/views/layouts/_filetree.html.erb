@@ -30,7 +30,7 @@
 			initial_expanded: { default: false },
 		},
 		data(){ return {
-			expanded: this.initial_expanded,
+			expanded: this.initial_expanded || window.location.pathname == this.url,
 		}},
 		computed: {
 			style() { return {
@@ -39,13 +39,16 @@
 			has_children(){ return this.children.length > 0 },
 			isActive(){ return window.location.pathname == this.url },
 		},
+		mounted(){
+			if(this.isActive) this.$emit('child-open')
+		},
 		template: `<div>
 			<div class="file" :style="style" :class="{ 'active' : isActive }">
 				<i v-if="has_children" class="far pointer" :class="expanded ? 'fa-caret-down' : 'fa-caret-right'" @click="expanded = !expanded"></i>
 				<span v-else>·</span>
 				<a :href="url">{{ name }}</a>
 			</div>
-			<file v-show="expanded" v-for="file in children" v-bind="file" :depth="depth+1" :key="file.url"></file>
+			<file v-show="expanded" v-for="file in children" v-bind="file" :depth="depth+1" :key="file.url" @child-open="expanded = true"></file>
 		</div>`
 	});
 

@@ -17,9 +17,15 @@ class InstitutionsController < ApplicationController
 
   def create
     @institution = Institution.new(institution_params)
-
-    if @institution.save
-      redirect_to institutions_url, notice: "Institution was successfully created."
+    saved = @institution.save
+    if params[:manuscript_id].present?
+      Manuscript.find(params[:manuscript_id]).update(institution_id: @institution.id)
+    elsif params[:booklet_id].present?
+      Booklet.find(params[:booklet_id]).update(genesis_institution_id: @institution.id)
+    end
+    if saved
+      redirect_path = params[:manuscript_id].present? ? edit_manuscript_path(params[:manuscript_id]) : (params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : institutions_path)
+      redirect_to redirect_path, notice: "Institution was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -48,6 +54,6 @@ class InstitutionsController < ApplicationController
     end
 
     def institution_params
-      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :location_id)
+      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :location_id, :original_language)
     end
 end

@@ -28,7 +28,7 @@
     const rowData = [
     <% manuscripts.each do |manuscript| %>
     { id:<%= manuscript.id %>,
-      identifier: "<%= manuscript.identifier %>",census_no: "<%= manuscript.census_no %>",status: "<%= manuscript.status %>",institution_id: "<%= manuscript.institution_id %>",shelfmark: "<%= manuscript.shelfmark %>",old_shelfmark: "<%= manuscript.old_shelfmark %>",material: "<%= manuscript.material %>",dimensions: "<%= manuscript.dimensions %>",leaf_page_no: "<%= manuscript.leaf_page_no %>",date_from: "<%= manuscript.date_from %>",date_to: "<%= manuscript.date_to %>",content_type: "<%= manuscript.content_type %>",notes: "<%= manuscript.notes %>",
+      identifier: "<%= manuscript.identifier %>",census_no: "<%= manuscript.census_no %>",status: "<%= manuscript.status %>",institution_id: "<%= manuscript.institution_id %>",shelfmark: "<%= manuscript.shelfmark %>",old_shelfmark: "<%= manuscript.old_shelfmark %>",material: "<%= manuscript.material %>",dimensions: "<%= manuscript.dimensions %>",leaf_page_no: "<%= manuscript.leaf_page_no %>",date_from: "<%= manuscript.date_from %>",date_to: "<%= manuscript.date_to %>",content_type: "<%= manuscript.content_type %>",notes: `<%= manuscript.notes %>`,
       links: { show: "<%= manuscript_path(manuscript) %>", edit: "<%= edit_manuscript_path(manuscript) %>" }
     },
     <% end %>

@@ -8,6 +8,8 @@
 :root {
   --orange: #9F492D;
   --faded-orange: #9F492D15;
+  --background-grey: #F9F9F9;
+  --modal-background: #EBEBEB;
 }
 
 body,h1,h2,h3,h4,h5,h6,p,a,span,div{
@@ -29,7 +31,8 @@ h1 {
 
 h2 {
   border-bottom: 1px solid #000;
-  margin: 1.5rem 0;
+  margin-bottom: 1.5rem;
+  margin-top: 3rem;
   padding-bottom: 1rem;
   font-size: 20px;
 }
@@ -39,7 +42,17 @@ textarea {
 }
 
 body {
-  background-color: #F9F9F9;
+  background-color: var(--background-grey);
+}
+
+// -------------- colors -----------
+
+.orange {
+  color: var(--orange);
+}
+
+.bg-orange {
+  background-color: var(--orange);
 }
 
 // -------------- bootstrap edits -----------
@@ -53,13 +66,48 @@ body {
   font-weight: 500;
 }
 
+.btn {
+  white-space: nowrap;
+}
+
+.modal {
+  .modal-content {
+    border-radius: 12px;
+  }
+  .modal-footer {
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    height: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
+    .btn {
+      height: 50px;
+    }
+  }
+  .modal-header {
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 82px;
+  }
+  .modal-body{
+    padding: 40px 30px;
+    background-color: var(--modal-background);
+  }
+}
+
 // -------------- custom classes -----------
 
-h2{
-  .btn-action{
-    float: right;
-    margin-top: -6px;
-  }
+h2 .btn-action{
+  float: right;
+  margin-top: -6px;
+  min-width: 150px;
+}
+h1 .btn-action{
+  float: right;
+  margin-top: -6px;
+  min-width: 150px;
 }
 
 .card-link{
@@ -89,6 +137,10 @@ h2{
     font-family: Inter;
     font-weight: 700;
   }
+}
+.card.grey{
+  background-color: rgba(245,245,245,0.4);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .btn-action{
@@ -121,9 +173,15 @@ h2{
 
 
 .breadcrumbs{
-  height: 32px;
+  height: 42px;
   line-height: 32px;
   font-size: 16px;
+  position: sticky;
+  background-color: var(--background-grey);
+  width: 100%;
+  z-index: 100;
+  padding: 5px 0;
+  top: 0;
   a {
     color: var(--orange);
   }
@@ -145,6 +203,13 @@ h2{
 
 .pointer {
   cursor: pointer;
+}
+
+.grab {
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
 }
 
 .user-icon {
