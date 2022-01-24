@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_21_124342) do
+ActiveRecord::Schema.define(version: 2022_01_24_215122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(version: 2022_01_21_124342) do
     t.string "language_name", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "requires_transliteration", default: false, null: false
   end
 
   create_table "locations", force: :cascade do |t|
@@ -159,6 +160,12 @@ ActiveRecord::Schema.define(version: 2022_01_21_124342) do
     t.integer "latitude"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "city_orig_language_id"
+    t.bigint "region_orig_language_id"
+    t.bigint "diocese_orig_language_id"
+    t.index ["city_orig_language_id"], name: "index_locations_on_city_orig_language_id"
+    t.index ["diocese_orig_language_id"], name: "index_locations_on_diocese_orig_language_id"
+    t.index ["region_orig_language_id"], name: "index_locations_on_region_orig_language_id"
   end
 
   create_table "manuscripts", force: :cascade do |t|
@@ -398,6 +405,9 @@ ActiveRecord::Schema.define(version: 2022_01_21_124342) do
   add_foreign_key "institutions", "languages"
   add_foreign_key "institutions", "locations"
   add_foreign_key "language_references", "languages"
+  add_foreign_key "locations", "languages", column: "city_orig_language_id"
+  add_foreign_key "locations", "languages", column: "diocese_orig_language_id"
+  add_foreign_key "locations", "languages", column: "region_orig_language_id"
   add_foreign_key "manuscripts", "institutions"
   add_foreign_key "modern_source_references", "modern_sources"
   add_foreign_key "modern_sources", "locations", column: "publication_location_id"

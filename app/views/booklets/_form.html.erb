@@ -62,7 +62,10 @@
 	</div>
 	<div class="form-group col-md-12 mb-2">
 		<%= form.label :genesis_location_id, "Location", style: "display: block" %>
-		<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Search location"} %>
+		<div class="d-flex">
+			<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Search location"} %>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#location-modal">New</button>
+		</div>
 	</div>
 </div>
 
@@ -90,6 +93,7 @@
 <%= render 'contents/modals/form', parent: booklet, content: booklet.contents.new %>
 <%= render 'institutions/modals/new', institution: Institution.new, parent: booklet %>
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet %>
+<%= render 'locations/modals/form', location: Location.new, parent: booklet %>
 
 <!-- Scripts -->
 <script type="text/javascript">

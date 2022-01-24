@@ -17,9 +17,13 @@ class LocationsController < ApplicationController
 
   def create
     @location = Location.new(location_params)
-
-    if @location.save
-      redirect_to locations_url, notice: "Location was successfully created."
+    saved = @location.save
+    if params[:booklet_id].present?
+      Booklet.find(params[:booklet_id]).update(genesis_location_id: @location.id)
+    end
+    if saved
+      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : locations_path
+      redirect_to redirect_path, notice: "Location was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -48,6 +52,6 @@ class LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:country, :city_english, :city_orig, :city_translilteration, :region_english, :region_orig, :region_transliteration, :diocese_english, :diocese_orig, :diocese_transliteration, :longitude, :latitude)
+      params.require(:location).permit(:country, :city_english, :city_orig, :city_translilteration, :region_english, :region_orig, :region_transliteration, :diocese_english, :diocese_orig, :diocese_transliteration, :longitude, :latitude, :city_orig_language_id, :region_orig_language_id, :diocese_orig_language_id)
     end
 end

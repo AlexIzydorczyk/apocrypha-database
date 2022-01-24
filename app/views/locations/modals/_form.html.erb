@@ -1,0 +1,76 @@
+<div class="modal fade" id="location-modal" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: location, url: location.new_record? ? locations_path : location_path(location)) do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Location</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label><span class="fw-bolder">Location</span> (City, town, village, other)</label>
+				<language-form-groups
+					class="mb-4"
+					key="location-name"
+					record_type="location"
+					name="Location"
+					language_column="city_orig_language_id"
+					orig="city_orig"
+					translit="city_translilteration"
+					eng="city_english"
+				></language-form-groups>
+				<%= form.label "Diocese", class: "fw-bolder" %>
+				<language-form-groups
+					class="mb-4"
+					key="diocese"
+					record_type="location"
+					name="Diocese"
+					language_column="diocese_orig_language"
+					orig="diocese_orig"
+					translit="diocese_transliteration"
+					eng="diocese_english"
+				></language-form-groups>
+				<%= form.label "Region", class: "fw-bolder" %>
+				<language-form-groups
+					class="mb-4"
+					key="region"
+					record_type="location"
+					name="Region"
+					language_column="region_orig_language"
+					orig="region_orig"
+					translit="region_transliteration"
+					eng="region_english"
+				></language-form-groups>
+				<%= form.label "Country", class: "fw-bolder" %>
+				<%= form.text_field :country, placeholder: "Country in English", class:"form-control mb-4" %>
+				<%= form.label "Coordinates of location", class: "fw-bolder" %>
+				<div class="row">
+					<div class="col-md-6 d-flex align-items-center">
+						<%= form.label :longitude %>
+						<%= form.text_field :longitude, placeholder: "degrees north", class: "form-control" %>
+					</div>
+					<div class="col-md-6 d-flex align-items-center">
+						<%= form.label :latitude %>
+						<%= form.text_field :latitude, placeholder: "degrees east", class: "form-control" %>
+					</div>
+				</div>
+			</div>
+			<% if parent.class == Booklet %>
+				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% end %>
+			<div class="modal-footer">
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+		vue_name = new Vue({
+			el: "#location-modal",
+			name: "LocationModal",
+		});
+	});
+	<%= render "layouts/language_form_group" %>
+</script>

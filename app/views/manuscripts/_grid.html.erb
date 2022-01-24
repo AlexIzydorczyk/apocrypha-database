@@ -18,7 +18,7 @@
     { headerName: "Date from", field: "date_from", hide: true },
     { headerName: "Date to", field: "date_to", hide: true },
     { headerName: "Content type", field: "content_type"},
-    { headerName: "Notes", field: "notes", hide: true },
+    { headerName: "Notes", field: "notes", hide: true, cellEditor: 'agLargeTextCellEditor', },
     { headerName: "Links", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
       // removed <a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a> from return
       return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"

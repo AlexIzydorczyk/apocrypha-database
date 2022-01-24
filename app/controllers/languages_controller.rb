@@ -48,6 +48,6 @@ class LanguagesController < ApplicationController
     end
 
     def language_params
-      params.require(:language).permit(:language_name)
+      params.require(:language).permit(:language_name, :requires_transliteration)
     end
 end

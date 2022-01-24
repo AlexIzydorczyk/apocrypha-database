@@ -17,22 +17,12 @@ class ReligiousOrdersController < ApplicationController
 
   def create
     @religious_order = ReligiousOrder.new(religious_order_params)
-
-    if @religious_order.save
-      redirect_to religious_orders_url, notice: "Religious order was successfully created."
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def create
-    @religious_order = ReligiousOrder.new(religious_order_params)
-    saved = @institution.save
+    saved = @religious_order.save
     if params[:booklet_id].present?
-      Booklet.find(params[:booklet_id]).update(genesis_religious_order: @religious_order.id)
+      Booklet.find(params[:booklet_id]).update(genesis_religious_order_id: @religious_order.id)
     end
     if saved
-      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path)
+      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path
       redirect_to redirect_path, notice: "Religious order was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -42,7 +32,7 @@ class ReligiousOrdersController < ApplicationController
   def update
     if @religious_order.update(religious_order_params)
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render json: {status: "updated"}  
       else
         redirect_to religious_orders_url, notice: "Religious order was successfully updated."
       end
