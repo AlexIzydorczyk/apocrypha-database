@@ -11,10 +11,19 @@
 		<%= form.text_field :decoration, class: "form-control" %>
 	</div>
 
+	<div class="row my-3">
+		<div class="col col-lg-3" v-show="!add_title">
+			<button type="button" class="btn btn-action w-100" @click="add_title = true">Add Title</button>
+		</div>
+		<div class="col col-lg-3" v-show="!add_colophon">
+			<button type="button" class="btn btn-action w-100" @click="add_colophon = true">Add Colophon</button>
+		</div>
+	</div>
 
-	<div class="row pt-4">
+
+	<div class="row pt-4" v-show="add_title">
 		<div class="col-1" style="border-right: 3px solid rgba(0,0,0,0.3)">
-				<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Title</div>
+			<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Title</div>
 		</div>
 		<div class="col">
 			<div class="row">
@@ -39,9 +48,9 @@
 	</div>
 
 
-	<div class="row pt-4">
+	<div class="row pt-4" v-show="add_colophon">
 		<div class="col-1" style="border-right: 3px solid rgba(0,0,0,0.3)">
-				<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Colophon</div>
+			<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Colophon</div>
 		</div>
 		<div class="col">
 			<div class="row">
@@ -103,6 +112,21 @@
 <% end %>
 
 <script type="text/javascript">
+	let textVue;
+	$(document).ready(function(){
+		textVue = new Vue({
+			name: 'textVue',
+			el: '#text-form',
+			data: {
+				add_title: false,
+				add_colophon: false,
+			},
+			mounted(){
+
+			},
+		});
+	});
+
 	$(function() {
 		new TomSelect("#text_transcriber_id",{
 			sortField: {

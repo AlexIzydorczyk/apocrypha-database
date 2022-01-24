@@ -7,8 +7,6 @@
     <i class="far fa-chevron-right"></i>
     <%= link_to @text.find_manuscript.display_name, edit_manuscript_path(@text.find_manuscript) %>
     <i class="far fa-chevron-right"></i>
-    <%= link_to 'Booklets', booklets_path %>
-    <i class="far fa-chevron-right"></i>
     <%= link_to @text.content.booklet.display_name, edit_manuscript_booklet_path(@text.find_manuscript, @text.content.booklet) %>
     <i class="far fa-chevron-right"></i>
     <%= @text.content.display_name %>
@@ -28,11 +26,11 @@
 </div>
 
 
-<div class="d-flex mt-2">
-  <div style="width: 500px" class="me-5">
+<div class="row mt-2">
+  <div class="col-md-4 col-lg-3">
     <%= render 'layouts/filetree', tree: manuscript_family_tree(@text.find_manuscript) %>
   </div>
-  <div>
+  <div class="col-md-8 col-lg-9">
     <h1><%= @text.content.display_name %></h1>
     <%= render "form", text: @text %>
   </div>

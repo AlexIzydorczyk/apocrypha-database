@@ -8,14 +8,14 @@ module ManuscriptsHelper
 					{
 						name: b.display_name,
 						url: edit_manuscript_booklet_path(manuscript, b),
-						children: b.contents.map{ |c| {
+						children: b.contents.with_text.map{ |c| {
 							name: c.short_name,
-							url: edit_manuscript_booklet_content_path(manuscript, b, c)
+							url: edit_manuscript_booklet_content_text_path(manuscript, b, c, c.text)
 						} }
 					}
-				} + manuscript.contents.map{ |c| {
+				} + manuscript.contents.with_text.map{ |c| {
 					name: c.short_name,
-					url: (c.text.present? ? edit_manuscript_content_text_path(manuscript, c, c.text) : edit_manuscript_content_path(manuscript, c)) #todo-change this to new text for content
+					url: edit_manuscript_content_text_path(manuscript, c, c.text)
 				} }
 			}
 		]

@@ -19,7 +19,14 @@ class TextsController < ApplicationController
     @text = Text.new(text_params)
 
     if @text.save
-      redirect_to texts_url, notice: "Text was successfully created."
+      content_parent = @text.content.try(:parent)
+      if content_parent.class == Manuscript
+        redirect_to edit_manuscript_content_text_path(content_parent, @text.content, @text)
+      elsif content_parent.class == Booklet
+        redirect_to edit_manuscript_booklet_content_text_path(content_parent.manuscript, content_parent, @text.content, @text)
+      else
+        redirect_to texts_url, notice: "Text was successfully created."
+      end
     else
       render :new, status: :unprocessable_entity
     end
