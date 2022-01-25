@@ -25,11 +25,26 @@ class PeopleController < ApplicationController
     end
   end
 
+   def create
+    @person = Person.new(person_params)
+    saved = @person.save
+    if params[:booklet_id].present?
+      PersonReference.create(record: Booklet.find(params[:booklet_id]), person: @person)
+    end
+    if saved
+      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : people_path
+      redirect_to redirect_path, notice: "Person was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+
   def update
     if @person.update(person_params)
       if request.xhr?
         render :json => {"status": "updated"}  
-      else
+      elsez
         redirect_to people_url, notice: "Person was successfully updated."
       end
     else
@@ -48,6 +63,6 @@ class PeopleController < ApplicationController
     end
 
     def person_params
-      params.require(:person).permit(:first_name, :middle_name, :last_name, :name_english, :name_vernacular, :name_vernacular_transliteration, :latin_name, :birth_date, :death_date, :character, :viaf)
+      params.require(:person).permit(:language_id, :prefix_vernacular, :suffix_vernacular, :first_name_vernacular, :middle_name_vernacular, :last_name_vernacular, :prefix_transliteration, :suffix_transliteration, :first_name_transliteration, :middle_name_transliteration, :last_name_transliteration, :prefix_english, :suffix_english, :first_name_english, :middle_name_english, :last_name_english, :birth_date, :death_date, :character, :viaf)
     end
 end

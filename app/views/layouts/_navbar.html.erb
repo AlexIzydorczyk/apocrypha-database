@@ -17,6 +17,7 @@
           <%= current_user.email.upcase.first %>
         </div>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-dropdown-button">
+          <li><h6 class="dropdown-header">Account</h6></li>
           <li><%= link_to "Sign out", destroy_user_session_path, class: "dropdown-item" %></li>
         </ul>
       </div>

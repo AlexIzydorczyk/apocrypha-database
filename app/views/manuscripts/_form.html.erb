@@ -1,4 +1,5 @@
-<%= form_with(model: manuscript, id: "manuscript-form", class: "autosave") do |form| %>
+<div id="manuscript-form">
+<%= form_with(model: manuscript, class: "autosave") do |form| %>
 
 <div class="row">
 	<div class="form-group col-md-3 mb-2">
@@ -115,6 +116,11 @@
 	</div>
 </div>
 
+<div class="fixed-bottom text-end pb-3 pe-3" style="z-index: 0">
+	<%= form.submit "Save now", class: "btn btn-action px-5"%>
+</div>
+<% end %>
+
 <template v-if="!known_booklet_composition || has_ownerships">
 	<h2 id="manuscripts">Provenances of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 	<%= render 'ownerships/list', parent: manuscript %>
@@ -125,10 +131,7 @@
 	<%= render 'contents/list', parent: manuscript %>
 </template>
 
-<div class="fixed-bottom text-end pb-3 pe-3" style="z-index: 0">
-	<%= form.submit "Save now", class: "btn btn-action px-5"%>
 </div>
-<% end %>
 
 <!-- Additional forms -->
 <%= button_to 'Add booklet', manuscript_booklets_path(manuscript), class: "btn btn-action d-none", id: "add-booklet", params: { booklet: { manuscript_id: manuscript.id, booklet_no: manuscript.booklets.count+1 }, in_manuscript: true } %>

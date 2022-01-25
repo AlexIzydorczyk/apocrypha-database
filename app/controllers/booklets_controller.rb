@@ -14,7 +14,7 @@ class BookletsController < ApplicationController
 
   def edit
     @content_types = Booklet.all.pluck(:content_type).uniq.select{ |c| c.present? }.map{ |c| {value: c, text: c} }
-    @scribe_reference = PersonReference.new(record_type: "Booklet", record_id: @booklet.id)
+    @scribe_reference = @booklet.scribe_references.build
   end
 
   def create
@@ -29,6 +29,10 @@ class BookletsController < ApplicationController
   end
 
   def update
+    new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+    PersonReference.where(record: @booklet, person_id: @booklet.scribes.ids - new_set).destroy_all
+    build_scribe_references_for new_set - @booklet.scribes.ids
+
     if @booklet.update(booklet_params)
       if request.xhr?
         render :json => {"status": "updated"}  
@@ -52,11 +56,21 @@ class BookletsController < ApplicationController
   end
 
   private
-    def set_booklet
-      @booklet = Booklet.find(params[:id])
-    end
 
-    def booklet_params
-      params.require(:booklet).permit(:manuscript_id, :booklet_no, :pages_folios_from, :pages_folios_to, :date_from, :date_to, :specific_date, :genesis_location_id, :genesis_institution_id, :genesis_religious_order_id, :content_type)
+  def set_booklet
+    @booklet = Booklet.find(params[:id])
+  end
+
+  def booklet_params
+    params.require(:booklet).permit(:manuscript_id, :booklet_no, :pages_folios_from, :pages_folios_to, :date_from, :date_to, :specific_date, :genesis_location_id, :genesis_institution_id, :genesis_religious_order_id, :content_type, person_references_attributes: [], texts_attributes: [])
+  end
+
+  def build_scribe_references_for ids
+    ids.each do |id|
+      if id.present?
+        @booklet.scribe_references.build(person_id: id)
+      end
     end
+  end
+
 end

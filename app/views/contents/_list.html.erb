@@ -8,14 +8,16 @@
 				<% if c.text.present? %>
 					<%= link_to "Open", parent.class == Manuscript ? edit_manuscript_content_text_path(parent, c, c.text) : edit_manuscript_booklet_content_text_path(parent.manuscript, parent, c, c.text), class: "btn btn-outline-action" %>
 				<% else %>
-					<%= button_to 'Add details', (parent.class == Manuscript ? manuscript_content_texts_path(parent, c) : manuscript_booklet_content_texts_path(parent.manuscript, parent, c)), class: "btn btn-outline-action", params: { text: { content_id: c.id } } %>
+					<%= button_to 'Add details', texts_path, class: "btn btn-outline-action", params: { text: { content_id: c.id } } %>
 				<% end %>
 				<div class="dropdown">
 				  <button class="btn btn-outline-action ms-2" type="button" id="content-options-<%= c.id %>" data-bs-toggle="dropdown" aria-expanded="false">
 				  	<i class="far fa-ellipsis-h"></i>
 				  </button>
 				  <ul class="dropdown-menu" aria-labelledby="content-options-<%= c.id %>">
-				    <% if parent.class == Manuscript && parent.booklets.any? %><li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#move-content-<%= c.id %>">Move to booklet</button></li><% end %>
+				    <% if parent.class == Manuscript && parent.booklets.any? %>
+				    	<li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#move-content-<%= c.id %>">Move to booklet</button></li>
+				    <% end %>
 				    <li><%= link_to "Edit content", '#contents', class: "dropdown-item", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"+c.id.to_s} %></li>
 				  </ul>
 				</div>

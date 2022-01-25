@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_215122) do
+ActiveRecord::Schema.define(version: 2022_01_25_120543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,19 +257,29 @@ ActiveRecord::Schema.define(version: 2022_01_24_215122) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string "first_name", default: "", null: false
-    t.string "middle_name", default: "", null: false
-    t.string "last_name", default: "", null: false
-    t.string "name_english", default: "", null: false
-    t.string "name_vernacular", default: "", null: false
-    t.string "name_vernacular_transliteration", default: "", null: false
-    t.string "latin_name", default: "", null: false
+    t.string "first_name_vernacular", default: "", null: false
+    t.string "middle_name_vernacular", default: "", null: false
+    t.string "last_name_vernacular", default: "", null: false
+    t.string "first_name_english", default: "", null: false
+    t.string "first_name_transliteration", default: "", null: false
     t.string "birth_date", default: "", null: false
     t.string "death_date", default: "", null: false
     t.string "character", default: "", null: false
     t.string "viaf", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "language_id"
+    t.string "prefix_vernacular", default: "", null: false
+    t.string "suffix_vernacular", default: "", null: false
+    t.string "prefix_transliteration", default: "", null: false
+    t.string "suffix_transliteration", default: "", null: false
+    t.string "middle_name_transliteration", default: "", null: false
+    t.string "last_name_transliteration", default: "", null: false
+    t.string "prefix_english", default: "", null: false
+    t.string "suffix_english", default: "", null: false
+    t.string "middle_name_english", default: "", null: false
+    t.string "last_name_english", default: "", null: false
+    t.index ["language_id"], name: "index_people_on_language_id"
   end
 
   create_table "person_references", force: :cascade do |t|
@@ -417,6 +427,7 @@ ActiveRecord::Schema.define(version: 2022_01_24_215122) do
   add_foreign_key "ownerships", "manuscripts"
   add_foreign_key "ownerships", "people"
   add_foreign_key "ownerships", "religious_orders"
+  add_foreign_key "people", "languages"
   add_foreign_key "person_references", "people"
   add_foreign_key "sections", "texts"
   add_foreign_key "source_urls", "modern_sources"
