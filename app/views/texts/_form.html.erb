@@ -2,11 +2,28 @@
 
 <div class="row">
 	<%= form.hidden_field :content_id%>
-	<div class="form-group col-4 mb-2">
-		<%= form.label :text_pages_folios, style: "display: block" %>
-		<%= form.text_field :text_pages_folios, class: "form-control" %>
+	<div class="form-group col-md-5 mb-2">
+		<!-- this needs to include to, from, and folios type -->
+		<%= form.label "Location of #{text.find_manuscript.is_folios ? "folios" : "pages"} of the text", style: "display: block" %>
+		<div class="d-flex align-items-baseline">
+			<div class="input-group">
+				<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+				<%= form.text_field :text_pages_folios_from, class: "form-control border-start-0" %>
+			</div>
+			<span class="mx-2">to</span>
+			<div class="input-group">
+				<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+				<%= form.text_field :text_pages_folios_to, class: "form-control border-start-0" %>
+			</div>
+		</div>
 	</div>
-	<div class="form-group col-4 mb-2">
+	<%= fields_for(@language_references) do |lr| %>
+		<div class="form-group col-md-5 mb-2">
+			<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
+			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: text.languages.map(&:id)}, {class: "form-control", multiple: true} %>
+		</div>
+	<% end %>
+	<div class="form-group col-10 mb-2">
 		<%= form.label :decoration, style: "display: block" %>
 		<%= form.text_field :decoration, class: "form-control" %>
 	</div>
@@ -28,8 +45,19 @@
 		<div class="col">
 			<div class="row">
 				<div class="form-group col-md-6 mb-2">
-					<%= form.label :title_folios_pages, style: "display: block" %>
-					<%= form.text_field :title_folios_pages, class: "form-control" %>
+					<!-- this needs to include to, from, and folios type -->
+					<%= form.label "Location of #{text.find_manuscript.is_folios ? "folios" : "pages"} of the text", style: "display: block" %>
+					<div class="d-flex align-items-baseline">
+						<div class="input-group">
+							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<%= form.text_field :title_pages_folios_from, class: "form-control border-start-0" %>
+						</div>
+						<span class="mx-2">to</span>
+						<div class="input-group">
+							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<%= form.text_field :title_pages_folios_to, class: "form-control border-start-0" %>
+						</div>
+					</div>
 				</div>
 				<div class="form-group col-md-6 mb-2">
 					<%= form.label :manuscript_title_orig, style: "display: block" %>
@@ -55,8 +83,19 @@
 		<div class="col">
 			<div class="row">
 				<div class="form-group col-md-6 mb-2">
-					<%= form.label :pages_folios_colophon, style: "display: block" %>
-					<%= form.text_field :pages_folios_colophon, class: "form-control" %>
+					<!-- this needs to include to, from, and folios type -->
+					<%= form.label "Location of #{text.find_manuscript.is_folios ? "folios" : "pages"} of the text", style: "display: block" %>
+					<div class="d-flex align-items-baseline">
+						<div class="input-group">
+							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<%= form.text_field :colophon_pages_folios_from, class: "form-control border-start-0" %>
+						</div>
+						<span class="mx-2">to</span>
+						<div class="input-group">
+							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<%= form.text_field :colophon_pages_folios_to, class: "form-control border-start-0" %>
+						</div>
+					</div>
 				</div>
 				<div class="form-group col-md-6 mb-2">
 					<%= form.label :colophon_orig, style: "display: block" %>
@@ -129,6 +168,14 @@
 
 	$(function() {
 		new TomSelect("#text_transcriber_id",{
+			sortField: {
+				field: "text",
+				direction: "asc"
+			},
+			maxItems: 1,
+		});
+
+		new TomSelect("#language_reference_id",{
 			sortField: {
 				field: "text",
 				direction: "asc"

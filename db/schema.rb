@@ -335,13 +335,13 @@ ActiveRecord::Schema.define(version: 2022_01_25_120543) do
 
   create_table "texts", force: :cascade do |t|
     t.bigint "content_id"
-    t.string "text_pages_folios", default: "", null: false
+    t.string "text_pages_folios_from", default: "", null: false
     t.string "decoration", default: "", null: false
-    t.string "title_folios_pages", default: "", null: false
+    t.string "title_pages_folios_from", default: "", null: false
     t.string "manuscript_title_orig", default: "", null: false
     t.string "manuscript_title_orig_transliteration", default: "", null: false
     t.string "manuscript_title_translation", default: "", null: false
-    t.string "pages_folios_colophon", default: "", null: false
+    t.string "colophon_pages_folios_from", default: "", null: false
     t.string "colophon_orig", default: "", null: false
     t.string "colophon_transliteration", default: "", null: false
     t.string "colophon_translation", default: "", null: false
@@ -351,6 +351,9 @@ ActiveRecord::Schema.define(version: 2022_01_25_120543) do
     t.string "extent", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "text_pages_folios_to", default: "", null: false
+    t.string "title_pages_folios_to", default: "", null: false
+    t.string "colophon_pages_folios_to", default: "", null: false
     t.index ["content_id"], name: "index_texts_on_content_id"
     t.index ["transcriber_id"], name: "index_texts_on_transcriber_id"
   end

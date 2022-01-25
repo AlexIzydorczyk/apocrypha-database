@@ -13,10 +13,13 @@ class TextsController < ApplicationController
   end
 
   def edit
+    @languages = Language.all
+    @language_references = @text.language_references.build
   end
 
   def create
     @text = Text.new(text_params)
+    build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @text.save
       content_parent = @text.content.try(:parent)
@@ -33,6 +36,10 @@ class TextsController < ApplicationController
   end
 
   def update
+    new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+    LanguageReference.where(record: @text, language_id: @text.languages.ids - new_set).destroy_all
+    build_language_references_for new_set - @text.languages.ids
+
     if @text.update(text_params)
       if request.xhr?
         render :json => {"status": "updated"}  
@@ -50,11 +57,19 @@ class TextsController < ApplicationController
   end
 
   private
-    def set_text
-      @text = Text.find(params[:id])
-    end
+  def set_text
+    @text = Text.find(params[:id])
+  end
 
-    def text_params
-      params.require(:text).permit(:content_id, :text_pages_folios, :decoration, :title_folios_pages, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent)
+  def text_params
+    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_folios_pages, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent)
+  end
+
+  def build_language_references_for ids
+    ids.each do |id|
+      if id.present?
+        @text.language_references.build(language_id: id)
+      end
     end
+  end
 end
