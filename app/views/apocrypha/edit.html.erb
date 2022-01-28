@@ -1,10 +1,12 @@
-<h1>Editing apocryphon</h1>
-
-<%= render "form", apocryphon: @apocryphon %>
-
-<br>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= link_to 'Apocrypha', apocrypha_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= @apocryphon.display_name %>
+</div>
 
 <div>
-  <%= link_to "Show this apocryphon", @apocryphon %> |
-  <%= link_to "Back to apocrypha", apocrypha_path %>
+  <h1>Apocryphon</h1>
+  <%= render "form", apocryphon: @apocryphon %>
 </div>

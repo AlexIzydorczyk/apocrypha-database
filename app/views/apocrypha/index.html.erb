@@ -1,5 +1,10 @@
-<h1>Apocrypha</h1>
-<p><%= link_to "New apocryphon", new_apocryphon_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  Apocrypha
+</div>
+
+<h1>Apocrypha <%= button_to 'New apocrypha', apocrypha_path, class: "btn btn-action", params: { apocryphon: { apocryphon_no: "" } } %></h1>
 
 <div id="apocrypha">
     <%= render 'grid', apocrypha: @apocrypha %>

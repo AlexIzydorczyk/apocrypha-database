@@ -1,0 +1,40 @@
+<div class="modal fade" id="title-modal" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: title, url: title.new_record? ? titles_path : title_path(title)) do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Title</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<%= form.hidden_field :apocryphon_id, value: @apocryphon.id %>
+				<%= form.label :title, class: "fw-bolder" %>
+				<language-form-groups
+					class="mb-4"
+					key="title-name"
+					record_type="title"
+					name="title"
+					language_column="language_id"
+					orig="title_orig"
+					translit="title_orig_translilteration"
+					translation="title_translation"
+				></language-form-groups>
+			</div>
+			<div class="modal-footer">
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	var title_modal_vue;
+	$( document ).ready(function() {
+		title_modal_vue = new Vue({
+			el: "#title-modal",
+			name: "TitleModal",
+		});
+	});
+	<%= render "layouts/language_form_group" %>
+</script>
