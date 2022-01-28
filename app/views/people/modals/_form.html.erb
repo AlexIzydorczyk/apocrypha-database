@@ -1,4 +1,4 @@
-<div class="modal fade" id="person-modal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="<%= pid %>person-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: person, url: person.new_record? ? people_path : person_path(person)) do |form| %>
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
@@ -18,8 +18,7 @@
 				</div>
 				<div class="row my-2">
 					<div class="col-md-2">
-						<select placeholder="Language" v-model="language" name="person[language_id]" class="form-control">
-							<option value=""></option>
+						<select placeholder="Language" v-model="language" name="person[language_id]" class="lang-sel form-control" required>
 							<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
 						</select>
 					</div>
@@ -94,9 +93,11 @@
 			</div>
 			<% if parent.class == Booklet %>
 				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: "timeoutReload()" %>
+				<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}person-modal .ownership-field').val()" : "") + ")") %>
 			</div>
 		</div>
 	</div>
@@ -107,8 +108,8 @@
 	var person_modal_vue;
 	$( document ).ready(function() {
 		person_modal_vue = new Vue({
-			el: "#person-modal",
-			name: "PersonModal",
+			el: "#<%= pid %>person-modal",
+			name: "<%= pid %>PersonModal",
 			data(){ return{
 				languages: <%= Language.all.to_json.html_safe %>,
 				language: '',
@@ -123,7 +124,8 @@
 				}
 			},
 			mounted(){
-				new TomSelect(`#person-modal select`,{ sortField: {field: "text", direction: "asc"}, maxItems: 1 });
+				createModalListeners();
+				new TomSelect('#<%= pid %>person-modal select.lang-sel',{ sortField: {field: "text", direction: "asc"}, maxItems: 1 });
 			}
 		});
 	});

@@ -9,6 +9,6 @@ class Institution < ApplicationRecord
   has_many :booklists
 
   def display_name
-    self.name_english || self.name_orig
+    self.name_orig
   end
 end

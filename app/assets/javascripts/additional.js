@@ -14,10 +14,34 @@ var autoSaveFun = function autosave() {
   });
 }
 
-function timeoutReload(){
+var setModalPositioning = function modalPosition(){
+  let num_open = $(".modal.show").length;
+  $(".modal-backdrop.show").css('opacity', 0.5/num_open);
+  $.each($(".modal.show").toArray().sort((a, b) => a.getAttribute('data-depth') - b.getAttribute('data-depth')), function(i, v) {
+    $(v).css({width: (100/num_open)+'%', marginLeft: ((100/num_open)*i)+'%'});
+  });
+}
+
+function timeoutReload(location_hash){
+  if(location_hash) location.hash = location_hash;
+  else location.hash = ''
   setTimeout(function(){
     location.reload();
   }, 200)
+}
+
+function saveForm(form, input_for_id=null) {
+  var id;
+  form.ajaxSubmit(function(data) {
+    if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
+    window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
+    if(input_for_id) input_for_id.val(data.id);
+  })
+}
+
+function createModalListeners() {
+  $('.modal').on('shown.bs.modal', setModalPositioning);
+  $('.modal').on('hidden.bs.modal', setModalPositioning);
 }
 
 // --------- rdy ---------
@@ -34,6 +58,7 @@ $(function() {
         }
       });
     });
+    $('.modal').modal({backdrop: 'static', keyboard: false})  
 
     formChanges = $('form.autosave').map(function() { return false; });
 
@@ -53,7 +78,12 @@ $(function() {
     setInterval(autoSaveFun,10000);
 
   }, 250);
-
+ 
   $('[data-bs-toggle="popover"]').popover();
+
+  createModalListeners();
+  if($(location.hash).hasClass("modal")) setTimeout(function() {
+    $(location.hash).modal('show');
+  }, 100); 
 
 });

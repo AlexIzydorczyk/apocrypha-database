@@ -1,4 +1,4 @@
-<div class="modal fade" id="new-institution-modal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="<%= pid %>new-institution-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: institution) do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -10,7 +10,7 @@
 				<label class="fw-bolder">Institution name</label>
 				<language-form-groups
 					class="mb-4"
-					key="instiution-name"
+					key="<%= pid %>instiution-name"
 					record_type="institution"
 					name="Insitution"
 					language_column="language_id"
@@ -27,11 +27,13 @@
 			</div>
 			<% if parent.class == Manuscript %>
 				<%= hidden_field_tag :manuscript_id, parent.id %>
-			<% else %>
+			<% elsif parent.class == Booklet %>
 				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-institution-modal .ownership-field').val()" : "") + ")") %>
 			</div>
 		</div>
 	</div>
@@ -42,8 +44,11 @@
 	var institutution_modal_vue;
 	$( document ).ready(function() {
 		institutution_vue = new Vue({
-			el: "#new-institution-modal",
-			name: "NewInstitutionModal",
+			el: "#<%= pid %>new-institution-modal",
+			name: "<%= pid %>NewInstitutionModal",
+			mounted(){
+				createModalListeners();
+			},
 		});
 	});
 	<%= render "layouts/language_form_group" %>

@@ -1,10 +1,10 @@
-<div class="modal fade" id="addProvenanceModal<%= ownership.try(:id) %>" tabindex="-1" aria-hidden="true">
+<div class="modal" id="addProvenanceModal<%= ownership.try(:id) %>" tabindex="-1" aria-hidden="true" data-depth="0">
 	<%= form_with(model: ownership, class: "#{'autosave' unless ownership.new_record?}") do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title"><%= ownership.id.present? ? 'Edit' : 'Add' %> Provenance</h5>
-				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal" aria-label="close" :disabled="sub_modal_open">Cancel</button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -26,11 +26,17 @@
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :person_id, "Person", style: "display: block" %>
-						<%= form.collection_select :person_id, Person.all, :id, :full_name, {selected: ownership.person_id, include_blank: true}, {class: "form-control", placeholder: "Select a person"} %>
+						<div class="d-flex">
+							<%= form.collection_select :person_id, Person.all, :id, :full_name, {selected: ownership.person_id, include_blank: true}, {class: "form-control", placeholder: "Select a person"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn', '#ownership-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :institution_id, "Institution", style: "display: block" %>
-						<%= form.collection_select :institution_id, Institution.all, :id, :name_english, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
+						<div class="d-flex">
+							<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn', '#ownership-new-institution-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :religious_order_id, "Religious Order", style: "display: block" %>
@@ -50,45 +56,72 @@
 
 			</div>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+				 <%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()", ":disabled": "sub_modal_open" %>
 			</div>
-		</div>
+		</div> 
 	</div>
-	<% end %>	
+	<% end %>
 </div>
 
+<%= render 'people/modals/form', person: Person.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+
+
 <script type="text/javascript">
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		}
-	});
 
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		}
-	});
+	$( document ).ready(function() {
+		ownership_modal = new Vue({
+			el: "#addProvenanceModal<%= ownership.try(:id) %>",
+			name: "ProvenanceModal<%= ownership.try(:id) %>",
+			data: {
+				sub_modal_open: false,
+			},
+			watch: {
+			},
+			methods: {
+				openSubModal(button_selector, selector){
+					saveForm($(button_selector).closest('form'), $(selector + ' .ownership-field'));
+					$(selector).modal('show');
+					$('.modal').on('hidden.bs.modal', function() {
+						this.sub_modal_open = false;
+					}.bind(this));
+					this.sub_modal_open = true;
+				}
+			},
+			computed: {
+			},
+			mounted(){
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id",{
+					sortField: {
+						field: "text",
+						direction: "asc"
+					}
+				});
 
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		}
-	});
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id",{
+					sortField: {
+						field: "text",
+						direction: "asc"
+					}
+				});
 
-	new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		}
-	});
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id",{
+					sortField: {
+						field: "text",
+						direction: "asc"
+					}
+				});
 
-	<% unless ownership.new_record? %>
-		$("#addProvenanceModal<%= ownership.try(:id) %>").on("hidden.bs.modal", function () {
-			$(this).find('input[type=submit]').click();
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id",{
+					sortField: {
+						field: "text",
+						direction: "asc"
+					}
+				});
+
+				createModalListeners();
+			}
 		});
-	<% end %>
+	});
+		
 </script>

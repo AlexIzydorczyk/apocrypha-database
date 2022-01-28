@@ -43,10 +43,10 @@
 <div class="row">
 	<%= fields_for(@scribe_reference) do |sr| %>
 		<div class="form-group col-md-12 mb-2">
-			<%= sr.label :id, "Scribe", style: "display: block" %>
+			<%= sr.label :id, "Scribes", style: "display: block" %>
 			<div class="d-flex">
-				<%= sr.collection_select :id, Person.all, :id, :full_name, {selected: booklet.scribes.map(&:id)}, {class: "form-control", multiple: true} %>
-				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal">New</button>
+				<%= sr.collection_select :id, Person.all, :id, :full_name, {selected: booklet.scribes.map(&:id)}, {class: "form-control", multiple: true, placeholder: "Search scribe"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#ownership-person-modal">New</button>
 			</div>
 		</div>
 	<% end %>
@@ -78,7 +78,7 @@
 </div>
 <% end %>
 
-<h2 id="provenances">Booklet provenances <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+<h2 id="provenances">Booklet provenances <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal", 'bs-target': "#addProvenanceModal"} %></h2>
 <%= render 'ownerships/list', parent: booklet %>
 
 <h2 id="contents">Booklet content<%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
@@ -98,10 +98,10 @@
 <%= render 'contents/modals/form', parent: booklet, content: content %>
 <% end %>
 <%= render 'contents/modals/form', parent: booklet, content: booklet.contents.new %>
-<%= render 'institutions/modals/new', institution: Institution.new, parent: booklet %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: booklet, pid: '', depth: 0 %>
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet %>
 <%= render 'locations/modals/form', location: Location.new, parent: booklet %>
-<%= render 'people/modals/form', person: Person.new, parent: booklet %>
+<%= render 'people/modals/form', person: Person.new, parent: booklet, pid: '', depth: 0 %>
 
 <!-- Scripts -->
 <script type="text/javascript">

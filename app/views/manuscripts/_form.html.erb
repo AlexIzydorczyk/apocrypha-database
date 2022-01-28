@@ -140,16 +140,16 @@
 
 <!-- Modals -->
 <% manuscript.ownerships.each do |ownership| %>
-<%= render 'ownerships/modals/form', parent: manuscript, ownership: ownership %>
+<%= render 'ownerships/modals/form', parent: manuscript, ownership: ownership, pid: '', depth: 0 %>
 <%= render "/ownerships/modals/move_to_booklet", ownership: ownership %>
 <% end %>
-<%= render 'ownerships/modals/form', parent: manuscript, ownership: manuscript.ownerships.new %>
+<%= render 'ownerships/modals/form', parent: manuscript, ownership: manuscript.ownerships.new, pid: '', depth: 0 %>
 <% manuscript.contents.each do |content| %>
 <%= render 'contents/modals/form', parent: manuscript, content: content %>
 <%= render "/contents/modals/move_to_booklet", content: content %>
 <% end %>
 <%= render 'contents/modals/form', parent: manuscript, content: manuscript.contents.new %>
-<%= render 'institutions/modals/new', institution: Institution.new, parent: manuscript %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: manuscript, pid: '', depth: 0 %>
 
 <!-- Scripts -->
 <script type="text/javascript">
