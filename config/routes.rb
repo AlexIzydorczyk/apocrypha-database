@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :contents do
     collection do
       put :sort
+      post :move_to_booklet
     end
   end
   resources :titles

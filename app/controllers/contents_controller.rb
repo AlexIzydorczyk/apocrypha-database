@@ -41,6 +41,24 @@ class ContentsController < ApplicationController
     end
   end
 
+  def move_to_booklet
+    content = Content.find(params[:id])
+    if params[:booklets]
+      if params[:booklets].length > 0
+        content.update(booklet_id: Booklet.find(params[:booklets][0]).id, manuscript_id: nil)
+      end
+      if params[:booklets].length > 1
+        params[:booklets][1..-1].each do |b_id|
+          new_c = content.dup
+          new_c.booklet_id = b_id
+          new_c.manuscript_id = nil
+          new_c.save
+        end 
+      end
+    end
+    redirect_to edit_manuscript_path(content.booklet.manuscript)
+  end
+
   def destroy
     @content.destroy
     redirect_to contents_url, notice: "Content was successfully destroyed."
