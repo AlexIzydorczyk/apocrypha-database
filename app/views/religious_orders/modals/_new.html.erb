@@ -1,4 +1,4 @@
-<div class="modal" id="new-religious-order-modal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="<%= pid %>new-religious-order-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: religious_order) do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -24,11 +24,28 @@
 			</div>
 			<% if parent.class == Booklet %>
 				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "") + ")") %>
 			</div>
 		</div>
 	</div>
 	<% end %>	
 </div>
+
+
+<script type="text/javascript">
+	var location_modal_vue;
+	$( document ).ready(function() {
+		location_modal_vue = new Vue({
+			el: "#<%= pid %>new-religious-order-modal",
+			name: "<%= pid %>NewReligiousOrderModal",
+			mounted(){
+				createModalListeners();
+			},
+		});
+	});
+</script>
+

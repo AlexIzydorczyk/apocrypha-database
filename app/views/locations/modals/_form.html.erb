@@ -1,4 +1,4 @@
-<div class="modal" id="location-modal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="<%= pid %>location-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: location, url: location.new_record? ? locations_path : location_path(location)) do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -10,7 +10,7 @@
 				<label><span class="fw-bolder">Location</span> (City, town, village, other)</label>
 				<language-form-groups
 					class="mb-4"
-					key="location-name"
+					key="<%= pid %>location-name"
 					record_type="location"
 					name="Location"
 					language_column="city_orig_language_id"
@@ -21,7 +21,7 @@
 				<%= form.label "Diocese", class: "fw-bolder" %>
 				<language-form-groups
 					class="mb-4"
-					key="diocese"
+					key="<%= pid %>diocese"
 					record_type="location"
 					name="Diocese"
 					language_column="diocese_orig_language"
@@ -32,7 +32,7 @@
 				<%= form.label "Region", class: "fw-bolder" %>
 				<language-form-groups
 					class="mb-4"
-					key="region"
+					key="<%= pid %>region"
 					record_type="location"
 					name="Region"
 					language_column="region_orig_language"
@@ -56,9 +56,11 @@
 			</div>
 			<% if parent.class == Booklet %>
 				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+				<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}location-modal .ownership-field').val()" : "") + ")") %>
 			</div>
 		</div>
 	</div>
@@ -69,8 +71,11 @@
 	var location_modal_vue;
 	$( document ).ready(function() {
 		location_modal_vue = new Vue({
-			el: "#location-modal",
-			name: "LocationModal",
+			el: "#<%= pid %>location-modal",
+			name: "<%= pid %>LocationModal",
+			mounted(){
+				createModalListeners();
+			},
 		});
 	});
 	<%= render "layouts/language_form_group" %>

@@ -99,8 +99,8 @@
 <% end %>
 <%= render 'contents/modals/form', parent: booklet, content: booklet.contents.new %>
 <%= render 'institutions/modals/new', institution: Institution.new, parent: booklet, pid: '', depth: 0 %>
-<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet %>
-<%= render 'locations/modals/form', location: Location.new, parent: booklet %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet, pid: '', depth: 0 %>
+<%= render 'locations/modals/form', location: Location.new, parent: booklet, pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: booklet, pid: '', depth: 0 %>
 
 <!-- Scripts -->

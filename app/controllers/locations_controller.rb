@@ -20,10 +20,12 @@ class LocationsController < ApplicationController
     saved = @location.save
     if params[:booklet_id].present?
       Booklet.find(params[:booklet_id]).update(genesis_location_id: @location.id)
+    elsif params[:ownership_id].present?
+      Ownership.find(params[:ownership_id]).update(location_id: @location.id)
     end
-    if saved
-      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : locations_path
-      redirect_to redirect_path, notice: "Location was successfully created."
+    if saved && !request.xhr?
+      # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : locations_path
+      # redirect_to redirect_path, notice: "Location was successfully created."
     else
       render :new, status: :unprocessable_entity
     end

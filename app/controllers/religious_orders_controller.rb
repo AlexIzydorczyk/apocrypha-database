@@ -20,10 +20,12 @@ class ReligiousOrdersController < ApplicationController
     saved = @religious_order.save
     if params[:booklet_id].present?
       Booklet.find(params[:booklet_id]).update(genesis_religious_order_id: @religious_order.id)
+    elsif params[:ownership_id].present?
+      Ownership.find(params[:ownership_id]).update(religious_order_id: @religious_order.id)
     end
-    if saved
-      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path
-      redirect_to redirect_path, notice: "Religious order was successfully created."
+    if saved && !request.xhr?
+      # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path
+      # redirect_to redirect_path, notice: "Religious order was successfully created."
     else
       render :new, status: :unprocessable_entity
     end

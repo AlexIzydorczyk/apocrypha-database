@@ -40,11 +40,17 @@
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :religious_order_id, "Religious Order", style: "display: block" %>
-						<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: ownership.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
+						<div class="d-flex">
+							<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: ownership.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-religious-order-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-religious-order-btn', '#ownership-new-religious-order-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
 					</div>
 					<div class="form-group col-12 mb-2">
 						<%= form.label :location_id, "Location", style: "display: block" %>
-						<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: ownership.location_id, include_blank: true}, {class: "form-control", placeholder: "Select a location"} %>
+						<div class="d-flex">
+							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: ownership.location_id, include_blank: true}, {class: "form-control", placeholder: "Select a location"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn', '#ownership-location-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
 					</div>
 					
 					<div class="form-group col-12 mb-2">
@@ -65,6 +71,8 @@
 
 <%= render 'people/modals/form', person: Person.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
 <%= render 'institutions/modals/new', institution: Institution.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<%= render 'locations/modals/form', location: Location.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
 
 
 <script type="text/javascript">

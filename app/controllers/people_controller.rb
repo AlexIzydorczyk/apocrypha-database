@@ -24,8 +24,8 @@ class PeopleController < ApplicationController
       Ownership.find(params[:ownership_id]).update(person_id: @person.id)
     end
     if saved && !request.xhr?
-      redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : people_path
-      redirect_to redirect_path, notice: "Person was successfully created."
+      # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : people_path
+      # redirect_to redirect_path, notice: "Person was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
