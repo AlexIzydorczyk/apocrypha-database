@@ -19,7 +19,8 @@ class TitlesController < ApplicationController
     @title = Title.new(title_params)
 
     if @title.save
-      redirect_to titles_url, notice: "Title was successfully created."
+      redirect_path = params[:apocryphon_id].present? ? edit_apocryphon_path(params[:apocryphon_id]) : title_path
+      redirect_to redirect_path, notice: "Title was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -48,6 +49,6 @@ class TitlesController < ApplicationController
     end
 
     def title_params
-      params.require(:title).permit(:apocryphon_id, :title_orig, :title_orig_transliteration, :title_translation, :language_id)
+      params.require(:title).permit(:apocryphon_id, :title_orig, :title_orig_transliteration, :title_translation, :language_id, :abbreviation)
     end
 end
