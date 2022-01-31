@@ -19,7 +19,7 @@ class TitlesController < ApplicationController
     @title = Title.new(title_params)
 
     if @title.save
-      redirect_path = params[:apocryphon_id].present? ? edit_apocryphon_path(params[:apocryphon_id]) : title_path
+      redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path
       redirect_to redirect_path, notice: "Title was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -40,7 +40,11 @@ class TitlesController < ApplicationController
 
   def destroy
     @title.destroy
-    redirect_to titles_url, notice: "Title was successfully destroyed."
+    if request.xhr?
+      render :json => {"status": "updated"}  
+    else
+      redirect_to titles_url, notice: "Title was successfully destroyed."
+    end
   end
 
   private

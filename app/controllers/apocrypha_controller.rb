@@ -17,7 +17,9 @@ class ApocryphaController < ApplicationController
   def edit
     @languages = Language.all
     @language_references = @apocryphon.language_references.build
-    @titles = Title.where(apocryphon_id: @apocryphon.id)
+    @english_titles = Title.joins(:language).where(apocryphon_id: @apocryphon.id).merge(Language.where(language_name: 'English')).all
+    @latin_titles = Title.joins(:language).where(apocryphon_id: @apocryphon.id).merge(Language.where(language_name: 'Latin')).all
+
   end
 
   def create
@@ -33,9 +35,11 @@ class ApocryphaController < ApplicationController
   end
 
   def update
-    new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-    LanguageReference.where(record: @apocryphon, language_id: @apocryphon.languages.ids - new_set).destroy_all
-    build_language_references_for new_set - @apocryphon.languages.ids
+    if params[:language_reference]
+      new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      LanguageReference.where(record: @apocryphon, language_id: @apocryphon.languages.ids - new_set).destroy_all
+      build_language_references_for new_set - @apocryphon.languages.ids
+    end
 
     if @apocryphon.update(apocryphon_params)
       if request.xhr?
@@ -60,7 +64,7 @@ class ApocryphaController < ApplicationController
   end
 
   def apocryphon_params
-    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link)
+    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :abbreviation, :main_latin_title_id, :main_english_title_id)
   end
 
   def build_language_references_for ids

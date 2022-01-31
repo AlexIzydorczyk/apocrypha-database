@@ -3,22 +3,17 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Title</h5>
+				<h5 class="modal-title">Add Title</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<%= form.hidden_field :apocryphon_id, value: @apocryphon.id %>
-				<%= form.label :title, class: "fw-bolder" %>
-				<language-form-groups
-					class="mb-4"
-					key="title-name"
-					record_type="title"
-					name="title"
-					language_column="language_id"
-					orig="title_orig"
-					translit="title_orig_translilteration"
-					translation="title_translation"
-				></language-form-groups>
+				<%= form.label "Language", class: "fw-bolder" %>
+				<%= select_tag("title[language_id]", options_for_select([ ['English', Language.where(language_name: 'English').first.id ] , ['Latin', Language.where(language_name: 'Latin').first.id] ]), class: "form-control") %>
+
+				<%= form.label "Title", class: "fw-bolder mt-2" %>
+				<%= form.text_field :title_orig, class: "form-control" %>
+
 			</div>
 			<div class="modal-footer">
 				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
@@ -29,12 +24,5 @@
 </div>
 
 <script type="text/javascript">
-	var title_modal_vue;
-	$( document ).ready(function() {
-		title_modal_vue = new Vue({
-			el: "#title-modal",
-			name: "TitleModal",
-		});
-	});
-	<%= render "layouts/language_form_group" %>
+	new TomSelect("#title_language_id",{ sortField: {field: "text", direction: "asc"}, maxItems: 1});
 </script>

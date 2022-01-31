@@ -19,15 +19,54 @@
 	</div>
 
 	<h2 id="titles">Titles <%= link_to "Add title", '#titles', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#title-modal"} %></h2>
-	<div class="row">
-		<% @titles.each do |t| %>
-		<div class="col-md-3 grey-bubble">
-			<span class="fw-bolder"><%= t.title_orig %></span>
-			<p><%= t.language.language_name %></p>
+	<div class="row mb-3">
+		<div class="col-md-3">
+			<%= form.label "Main English title", style: "display: block" %>
+			<%= text_field_tag "main_english_title", @apocryphon.main_eng_title, class: "form-control",  disabled: true %>
 		</div>
-		<% end %>
+		<div class="col">
+			<%= form.label "All English titles" %>
+			<div class="row">
+				<% @english_titles.each do |t| %>
+				<div class="col-4 title-card">
+					<span><%= t.title_orig %></span>
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="setMainTitle('eng', <%= t.id %>)" <%= 'disabled' if @apocryphon.main_english_title_id == t.id %> >
+							<i class="<%= @apocryphon.main_english_title_id == t.id ? 'fas' : 'fal' %> fa-star"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteTitle(<%= t.id %>)">
+							<i class="far fa-trash-alt"></i>
+						</button>
+					</span>
+				</div>
+				<% end %>
+			</div>
+		</div>
 	</div>
-
+	<div class="row">
+		<div class="col-md-3">
+			<%= form.label "Main Latin title", style: "display: block" %>
+			<%= text_field_tag "main_latin_title", @apocryphon.main_lat_title, class: "form-control",  disabled: true %>
+		</div>
+		<div class="col">
+			<%= form.label "All Latin titles" %>
+			<div class="row">
+				<% @latin_titles.each do |t| %>
+				<div class="col-4 title-card">
+					<span><%= t.title_orig %></span>
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="setMainTitle('latin', <%= t.id %>)" <%= 'disabled' if @apocryphon.main_latin_title_id == t.id %> >
+							<i class="<%= @apocryphon.main_latin_title_id == t.id ? 'fas' : 'fal' %> fa-star"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteTitle(<%= t.id %>)">
+							<i class="far fa-trash-alt"></i>
+						</button>
+					</span>
+				</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
 
 	<h2>Identifiers</h2>
 	<div class="row">
@@ -68,5 +107,41 @@
 
 <script type="text/javascript">
 	new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });
+
+	function setMainTitle(lang, t_id){
+		if(confirm("Are you sure you want to make this title the main title for this Apoctyphon?")){
+			var my_data = {};
+			var field = (lang == 'eng' ? 'main_english_title_id' : 'main_latin_title_id');
+			my_data.apocryphon = {};
+			my_data.apocryphon[field] = t_id;
+	    my_data.authenticity_token = "<%= form_authenticity_token %>";
+	    console.log('my_data', my_data)
+	    $.ajax({
+	      url: "<%= apocryphon_path(@apocryphon) %>",
+	      type: 'PUT',
+	      data: JSON.stringify(my_data),
+	      contentType: 'application/json',
+	      success: function(data) {
+	        console.log('result received:');
+	        console.log(data);
+	        timeoutReload();
+	      }
+	    });
+		}
+	}
+
+	function deleteTitle(t_id){
+		if(confirm("Are you sure you want to delete this title from the system?")){
+	    $.ajax({
+	      url: "/titles/"+t_id,
+	      type: 'DELETE',
+	      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+	      contentType: 'application/json',
+	      success: function(data) {
+	        timeoutReload();
+	      }
+	    });
+		}
+	}
 </script>
 
