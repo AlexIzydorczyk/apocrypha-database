@@ -10,9 +10,17 @@ class ModernSourcesController < ApplicationController
 
   def new
     @modern_source = ModernSource.new
+    @author_reference = @modern_source.person_references.build
+    @editor_reference = @modern_source.editor_references.build
+    @translator_reference = @modern_source.editor_references.build
+    @modern_source.source_urls.build if @modern_source.source_urls.count < 1
   end
 
   def edit
+    @author_reference = @modern_source.person_references.build
+    @editor_reference = @modern_source.editor_references.build
+    @translator_reference = @modern_source.editor_references.build
+    @modern_source.source_urls.build if @modern_source.source_urls.count < 1
   end
 
   def create
@@ -48,6 +56,6 @@ class ModernSourcesController < ApplicationController
     end
 
     def modern_source_params
-      params.require(:modern_source).permit(:publication_title_orig, :publication_title_transliteration, :publication_title_translation, :title_orig, :title_transliteration, :title_translation, :source_type, :num_volumes, :volume_no, :volume_title_orig, :volume_title_transliteration, :volume_title_translation, :part_no, :part_title_orig, :part_title_transliteration, :part_title_translation, :series_no, :series_title_orig, :series_title_transliteration, :series_title_translation, :edition, :publication_location_id, :publisher, :publication_creation_date, :shelfmark, :ISBN, :DOI)
+      params.require(:modern_source).permit(:publication_title_orig, :publication_title_transliteration, :publication_title_translation, :title_orig, :title_transliteration, :title_translation, :source_type, :num_volumes, :volume_no, :volume_title_orig, :volume_title_transliteration, :volume_title_translation, :part_no, :part_title_orig, :part_title_transliteration, :part_title_translation, :series_no, :series_title_orig, :series_title_transliteration, :series_title_translation, :edition, :publication_location_id, :publisher, :publication_creation_date, :shelfmark, :ISBN, :DOI, :language_id, :author_type, :institution_id)
     end
 end

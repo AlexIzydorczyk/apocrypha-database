@@ -1,0 +1,60 @@
+let modernSourcesVue;
+$(document).ready(function(){
+	modernSourcesVue = new Vue({
+		name: 'modernSourcesVue',
+		el: '#modern-source-form',
+		data: {
+			author_type: '<%= modern_source.author_type %>',
+			urls: <%= modern_source.source_urls.map(&:url).to_json.html_safe %>,
+			source_type: '<%= modern_source.source_type %>',
+		},
+		mounted(){
+			runTomSelects();
+		},
+	});
+});
+
+function runTomSelects(){
+	new TomSelect("#modern_source_source_type",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#person_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: null,
+	});
+	new TomSelect("#modern_source_institution_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#editor_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: null,
+	});
+	new TomSelect("#translator_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: null,
+	});
+	new TomSelect("#modern_source_publication_location_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+};

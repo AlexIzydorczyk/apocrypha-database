@@ -7,6 +7,7 @@ class Institution < ApplicationRecord
   has_many :booklets
   has_many :ownerships
   has_many :booklists
+  has_many :modern_sources
 
   def display_name
     self.name_orig

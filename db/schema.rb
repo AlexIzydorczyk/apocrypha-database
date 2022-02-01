@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_28_175808) do
+ActiveRecord::Schema.define(version: 2022_01_31_195625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -236,7 +236,23 @@ ActiveRecord::Schema.define(version: 2022_01_28_175808) do
     t.bigint "publication_location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "language_id"
+    t.string "author_type", default: "", null: false
+    t.bigint "institution_id"
+    t.bigint "publication_title_language_id"
+    t.bigint "volume_title_language_id"
+    t.bigint "part_title_language_id"
+    t.bigint "series_title_language_id"
+    t.bigint "title_language_id"
+    t.string "pages_in_publication", default: "", null: false
+    t.index ["institution_id"], name: "index_modern_sources_on_institution_id"
+    t.index ["language_id"], name: "index_modern_sources_on_language_id"
+    t.index ["part_title_language_id"], name: "index_modern_sources_on_part_title_language_id"
     t.index ["publication_location_id"], name: "index_modern_sources_on_publication_location_id"
+    t.index ["publication_title_language_id"], name: "index_modern_sources_on_publication_title_language_id"
+    t.index ["series_title_language_id"], name: "index_modern_sources_on_series_title_language_id"
+    t.index ["title_language_id"], name: "index_modern_sources_on_title_language_id"
+    t.index ["volume_title_language_id"], name: "index_modern_sources_on_volume_title_language_id"
   end
 
   create_table "ownerships", force: :cascade do |t|
@@ -430,6 +446,13 @@ ActiveRecord::Schema.define(version: 2022_01_28_175808) do
   add_foreign_key "locations", "languages", column: "region_orig_language_id"
   add_foreign_key "manuscripts", "institutions"
   add_foreign_key "modern_source_references", "modern_sources"
+  add_foreign_key "modern_sources", "institutions"
+  add_foreign_key "modern_sources", "languages"
+  add_foreign_key "modern_sources", "languages", column: "part_title_language_id"
+  add_foreign_key "modern_sources", "languages", column: "publication_title_language_id"
+  add_foreign_key "modern_sources", "languages", column: "series_title_language_id"
+  add_foreign_key "modern_sources", "languages", column: "title_language_id"
+  add_foreign_key "modern_sources", "languages", column: "volume_title_language_id"
   add_foreign_key "modern_sources", "locations", column: "publication_location_id"
   add_foreign_key "ownerships", "booklets"
   add_foreign_key "ownerships", "institutions"
