@@ -8,6 +8,22 @@ $(document).ready(function(){
 			urls: <%= modern_source.source_urls.map(&:url).to_json.html_safe %>,
 			source_type: '<%= modern_source.source_type %>',
 		},
+		computed: {
+			title_orig_label(){
+				switch(this.source_type){
+					case 'journal_article':
+						return "Title of article in original language";
+					case 'unpublished_document':
+						return 'Document title in original language';
+					case 'web_page':
+						return "Title of webpage";
+					case "handwritten_document":
+						return "Document title in original language";
+					default: 
+						return 'Book title in original language';
+				}
+			},
+		},
 		mounted(){
 			runTomSelects();
 		},
@@ -22,7 +38,7 @@ function runTomSelects(){
 		},
 		maxItems: 1,
 	});
-	new TomSelect("#person_reference_id",{
+	new TomSelect("#author_reference_id",{
 		sortField: {
 			field: "text",
 			direction: "asc"
@@ -51,6 +67,13 @@ function runTomSelects(){
 		maxItems: null,
 	});
 	new TomSelect("#modern_source_publication_location_id",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+	});
+	new TomSelect("#modern_source_document_type",{
 		sortField: {
 			field: "text",
 			direction: "asc"

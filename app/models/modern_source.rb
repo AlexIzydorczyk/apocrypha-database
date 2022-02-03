@@ -13,9 +13,15 @@ class ModernSource < ApplicationRecord
   has_many :manuscripts, through: :modern_source_references
   has_many :texts, through: :modern_source_references
   has_many :person_references, as: :record
-  has_many :people, through: :person_references
-  has_many :editor_references, as: :record, class_name: "PersonReference"
+  has_many :author_references, -> { author }, as: :record, class_name: "PersonReference"
+  has_many :authors, through: :author_references, class_name: "Person"
+  has_many :editor_references, -> { editor }, as: :record, class_name: "PersonReference"
   has_many :editors, through: :editor_references, class_name: "Person"
-  has_many :translator_references, as: :record, class_name: "PersonReference"
+  has_many :translator_references, -> { translator }, as: :record, class_name: "PersonReference"
   has_many :translators, through: :translator_references, class_name: "Person"
+
+  def display_name
+    self.publication_title_orig || self.publication_title  
+  end
+
 end

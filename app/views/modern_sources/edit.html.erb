@@ -1,10 +1,17 @@
-<h1>Editing modern source</h1>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= link_to 'Modern Sources', modern_sources_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= @modern_source.display_name %>
+</div>
 
-<%= render "form", modern_source: @modern_source %>
-
-<br>
-
-<div>
-  <%= link_to "Show this modern source", @modern_source %> |
-  <%= link_to "Back to modern sources", modern_sources_path %>
+<div class="d-flex mt-2">
+  <div style="width: 500px" class="me-5">
+    <%= render 'layouts/filetree', tree: [] %>
+  </div>
+  <div>
+    <h1>Bibliography</h1>
+    <%= render "form", modern_source: @modern_source %>
+  </div>
 </div>
