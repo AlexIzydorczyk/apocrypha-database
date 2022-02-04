@@ -1,4 +1,4 @@
-<div class="modal" id="<%= pid %>person-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+<div class="modal" id="<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: person, url: person.new_record? ? people_path : person_path(person)) do |form| %>
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
@@ -95,6 +95,9 @@
 				<%= hidden_field_tag :booklet_id, parent.id %>
 			<% elsif parent.class == Ownership %>
 				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
+			<% elsif parent.class == ModernSource %>
+				<%= hidden_field_tag :modern_source_id, parent.id %>
+				<%= hidden_field_tag :reference_type, reference_type %>
 			<% end %>
 			<div class="modal-footer">
 				<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}person-modal .ownership-field').val()" : "") + ")") %>
@@ -108,8 +111,8 @@
 	var person_modal_vue;
 	$( document ).ready(function() {
 		person_modal_vue = new Vue({
-			el: "#<%= pid %>person-modal",
-			name: "<%= pid %>PersonModal",
+			el: "#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>",
+			name: "<%= pid %>PersonModal<%= reference_type.humanize if defined?(reference_type) %>",
 			data(){ return{
 				languages: <%= Language.all.to_json.html_safe %>,
 				language: '',
@@ -125,7 +128,7 @@
 			},
 			mounted(){
 				createModalListeners();
-				new TomSelect('#<%= pid %>person-modal select.lang-sel',{ sortField: {field: "text", direction: "asc"}, maxItems: 1 });
+				new TomSelect('#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %> select.lang-sel',{ sortField: {field: "text", direction: "asc"}, maxItems: 1 });
 			}
 		});
 	});

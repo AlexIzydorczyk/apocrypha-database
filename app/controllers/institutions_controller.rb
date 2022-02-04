@@ -24,9 +24,9 @@ class InstitutionsController < ApplicationController
       Booklet.find(params[:booklet_id]).update(genesis_institution_id: @institution.id)
     elsif params[:ownership_id].present?
       Ownership.find(params[:ownership_id]).update(institution_id: @institution.id)
+    elsif params[:modern_source_id].present?
+      ModernSource.find(params[:modern_source_id]).update(institution_id: @institution.id)
     end
-    puts 'saved. request.xhr?'
-    puts request.xhr?
     if saved && !request.xhr?
       # redirect_path = params[:manuscript_id].present? ? edit_manuscript_path(params[:manuscript_id]) : (params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : institutions_path)
       # redirect_to redirect_path, notice: "Institution was successfully created."

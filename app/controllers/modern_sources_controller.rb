@@ -9,7 +9,7 @@ class ModernSourcesController < ApplicationController
   end
 
   def new
-    @modern_source = ModernSource.new
+    @modern_source = ModernSource.new(source_type: 'book_chapter')
     @author_reference = @modern_source.author_references.build
     @editor_reference = @modern_source.editor_references.build
     @translator_reference = @modern_source.editor_references.build

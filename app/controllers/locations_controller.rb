@@ -22,6 +22,8 @@ class LocationsController < ApplicationController
       Booklet.find(params[:booklet_id]).update(genesis_location_id: @location.id)
     elsif params[:ownership_id].present?
       Ownership.find(params[:ownership_id]).update(location_id: @location.id)
+    elsif params[:modern_source_id].present?
+      ModernSource.find(params[:modern_source_id]).update(publication_location_id: @location.id)
     end
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : locations_path

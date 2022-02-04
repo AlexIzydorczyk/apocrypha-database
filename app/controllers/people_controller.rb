@@ -22,6 +22,8 @@ class PeopleController < ApplicationController
       PersonReference.create(record: Booklet.find(params[:booklet_id]), person: @person)
     elsif params[:ownership_id].present?
       Ownership.find(params[:ownership_id]).update(person_id: @person.id)
+    elsif params[:modern_source_id].present?
+      PersonReference.create(record: ModernSource.find(params[:modern_source_id]), person: @person, reference_type: params[:reference_type])
     end
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : people_path

@@ -52,7 +52,7 @@
 					<%= ar.label :id, "Author(s)", style: "display: block" %>
 					<div class="d-flex">
 						<%= ar.collection_select :id, Person.all, :id, :full_name, {selected: modern_source.authors.map(&:id)}, {class: "form-control", multiple: true} %>
-						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="" disabled>New</button>
+						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
 					</div>
 				</div>
 			<% end %>
@@ -60,7 +60,7 @@
 				<%= form.label :institution_id, "Author(s)", style: "display: block" %>
 				<div class="d-flex">
 					<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Select an institution…"} %>
-					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="" disabled>New</button>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-institution-modal">New</button>
 				</div>
 			</div>
 			<div class="form-group col-md-6 mb-2" v-if="author_type != 'corporate' && author_type != 'regular'">
@@ -93,7 +93,7 @@
 					<%= er.label :id, "Editor(s)", style: "display: block" %>
 					<div class="d-flex">
 						<%= er.collection_select :id, Person.all, :id, :full_name, {selected: modern_source.editors.map(&:id)}, {class: "form-control", multiple: true} %>
-						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="" disabled>New</button>
+						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-editor">New</button>
 					</div>
 				</div>
 			<% end %>
@@ -102,7 +102,7 @@
 					<%= tr.label :id, "Translator(s)", style: "display: block" %>
 					<div class="d-flex">
 						<%= tr.collection_select :id, Person.all, :id, :full_name, {selected: modern_source.translators.map(&:id)}, {class: "form-control", multiple: true} %>
-						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="" disabled>New</button>
+						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-translator">New</button>
 					</div>
 				</div>
 			<% end %>
@@ -207,7 +207,10 @@
 			</div>
 			<div class="form-group col-md mb-2" v-show="source_type != 'journal_article' && source_type != 'web_page' && source_type != 'unpublished_document'">
 				<%= form.label :publication_location_id, style: "display: block" %>
-				<%= form.collection_select :publication_location_id, Location.all, :id, :city_region_country, {selected: modern_source.publication_location_id, include_blank: true}, {class: "form-control"} %>
+				<div class="d-flex">
+					<%= form.collection_select :publication_location_id, Location.all, :id, :city_region_country, {selected: modern_source.publication_location_id, include_blank: true}, {class: "form-control"} %>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#location-modal">New</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -246,6 +249,12 @@
 </div>
 <% end %>
 </div>
+
+<%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'author', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'editor', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'translator', pid: '', depth: 0 %>
+<%= render 'locations/modals/form', location: Location.new, parent: modern_source, pid: '', depth: 0 %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: modern_source, pid: '', depth: 0 %>
 
 <script type="text/javascript">
 	<%= render "modern_sources/scripts", modern_source: modern_source %>
