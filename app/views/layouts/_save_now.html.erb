@@ -1,0 +1,8 @@
+<div class="fixed-bottom text-end pb-3 pe-3" style="z-index: 0">
+	<% if params[:old_path].present? %>
+		<%= hidden_field_tag 'old_path', params[:old_path] %>
+		<%= form.submit "Save & Back", class: "btn btn-action px-5"%>
+	<% else %>
+		<%= form.submit "Save now", class: "btn btn-action px-5"%>
+	<% end %>
+</div>

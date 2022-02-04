@@ -1,5 +1,10 @@
-<h1>Booklists</h1>
-<p><%= link_to "New booklist", new_booklist_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  Booklists
+</div>
+
+<h1>Booklists <%= button_to 'New booklist', booklists_path, class: "btn btn-action", params: { booklist: { booklist_type: "" } } %></h1>
 
 <div id="booklists">
     <%= render 'grid', booklists: @booklists %>

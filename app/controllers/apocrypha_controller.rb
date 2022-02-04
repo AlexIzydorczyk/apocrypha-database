@@ -34,6 +34,18 @@ class ApocryphaController < ApplicationController
     end
   end
 
+  def create_from_booklist
+    @apocryphon = Apocryphon.new(apocryphon_params)
+    build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
+
+    if @apocryphon.save
+      booklist_reference = BooklistReference.create(record: @apocryphon, booklist_section_id: params[:booklist_section_id])
+      redirect_to edit_apocryphon_path(@apocryphon, old_path: params[:from])
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def update
     if params[:language_reference]
       new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
@@ -45,7 +57,11 @@ class ApocryphaController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_to apocrypha_url, notice: "Apocryphon was successfully updated."
+        if params[:old_path].present?
+          redirect_to params[:old_path], notice: "Apocryphon was successfully updated."
+        else
+          redirect_to apocrypha_url, notice: "Apocryphon was successfully updated."
+        end
       end
     else
       render :edit, status: :unprocessable_entity

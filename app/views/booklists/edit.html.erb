@@ -1,10 +1,12 @@
-<h1>Editing booklist</h1>
-
-<%= render "form", booklist: @booklist %>
-
-<br>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= link_to 'Booklists', booklists_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= @booklist.display_name %>
+</div>
 
 <div>
-  <%= link_to "Show this booklist", @booklist %> |
-  <%= link_to "Back to booklists", booklists_path %>
+  <h1>Booklist</h1>
+  <%= render "form", booklist: @booklist %>
 </div>

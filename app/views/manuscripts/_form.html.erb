@@ -1,5 +1,5 @@
 <div id="manuscript-form">
-<%= form_with(model: manuscript, class: "autosave") do |form| %>
+<%= form_with(model: manuscript, class: "autosave block-submit") do |form| %>
 
 <div class="row">
 	<div class="form-group col-md-3 mb-2">
@@ -112,9 +112,8 @@
 	</div>
 </div>
 
-<div class="fixed-bottom text-end pb-3 pe-3" style="z-index: 0">
-	<%= form.submit "Save now", class: "btn btn-action px-5"%>
-</div>
+
+<%= render 'layouts/save_now', form: form %>
 <% end %>
 
 <template v-if="!known_booklet_composition || has_ownerships">

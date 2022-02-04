@@ -1,5 +1,5 @@
 <div class="modal fade" id="title-modal" tabindex="-1" aria-hidden="true">
-	<%= form_with(model: title, url: title.new_record? ? titles_path : title_path(title)) do |form| %>
+	<%= form_with(model: title, url: (title.new_record? ? titles_path : title_path(title)), class: 'autosave') do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

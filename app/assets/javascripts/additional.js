@@ -27,7 +27,7 @@ function timeoutReload(location_hash){
   if(location_hash) location.hash = location_hash;
   else location.hash = ''
   setTimeout(function(){
-    location.reload();
+    location.href = location.href;
   }, 200)
 }
 
@@ -51,13 +51,15 @@ $(function() {
   setTimeout(function() {
 
     $('form.autosave').each(function(index) {
-      $(this).ajaxForm({
-        success: function(data, x, y, form) {
-          formChanges[index] = false
-          if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
-          window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
-        }
-      });
+      if(!$(this).hasClass('block-submit')){
+        $(this).ajaxForm({
+          success: function(data, x, y, form) {
+            formChanges[index] = false
+            if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
+            window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
+          }
+        });
+      }
     });
     $('.modal').modal({backdrop: 'static', keyboard: false})  
 

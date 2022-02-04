@@ -1,0 +1,15 @@
+<div id="booklist-sections-list" class="row">
+	<% booklist.booklist_sections.each_with_index do |bs, i| %>
+		<div class="grey-bubble py-4">
+			<h5 id="section-<%= bs.id %>">
+				Section <%= bs.sequence_no %> 
+				<span class="float-end">
+					<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteBooklistSection(<%= bs.id %>)">
+						<i class="far fa-trash-alt"></i> Delete Section <%= bs.sequence_no %> 
+					</button>
+				</span>
+			</h5>
+			<%= render 'booklist_sections/form', booklist_section: bs %>
+		</div>
+	<% end %>
+</div>

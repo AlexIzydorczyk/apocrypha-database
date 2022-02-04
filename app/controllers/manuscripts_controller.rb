@@ -31,6 +31,18 @@ class ManuscriptsController < ApplicationController
     end
   end
 
+  def create_from_booklist
+    @manuscript = Manuscript.new(manuscript_params)
+    build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
+
+    if @manuscript.save
+      booklist_reference = BooklistReference.create(record: @manuscript, booklist_section_id: params[:booklist_section_id])
+      redirect_to edit_manuscript_path(@manuscript, old_path: params[:from])
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def update
     new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
     LanguageReference.where(record: @manuscript, language_id: @manuscript.languages.ids - new_set).destroy_all
@@ -40,7 +52,11 @@ class ManuscriptsController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_to manuscripts_url, notice: "Manuscript was successfully updated."
+        if params[:old_path].present?
+          redirect_to params[:old_path], notice: "Apocryphon was successfully updated."
+        else
+          redirect_to manuscripts_url, notice: "Manuscript was successfully updated."
+        end
       end
     else
       render :edit, status: :unprocessable_entity

@@ -6,7 +6,7 @@ class Apocryphon < ApplicationRecord
   has_many :languages, through: :language_references, as: :record
   
 	def display_name
-		'Apocryphon '+self.id.to_s
+		'Apocryphon ' + self.apocryphon_no + ' : ' + (self.main_english_title_id.present? ? self.main_eng_title : self.main_lat_title).to_s
 	end
 
 	def main_eng_title

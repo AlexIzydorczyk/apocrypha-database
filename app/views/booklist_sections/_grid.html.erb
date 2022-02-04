@@ -1,0 +1,63 @@
+<div id="booklist_sections_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
+        { headerName: "Booklist", field: "booklist_id"},
+        { headerName: "Sequence no", field: "sequence_no"},
+        { headerName: "Heading orig", field: "heading_orig"},
+        { headerName: "Heading orig transliteration", field: "heading_orig_transliteration"},
+        { headerName: "Heading translation", field: "heading_translation"},
+        { headerName: "Relevant text orig", field: "relevant_text_orig"},
+        { headerName: "Relevant text orig transliteration", field: "relevant_text_orig_transliteration"},
+        { headerName: "Relevant text translation", field: "relevant_text_translation"},
+        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+    } }
+  ];
+
+  const rowData = [
+    <% booklist_sections.each do |booklist_section| %>
+      { id:<%= booklist_section.id %>,
+        booklist_id: "<%= booklist_section.booklist_id %>",sequence_no: "<%= booklist_section.sequence_no %>",heading_orig: "<%= booklist_section.heading_orig %>",heading_orig_transliteration: "<%= booklist_section.heading_orig_transliteration %>",heading_translation: "<%= booklist_section.heading_translation %>",relevant_text_orig: "<%= booklist_section.relevant_text_orig %>",relevant_text_orig_transliteration: "<%= booklist_section.relevant_text_orig_transliteration %>",relevant_text_translation: "<%= booklist_section.relevant_text_translation %>",
+        links: { show: "<%= booklist_section_path(booklist_section) %>", edit: "<%= edit_booklist_section_path(booklist_section) %>" }
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged,
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/booklist_sections/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#booklist_sections_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

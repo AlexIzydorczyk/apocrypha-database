@@ -19,8 +19,12 @@ class TitlesController < ApplicationController
     @title = Title.new(title_params)
 
     if @title.save
-      redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path
-      redirect_to redirect_path, notice: "Title was successfully created."
+      if request.xhr?
+        render :json => {"status": "updated"}  
+      else
+        redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path
+        redirect_to redirect_path, notice: "Title was successfully created."
+      end
     else
       render :new, status: :unprocessable_entity
     end

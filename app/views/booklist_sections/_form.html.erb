@@ -1,0 +1,105 @@
+<%= form_with(model: booklist_section, class: 'autosave') do |form| %>
+<div class="row">
+	<div class="form-group col-4 mb-2">
+		<%= form.label :heading_orig, style: "display: block" %>
+		<%= form.text_field :heading_orig, class: "form-control" %>
+	</div>
+	<div class="form-group col-4 mb-2" v-show="language_id != english_id">
+		<%= form.label :heading_orig_transliteration, style: "display: block" %>
+		<%= form.text_field :heading_orig_transliteration, class: "form-control" %>
+	</div>
+	<div class="form-group col-4 mb-2" v-show="language_id != english_id">
+		<%= form.label :heading_translation, style: "display: block" %>
+		<%= form.text_field :heading_translation, class: "form-control" %>
+	</div>
+	<div class="form-group col-6 mb-2">
+		<%= form.label :relevant_text_orig, style: "display: block" %>
+		<%= form.text_area :relevant_text_orig, class: "form-control" %>
+	</div>
+	<div class="form-group col-6 mb-2" v-show="language_id != english_id">
+		<%= form.label :relevant_text_orig_transliteration, style: "display: block" %>
+		<%= form.text_area :relevant_text_orig_transliteration, class: "form-control" %>
+	</div>
+	<div class="form-group col-6 mb-2" v-show="language_id != english_id">
+		<%= form.label :relevant_text_translation, style: "display: block" %>
+		<%= form.text_area :relevant_text_translation, class: "form-control" %>
+	</div>
+</div>
+<% end %>
+
+<div class="row my-3">
+	<h6>Apocrypha mentioned</h6>	
+	<% if booklist_section.booklist_references.where(record_type: 'Apocryphon').any? %>
+	<div class="col-12 my-3">
+		<ul class="list-group">
+			<% booklist_section.booklist_references.where(record_type: 'Apocryphon').all.each do |br| %>
+				<li class="list-group-item">
+					<%= br.record.display_name %> 
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteBooklistReference(<%= br.id %>)"><i class="far fa-trash-alt"></i></button>
+					</span>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+	<% end %>
+	<div class="col-8">
+		<select class="resource-select" id="apocrypha-mentioned-section-<%= booklist_section.id %>" multiple placeholder="Select an apocryphon mentioned" name="apocrypha-mentioned">
+		</select>
+	</div>
+	<div class="col-4">
+		<button type="button" class="btn btn-action" onclick="addResource(this, <%= booklist_section.id %>)">Add apocryphon</button>
+		<%= button_to 'New apocryphon', create_from_booklist_apocrypha_path, form_class: 'd-inline-block', class: "btn btn-action", params: { apocryphon: { apocryphon_no: "" }, from: request.path, booklist_section_id: booklist_section.id } %>
+	</div>
+</div>
+
+<div class="row my-3">
+	<h6>Existant resources</h6>
+	<% if booklist_section.booklist_references.where.not(record_type: 'Apocryphon').any? %>
+	<div class="col-12 my-3">
+		<ul class="list-group">
+			<% booklist_section.booklist_references.where.not(record_type: 'Apocryphon').all.each do |br| %>
+				<li class="list-group-item">
+					<%= br.record.display_name %> 
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteBooklistReference(<%= br.id %>)"><i class="far fa-trash-alt"></i></button>
+					</span>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+	<% end %>
+	<div class="col-8">
+		<select id="existant-resource-section-<%= booklist_section.id %>" class="resource-select" multiple placeholder="Select an existant resource" name="apocrypha-mentioned">
+			<option value="">Select an existant resource</option>
+			<optgroup label="Manuscripts">
+				<% Manuscript.all.each do |ma| %>
+					<option value="Manuscript_<%= ma.id %>"><%= ma.display_name %></option>
+				<% end %>
+			</optgroup>
+			<optgroup label="Booklets">
+				<% Booklet.all.each do |bk| %>
+					<option value="Booklet_<%= bk.id %>"><%= bk.display_name %></option>
+				<% end %>
+			</optgroup>
+			<optgroup label="Texts">
+				<% Content.all.each do |tx| %>
+					<option value="Content_<%= tx.id %>"><%= tx.display_name %></option>
+				<% end %>
+			</optgroup>
+		</select>
+	</div>
+	<div class="col-4">
+		<button type="button" class="btn btn-action" onclick="addResource(this, <%= booklist_section.id %>)">Add resource</button>
+		<div class="d-inline-block dropdown">
+		  <button class="btn btn-action dropdown-toggle" type="button" id="dropdownResources<%= booklist_section.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+		    New resource
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownResources<%= booklist_section.id %>">
+		    <li><%= button_to 'New manuscript', create_from_booklist_manuscripts_path, form_class: 'd-inline-block', class: "dropdown-item", params: { manuscript: { census_no: "" }, from: request.path, booklist_section_id: booklist_section.id } %></li>
+		    <li><a class="dropdown-item" href="#">New booklet</a></li>
+		    <li><a class="dropdown-item" href="#">New content/text</a></li>
+		  </ul>
+		</div>
+	</div>
+</div>

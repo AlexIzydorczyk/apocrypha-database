@@ -53,17 +53,27 @@ ActiveRecord::Schema.define(version: 2022_02_03_163911) do
   end
 
   create_table "booklist_references", force: :cascade do |t|
-    t.bigint "booklist_id", null: false
-    t.bigint "text_id"
-    t.bigint "apocryphon_id"
-    t.string "relevant_text_booklist_orig", default: "", null: false
-    t.string "relevant_text_booklist_orig_transliteration", default: "", null: false
-    t.string "relevant_text_booklist_translation", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["apocryphon_id"], name: "index_booklist_references_on_apocryphon_id"
-    t.index ["booklist_id"], name: "index_booklist_references_on_booklist_id"
-    t.index ["text_id"], name: "index_booklist_references_on_text_id"
+    t.string "record_type"
+    t.bigint "record_id"
+    t.bigint "booklist_section_id"
+    t.index ["booklist_section_id"], name: "index_booklist_references_on_booklist_section_id"
+    t.index ["record_type", "record_id"], name: "index_booklist_references_on_record"
+  end
+
+  create_table "booklist_sections", force: :cascade do |t|
+    t.bigint "booklist_id", null: false
+    t.integer "sequence_no"
+    t.string "heading_orig"
+    t.string "heading_orig_transliteration"
+    t.string "heading_translation"
+    t.text "relevant_text_orig"
+    t.text "relevant_text_orig_transliteration"
+    t.text "relevant_text_translation"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booklist_id"], name: "index_booklist_sections_on_booklist_id"
   end
 
   create_table "booklists", force: :cascade do |t|
@@ -78,15 +88,13 @@ ActiveRecord::Schema.define(version: 2022_02_03_163911) do
     t.string "title_orig", default: "", null: false
     t.string "title_orig_transliteration", default: "", null: false
     t.string "title_orig_translation", default: "", null: false
-    t.string "chapter_orig", default: "", null: false
-    t.string "chapter_orig_transliteration", default: "", null: false
-    t.string "chapter_translation", default: "", null: false
     t.string "date_from", default: "", null: false
     t.string "date_to", default: "", null: false
     t.string "specific_date", default: "", null: false
     t.text "notes", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "booklist_no"
     t.index ["institution_id"], name: "index_booklists_on_institution_id"
     t.index ["language_id"], name: "index_booklists_on_language_id"
     t.index ["library_owner_id"], name: "index_booklists_on_library_owner_id"
@@ -423,9 +431,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_163911) do
   add_foreign_key "booklets", "locations", column: "genesis_location_id"
   add_foreign_key "booklets", "manuscripts"
   add_foreign_key "booklets", "religious_orders", column: "genesis_religious_order_id"
-  add_foreign_key "booklist_references", "apocrypha"
-  add_foreign_key "booklist_references", "booklists"
-  add_foreign_key "booklist_references", "texts"
+  add_foreign_key "booklist_references", "booklist_sections"
+  add_foreign_key "booklist_sections", "booklists"
   add_foreign_key "booklists", "institutions"
   add_foreign_key "booklists", "languages"
   add_foreign_key "booklists", "locations"

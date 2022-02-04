@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :booklist_sections
   
 	devise_for :users
 	root to: "application#index"
@@ -19,23 +20,37 @@ Rails.application.routes.draw do
     end
   end
   resources :titles
-  resources :apocrypha
+  resources :apocrypha do
+    collection do
+      post :create_from_booklist
+    end
+  end
   resources :ownerships
   resources :people
   resources :booklets do
     collection do
-        put :sort
-      end
+      put :sort
+      post :create_from_booklist
+    end
   end
   resources :manuscripts do
-      resources :booklets do
-        resources :contents do
-          resources :texts
-        end
+    collection do
+      post :create_from_booklist
+    end
+    resources :booklets do
+      collection do
+        post :create_from_booklist
       end
       resources :contents do
+        collection do
+          post :create_from_booklist
+        end
         resources :texts
       end
+    end
+    resources :contents do
+      resources :texts
+    end
   end
   resources :language_references
   resources :institutional_affiliations

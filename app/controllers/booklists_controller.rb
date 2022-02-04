@@ -13,13 +13,15 @@ class BooklistsController < ApplicationController
   end
 
   def edit
+    @languages = Language.all
   end
 
   def create
     @booklist = Booklist.new(booklist_params)
 
     if @booklist.save
-      redirect_to booklists_url, notice: "Booklist was successfully created."
+      #redirect_to booklists_url, notice: "Booklist was successfully created."
+      redirect_to edit_booklist_path(@booklist)
     else
       render :new, status: :unprocessable_entity
     end

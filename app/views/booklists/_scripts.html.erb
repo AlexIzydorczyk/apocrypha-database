@@ -1,0 +1,88 @@
+let booklistVue;
+$(document).ready(function(){
+	booklistVue = new Vue({
+		name: 'booklistVue',
+		el: '#booklist-form',
+		data: {
+			languages: <%= Language.all.to_json.html_safe %>,
+			language_id: <%= booklist.language_id ||= 'null' %>,
+			english_id: <%= Language.where(language_name: 'English').first.id %>
+		},
+		mounted(){
+			runTomSelects();
+		},
+	});
+});
+
+function runTomSelects(){
+	new TomSelect("#booklist_library_owner_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_institution_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_location_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_religious_order_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_language_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_scribe_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	<% booklist.booklist_sections.each do |bs| %>
+		new TomSelect("#apocrypha-mentioned-section-<%= bs.id %>",{
+			options: [
+				<% Apocryphon.all.each_with_index do |ap, i| %>
+					{ value: 'Apocryphon_<%= ap.id %>', text: '<%= ap.display_name %>', other_titles: '<%= ap.titles.map{ |t| t.title_orig }.to_json.html_safe %>' }<%= ',' unless i == (Apocryphon.all.count - 1) %>
+				<% end %>
+			],
+			sortField: { field: "text", direction: "asc" }, 
+			maxItems: 1,
+			searchField: ['text', 'other_titles']
+		});
+		new TomSelect("#existant-resource-section-<%= bs.id %>",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	<% end %>
+};
+
+
+function addResource(obj, bs_id){
+	var split = $(obj).parent().parent().find('.resource-select option:selected').val().split('_');
+	var my_data = {};
+	my_data.booklist_reference = {
+		record_type: split[0],
+		record_id: split[1],
+		booklist_section_id: bs_id
+	};
+  my_data.authenticity_token = "<%= form_authenticity_token %>";
+  console.log('my_data', my_data)
+  $.ajax({
+    url: "<%= booklist_references_path %>",
+    type: 'POST',
+    data: JSON.stringify(my_data),
+    contentType: 'application/json',
+    success: function(data) {
+    	console.log('reloading?')
+      timeoutReload();
+    }
+  });
+}
+
+function deleteBooklistReference(br_id){
+	if(confirm("Are you sure you want to remove this record from this booklist?")){
+    $.ajax({
+      url: "/booklist_references/"+br_id,
+      type: 'DELETE',
+      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+      contentType: 'application/json',
+      success: function(data) {
+        timeoutReload();
+      }
+    });
+	}
+}
+
+function deleteBooklistSection(bs_id){
+	if(confirm("Are you sure you want to remove this record from this booklist?")){
+    $.ajax({
+      url: "/booklist_sections/"+bs_id,
+      type: 'DELETE',
+      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+      contentType: 'application/json',
+      success: function(data) {
+        timeoutReload();
+      }
+    });
+	}
+}

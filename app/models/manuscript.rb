@@ -11,7 +11,7 @@ class Manuscript < ApplicationRecord
   has_many :contents, -> { order("sequence_no ASC") }
 
   def display_name
-    self.identifier.present? ? ("Manuscript " + self.census_no) : "Edit"
+    self.census_no.present? ? ("Manuscript " + self.census_no) : "Edit"
   end
 
 end
