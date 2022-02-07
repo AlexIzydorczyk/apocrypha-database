@@ -81,4 +81,4 @@ test:
 #
 production:
   <<: *default
-  database: izydorcyky_project_production
+  database: apocrypha-database
