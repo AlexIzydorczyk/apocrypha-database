@@ -10,30 +10,41 @@
         { headerName: "Manuscript source", field: "manuscript_source"},
         { headerName: "Library owner", field: "library_owner_id"},
         { headerName: "Institution", field: "institution_id"},
-        { headerName: "Location", field: "location_id"},
-        { headerName: "Religious order", field: "religious_order_id"},
-        { headerName: "Scribe", field: "scribe_id"},
+        { headerName: "Location", field: "location_id", hide: true},
+        { headerName: "Religious order", field: "religious_order_id", hide: true},
+        { headerName: "Scribe", field: "scribe_id", hide: true},
         { headerName: "Language", field: "language_id"},
         { headerName: "Title orig", field: "title_orig"},
-        { headerName: "Title orig transliteration", field: "title_orig_transliteration"},
-        { headerName: "Title orig translation", field: "title_orig_translation"},
-        { headerName: "Chapter orig", field: "chapter_orig"},
-        { headerName: "Chapter orig transliteration", field: "chapter_orig_transliteration"},
-        { headerName: "Chapter translation", field: "chapter_translation"},
-        { headerName: "Date from", field: "date_from"},
-        { headerName: "Date to", field: "date_to"},
-        { headerName: "Specific date", field: "specific_date"},
-        { headerName: "Notes", field: "notes"},
+        { headerName: "Title orig transliteration", field: "title_orig_transliteration", hide: true},
+        { headerName: "Title orig translation", field: "title_orig_translation", hide: true},
+        { headerName: "Date from", field: "date_from", hide: true},
+        { headerName: "Date to", field: "date_to", hide: true},
+        { headerName: "Specific date", field: "specific_date", hide: true},
+        { headerName: "Notes", field: "notes", hide: true},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+      return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
     } }
   ];
 
   const rowData = [
-    <% booklists.each do |booklist| %>
-      { id:<%= booklist.id %>,
-        booklist_type: "<%= booklist.booklist_type %>",manuscript_source: "<%= booklist.manuscript_source %>",library_owner_id: "<%= booklist.library_owner_id %>",institution_id: "<%= booklist.institution_id %>",location_id: "<%= booklist.location_id %>",religious_order_id: "<%= booklist.religious_order_id %>",scribe_id: "<%= booklist.scribe_id %>",language_id: "<%= booklist.language_id %>",title_orig: "<%= booklist.title_orig %>",title_orig_transliteration: "<%= booklist.title_orig_transliteration %>",title_orig_translation: "<%= booklist.title_orig_translation %>",chapter_orig: "<%= booklist.chapter_orig %>",chapter_orig_transliteration: "<%= booklist.chapter_orig_transliteration %>",chapter_translation: "<%= booklist.chapter_translation %>",date_from: "<%= booklist.date_from %>",date_to: "<%= booklist.date_to %>",specific_date: "<%= booklist.specific_date %>",notes: "<%= booklist.notes %>",
-        links: { show: "<%= booklist_path(booklist) %>", edit: "<%= edit_booklist_path(booklist) %>" }
+    <% booklists.each do |bl| %>
+      { id:<%= bl.id %>,
+        booklist_type: "<%= bl.booklist_type %>",
+        manuscript_source: "<%= bl.manuscript_source %>",
+        library_owner_id: "<%= bl.library_owner.full_name if bl.library_owner_id.present? %>",
+        institution_id: "<%= bl.institution.display_name if bl.institution.present? %>",
+        location_id: "<%= bl.location.city_region_country if bl.location_id.present? %>",
+        religious_order_id: "<%= bl.religious_order.display_name if bl.religious_order_id.present? %>",
+        scribe_id: "<%= bl.scribe.full_name if bl.scribe_id.present? %>",
+        language_id: "<%= bl.language.language_name if bl.language_id.present? %>",
+        title_orig: "<%= bl.title_orig %>",
+        title_orig_transliteration: "<%= bl.title_orig_transliteration %>",
+        title_orig_translation: "<%= bl.title_orig_translation %>",
+        date_from: "<%= bl.date_from %>",
+        date_to: "<%= bl.date_to %>",
+        specific_date: "<%= bl.specific_date %>",
+        notes: "<%= bl.notes %>",
+        links: { edit: "<%= edit_booklist_path(bl) %>" }
       },
     <% end %>
   ];
@@ -43,6 +54,7 @@
     defaultColDef: defaultColDef,
     rowData: rowData,
     onCellValueChanged: onCellValueChanged,
+    sideBar: 'columns',
   };
 
   function onCellValueChanged(event){

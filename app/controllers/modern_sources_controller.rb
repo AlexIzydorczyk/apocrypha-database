@@ -28,7 +28,8 @@ class ModernSourcesController < ApplicationController
     build_person_references_for params[:language_reference][:id], 'author' if params[:language_reference].present?
 
     if @modern_source.save
-      redirect_to modern_sources_url, notice: "Modern source was successfully created."
+      #redirect_to modern_sources_url, notice: "Modern source was successfully created."
+      redirect_to edit_modern_source_path(@modern_source)
     else
       render :new, status: :unprocessable_entity
     end

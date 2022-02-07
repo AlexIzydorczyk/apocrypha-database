@@ -24,7 +24,7 @@
   const rowData = [
     <% booklets.each do |booklet| %>
       { id:<%= booklet.id %>,
-        manuscript_id: "<%= booklet.manuscript.identifier %>",booklet_no: "<%= booklet.booklet_no %>",pages_folios: "<%= booklet.pages_folios %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>",genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
+        manuscript_id: "<%= booklet.manuscript.identifier %>",booklet_no: "<%= booklet.booklet_no %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>",genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
         links: { show: "<%= booklet_path(booklet) %>", edit: "<%= edit_booklet_path(booklet) %>" }
       },
     <% end %>
