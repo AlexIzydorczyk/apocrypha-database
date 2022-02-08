@@ -8,7 +8,7 @@ class Booklist < ApplicationRecord
   has_many :texts, through: :booklist_references
   has_many :modern_source_references, as: :record
   has_many :modern_sources, through: :modern_source_references
-  has_many :booklist_sections
+  has_many :booklist_sections, dependent: :destroy
 
   def display_name
     "Booklist " + self.id.to_s

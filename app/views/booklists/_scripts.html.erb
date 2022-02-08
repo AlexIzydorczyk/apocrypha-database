@@ -25,7 +25,7 @@ function runTomSelects(){
 		new TomSelect("#apocrypha-mentioned-section-<%= bs.id %>",{
 			options: [
 				<% Apocryphon.all.each_with_index do |ap, i| %>
-					{ value: 'Apocryphon_<%= ap.id %>', text: '<%= ap.display_name %>', other_titles: '<%= ap.titles.map{ |t| t.title_orig }.to_json.html_safe %>' }<%= ',' unless i == (Apocryphon.all.count - 1) %>
+					{ value: 'Apocryphon_<%= ap.id %>', text: '<%= ap.display_name %>', other_titles: `<%= ap.titles.map{ |t| t.title_orig }.to_json.html_safe %>` }<%= ',' unless i == (Apocryphon.all.count - 1) %>
 				<% end %>
 			],
 			sortField: { field: "text", direction: "asc" }, 
