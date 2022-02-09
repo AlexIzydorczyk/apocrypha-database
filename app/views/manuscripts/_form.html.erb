@@ -13,7 +13,7 @@
 	<div class="form-group col-md-12 mb-2">
 		<%= form.label :institution_id, "Repository", style: "display: block" %>
 		<div class="d-flex">
-			<%= form.collection_select :institution_id, Institution.all, :id, :name_english, {selected: manuscript.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select a repository"} %>
+			<%= form.collection_select :institution_id, Institution.all, :id, :name_orig, {selected: manuscript.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select a repository"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-institution-modal">New</button>
 		</div>
 	</div>

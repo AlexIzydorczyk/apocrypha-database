@@ -25,6 +25,7 @@ namespace :migrate_old_db do
 				e_clavis_link: a["linkToEClavis"] || "",
 				created_at: created_at,
 				updated_at: updated_at,
+				abbreviation: a["_id"]
 			)
 			r.save!
 
@@ -162,5 +163,132 @@ namespace :migrate_old_db do
 		end
 
 	end
-	
+
+	task :parse_manuscripts_json => :environment do
+		ma = JSON.parse(File.read('public/manuscripts_export.json'))
+
+		puts 'count: ' + ma.count.to_s
+		ma.each do |m|
+			#puts m["_id"]
+						
+			
+			r = Manuscript.new(
+				identifier: m["_id"],
+				shelfmark: m["shelfMark"] || "",
+				material: m["material"] || "",
+				census_no: m["siglum"] || "",
+				known_booklet_composition: m["booklet"].present?
+			)
+			r.save!
+
+			if m["city"].present? or m["country"].present?
+				l = Location.find_or_initialize_by(
+					city_orig: m["city"] || "",
+					country: m["country"] || "",	
+				)
+				l.save!
+				puts l.id
+
+				if m["repository"].present?
+					i = Institution.find_or_initialize_by(
+						name_orig: m["repository"].strip,
+						location_id: l.try(:id)
+					)
+					i.save!
+					r.update(institution_id: i.id)
+				end
+			end
+			
+			if m["booklet"].present? #known booklet composition
+
+				if m["booklet"].count > 1 #multiple booklets
+
+					puts m["_id"] 
+
+					m["booklet"].each_with_index do |b, i|
+						br = r.booklets.create(
+							pages_folios_from: parse_folios(b["ffpp"], true),
+							pages_folios_to: parse_folios(b["ffpp"], false),
+							booklet_no: i+1
+						)
+
+						b["contents"].each_with_index do |c, i|
+							if c["notApocryphon"].present?
+								t = Title.create(title_orig: c["notApocryphon"])
+								br.contents.create(title_id: t.id, sequence_no: i+1)
+							elsif c["apocryphon"].present? #apocryphon content
+								a = c["apocryphon"]
+								lang = Language.find_or_create_by(language_name: a["language"]) if a["language"].present?
+								if a["title"].present?
+									title = Title.find_or_create_by(title_orig: a["title"])
+									title.update(language_id: lang.id) if title.language_id.blank?
+									apoc = Apocryphon.find_or_create_by(id: title.apocryphon_id)
+									content = br.contents.create(title_id: title.id, sequence_no: i+1)
+								else
+									apoc = Apocryphon.find_or_create_by(abbreviation: a["apocryphonId"])
+									content = br.contents.create(sequence_no: i+1)
+								end
+								text = Text.create(
+									content_id: content.id,
+									text_pages_folios_from: parse_folios(a["ffpp"], true),
+									text_pages_folios_to: parse_folios(a["ffpp"], false),
+									notes: a["notes"] || "",
+									extent: a["extent"] || "",
+									manuscript_title_orig: a["msTitle"] || "",
+									title_pages_folios_from: parse_single_folio(a["ffppMsTitle"]),
+									title_pages_folios_to: parse_single_folio(a["ffppMsTitle"]),
+									colophon_orig: a["colophon"] || "",
+									colophon_pages_folios_from: parse_single_folio(a["ffppColophon"]),
+									colophon_pages_folios_to: parse_single_folio(a["ffppColophon"]),
+								)
+								a["section"].each_with_index do |s, i|
+									section = Section.create(
+										incipit_orig: s["incipit"] || "",
+										explicit_orig: s["explicit"] || "",
+										pages_folios_incipit: s["ffppIncipit"] || "",
+										pages_folios_explicit: s["ffppExplicit"] || "",
+										section_name: s["name"] || "",
+										text_id: text.id
+									)
+								end
+
+								LanguageReference.find_or_create_by(record: apoc, language_id: lang.id) if a["language"].present?
+
+							end
+
+						end
+
+					end
+
+				else #single booklet object
+
+				end
+
+			else #unknown booklet composition
+				puts m["_id"]
+
+				m["context"]["contents"].each_with_index do |c, i|
+					t = Title.create(title_orig: c)
+					r.contents.create(title_id: t.id, sequence_no: i+1)
+				end
+
+			end
+		end
+	end
 end
+
+def parse_folios(ffpp, from)
+	if ffpp.present?
+		split = ffpp.gsub(/.+?(?=ff)/, '').gsub('ff.', '').strip.split('-')
+		from ? split.first : split.last
+	else
+		""
+	end
+end
+
+def parse_single_folio(ffpp)
+	ffpp.present? ? ffpp.split(' ').last : ''
+end
+
+
+
