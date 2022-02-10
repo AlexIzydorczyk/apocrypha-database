@@ -6,7 +6,7 @@ $(document).ready(function(){
 		data: {
 			languages: <%= Language.all.to_json.html_safe %>,
 			language_id: <%= booklist.language_id ||= 'null' %>,
-			english_id: <%= Language.where(language_name: 'English').first.id %>
+			english_id: <%= english_id %>
 		},
 		mounted(){
 			runTomSelects();

@@ -21,7 +21,7 @@ class BookletsController < ApplicationController
     @booklet = Booklet.new(booklet_params)
 
     if @booklet.save
-      redirect_path = params[:in_manuscript] ? edit_manuscript_booklet_path(@booklet.manuscript, @booklet) : booklets_path
+      redirect_path = params[:in_manuscript] ? edit_manuscript_booklet_path(@booklet.manuscript, @booklet) : edit_booklet_path(@booklet)
       redirect_to redirect_path, notice: "Booklet was successfully created."
     else
       render :new, status: :unprocessable_entity

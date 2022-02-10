@@ -8,15 +8,15 @@
 	</div>
 	<div class="form-group col-md-4 mb-2">
 		<!-- this needs to include to, from, and folios type -->
-		<%= form.label "Location of #{booklet.manuscript.is_folios ? "folios" : "pages"} of the booklet", style: "display: block" %>
+		<%= form.label "Location of folios of the booklet", style: "display: block" %>
 		<div class="d-flex align-items-baseline">
 			<div class="input-group">
-				<span class="input-group-text bg-white"><%= booklet.manuscript.is_folios ? 'f' : 'p' %>.</span>
+				<span class="input-group-text bg-white">f.</span>
 				<%= form.text_field :pages_folios_from, class: "form-control border-start-0" %>
 			</div>
 			<span class="mx-2">to</span>
 			<div class="input-group">
-				<span class="input-group-text bg-white"><%= booklet.manuscript.is_folios ? 'f' : 'p' %>.</span>
+				<span class="input-group-text bg-white">f.</span>
 				<%= form.text_field :pages_folios_to, class: "form-control border-start-0" %>
 			</div>
 		</div>

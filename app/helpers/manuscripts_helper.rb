@@ -21,6 +21,21 @@ module ManuscriptsHelper
 		]
 	end
 
+	def booklet_family_tree b
+		[
+			{
+				name: b.display_name,
+				url: edit_booklet_path(b),
+				children: b.contents.with_text.map{ |c| 
+					{
+						name: c.short_name,
+						url: edit_booklet_content_text_path(b, c, c.text)
+					} 
+				}	
+			} 
+		]
+	end
+
 	private
 
 	def contents c
