@@ -7,22 +7,34 @@
   const columnDefs = [
     { headerName: "Id", field: "id", editable: false, hide: true},//cellRenderer: 'agGroupCellRenderer'
         { headerName: "Apocryphon no", field: "apocryphon_no"},
+        { headerName: "Main English Title", field: "main_english_title", editable: false},
+        { headerName: "Main Latin Title", field: "main_latin_title", editable: false},
         { headerName: "Cant no", field: "cant_no"},
-        { headerName: "Bhl no", field: "bhl_no"},
-        { headerName: "Bhg no", field: "bhg_no"},
-        { headerName: "Bho no", field: "bho_no"},
+        { headerName: "Bhl no", field: "bhl_no", hide: true},
+        { headerName: "Bhg no", field: "bhg_no", hide: true},
+        { headerName: "Bho no", field: "bho_no", hide: true},
         { headerName: "E clavis no", field: "e_clavis_no"},
         { headerName: "E clavis link", field: "e_clavis_link", hide: true},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
-    } }
+            var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
+            return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>Edit</a>" + eclavis
+          } 
+        }
   ];
 
   const rowData = [
     <% apocrypha.each do |apocryphon| %>
       { id:<%= apocryphon.id %>,
-        apocryphon_no: "<%= apocryphon.apocryphon_no %>",cant_no: "<%= apocryphon.cant_no %>",bhl_no: "<%= apocryphon.bhl_no %>",bhg_no: "<%= apocryphon.bhg_no %>",bho_no: "<%= apocryphon.bho_no %>",e_clavis_no: "<%= apocryphon.e_clavis_no %>",e_clavis_link: "<%= apocryphon.e_clavis_link %>",
-        links: { edit: "<%= edit_apocryphon_path(apocryphon) %>" }
+        apocryphon_no: "<%= apocryphon.apocryphon_no %>",
+        main_english_title: "<%= apocryphon.main_eng_title %>",
+        main_latin_title: "<%= apocryphon.main_lat_title %>",
+        cant_no: "<%= apocryphon.cant_no %>",
+        bhl_no: "<%= apocryphon.bhl_no %>",
+        bhg_no: "<%= apocryphon.bhg_no %>",
+        bho_no: "<%= apocryphon.bho_no %>",
+        e_clavis_no: "<%= apocryphon.e_clavis_no %>",
+        e_clavis_link: "<%= apocryphon.e_clavis_link %>",
+        links: { edit: "<%= edit_apocryphon_path(apocryphon) %>", eclavis: "<%= apocryphon.e_clavis_link %>" }
       },
     <% end %>
   ];
