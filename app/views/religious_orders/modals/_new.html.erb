@@ -9,15 +9,15 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="form-group col-md-12 mb-2">
-						<%= form.label :order_name, "Name of religious order", style: "display: block;" %>
+						<%= form.label :order_name, "Name of religious order", style: "display: block;", class: "fw-bolder" %>
 						<%= form.text_field :order_name, class: "form-control", placeholder: "Most widely used name of religious order" %>
 					</div>
 					<div class="form-group col-md-12 mb-2">
-						<%= form.label :abbreviation, style: "display: block;" %>
+						<%= form.label :abbreviation, style: "display: block;", class: "fw-bolder" %>
 						<%= form.text_field :abbreviation, class: "form-control", placeholder: "Abbreviation" %>
 					</div>
 					<div class="form-group col-md-12 mb-2">
-						<%= form.label :notes, style: "display: block;" %>
+						<%= form.label :notes, style: "display: block;", class: "fw-bolder" %>
 						<%= form.text_area :notes, class: "form-control", style: "min-height: 60px;", placeholder: "e.g. Alternative titles for order\ne.g. Previous names of order" %>
 					</div>
 				</div>

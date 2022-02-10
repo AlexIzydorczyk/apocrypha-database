@@ -117,7 +117,7 @@
 <% end %>
 
 <template v-if="!known_booklet_composition || has_ownerships">
-	<h2 id="manuscripts">Provenances of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<h2 id="manuscripts">Provenance of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 	<%= render 'ownerships/list', parent: manuscript %>
 </template>
 

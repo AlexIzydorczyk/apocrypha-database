@@ -8,7 +8,7 @@
 	</div>
 	<div class="form-group col-md-4 mb-2">
 		<!-- this needs to include to, from, and folios type -->
-		<%= form.label "Location of folios of the booklet", style: "display: block" %>
+		<%= form.label "Location of booklet in ms", style: "display: block" %>
 		<div class="d-flex align-items-baseline">
 			<div class="input-group">
 				<span class="input-group-text bg-white">f.</span>
@@ -51,17 +51,17 @@
 		</div>
 	<% end %>
 	<div class="form-group col-md-12 mb-2">
-		<%= form.label :genesis_religious_order_id, "Religious Order", style: "display: block" %>
-		<div class="d-flex">
-			<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: booklet.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Search religious order"} %>
-			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
-		</div>
-	</div>
-	<div class="form-group col-md-12 mb-2">
 		<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :genesis_institution_id, Institution.all, :id, :display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", multiple: true, placeholder: "Search institution"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-institution-modal">New</button>
+		</div>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= form.label :genesis_religious_order_id, "Religious order", style: "display: block" %>
+		<div class="d-flex">
+			<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: booklet.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Search religious order"} %>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
 		</div>
 	</div>
 	<div class="form-group col-md-12 mb-2">
@@ -78,10 +78,10 @@
 </div>
 <% end %>
 
-<h2 id="provenances">Booklet provenances <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal", 'bs-target': "#addProvenanceModal"} %></h2>
+<h2 id="provenances">Booklet provenance <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal", 'bs-target': "#addProvenanceModal"} %></h2>
 <%= render 'ownerships/list', parent: booklet %>
 
-<h2 id="contents">Booklet content<%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
+<h2 id="contents">Booklet contents <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 <%= render 'contents/list', parent: booklet %>
 
 </div>

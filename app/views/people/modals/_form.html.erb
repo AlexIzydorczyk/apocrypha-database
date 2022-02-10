@@ -63,9 +63,13 @@
 								<i class="far" style="color: var(--orange)" :class="character == 'scribe' ? 'fa-dot-circle' : 'fa-circle'"></i>
 								Scribe
 							</span>
-							<span @click="character = 'booklet_owner'" class="me-4 pointer">
-								<i class="far" style="color: var(--orange)" :class="character == 'booklet_owner' ? 'fa-dot-circle' : 'fa-circle'"></i>
-								Booklet owner
+							<span @click="character = 'owner'" class="me-4 pointer">
+								<i class="far" style="color: var(--orange)" :class="character == 'owner' ? 'fa-dot-circle' : 'fa-circle'"></i>
+								Owner
+							</span>
+							<span @click="character = 'translator'" class="me-4 pointer">
+								<i class="far" style="color: var(--orange)" :class="character == 'translator' ? 'fa-dot-circle' : 'fa-circle'"></i>
+								Translator
 							</span>
 						</div>
 
