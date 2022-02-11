@@ -19,7 +19,7 @@ class PeopleController < ApplicationController
     @person = Person.new(person_params)
     saved = @person.save
     if params[:booklet_id].present?
-      PersonReference.create(record: Booklet.find(params[:booklet_id]), person: @person)
+      PersonReference.create(record: Booklet.find(params[:booklet_id]), person: @person, reference_type: params[:reference_type])
     elsif params[:ownership_id].present?
       Ownership.find(params[:ownership_id]).update(person_id: @person.id)
     elsif params[:modern_source_id].present?
@@ -37,7 +37,7 @@ class PeopleController < ApplicationController
   def update
     if @person.update(person_params)
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {"status": "updated"}
         elsez
         redirect_to people_url, notice: "Person was successfully updated."
       end

@@ -45,8 +45,16 @@
 		<div class="form-group col-md-12 mb-2">
 			<%= sr.label :id, "Scribes", style: "display: block" %>
 			<div class="d-flex">
-				<%= sr.collection_select :id, Person.all, :id, :full_name, {selected: booklet.scribes.map(&:id)}, {class: "form-control", multiple: true, placeholder: "Search scribe"} %>
-				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#ownership-person-modal">New</button>
+				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id">
+					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+						<optgroup label="<%= group.humanize %>">
+							<% people.each do |person| %>
+								<option value="<%= person.id %>" <%= 'selected' if booklet.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+							<% end %>
+						</optgroup>
+					<% end %>
+				</select>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-scribe">New</button>
 			</div>
 		</div>
 	<% end %>
@@ -101,7 +109,7 @@
 <%= render 'institutions/modals/new', institution: Institution.new, parent: booklet, pid: '', depth: 0 %>
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet, pid: '', depth: 0 %>
 <%= render 'locations/modals/form', location: Location.new, parent: booklet, pid: '', depth: 0 %>
-<%= render 'people/modals/form', person: Person.new, parent: booklet, pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: booklet, reference_type: 'scribe', pid: '', depth: 0 %>
 
 <!-- Scripts -->
 <script type="text/javascript">

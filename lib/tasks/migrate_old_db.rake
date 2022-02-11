@@ -169,9 +169,8 @@ namespace :migrate_old_db do
 
 		puts 'count: ' + ma.count.to_s
 		ma.each do |m|
-			#puts m["_id"]
+			puts m["_id"]
 						
-			
 			r = Manuscript.new(
 				identifier: m["_id"],
 				shelfmark: m["shelfMark"] || "",
@@ -201,7 +200,7 @@ namespace :migrate_old_db do
 			
 			if m["booklet"].present? #known booklet composition
 
-				if m["booklet"].count > 1 #multiple booklets
+				# if m["booklet"].count > 1 #multiple booklets
 
 					puts m["_id"] 
 
@@ -221,7 +220,7 @@ namespace :migrate_old_db do
 								lang = Language.find_or_create_by(language_name: a["language"]) if a["language"].present?
 								if a["title"].present?
 									title = Title.find_or_create_by(title_orig: a["title"])
-									title.update(language_id: lang.id) if title.language_id.blank?
+									title.update(language_id: lang.id) if title.language_id.blank? && lang.present?
 									apoc = Apocryphon.find_or_create_by(id: title.apocryphon_id)
 									content = br.contents.create(title_id: title.id, sequence_no: i+1)
 								else
@@ -240,7 +239,7 @@ namespace :migrate_old_db do
 									colophon_orig: a["colophon"] || "",
 									colophon_pages_folios_from: parse_single_folio(a["ffppColophon"]),
 									colophon_pages_folios_to: parse_single_folio(a["ffppColophon"]),
-								)
+								) if ["ffpp", "notes", "extent", "msTitle", "ffppMsTitle", "colophon", "ffppColophon", "section"].any?{ |s| a[s].present? }
 								a["section"].each_with_index do |s, i|
 									section = Section.create(
 										incipit_orig: s["incipit"] || "",
@@ -250,7 +249,7 @@ namespace :migrate_old_db do
 										section_name: s["name"] || "",
 										text_id: text.id
 									)
-								end
+								end if a["section"].present?
 
 								LanguageReference.find_or_create_by(record: apoc, language_id: lang.id) if a["language"].present?
 
@@ -258,11 +257,9 @@ namespace :migrate_old_db do
 
 						end
 
+						b
+
 					end
-
-				else #single booklet object
-
-				end
 
 			else #unknown booklet composition
 				puts m["_id"]
@@ -272,6 +269,36 @@ namespace :migrate_old_db do
 					r.contents.create(title_id: t.id, sequence_no: i+1)
 				end
 
+			end
+
+			if m["scribe"].present?
+				r.notes += m["scribe"].map{ |s| "Scribe: " + s }.join("\n\n")
+				r.save!
+			end				
+
+			if m["owner"].present?
+				m["owner"].each do |o|
+					l = o["location"].present? || o["diocese"].present? || o["region"].present? ? Location.find_or_create_by(
+						city_orig: o["location"] || "",
+						diocese_orig: o["diocese"] || "",
+						country: o["region"] || "",
+					) : nil
+					i = Institution.find_or_create_by(
+						location_id: l.id,
+						name_orig: o["institution"],
+					) if o["institution"].present?
+					ro = ReligiousOrder.find_or_create_by(
+						order_name: o["order"]
+					) if o["order"].present?
+					Ownership.find_or_create_by(
+						location_id: l.present? ? l.id : nil,
+						institution_id: i.present? ? i.id : nil,
+						religious_order_id: ro.present? ? ro.id : nil,
+						provenance_notes: o["notes"] || "",
+						manuscript_id: r.booklets.count != 1 ? r.id : nil,
+						booklet_id: r.booklets.count == 1 ? r.booklets.first.id : nil,
+					)
+				end
 			end
 		end
 	end
@@ -289,6 +316,3 @@ end
 def parse_single_folio(ffpp)
 	ffpp.present? ? ffpp.split(' ').last : ''
 end
-
-
-

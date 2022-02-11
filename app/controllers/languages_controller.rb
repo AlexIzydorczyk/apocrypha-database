@@ -16,13 +16,18 @@ class LanguagesController < ApplicationController
   end
 
   def create
-    @language = Language.new(language_params)
-
-    if @language.save
-      redirect_to languages_url, notice: "Language was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    @language = Language.create(language_params)  
+    
+    if params[:record_class].present?
+      r = params[:record_class].constantize.find(params[:record_id])
+      r[params[:record_field_name]] = @language.id
+      r.save
     end
+    # if @language.save
+    #   # redirect_to languages_url, notice: "Language was successfully created."
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
   end
 
   def update

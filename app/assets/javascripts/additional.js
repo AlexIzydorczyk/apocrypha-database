@@ -23,7 +23,6 @@ var setModalPositioning = function modalPosition(){
 }
 
 function timeoutReload(location_hash){
-  console.log('timeoutReload', location_hash);
   if(location_hash) location.hash = location_hash;
   else location.hash = ''
   setTimeout(function(){
@@ -40,8 +39,17 @@ function saveForm(form, input_for_id=null) {
   })
 }
 
+function saveAllForms() {
+  $('form.autosave').each(function() {
+    saveForm($(this));
+  });
+}
+
 function createModalListeners() {
   $('.modal').on('shown.bs.modal', setModalPositioning);
+  $('.modal').on('shown.bs.modal', function() {
+    saveAllForms();
+  });
   $('.modal').on('hidden.bs.modal', setModalPositioning);
 }
 

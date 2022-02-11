@@ -47,32 +47,6 @@
 
 				<div class="row">
 					<div class="col-lg-6">
-						
-						<%= form.label :character, "Type of person", class: "fw-bolder mt-4" %>
-						<%= form.hidden_field :character, "v-model": "character" %>
-						<div class="d-flex">
-							<span @click="character = 'author'" class="me-4 pointer">
-								<i class="far" style="color: var(--orange)" :class="character == 'author' ? 'fa-dot-circle' : 'fa-circle'"></i>
-								Author
-							</span>
-							<span @click="character = 'editor'" class="me-4 pointer">
-								<i class="far" style="color: var(--orange)" :class="character == 'editor' ? 'fa-dot-circle' : 'fa-circle'"></i>
-								Editor
-							</span>
-							<span @click="character = 'scribe'" class="me-4 pointer">
-								<i class="far" style="color: var(--orange)" :class="character == 'scribe' ? 'fa-dot-circle' : 'fa-circle'"></i>
-								Scribe
-							</span>
-							<span @click="character = 'owner'" class="me-4 pointer">
-								<i class="far" style="color: var(--orange)" :class="character == 'owner' ? 'fa-dot-circle' : 'fa-circle'"></i>
-								Owner
-							</span>
-							<span @click="character = 'translator'" class="me-4 pointer">
-								<i class="far" style="color: var(--orange)" :class="character == 'translator' ? 'fa-dot-circle' : 'fa-circle'"></i>
-								Translator
-							</span>
-						</div>
-
 						<%= form.label :birth_date, "Dates", class: "fw-bolder mt-4" %>
 						<div class="row">
 							<div class="col-md-6">
@@ -97,6 +71,7 @@
 			</div>
 			<% if parent.class == Booklet %>
 				<%= hidden_field_tag :booklet_id, parent.id %>
+				<%= hidden_field_tag :reference_type, reference_type %>
 			<% elsif parent.class == Ownership %>
 				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% elsif parent.class == ModernSource %>
@@ -120,7 +95,6 @@
 			data(){ return{
 				languages: <%= Language.all.to_json.html_safe %>,
 				language: '',
-				character: '<%= person.character %>'
 			} },
 			computed: {
 				requires_translit: function() {

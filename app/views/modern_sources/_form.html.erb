@@ -11,7 +11,7 @@
 
 <div class="row">
 
-	<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' ? 'col-md-6' : 'col-md-5'" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document'">
+	<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' ? 'col-md-12' : 'col-md-12'" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document'">
 		<label>{{ source_type == 'journal_article' ? "Journal title in original language" : (source_type == 'web_page' ? "Title of website" : "Chapter title original language") }}</label>
 		<language-form-groups
 			key="modern-souce-publication-title"
@@ -25,10 +25,12 @@
 			orig_val="<%= modern_source.publication_title_orig %>"
 			translit_val="<%= modern_source.publication_title_transliteration %>"
 			eng_val="<%= modern_source.publication_title_translation %>"
+			record_class="ModernSource"
+			record_id="<%= modern_source.id %>"
 		></language-form-groups>
 	</div>
 
-	<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document' ? 'col-md-6' : 'col-md-5'" v-show="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document'">
+	<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document' ? 'col-md-12' : 'col-md-12'" v-show="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document'">
 		<label>{{ title_orig_label }}</label>
 		<language-form-groups
 			key="modern-souce-chapter-title"
@@ -42,6 +44,8 @@
 			orig_val="<%= modern_source.title_orig %>"
 			translit_val="<%= modern_source.title_transliteration %>"
 			eng_val="<%= modern_source.title_translation %>"
+			record_class="ModernSource"
+			record_id="<%= modern_source.id %>"
 		></language-form-groups>
 	</div>
 
@@ -51,7 +55,15 @@
 				<div class="form-group col-md-6 mb-2" v-show="author_type == 'regular'">
 					<%= ar.label :id, "Author(s)", style: "display: block" %>
 					<div class="d-flex">
-						<%= ar.collection_select :id, Person.all, :id, :full_name, {selected: modern_source.authors.map(&:id)}, {class: "form-control", multiple: true} %>
+						<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id">
+							<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+								<optgroup label="<%= group.humanize %>">
+									<% people.each do |person| %>
+										<option value="<%= person.id %>" <%= 'selected' if modern_source.authors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+									<% end %>
+								</optgroup>
+							<% end %>
+						</select>
 						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
 					</div>
 				</div>
@@ -92,7 +104,15 @@
 				<div class="form-group col-md mb-2">
 					<%= er.label :id, "Editor(s)", style: "display: block" %>
 					<div class="d-flex">
-						<%= er.collection_select :id, Person.all, :id, :full_name, {selected: modern_source.editors.map(&:id)}, {class: "form-control", multiple: true} %>
+						<select class="form-control" multiple="multiple" name="editor_reference[id][]" id="editor_reference_id">
+							<% sort_hash_keys(@grouped_people, ['editor', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+								<optgroup label="<%= group.humanize %>">
+									<% people.each do |person| %>
+										<option value="<%= person.id %>" <%= 'selected' if modern_source.editors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+									<% end %>
+								</optgroup>
+							<% end %>
+						</select>
 						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-editor">New</button>
 					</div>
 				</div>
@@ -101,7 +121,15 @@
 				<div class="form-group col-md mb-2">
 					<%= tr.label :id, "Translator(s)", style: "display: block" %>
 					<div class="d-flex">
-						<%= tr.collection_select :id, Person.all, :id, :full_name, {selected: modern_source.translators.map(&:id)}, {class: "form-control", multiple: true} %>
+						<select class="form-control" multiple="multiple" name="translator_reference[id][]" id="translator_reference_id">
+							<% sort_hash_keys(@grouped_people, ['translator', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+								<optgroup label="<%= group.humanize %>">
+									<% people.each do |person| %>
+										<option value="<%= person.id %>" <%= 'selected' if modern_source.translators.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+									<% end %>
+								</optgroup>
+							<% end %>
+						</select>
 						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-translator">New</button>
 					</div>
 				</div>
@@ -137,6 +165,8 @@
 			orig_val="<%= modern_source.volume_title_orig %>"
 			translit_val="<%= modern_source.volume_title_transliteration %>"
 			eng_val="<%= modern_source.volume_title_translation %>"
+			record_class="ModernSource"
+			record_id="<%= modern_source.id %>"
 		></language-form-groups>
 	</div>
 
@@ -158,6 +188,8 @@
 			orig_val="<%= modern_source.part_title_orig %>"
 			translit_val="<%= modern_source.part_title_transliteration %>"
 			eng_val="<%= modern_source.part_title_translation %>"
+			record_class="ModernSource"
+			record_id="<%= modern_source.id %>"
 		></language-form-groups>
 	</div>
 
@@ -179,6 +211,8 @@
 			orig_val="<%= modern_source.series_title_orig %>"
 			translit_val="<%= modern_source.title_transliteration %>"
 			eng_val="<%= modern_source.series_title_translation %>"
+			record_class="ModernSource"
+			record_id="<%= modern_source.id %>"
 		></language-form-groups>
 	</div>
 

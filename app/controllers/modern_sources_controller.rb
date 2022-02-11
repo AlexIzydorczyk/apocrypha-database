@@ -28,8 +28,7 @@ class ModernSourcesController < ApplicationController
     build_person_references_for params[:language_reference][:id], 'author' if params[:language_reference].present?
 
     if @modern_source.save
-      #redirect_to modern_sources_url, notice: "Modern source was successfully created."
-      redirect_to edit_modern_source_path(@modern_source)
+      redirect_to modern_sources_url, notice: "Modern source was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -74,7 +73,7 @@ class ModernSourcesController < ApplicationController
     end
 
     def modern_source_params
-      params.require(:modern_source).permit(:publication_title_orig, :publication_title_transliteration, :publication_title_translation, :title_orig, :title_transliteration, :title_translation, :source_type, :num_volumes, :volume_no, :volume_title_orig, :volume_title_transliteration, :volume_title_translation, :part_no, :part_title_orig, :part_title_transliteration, :part_title_translation, :series_no, :series_title_orig, :series_title_transliteration, :series_title_translation, :edition, :publication_location_id, :publisher, :publication_creation_date, :shelfmark, :ISBN, :DOI, :author_type, :institution_id, :publication_title_language_id, :volume_title_language_id, :part_title_language_id, :series_title_language_id, :title_language_id, :pages_in_publication, :document_type)
+      params.require(:modern_source).permit(:publication_title_orig, :publication_title_transliteration, :publication_title_translation, :title_orig, :title_transliteration, :title_translation, :source_type, :num_volumes, :volume_no, :volume_title_orig, :volume_title_transliteration, :volume_title_translation, :part_no, :part_title_orig, :part_title_transliteration, :part_title_translation, :series_no, :series_title_orig, :series_title_transliteration, :series_title_translation, :edition, :publication_location_id, :publisher, :publication_creation_date, :shelfmark, :ISBN, :DOI, :author_type, :institution_id, :publication_title_language_id, :volume_title_language_id, :part_title_language_id, :series_title_language_id, :title_language_id, :pages_in_publication, :document_type, :date_accessed)
     end
 
     def build_person_references_for ids, reference_type

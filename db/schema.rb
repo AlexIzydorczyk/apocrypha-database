@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_03_163911) do
+ActiveRecord::Schema.define(version: 2022_02_04_182010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_163911) do
     t.bigint "title_language_id"
     t.string "pages_in_publication", default: "", null: false
     t.string "document_type", default: "", null: false
+    t.string "date_accessed", default: "", null: false
     t.index ["institution_id"], name: "index_modern_sources_on_institution_id"
     t.index ["part_title_language_id"], name: "index_modern_sources_on_part_title_language_id"
     t.index ["publication_location_id"], name: "index_modern_sources_on_publication_location_id"
