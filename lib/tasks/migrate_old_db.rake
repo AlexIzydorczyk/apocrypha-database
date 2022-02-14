@@ -35,6 +35,7 @@ namespace :migrate_old_db do
 					language_id: english_id,
 					created_at: created_at,
 					updated_at: updated_at,
+					apocryphon_id: r.id,
 				)
 				t.save!
 				r.update(main_english_title_id: t.id)
@@ -46,6 +47,7 @@ namespace :migrate_old_db do
 					language_id: latin_id,
 					created_at: created_at,
 					updated_at: updated_at,
+					apocryphon_id: r.id,
 				)
 				t.save!
 				r.update(main_latin_title_id: t.id)
@@ -57,6 +59,7 @@ namespace :migrate_old_db do
 					language_id: english_id,
 					created_at: created_at,
 					updated_at: updated_at,
+					apocryphon_id: r.id,
 				)
 				t.save!
 			end if a["otherEnglishTitles"].present?
@@ -67,6 +70,7 @@ namespace :migrate_old_db do
 					language_id: latin_id,
 					created_at: created_at,
 					updated_at: updated_at,
+					apocryphon_id: r.id,
 				)
 				t.save!
 			end if a["otherLatinTitles"].present?
