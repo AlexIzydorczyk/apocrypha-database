@@ -302,6 +302,127 @@ namespace :migrate_old_db do
 			end
 		end
 	end
+
+	task :parse_bibliography_json => :environment do
+		
+		bib = JSON.parse(File.read('public/bibliographys_export.json'))
+
+		bib.each do |b|
+
+			puts b["_id"]
+			
+			created_at = b["createdAt"].present? ? (DateTime.parse(b["createdAt"].class == String ? b["createdAt"] : b["createdAt"]["$date"])) : DateTime.now
+			updated_at = b["updatedAt"].present? ? DateTime.parse(b["updatedAt"].class == String ? b["updatedAt"] : b["updatedAt"]["$date"]) : created_at
+
+			language_id = b["language"].present? ? Language.find_or_create_by(language_name: b["language"]).id : nil
+
+			obj = {}
+			obj[b["publicationType"].include?("book") ? "publication_title_orig" : "title_orig"] = b["title"]
+
+			r = ModernSource.find_or_initialize_by(obj)
+
+			obj = {}
+			obj[b["publicationType"].include?("book") ? "publication_title_language_id" : "title_language_id"] = language_id
+
+			source_type = case b["publicationType"]
+			when "book"
+				"authored_book"
+			when "book section"
+				"book_chapter"
+			when "journal article"
+				"journal_article"
+			when "webpage"
+				"web_page"
+			when "handwritten document"
+				"handwritten_document"
+			else
+				"unpublished_document"
+			end
+
+			l = Location.find_or_create_by(city_orig: nested_hash_value b, 'place')
+
+			pages = nested_hash_value b, 'pages'
+			pages_in_publication = pages.present? ? pages : nested_hash_value b, 'pagesFolios'
+
+			author_type = ["Laurence Witten Rare books", "Gregory of Tours."].include?(nested_hash_value b, 'referenceName') ? "corporate" : "regular"
+			institution_id = author_type == "corporate" ? Institution.find_or_create_by(
+				name_orig: nested_hash_value b, 'source'
+			) : nil
+
+			author_type = nested_hash_value b, 'authorType' == "CorporateAuthor"|| author_type == 'corporate' ? "corporate" : "regular"
+			corporate_author = nested_hash_value b, 'corporateAuthor'
+			institution_id = institution_id.nil? && corporate_author.present? ? Institution.find_or_create_by(
+				name_orig: corporate_author
+			) : institution_id
+
+			obj.merge!({
+				source_type: source_type,
+				created_at: created_at,
+				updated_at: updated_at,
+				isbn: nested_hash_value b, 'isbn',
+				publisher: nested_hash_value b, 'publisher',
+				publication_location_id: l.id,
+				publication_creation_date: nested_hash_value b, 'datePublished',
+				num_volumes: nested_hash_value b, 'numberOfVolumes',
+				volume_no: nested_hash_value b, 'volumeNo',
+				volume_title_orig: nested_hash_value b, 'volumeTitle',
+				part_no: nested_hash_value b, 'partNo',
+				part_title_orig: nested_hash_value b, 'partTitle',
+				series_no: nested_hash_value b, 'seriesNo',
+				series_title_orig: nested_hash_value b, 'seriesTitle',
+				pages_in_publication: pages_in_publication,
+				shelfmark: nested_hash_value b, 'locationRepositoryShelfmark',
+				publication_creation_date: nested_hash_value b, 'year',
+				author_type: author_type,
+				institution_id: institution_id,
+			})
+
+			r.update(obj)
+
+			urls = []
+			urls.push(nested_hash_value b, 'url')
+			urls.push(b['webpage']['location']) if b['webpage'].present? and b["webpage"]["location"].present?
+			urls.each{ |url| r.source_urls.find_or_create_by(url: url) }
+
+			if author_type == "regular"
+				b["author"].each do |a|
+					person = Person.find_or_create_by(
+						first_name_vernacular: nested_hash_value a, 'first',
+						middle_name_vernacular: nested_hash_value a, 'middle',
+						last_name_vernacular: nested_hash_value a, 'last',
+						viaf: nested_hash_value a, 'lod',
+					)
+					PersonReference.find_or_create_by(
+						record: r,
+						person: person,
+						reference_type: "author",
+					)
+				end
+			end
+
+			nested_hash_value b, 'editor',.each do |e|
+				person = Person.find_or_create_by(
+					first_name_vernacular: nested_hash_value e, 'first',
+					middle_name_vernacular: nested_hash_value e, 'middle',
+					last_name_vernacular: nested_hash_value e, 'last',
+					viaf: nested_hash_value e, 'lod',
+				)
+				PersonReference.find_or_create_by(
+					record: r,
+					person: person,
+					reference_type: "editor",
+				)
+			end
+
+			r.update(title_orig: b["bookSection"]["title"]) if b["bookSection"].present? and b["bookSection"]["title"].present?
+			r.update(publication_title_orig: b["journalArticle"]["journalTitle"]) if b["journalArticle"].present? and b["journalArticle"]["journalTitle"].present?
+
+		# 	# referencesManuscripts
+		# 	# referencesApocrypha
+			
+		end
+	end
+
 end
 
 def parse_folios(ffpp, from)
@@ -316,3 +437,14 @@ end
 def parse_single_folio(ffpp)
 	ffpp.present? ? ffpp.split(' ').last : ''
 end
+
+def nested_hash_value(obj,key)
+  if obj.respond_to?(:key?) && obj.key?(key)
+    obj[key]
+  elsif obj.respond_to?(:each)
+    r = ""
+    obj.find{ |*a| r=nested_hash_value(a.last,key) }
+    r
+  end
+end
+
