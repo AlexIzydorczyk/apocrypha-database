@@ -21,7 +21,7 @@
 				<label class="mt-3 fw-bolder">Location</label>
 				<div class="row">
 					<div class="form-group col-md-12 mb-2">
-						<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Search location"} %>
+						<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
 					</div>
 				</div>
 			</div>
@@ -53,5 +53,5 @@
 			},
 		});
 	});
-	<%= render "layouts/language_form_group" %>
+	<%= render "layouts/vue_language_form_group" %>
 </script>

@@ -46,9 +46,8 @@
 			<div class="form-group col-md-6 mb-2">
 				<label for="manuscript_leaf_page_no" style="display: block;">Number of {{ is_folios ? 'folios' : 'pages' }}</label>
 				<div class="input-group">
-					<span class="input-group-text bg-white" v-if="!is_folios">pp.</span>
-					<%= form.text_field :leaf_page_no, class: "form-control", ":class": "is_folios ? 'border-end-0' : 'border-start-0'" %>
-					<span class="input-group-text bg-white" v-if="is_folios">ff.</span>
+					<%= form.text_field :leaf_page_no, class: "form-control border-end-0"%>
+					<span class="input-group-text bg-white">{{ is_folios ? 'ff.' : 'pp.' }}</span>
 				</div>
 			</div>
 			<div class="form-group col-md-6 mb-2 d-flex align-items-start pt-4">
@@ -147,8 +146,6 @@
 <%= render 'institutions/modals/new', institution: Institution.new, parent: manuscript, pid: '', depth: 0 %>
 
 <!-- Scripts -->
-<script type="text/javascript">
-	<%= render '/manuscripts/scripts', manuscript: manuscript %>
-	<%= render '/contents/list_script' %>
-	<%= render '/ownerships/list_script' %>
-</script>
+<%= render '/manuscripts/scripts', manuscript: manuscript %>
+<%= render '/contents/list_script' %>
+<%= render '/ownerships/list_script' %>
