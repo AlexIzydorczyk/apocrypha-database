@@ -1,96 +1,34 @@
-Vue.component('language-form-groups', {
-	props: {
-		record_type: {},
-		language_column: {},
-		orig: {},
-		translit: {},
-		eng: {},
-		name: {},
-		lang_val: {default: ""},
-		orig_val: {default: ""},
-		translit_val: {default: ""},
-		eng_val: {default: ""},
-		record_class: {default: ""},
-		record_id: {default: ""},
-		depth: {default: -1},
-	},
-	data: function() {
-		return {
-			languages: <%= Language.all.to_json.html_safe %>,
-			lang_val2: this.lang_val,
-			orig_val2: this.orig_val,
-			translit_val2: this.translit_val,
-			eng_val2: this.eng_val,
-			new_lang: "",
-		}
-	},
-	watch: {
-	},
-	methods: {
-	},
-	computed:{
-		requires_translit: function() {
-			return this.lang_val2 != '' && this.languages.find( l => l.id == this.lang_val2 ).requires_transliteration;
-		},
-		requires_english: function() {
-			return this.lang_val2 != '' && this.languages.find( l => l.id == this.lang_val2 ).language_name.toLowerCase() != 'english';
-		},
-		title(){
-			let words = this.name.match(/[A-Za-z][a-z]*/g) || [];
-			words = words.join(" ").toLowerCase();
-			return words.charAt(0).toUpperCase() + words.slice(1);
-		},
-		pid(){
-			return this.$vnode.key + '-';
-		}
-	},
-	mounted(){
-		createModalListeners();
-		let vue = this;
-		new TomSelect(`#${this.$vnode.key} select`,{
-			sortField: {
-				field: "text",
-				direction: "asc",
-			},
-			maxItems: 1,
-			create: vue.record_class == '' ? false : function(l){
-				vue.$set(vue, 'new_lang', l);
-				$('#' + vue.pid + 'new-language').modal('show');
-			},
-		});
-	},
-	template: `<div>
-		<div class="row" :id="$vnode.key">
-			<div class="form-group col-md-4 mb-2">
-				<select placeholder="Language" v-model="lang_val2" :name="record_type + '[' + language_column + ']'" class="form-control">
-					<option value=""></option>
-					<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
-				</select>
+<div>
+	<div class="row" :id="$vnode.key">
+		<div class="form-group col-md-4 mb-2">
+			<select placeholder="Language" v-model="lang_val2" :name="record_type + '[' + language_column + ']'" class="form-control">
+				<option value=""></option>
+				<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
+			</select>
+		</div>
+		<div class="form-group col-md-8 mb-2">
+			<input :placeholder="title + ' in original language'" v-model="orig_val2" type="text" :name="record_type + '[' + orig + ']'" class="form-control">
+		</div>
+		<div class="col-md-12" v-show="requires_translit">
+			<div class="row">
+				<div class="form-group col-md-4 mb-2">
+					<input type="text" disabled="disabled" value="Transliteration" class="form-control bg-white">
+				</div> 
+				<div class="form-group col-md-8 mb-2">
+					<input :placeholder="title + ' as transliteration to english'" v-model="translit_val2" type="text" :name="record_type + '[' + translit + ']'" class="form-control">
+				</div> 
 			</div>
-			<div class="form-group col-md-8 mb-2">
-				<input :placeholder="title + ' in original language'" v-model="orig_val2" type="text" :name="record_type + '[' + orig + ']'" class="form-control">
-			</div>
-			<div class="col-md-12" v-show="requires_translit">
-				<div class="row">
-					<div class="form-group col-md-4 mb-2">
-						<input type="text" disabled="disabled" value="Transliteration" class="form-control bg-white">
-					</div> 
-					<div class="form-group col-md-8 mb-2">
-						<input :placeholder="title + ' as transliteration to english'" v-model="translit_val2" type="text" :name="record_type + '[' + translit + ']'" class="form-control">
-					</div> 
-				</div>
-			</div>
-			<div class="col-md-12" v-show="requires_english">
-				<div class="row">
-					<div class="form-group col-md-4 mb-2">
-						<input type="text" disabled="disabled" value="English" class="form-control bg-white">
-					</div> 
-					<div class="form-group col-md-8 mb-2">
-						<input :placeholder="title + ' in English'" v-model="eng_val2" type="text" :name="record_type + '[' + eng + ']'" class="form-control">
-					</div>
+		</div>
+		<div class="col-md-12" v-show="requires_english">
+			<div class="row">
+				<div class="form-group col-md-4 mb-2">
+					<input type="text" disabled="disabled" value="English" class="form-control bg-white">
+				</div> 
+				<div class="form-group col-md-8 mb-2">
+					<input :placeholder="title + ' in English'" v-model="eng_val2" type="text" :name="record_type + '[' + eng + ']'" class="form-control">
 				</div>
 			</div>
 		</div>
-		<%= render '/languages/modals/new', language: Language.new %>
-	</div>`
-});
+	</div>
+	<%= render '/languages/modals/new', language: Language.new %>
+</div>

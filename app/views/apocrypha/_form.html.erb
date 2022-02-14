@@ -2,7 +2,7 @@
 	<%= form_with(model: apocryphon, class: 'autosave block-submit') do |form| %>
 	<div class="row">
 		<div class="form-group col-4 mb-2">
-			<%= form.label :apocryphon_no, style: "display: block" %>
+			<%= form.label :apocryphon_no, "Apocryphon no.", style: "display: block" %>
 			<%= form.text_field :apocryphon_no, class: "form-control" %>
 		</div>
 		<div class="form-group col-4 mb-2">
@@ -21,7 +21,7 @@
 	<h2 id="titles">Titles <%= link_to "Add title", '#titles', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#title-modal"} %></h2>
 	<div class="row mb-3">
 		<div class="col-md-3">
-			<%= form.label "Main English title", style: "display: block" %>
+			<%= form.label "Standard English title", style: "display: block" %>
 			<%= text_field_tag "main_english_title", @apocryphon.main_eng_title, class: "form-control",  disabled: true %>
 		</div>
 		<div class="col">
@@ -45,7 +45,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-3">
-			<%= form.label "Main Latin title", style: "display: block" %>
+			<%= form.label "Standard Latin title", style: "display: block" %>
 			<%= text_field_tag "main_latin_title", @apocryphon.main_lat_title, class: "form-control",  disabled: true %>
 		</div>
 		<div class="col">
@@ -71,29 +71,29 @@
 	<h2>Identifiers</h2>
 	<div class="row">
 		<div class="form-group col mb-2">
-			<%= form.label "CANT number", style: "display: block" %>
+			<%= form.label :cant_no, "CANT no.", style: "display: block" %>
 			<%= form.text_field :cant_no, class: "form-control" %>
 		</div>
 		<div class="form-group col mb-2">
-			<%= form.label "BHL number", style: "display: block" %>
+			<%= form.label :bhl_no, "BHL no.", style: "display: block" %>
 			<%= form.text_field :bhl_no, class: "form-control" %>
 		</div>
 		<div class="form-group col mb-2">
-			<%= form.label "BHG number", style: "display: block" %>
+			<%= form.label :bhg_no, "BHG no.", style: "display: block" %>
 			<%= form.text_field :bhg_no, class: "form-control" %>
 		</div>
 		<div class="form-group col mb-2">
-			<%= form.label "BHO number", style: "display: block" %>
+			<%= form.label :bho_no, "BHO no.", style: "display: block" %>
 			<%= form.text_field :bho_no, class: "form-control" %>
 		</div>
 		<div class="form-group col mb-2">
-			<%= form.label "e-Clavis number", style: "display: block" %>
+			<%= form.label :e_clavis_no, "e-Clavis no.", style: "display: block" %>
 			<%= form.text_field :e_clavis_no, class: "form-control" %>
 		</div>
 	</div>
 	<div class="row">
 		<div class="form-group col-12 mb-2">
-			<%= form.label "Link to e-Clavis", style: "display: block" %>
+			<%= form.label :e_clavis_link, "Link to e-Clavis", style: "display: block" %>
 			<%= form.text_field :e_clavis_link, class: "form-control" %>
 		</div>
 	</div>
@@ -107,7 +107,7 @@
 	new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });
 
 	function setMainTitle(lang, t_id){
-		if(confirm("Are you sure you want to make this title the main title for this Apoctyphon?")){
+		if(confirm("Are you sure you want to make this title the main title for this Apocryphon?")){
 			var my_data = {};
 			var field = (lang == 'eng' ? 'main_english_title_id' : 'main_latin_title_id');
 			my_data.apocryphon = {};

@@ -290,7 +290,6 @@
 <%= render 'locations/modals/form', location: Location.new, parent: modern_source, pid: '', depth: 0 %>
 <%= render 'institutions/modals/new', institution: Institution.new, parent: modern_source, pid: '', depth: 0 %>
 
-<script type="text/javascript">
-	<%= render "modern_sources/scripts", modern_source: modern_source %>
-	<%= render "layouts/language_form_group" %>
-</script>
+<!-- Scripts -->
+<%= render "modern_sources/scripts", modern_source: modern_source %>
+<%= render "layouts/vue_language_form_group" %>
