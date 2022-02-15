@@ -6,7 +6,7 @@ $(document).ready(function(){
 		el: '#modern-source-form',
 		data: {
 			author_type: '<%= modern_source.author_type %>',
-			urls: <%= modern_source.source_urls.map(&:url).to_json.html_safe %>,
+			sources: <%= modern_source.source_urls.map{ |ms| {url: ms.url, accessed: ms.date_accessed} }.to_json.html_safe %>,
 			source_type: '<%= modern_source.source_type %>',
 		},
 		computed: {
@@ -83,6 +83,14 @@ function runTomSelects(){
 			direction: "asc"
 		},
 		maxItems: 1,
+	});
+	new TomSelect("#modern_source_publisher",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+		create: true,
 	});
 };
 </script>

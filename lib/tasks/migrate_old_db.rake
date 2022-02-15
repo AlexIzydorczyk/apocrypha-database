@@ -343,18 +343,18 @@ namespace :migrate_old_db do
 				"unpublished_document"
 			end
 
-			l = Location.find_or_create_by(city_orig: nested_hash_value b, 'place')
+			l = Location.find_or_create_by(city_orig: nested_hash_value(b, 'place'))
 
-			pages = nested_hash_value b, 'pages'
-			pages_in_publication = pages.present? ? pages : nested_hash_value b, 'pagesFolios'
+			pages = nested_hash_value(b, 'pages')
+			pages_in_publication = pages.present? ? pages : nested_hash_value(b, 'pagesFolios')
 
-			author_type = ["Laurence Witten Rare books", "Gregory of Tours."].include?(nested_hash_value b, 'referenceName') ? "corporate" : "regular"
+			author_type = ["Laurence Witten Rare books", "Gregory of Tours."].include?(nested_hash_value(b, 'referenceName')) ? "corporate" : "regular"
 			institution_id = author_type == "corporate" ? Institution.find_or_create_by(
-				name_orig: nested_hash_value b, 'source'
+				name_orig: nested_hash_value(b, 'source')
 			) : nil
 
-			author_type = nested_hash_value b, 'authorType' == "CorporateAuthor"|| author_type == 'corporate' ? "corporate" : "regular"
-			corporate_author = nested_hash_value b, 'corporateAuthor'
+			author_type = nested_hash_value(b, 'authorType') == "CorporateAuthor"|| author_type == 'corporate' ? "corporate" : "regular"
+			corporate_author = nested_hash_value(b, 'corporateAuthor')
 			institution_id = institution_id.nil? && corporate_author.present? ? Institution.find_or_create_by(
 				name_orig: corporate_author
 			) : institution_id
@@ -363,20 +363,19 @@ namespace :migrate_old_db do
 				source_type: source_type,
 				created_at: created_at,
 				updated_at: updated_at,
-				isbn: nested_hash_value b, 'isbn',
-				publisher: nested_hash_value b, 'publisher',
+				isbn: nested_hash_value(b, 'isbn'),
+				publisher: nested_hash_value(b, 'publisher'),
 				publication_location_id: l.id,
-				publication_creation_date: nested_hash_value b, 'datePublished',
-				num_volumes: nested_hash_value b, 'numberOfVolumes',
-				volume_no: nested_hash_value b, 'volumeNo',
-				volume_title_orig: nested_hash_value b, 'volumeTitle',
-				part_no: nested_hash_value b, 'partNo',
-				part_title_orig: nested_hash_value b, 'partTitle',
-				series_no: nested_hash_value b, 'seriesNo',
-				series_title_orig: nested_hash_value b, 'seriesTitle',
+				publication_creation_date: nested_hash_value(b, 'datePublished') || nested_hash_value(b, 'year'),
+				num_volumes: nested_hash_value(b, 'numberOfVolumes'),
+				volume_no: nested_hash_value(b, 'volumeNo'),
+				volume_title_orig: nested_hash_value(b, 'volumeTitle'),
+				part_no: nested_hash_value(b, 'partNo'),
+				part_title_orig: nested_hash_value(b, 'partTitle'),
+				series_no: nested_hash_value(b, 'seriesNo'),
+				series_title_orig: nested_hash_value(b, 'seriesTitle'),
 				pages_in_publication: pages_in_publication,
-				shelfmark: nested_hash_value b, 'locationRepositoryShelfmark',
-				publication_creation_date: nested_hash_value b, 'year',
+				shelfmark: nested_hash_value(b, 'locationRepositoryShelfmark'),
 				author_type: author_type,
 				institution_id: institution_id,
 			})
@@ -384,17 +383,17 @@ namespace :migrate_old_db do
 			r.update(obj)
 
 			urls = []
-			urls.push(nested_hash_value b, 'url')
+			urls.push(nested_hash_value(b, 'url'))
 			urls.push(b['webpage']['location']) if b['webpage'].present? and b["webpage"]["location"].present?
 			urls.each{ |url| r.source_urls.find_or_create_by(url: url) }
 
 			if author_type == "regular"
 				b["author"].each do |a|
 					person = Person.find_or_create_by(
-						first_name_vernacular: nested_hash_value a, 'first',
-						middle_name_vernacular: nested_hash_value a, 'middle',
-						last_name_vernacular: nested_hash_value a, 'last',
-						viaf: nested_hash_value a, 'lod',
+						first_name_vernacular: nested_hash_value(a, 'first'),
+						middle_name_vernacular: nested_hash_value(a, 'middle'),
+						last_name_vernacular: nested_hash_value(a, 'last'),
+						viaf: nested_hash_value(a, 'lod'),
 					)
 					PersonReference.find_or_create_by(
 						record: r,
@@ -404,12 +403,12 @@ namespace :migrate_old_db do
 				end
 			end
 
-			nested_hash_value b, 'editor',.each do |e|
+			nested_hash_value(b, 'editor').each do |e|
 				person = Person.find_or_create_by(
-					first_name_vernacular: nested_hash_value e, 'first',
-					middle_name_vernacular: nested_hash_value e, 'middle',
-					last_name_vernacular: nested_hash_value e, 'last',
-					viaf: nested_hash_value e, 'lod',
+					first_name_vernacular: nested_hash_value(e, 'first'),
+					middle_name_vernacular: nested_hash_value(e, 'middle'),
+					last_name_vernacular: nested_hash_value(e, 'last'),
+					viaf: nested_hash_value(e, 'lod'),
 				)
 				PersonReference.find_or_create_by(
 					record: r,

@@ -21,6 +21,7 @@ class ModernSourcesController < ApplicationController
     @editor_reference = @modern_source.editor_references.build
     @translator_reference = @modern_source.editor_references.build
     @modern_source.source_urls.build if @modern_source.source_urls.count < 1
+    @publishers = ModernSource.where.not(publisher: "").pluck(:publisher)
   end
 
   def create
@@ -35,21 +36,33 @@ class ModernSourcesController < ApplicationController
   end
 
   def update
-    new_set = params[:author_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-    PersonReference.where(record: @modern_source, person_id: @modern_source.authors.ids - new_set).destroy_all
-    build_person_references_for new_set - @modern_source.authors.ids, 'author'
+    if params[:author_reference].present?
+      new_set = params[:author_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @modern_source, person_id: @modern_source.authors.ids - new_set).destroy_all
+      build_person_references_for new_set - @modern_source.authors.ids, 'author'
+    end
 
-    new_set = params[:editor_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-    PersonReference.where(record: @modern_source, person_id: @modern_source.editors.ids - new_set).destroy_all
-    build_person_references_for new_set - @modern_source.authors.ids, 'editor'
+    if params[:editor_reference].present?
+      new_set = params[:editor_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @modern_source, person_id: @modern_source.editors.ids - new_set).destroy_all
+      build_person_references_for new_set - @modern_source.authors.ids, 'editor'
+    end
 
-    new_set = params[:translator_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-    PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
-    build_person_references_for new_set - @modern_source.authors.ids, 'translator'
+    if params[:translator_reference].present?
+      new_set = params[:translator_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
+      build_person_references_for new_set - @modern_source.authors.ids, 'translator'
+    end
 
-    new_set = params[:source_urls][:urls].filter{ |url| url.present? }
-    SourceUrl.where(modern_source_id: @modern_source.id).where.not(url: new_set).destroy_all
-    (new_set - @modern_source.source_urls.map(&:url)).each{ |url| @modern_source.source_urls.build(url: url) }
+    if params[:source_urls].present?
+      new_set = params[:source_urls][:urls].filter{ |url| url[:url].present? }.map{ |url| url[:url] }
+      SourceUrl.where(modern_source_id: @modern_source.id).where.not(url: new_set).destroy_all
+      (new_set - @modern_source.source_urls.map(&:url)).each{ |url| @modern_source.source_urls.build(url: url) }
+      @modern_source.save
+      params[:source_urls][:urls].each{ |source|
+        @modern_source.source_urls.where(url: source[:url]).update_all(date_accessed: source[:date_accessed])
+      }
+    end
 
     if @modern_source.update(modern_source_params)
       if request.xhr?
