@@ -34,8 +34,8 @@
 		<%= form.text_field :specific_date, class: "form-control" %>
 	</div>
 	<div class="form-group col-md-6 mb-2">
-		<%= form.label :content_type, style: "display: block" %>
-		<%= form.text_field :content_type, class: "form-control" %>
+		<%= form.label :content_type, style: "display: block" %>	
+		<%= form.select :content_type, options_for_select(@content_types, booklet.content_type), {include_blank: true}, {class: "form-control", placeholder: "Select or add…"} %>
 	</div>
 </div>
 
@@ -89,7 +89,7 @@
 <h2 id="provenances">Booklet provenance <%= link_to "Add provenance", '#provenances', class: "btn btn-action", data: { 'bs-toggle': "modal", 'bs-target': "#addProvenanceModal"} %></h2>
 <%= render 'ownerships/list', parent: booklet %>
 
-<h2 id="contents">Booklet contents <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
+<h2 id="contents">Booklet contents <%= link_to "Add contents", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 <%= render 'contents/list', parent: booklet %>
 
 </div>

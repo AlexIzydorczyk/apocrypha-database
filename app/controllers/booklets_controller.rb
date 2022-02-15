@@ -10,11 +10,12 @@ class BookletsController < ApplicationController
 
   def new
     @booklet = Booklet.new(manuscript_id: params[:manuscript_id] || '')
+    @content_types = Booklet.where.not(content_type: "").pluck(:content_type)
   end
 
   def edit
-    @content_types = Booklet.all.pluck(:content_type).uniq.select{ |c| c.present? }.map{ |c| {value: c, text: c} }
     @scribe_reference = @booklet.scribe_references.build
+    @content_types = Booklet.where.not(content_type: "").pluck(:content_type)
   end
 
   def create

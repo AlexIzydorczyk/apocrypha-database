@@ -29,9 +29,12 @@ $(function() {
 		maxItems: 1,
 	});
 	new TomSelect("#booklet_content_type",{
-		options: <%= @content_types.to_json.html_safe %>,
-		create: true,
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
 		maxItems: 1,
+		create: true,
 	});
 });
 </script>

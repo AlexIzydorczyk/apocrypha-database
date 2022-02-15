@@ -12,11 +12,13 @@ class ManuscriptsController < ApplicationController
     @manuscript = Manuscript.new
     @languages = Language.all
     @language_references = @manuscript.language_references.build
+    @content_types = Manuscript.where.not(content_type: "").pluck(:content_type)
   end
 
   def edit
     @languages = Language.all
     @language_references = @manuscript.language_references.build
+    @content_types = Manuscript.where.not(content_type: "").pluck(:content_type)
   end
 
   def create

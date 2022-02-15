@@ -23,6 +23,14 @@ function runTomSelects(){
 	new TomSelect("#manuscript_status");
 	new TomSelect("#manuscript_material",{ sortField: {field: "text", direction: "asc"}	});
 	new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });
+	new TomSelect("#manuscript_content_type",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+		create: true,
+	});
 	//new_content_select = new TomSelect("#content-double-select",{ sortField: {field: "text", direction: "asc"}});
 };
 </script>
