@@ -26,4 +26,8 @@ class Manuscript < ApplicationRecord
     self.try(:institution).try(:location).try(:city_orig)
   end
 
+  def census_no_display
+    self.census_no.present? ? self.census_no : (self.id.to_s + " (auto assigned)")
+  end
+
 end

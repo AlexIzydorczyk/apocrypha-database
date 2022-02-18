@@ -30,9 +30,11 @@ class BookletsController < ApplicationController
   end
 
   def update
-    new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-    PersonReference.where(record: @booklet, person_id: @booklet.scribes.ids - new_set).destroy_all
-    build_scribe_references_for new_set - @booklet.scribes.ids
+    if params[:person_reference].present?
+      new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @booklet, person_id: @booklet.scribes.ids - new_set).destroy_all
+      build_scribe_references_for new_set - @booklet.scribes.ids
+    end
 
     if @booklet.update(booklet_params)
       if request.xhr?

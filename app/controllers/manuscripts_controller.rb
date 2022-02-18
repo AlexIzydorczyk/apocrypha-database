@@ -46,10 +46,12 @@ class ManuscriptsController < ApplicationController
   end
 
   def update
-    new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-    LanguageReference.where(record: @manuscript, language_id: @manuscript.languages.ids - new_set).destroy_all
-    build_language_references_for new_set - @manuscript.languages.ids
-
+    if params[:language_reference].present?
+      new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      LanguageReference.where(record: @manuscript, language_id: @manuscript.languages.ids - new_set).destroy_all
+      build_language_references_for new_set - @manuscript.languages.ids
+    end
+    
     if @manuscript.update(manuscript_params)
       if request.xhr?
         render :json => {"status": "updated"}  

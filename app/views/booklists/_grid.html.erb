@@ -5,21 +5,20 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Booklist type", field: "booklist_type"},
-        { headerName: "Manuscript source", field: "manuscript_source"},
-        { headerName: "Library owner", field: "library_owner_id"},
-        { headerName: "Institution", field: "institution_id"},
-        { headerName: "Location", field: "location_id", hide: true},
-        { headerName: "Religious order", field: "religious_order_id", hide: true},
-        { headerName: "Scribe", field: "scribe_id", hide: true},
-        { headerName: "Language", field: "language_id"},
-        { headerName: "Title orig", field: "title_orig"},
-        { headerName: "Title orig transliteration", field: "title_orig_transliteration", hide: true},
-        { headerName: "Title orig translation", field: "title_orig_translation", hide: true},
+        { headerName: "Booklist no.", field: "booklist_no" },
+        { headerName: "Type of booklist", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
+        { headerName: "Language", field: "language_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
+        { headerName: "Library owner", field: "library_owner_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Person.all.map(&:full_name).to_json.html_safe %> }, valueGetter: personGetter, valueSetter: personSetter},
+        { headerName: "Institution", field: "institution_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
+        { headerName: "Religious order", field: "religious_order_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.all.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
+        { headerName: "Location", field: "location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
+        { headerName: "Author", field: "scribe_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Person.all.map(&:full_name).to_json.html_safe %> }, valueGetter: authorGetter, valueSetter: authorSetter },
         { headerName: "Date from", field: "date_from", hide: true},
         { headerName: "Date to", field: "date_to", hide: true},
         { headerName: "Specific date", field: "specific_date", hide: true},
+        { headerName: "Title orig", field: "title_orig"},
+        { headerName: "Title orig transliteration", field: "title_orig_transliteration", hide: true},
+        { headerName: "Title orig translation", field: "title_orig_translation", hide: true},
         { headerName: "Notes", field: "notes", hide: true},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
       return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
@@ -28,15 +27,16 @@
 
   const rowData = [
     <% booklists.each do |bl| %>
-      { id:<%= bl.id %>,
+      {
+        id: <%= bl.id %>,
         booklist_type: "<%= bl.booklist_type %>",
-        manuscript_source: "<%= bl.manuscript_source %>",
-        library_owner_id: "<%= bl.library_owner.full_name if bl.library_owner_id.present? %>",
-        institution_id: "<%= bl.institution.display_name if bl.institution.present? %>",
-        location_id: "<%= bl.location.city_region_country if bl.location_id.present? %>",
-        religious_order_id: "<%= bl.religious_order.display_name if bl.religious_order_id.present? %>",
-        scribe_id: "<%= bl.scribe.full_name if bl.scribe_id.present? %>",
-        language_id: "<%= bl.language.language_name if bl.language_id.present? %>",
+        booklist_no: "<%= bl.booklist_no.present? ? bl.booklist_no : bl.id %>",
+        library_owner_id: "<%= bl.library_owner_id %>",
+        institution_id: "<%= bl.institution_id %>",
+        location_id: "<%= bl.location_id %>",
+        scribe_id: "<%= bl.scribe_id %>",
+        language_id: "<%= bl.language_id %>",
+        religious_order_id: "<%= bl.religious_order_id %>",
         title_orig: "<%= bl.title_orig %>",
         title_orig_transliteration: "<%= bl.title_orig_transliteration %>",
         title_orig_translation: "<%= bl.title_orig_translation %>",
@@ -48,6 +48,43 @@
       },
     <% end %>
   ];
+
+  function personGetter(params) {
+    return params.data ? <%= Person.all.map{ |p| [p.id, p.full_name] }.to_h.to_json.html_safe %>[params.data.library_owner_id] : ''
+  }
+  function personSetter(params) {
+    params.data.library_owner_id = <%= Person.all.map{ |p| [p.full_name, p.id] }.to_h.to_json.html_safe %>[params.newValue]
+  }
+  function insitutionGetter(params) {
+    return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]
+  }
+  function insitutionSetter(params) {
+    params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+  }
+  function languageGetter(params) {
+    return <%= Language.pluck(:id, :language_name).to_h.to_json.html_safe %>[params.data.language_id]
+  }
+  function languageSetter(params) {
+    params.data.language_id = <%= Language.pluck(:language_name, :id).to_h.to_json.html_safe %>[params.newValue]
+  }
+  function religiousOrderGetter(params) {
+    return params.data ? <%= ReligiousOrder.pluck(:id, :order_name).to_h.to_json.html_safe %>[params.data.religious_order_id] : ''
+  }
+  function religiousOrderSetter(params) {
+    params.data.religious_order_id = <%= ReligiousOrder.pluck(:order_name, :id).to_h.to_json.html_safe %>[params.newValue]
+  }
+  function locationGetter(params) {
+    return params.data ? <%= Location.all.map{ |l| [l.id, l.city_region_country] }.to_h.to_json.html_safe %>[params.data.location_id] : ''
+  }
+  function locationSetter(params) {
+    params.data.location_id = <%= Location.all.map{ |l| [l.city_region_country, l.id] }.to_h.to_json.html_safe %>[params.newValue]
+  }
+  function authorGetter(params) {
+    return params.data ? <%= Person.all.map{ |l| [l.id, l.full_name] }.to_h.to_json.html_safe %>[params.data.scribe_id] : ''
+  }
+  function authorSetter(params) {
+    params.data.scribe_id = <%= Person.all.map{ |l| [l.full_name, l.id] }.to_h.to_json.html_safe %>[params.newValue]
+  }
 
   const gridOptions = {
     columnDefs: columnDefs,

@@ -5,31 +5,35 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false, hide: true },//cellRenderer: 'agGroupCellRenderer'
-    { headerName: "Identifier", field: "identifier" },
-    { headerName: "Census no", field: "census_no", hide: true },
-    { headerName: "Status", field: "status"},
-    { headerName: "Institution", field: "institution_id", hide: true },
+    { headerName: "Census no.", field: "census_no" },
+    { headerName: "Status", field: "status", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ['extant', 'lost', 'destroyed'] }},
+    { headerName: "Repository", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
     { headerName: "Shelfmark", field: "shelfmark"},
-    { headerName: "Old shelfmark", field: "old_shelfmark"},
-    { headerName: "Material", field: "material", hide: true },
+    { headerName: "Old shelfmarks", field: "old_shelfmark"},
+    { headerName: "Material", field: "material", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ["paper", "parchment", "parchment and paper"] } },
     { headerName: "Dimensions", field: "dimensions", hide: true },
-    { headerName: "Leaf page no", field: "leaf_page_no", hide: true },
+    { headerName: "Number of pages/folios", field: "leaf_page_no", hide: true },
     { headerName: "Date from", field: "date_from", hide: true },
     { headerName: "Date to", field: "date_to", hide: true },
-    { headerName: "Content type", field: "content_type"},
-    { headerName: "Notes", field: "notes", hide: true, cellEditor: 'agLargeTextCellEditor', },
+    { headerName: "Content type", field: "content_type", cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: <%= Manuscript.all.pluck(:content_type).uniq.to_json.html_safe %> } },
+    { headerName: "Notes", field: "notes", hide: true, cellEditor: 'agLargeTextCellEditor' },
+    { headerName: "Languages", field: "languages", hide: true, editable: false },
     { headerName: "Links", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
-      // removed <a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a> from return
       return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
     } }
     ];
 
+    function insitutionGetter(params) {
+      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]
+    }
+    function insitutionSetter(params) {
+      params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+    }
+
     const rowData = [
     <% manuscripts.each do |manuscript| %>
     { id:<%= manuscript.id %>,
-      identifier: "<%= manuscript.identifier %>",census_no: "<%= manuscript.census_no %>",status: "<%= manuscript.status %>",institution_id: "<%= manuscript.institution_id %>",shelfmark: "<%= manuscript.shelfmark %>",old_shelfmark: "<%= manuscript.old_shelfmark %>",material: "<%= manuscript.material %>",dimensions: "<%= manuscript.dimensions %>",leaf_page_no: "<%= manuscript.leaf_page_no %>",date_from: "<%= manuscript.date_from %>",date_to: "<%= manuscript.date_to %>",content_type: "<%= manuscript.content_type %>",notes: `<%= manuscript.notes %>`,
-      links: { show: "<%= manuscript_path(manuscript) %>", edit: "<%= edit_manuscript_path(manuscript) %>" }
+      identifier: "<%= manuscript.identifier %>",census_no: "<%= manuscript.census_no %>",status: "<%= manuscript.status %>",institution_id: "<%= manuscript.institution_id %>",shelfmark: "<%= manuscript.shelfmark %>",old_shelfmark: "<%= manuscript.old_shelfmark %>",material: "<%= manuscript.material %>",dimensions: "<%= manuscript.dimensions %>",leaf_page_no: "<%= manuscript.leaf_page_no %>",date_from: "<%= manuscript.date_from %>",date_to: "<%= manuscript.date_to %>",content_type: "<%= manuscript.content_type %>",notes: `<%= manuscript.notes %>`,languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>, links: { show: "<%= manuscript_path(manuscript) %>", edit: "<%= edit_manuscript_path(manuscript) %>" }
     },
     <% end %>
     ];

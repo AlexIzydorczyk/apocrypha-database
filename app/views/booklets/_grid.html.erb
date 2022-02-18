@@ -5,27 +5,47 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false, hide: true },//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Manuscript", field: "manuscript_id", enableRowGroup: true },
-        { headerName: "Booklet no", field: "booklet_no" },
-        { headerName: "Pages folios", field: "pages_folios", hide: true },
-        { headerName: "Date from", field: "date_from", hide: true },
-        { headerName: "Date to", field: "date_to", hide: true },
+        { headerName: "Manuscript", field: "manuscript_census_no", rowGroup: true, hide: true, },
+        { headerName: "Booklet no", field: "booklet_no", hide: true, editable: false },
+        { headerName: "Location of booklet (from)", field: "pages_folios_from", hide: true },
+        { headerName: "Location of booklet (to)", field: "pages_folios_to", hide: true },
+        { headerName: "Date from", field: "date_from" },
+        { headerName: "Date to", field: "date_to" },
+        { headerName: "Content type", field: "content_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklet.pluck(:content_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         { headerName: "Specific date", field: "specific_date", hide: true },
-        { headerName: "Genesis location", field: "genesis_location_id", hide: true },
-        { headerName: "Genesis institution", field: "genesis_institution_id", hide: true },
-        { headerName: "Genesis religious order", field: "genesis_religious_order_id", hide: true },
-        { headerName: "Content type", field: "content_type"},
+        { headerName: "Genesis location", field: "genesis_location_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
+        { headerName: "Genesis institution", field: "genesis_institution_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: institutionGetter, valueSetter: institutionSetter  },
+        { headerName: "Genesis religious order", field: "genesis_religious_order_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
+        { headerName: "Scribes", field: "scribes", hide: true, editable: false },
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
-    } }
+          if(links.value) return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+        } }
   ];
+
+  function locationGetter(params) {
+    return params.data ? <%= Location.all.map{ |l| [l.id, l.city_region_country] }.to_h.to_json.html_safe %>[params.data.genesis_location_id] : ''
+  }
+  function locationSetter(params) {
+    params.data.genesis_location_id = <%= Location.all.map{ |l| [l.city_region_country, l.id] }.to_h.to_json.html_safe %>[params.newValue]
+  }
+  function institutionGetter(params) {
+    return params.data ? <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.genesis_institution_id] : ''
+  }
+  function institutionSetter(params) {
+    params.data.genesis_institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+  }
+  function religiousOrderGetter(params) {
+    return params.data ? <%= ReligiousOrder.pluck(:id, :order_name).to_h.to_json.html_safe %>[params.data.genesis_religious_order_id] : ''
+  }
+  function religiousOrderSetter(params) {
+    params.data.genesis_religious_order_id = <%= ReligiousOrder.pluck(:order_name, :id).to_h.to_json.html_safe %>[params.newValue]
+  }
 
   const rowData = [
     <% booklets.each do |booklet| %>
       { id:<%= booklet.id %>,
-        manuscript_id: "<%= booklet.manuscript.try(:census_no) %>",booklet_no: "<%= booklet.booklet_no %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>",genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
-        links: {edit: "<%= edit_booklet_path(booklet) %>" }
+        manuscript_census_no: "<%= booklet.manuscript.try(:census_no_display) || 'Not assigned' %>",booklet_no: "<%= booklet.booklet_no %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>", scribes: <%= booklet.scribes.map(&:full_name).to_json.html_safe %>,genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
+        links: {edit: "<%= edit_booklet_path(booklet) %>", pages_folios_from: "<%= booklet.pages_folios_from %>", pages_folios_to: "<%= booklet.pages_folios_to %>", }
       },
     <% end %>
   ];
@@ -62,5 +82,6 @@
 
   const eGridDiv = document.querySelector('#booklets_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
+  
 
 </script>
