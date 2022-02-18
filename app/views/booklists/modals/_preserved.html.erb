@@ -1,0 +1,22 @@
+<div class="modal" id="preserved-modal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				Preserved In Manuscript
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="d-flex">
+						<select class="form-control" id="preserved-in" multiple placeholder="Select bibliographic item" name="preserved-in">
+						</select>
+						<%= button_to 'New', create_from_booklist_modern_sources_path, form_class: 'd-inline-block', class: "btn btn-outline-action ms-4", params: { modern_source: { publication_title_orig: "" }, from: request.path, booklist_id: booklist.id } %>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action" onclick="addPreserved('#preserved-in', '<%= booklist.id %>')">Save & Close</button>
+			</div>
+		</div>
+	</div>	
+</div>
+

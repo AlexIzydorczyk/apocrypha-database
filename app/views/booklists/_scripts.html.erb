@@ -16,7 +16,8 @@ $(document).ready(function(){
 });
 
 function runTomSelects(){
-	new TomSelect("#booklist_library_owner_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_library_owner_id",{sortField: { field: "text", direction: "asc" }, maxItems: 1});
+	new TomSelect("#booklist_booklist_type",{create: true,  sortField: { field: "text", direction: "asc" }, maxItems: 1, });
 	new TomSelect("#booklist_institution_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
 	new TomSelect("#booklist_location_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
 	new TomSelect("#booklist_religious_order_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
@@ -33,31 +34,80 @@ function runTomSelects(){
 			maxItems: 1,
 			searchField: ['text', 'other_titles']
 		});
-		new TomSelect("#existant-resource-section-<%= bs.id %>",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+		new TomSelect("#booklist_section_<%= bs.id %>_manuscript_id",{
+			options: [
+				<% Manuscript.all.each_with_index do |ma, i| %>
+					{ value: '<%= ma.id %>', text: '<%= ma.long_display_name %>', city: `<%= ma.city %>` }<%= ',' unless i == (Manuscript.all.count - 1) %>
+				<% end %>
+			],
+			items: ['<%= bs.manuscript_id %>'],
+			sortField: { field: "city", direction: "asc" }, maxItems: 1, 
+		});
+		new TomSelect("#booklist_section_<%= bs.id %>_modern_source_id",{
+			sortField: { field: "city", direction: "asc" }, maxItems: 1, 
+		});
 	<% end %>
+	new TomSelect("#preserved-in",{
+		options: [
+			<% ModernSource.all.each_with_index do |ms, i| %>
+				{ value: '<%= ms.id %>', text: '<%= ms.display_name %>' }<%= ',' unless i == (ModernSource.all.count - 1) %>
+			<% end %>
+		],
+		sortField: { field: "city", direction: "asc" }, maxItems: 1, 
+	});
 };
 
 
 function addResource(obj, bs_id){
-	var split = $(obj).parent().parent().find('.resource-select option:selected').val().split('_');
-	var my_data = {};
-	my_data.booklist_reference = {
-		record_type: split[0],
-		record_id: split[1],
-		booklist_section_id: bs_id
-	};
-  my_data.authenticity_token = "<%= form_authenticity_token %>";
-  console.log('my_data', my_data)
-  $.ajax({
-    url: "<%= booklist_references_path %>",
-    type: 'POST',
-    data: JSON.stringify(my_data),
-    contentType: 'application/json',
-    success: function(data) {
-    	console.log('reloading?')
-      timeoutReload();
-    }
-  });
+	if($(obj).val()[0] == ""){
+		timeoutReload();
+	}else{
+		var split = $(obj).val()[0].split('_');
+		var my_data = {};
+		my_data.booklist_reference = {
+			record_type: split[0],
+			record_id: split[1],
+			booklist_section_id: bs_id
+		};
+	  my_data.authenticity_token = "<%= form_authenticity_token %>";
+	  console.log('my_data', my_data)
+	  $.ajax({
+	    url: "<%= booklist_references_path %>",
+	    type: 'POST',
+	    data: JSON.stringify(my_data),
+	    contentType: 'application/json',
+	    success: function(data) {
+	    	console.log('reloading?')
+	      timeoutReload();
+	    }
+	  });
+	}
+}
+
+function addPreserved(obj, b_id){
+	if($(obj).val()[0] == ""){
+		timeoutReload();
+	}else{
+		var ms_id = $(obj).val()[0];
+		var my_data = {};
+		my_data.modern_source_reference = {
+			record_type: 'Booklist',
+			record_id: b_id,
+			modern_source_id: ms_id,
+		};
+	  my_data.authenticity_token = "<%= form_authenticity_token %>";
+	  console.log('my_data', my_data)
+	  $.ajax({
+	    url: "<%= modern_source_references_path %>",
+	    type: 'POST',
+	    data: JSON.stringify(my_data),
+	    contentType: 'application/json',
+	    success: function(data) {
+	    	console.log('reloading?')
+	      timeoutReload();
+	    }
+	  });
+	}
 }
 
 function deleteBooklistReference(br_id){
@@ -87,4 +137,19 @@ function deleteBooklistSection(bs_id){
     });
 	}
 }
+
+function deleteModernSourceReference(msr_id){
+	if(confirm("Are you sure you want to remove this record from this booklist?")){
+    $.ajax({
+      url: "/modern_source_references/"+msr_id,
+      type: 'DELETE',
+      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+      contentType: 'application/json',
+      success: function(data) {
+        timeoutReload();
+      }
+    });
+	}
+}
+
 </script>

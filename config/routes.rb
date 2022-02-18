@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   resources :person_references
   resources :modern_source_references
   resources :source_urls
-  resources :modern_sources
+  resources :modern_sources do
+    collection do
+      post :create_from_booklist
+    end
+  end
   resources :sections
   resources :booklist_references
   resources :booklists

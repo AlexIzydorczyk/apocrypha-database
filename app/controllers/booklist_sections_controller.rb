@@ -53,6 +53,6 @@ class BooklistSectionsController < ApplicationController
     end
 
     def booklist_section_params
-      params.require(:booklist_section).permit(:booklist_id, :sequence_no, :heading_orig, :heading_orig_transliteration, :heading_translation, :relevant_text_orig, :relevant_text_orig_transliteration, :relevant_text_translation)
+      params.require(:booklist_section).permit(:booklist_id, :sequence_no, :heading_orig, :heading_orig_transliteration, :heading_translation, :relevant_text_orig, :relevant_text_orig_transliteration, :relevant_text_translation, :manuscript_id, :modern_source_id, :page_ref, :notes)
     end
 end

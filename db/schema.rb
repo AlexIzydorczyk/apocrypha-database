@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_223601) do
+ActiveRecord::Schema.define(version: 2022_02_17_193350) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,7 +73,13 @@ ActiveRecord::Schema.define(version: 2022_02_15_223601) do
     t.text "relevant_text_translation"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "manuscript_id"
+    t.bigint "modern_source_id"
+    t.text "notes", default: "", null: false
+    t.string "page_ref", default: "", null: false
     t.index ["booklist_id"], name: "index_booklist_sections_on_booklist_id"
+    t.index ["manuscript_id"], name: "index_booklist_sections_on_manuscript_id"
+    t.index ["modern_source_id"], name: "index_booklist_sections_on_modern_source_id"
   end
 
   create_table "booklists", force: :cascade do |t|
@@ -436,6 +442,8 @@ ActiveRecord::Schema.define(version: 2022_02_15_223601) do
   add_foreign_key "booklets", "religious_orders", column: "genesis_religious_order_id"
   add_foreign_key "booklist_references", "booklist_sections"
   add_foreign_key "booklist_sections", "booklists"
+  add_foreign_key "booklist_sections", "manuscripts"
+  add_foreign_key "booklist_sections", "modern_sources"
   add_foreign_key "booklists", "institutions"
   add_foreign_key "booklists", "languages"
   add_foreign_key "booklists", "locations"

@@ -19,6 +19,7 @@ class ModernSource < ApplicationRecord
   has_many :editors, through: :editor_references, class_name: "Person"
   has_many :translator_references, -> { translator }, as: :record, class_name: "PersonReference"
   has_many :translators, through: :translator_references, class_name: "Person"
+  has_many :booklist_sections
 
   def display_name
     self.publication_title_orig || self.publication_title  

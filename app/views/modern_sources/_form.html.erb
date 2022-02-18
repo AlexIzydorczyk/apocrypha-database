@@ -1,5 +1,5 @@
 <div id="modern-source-form">
-<%= form_with(model: modern_source, class: "autosave") do |form| %>
+<%= form_with(model: modern_source, class: "autosave block-submit") do |form| %>
 <div class="row">
 	<div class="form-group col-md-12">
 		<%= form.label :source_type, "Type of bibliographic item", style: "display: block" %>
@@ -277,9 +277,7 @@
 		</div>
 		 -->
 	</div>
-	<div class="fixed-bottom text-end pb-3 pe-3" style="z-index: 0">
-		<%= form.submit "Save now", class: "btn btn-action px-5"%>
-	</div>
+	<%= render 'layouts/save_now', form: form %>
 	<% end %>
 	</div>
 

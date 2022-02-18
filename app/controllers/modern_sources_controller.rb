@@ -29,7 +29,21 @@ class ModernSourcesController < ApplicationController
     build_person_references_for params[:language_reference][:id], 'author' if params[:language_reference].present?
 
     if @modern_source.save
-      redirect_to modern_sources_url, notice: "Modern source was successfully created."
+      #redirect_to modern_sources_url, notice: "Modern source was successfully created."
+      redirect_to edit_modern_source_path(@modern_source)
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def create_from_booklist
+    @modern_source = ModernSource.new(modern_source_params)
+    build_person_references_for params[:language_reference][:id], 'author' if params[:language_reference].present?
+
+    if @modern_source.save
+      BooklistSection.find(params[:booklist_section_id]).update({modern_source_id: @modern_source.id}) if params[:booklist_section_id].present?
+      ModernSourceReference.create(modern_source_id: @modern_source.id, record: Booklist.find(params[:booklist_id])) if params[:booklist_id].present?
+      redirect_to edit_modern_source_path(@modern_source, old_path: params[:from])
     else
       render :new, status: :unprocessable_entity
     end
@@ -68,7 +82,11 @@ class ModernSourcesController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_to modern_sources_url, notice: "Modern source was successfully updated."
+         if params[:old_path].present?
+          redirect_to params[:old_path], notice: "Modern source was successfully updated."
+        else
+          redirect_to modern_sources_url, notice: "Modern source was successfully updated."
+        end
       end
     else
       render :edit, status: :unprocessable_entity

@@ -17,7 +17,7 @@ class ModernSourceReferencesController < ApplicationController
 
   def create
     @modern_source_reference = ModernSourceReference.new(modern_source_reference_params)
-
+    
     if @modern_source_reference.save
       redirect_to modern_source_references_url, notice: "Modern source reference was successfully created."
     else
@@ -39,7 +39,11 @@ class ModernSourceReferencesController < ApplicationController
 
   def destroy
     @modern_source_reference.destroy
-    redirect_to modern_source_references_url, notice: "Modern source reference was successfully destroyed."
+    if request.xhr?
+      render :json => {"status": "updated"}  
+    else
+      redirect_to modern_source_references_url, notice: "Modern source reference was successfully destroyed."
+    end
   end
 
   private
@@ -48,6 +52,6 @@ class ModernSourceReferencesController < ApplicationController
     end
 
     def modern_source_reference_params
-      params.require(:modern_source_reference).permit(:record_id, :modern_source_id, :specific_page, :siglum)
+      params.require(:modern_source_reference).permit(:record_id, :record_type, :modern_source_id, :specific_page, :siglum)
     end
 end

@@ -9,9 +9,21 @@ class Manuscript < ApplicationRecord
   has_many :correspondents, class_name: "Person", through: :person_references
   has_many :ownerships
   has_many :contents, -> { order("sequence_no ASC") }
+  has_many :booklist_sections
 
   def display_name
     self.census_no.present? ? ("Manuscript " + self.census_no) : "Edit"
+  end
+
+  def long_display_name
+    text = ""
+    text = self.census_no + '. ' if self.census_no.present?
+    text += [self.try(:institution).try(:location).try(:city_orig), self.try(:institution).try(:name_orig), self.shelfmark].join(', ')
+    text
+  end
+
+  def city
+    self.try(:institution).try(:location).try(:city_orig)
   end
 
 end
