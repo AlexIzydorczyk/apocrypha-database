@@ -47,9 +47,9 @@ function saveAllForms() {
 
 function createModalListeners() {
   $('.modal').on('shown.bs.modal', setModalPositioning);
-  $('.modal').on('shown.bs.modal', function() {
-    saveAllForms();
-  });
+  // $('.modal').on('shown.bs.modal', function() {
+  //   saveAllForms();
+  // });
   $('.modal').on('hidden.bs.modal', setModalPositioning);
 }
 
