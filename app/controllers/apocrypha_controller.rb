@@ -17,8 +17,10 @@ class ApocryphaController < ApplicationController
   def edit
     @languages = Language.all
     @language_references = @apocryphon.language_references.build
-    @english_titles = Title.joins(:language).where(apocryphon_id: @apocryphon.id).merge(Language.where(language_name: 'English')).all
-    @latin_titles = Title.joins(:language).where(apocryphon_id: @apocryphon.id).merge(Language.where(language_name: 'Latin')).all
+    @english_titles = Title.where(apocryphon_id: @apocryphon.id, language_id: helpers.english_id).all
+    @latin_titles = Title.where(apocryphon_id: @apocryphon.id, language_id: helpers.latin_id).all
+    @other_english_titles = @english_titles.where.not(id: @apocryphon.main_english_title_id).all
+    @other_latin_titles = @latin_titles.where.not(id: @apocryphon.main_latin_title_id).all
 
   end
 
@@ -80,7 +82,7 @@ class ApocryphaController < ApplicationController
   end
 
   def apocryphon_params
-    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :abbreviation, :main_latin_title_id, :main_english_title_id)
+    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :english_abbreviation, :latin_abbreviation, :main_latin_title_id, :main_english_title_id)
   end
 
   def build_language_references_for ids

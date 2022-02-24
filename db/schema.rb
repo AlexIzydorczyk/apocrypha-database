@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_17_193350) do
+ActiveRecord::Schema.define(version: 2022_02_22_181247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 2022_02_17_193350) do
     t.string "e_clavis_link", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "abbreviation", default: "", null: false
+    t.string "english_abbreviation", default: "", null: false
     t.bigint "main_english_title_id"
     t.bigint "main_latin_title_id"
+    t.string "latin_abbreviation", default: "", null: false
     t.index ["main_english_title_id"], name: "index_apocrypha_on_main_english_title_id"
     t.index ["main_latin_title_id"], name: "index_apocrypha_on_main_latin_title_id"
   end
