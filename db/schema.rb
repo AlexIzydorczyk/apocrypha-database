@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_22_181247) do
+ActiveRecord::Schema.define(version: 2022_02_25_211614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 2022_02_22_181247) do
     t.bigint "main_english_title_id"
     t.bigint "main_latin_title_id"
     t.string "latin_abbreviation", default: "", null: false
+    t.bigint "content_id"
+    t.index ["content_id"], name: "index_apocrypha_on_content_id"
     t.index ["main_english_title_id"], name: "index_apocrypha_on_main_english_title_id"
     t.index ["main_latin_title_id"], name: "index_apocrypha_on_main_latin_title_id"
   end
@@ -435,6 +437,7 @@ ActiveRecord::Schema.define(version: 2022_02_22_181247) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "apocrypha", "contents"
   add_foreign_key "apocrypha", "titles", column: "main_english_title_id"
   add_foreign_key "apocrypha", "titles", column: "main_latin_title_id"
   add_foreign_key "booklets", "institutions", column: "genesis_institution_id"

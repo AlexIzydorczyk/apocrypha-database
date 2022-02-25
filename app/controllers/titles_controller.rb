@@ -10,6 +10,7 @@ class TitlesController < ApplicationController
 
   def new
     @title = Title.new
+    @from = request.path
   end
 
   def edit
@@ -20,15 +21,16 @@ class TitlesController < ApplicationController
 
     if @title.save
       if request.xhr?
-        puts 'here1'.red
         if @title.apocryphon_id.present? && params[:title][:is_standard] == "true" && @title.try(:language_id) == helpers.english_id
-          puts 'here2'.blue
           @title.apocryphon.update(main_english_title_id: @title.id)
         elsif @title.apocryphon_id.present? && params[:title][:is_standard] == "true" &&  @title.try(:language_id) == helpers.latin_id
-          puts 'here2'.green
           @title.apocryphon.update(main_latin_title_id: @title.id)
         end
-        puts 'here3'.yellow
+        ta = @title.apocryphon
+        if ta.present? && ta.content_id.present?
+          Content.find(ta.content_id).update(title_id: @title.id)
+          ta.update(content_id: nil)
+        end
         render :json => {"status": "updated"}  
       else
         redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path
@@ -39,12 +41,31 @@ class TitlesController < ApplicationController
     end
   end
 
+  def create_from_content
+    @title = Title.new(title_params)
+
+    if @title.save
+      if params[:parent_type].present? && params[:parent_id].present?
+        parent = params[:parent_type].constantize.find(params[:parent_id])
+        parent.contents.create(title_id: @title.id)
+      end
+      redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id, old_path: params[:from]) : edit_title_path(@title, old_path: params[:from])
+      redirect_to redirect_path, notice: "Title was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def update
     if @title.update(title_params)
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_to titles_url, notice: "Title was successfully updated."
+        if params[:old_path].present?
+          redirect_to params[:old_path], notice: "Title was successfully updated."
+        else
+          redirect_to titles_url, notice: "Title was successfully updated."
+        end
       end
     else
       render :edit, status: :unprocessable_entity
