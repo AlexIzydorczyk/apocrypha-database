@@ -1,9 +1,28 @@
-<h1>New title</h1>
-
-<%= render "form", title: @title %>
-
-<br>
-
-<div>
-  <%= link_to "Back to titles", titles_path %>
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  Title
 </div>
+<div>
+  <h1>Title</h1>
+  <div id="title_apocrypha_form_container">
+    <div class="form-group">
+      <label class="d-block">New title is</label>
+      <div class="form-check  d-inline-block">
+        <input class="form-check-input" type="radio" name="is_apocryphal" id="apocryphal" onclick="$('#new_apocryphon_form').click()">
+        <label class="form-check-label" for="apocryphal">
+          Apocryphal
+        </label>
+      </div>
+      <div class="form-check d-inline-block">
+        <input class="form-check-input" type="radio" name="is_apocryphal" id="non-apocryphal" onclick="$('#create_new_title_btn').click()">
+        <label class="form-check-label" for="non-apocryphal">
+          Non-apocryphal
+        </label>
+      </div>
+    </div>
+  </div>
+  <%= button_to 'Apocryphal', apocrypha_path, class: "btn btn-action d-none", id: 'new_apocryphon_form', params: { apocryphon: { apocryphon_no: "" }, from: params[:from], parent_type: params[:parent_type], parent_id: params[:parent_id] } %>
+  <%= button_to 'Non-apocryphal', create_from_content_titles_path, class: "d-none", id: "create_new_title_btn", params: { title: { title_orig: "" }, from: params[:from], parent_type: params[:parent_type], parent_id: params[:parent_id] } %>
+</div>
+

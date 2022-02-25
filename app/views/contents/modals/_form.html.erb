@@ -21,7 +21,7 @@
 						<%= form.label :title_id, "Title", style: "display: block" %>
 						<div class="d-flex">
 							<%= form.collection_select :title_id, Title.all, :id, :title_english, {selected: content.title_id, include_blank: true}, {class: "form-control", placeholder: "Select title"} %>
-							<button type="button" id="content<%= ('-' + content.id.to_s) if content.id.present? %>-new-title-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#content<%= ('-' + content.id.to_s) if content.id.present? %>-new-title-btn', '#content<%= ('-' + content.id.to_s) if content.id.present? %>-title-modal')" data-backdrop="static" data-keyboard="false">New</button>
+							<%= link_to "New", new_title_path(parent_type: parent.class.to_s, parent_id: parent.id.to_s, from: request.path), class: "btn btn-outline-action ms-4" %>
 						</div>
 					</div>
 

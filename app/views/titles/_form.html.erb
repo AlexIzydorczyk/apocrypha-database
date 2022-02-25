@@ -1,41 +1,19 @@
+<%= form_with(model: title, class: "autosave block-submit") do |form| %>
 
-
-<%= form_with(model: title) do |form| %>
-  <% if title.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(title.errors.count, "error") %> prohibited this title from being saved:</h2>
-
-      <ul>
-        <% title.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 <div class="row">
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :apocryphon_id, style: "display: block" %>
-	    <%= form.text_field :apocryphon_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_orig, style: "display: block" %>
-	    <%= form.text_field :title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_orig_transliteration, style: "display: block" %>
-	    <%= form.text_field :title_orig_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_translation, style: "display: block" %>
-	    <%= form.text_field :title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :language_id, style: "display: block" %>
-	    <%= form.text_field :language_id, class: "form-control" %>
-		</div>
+
+	<div class="form-group col-4 mb-2">
+		<%= form.label :title_orig, style: "display: block" %>
+		<%= form.text_field :title_orig, class: "form-control" %>
+	</div>
+	<div class="form-group col-4 mb-2">
+		<%= form.label :title_orig_transliteration, style: "display: block" %>
+		<%= form.text_field :title_orig_transliteration, class: "form-control" %>
+	</div>
+	<div class="form-group col-4 mb-2">
+		<%= form.label :title_translation, style: "display: block" %>
+		<%= form.text_field :title_translation, class: "form-control" %>
+	</div>
 </div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
+<%= render 'layouts/save_now', form: form %>
 <% end %>
-	

@@ -28,6 +28,12 @@ class ApocryphaController < ApplicationController
     @apocryphon = Apocryphon.new(apocryphon_params)
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
+    if params[:parent_type].present? && params[:parent_id].present?
+      parent = params[:parent_type].constantize.find(params[:parent_id])
+      c = parent.contents.create
+      @apocryphon.content_id = c.id
+    end
+
     if @apocryphon.save
       #redirect_to apocrypha_url, notice: "Apocryphon was successfully created."
       redirect_to edit_apocryphon_path(@apocryphon)

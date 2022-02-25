@@ -25,7 +25,11 @@ Rails.application.routes.draw do
       post :move_to_booklet
     end
   end
-  resources :titles
+  resources :titles do
+    collection do
+      post :create_from_content
+    end
+  end
   resources :apocrypha do
     collection do
       post :create_from_booklist
