@@ -74,12 +74,14 @@
 				<%= hidden_field_tag :reference_type, reference_type %>
 			<% elsif parent.class == Ownership %>
 				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
+			<% elsif parent.class == Content %>
+				<%= hidden_field_tag :content_id, parent.id, class: "content-field" %>
 			<% elsif parent.class == ModernSource %>
 				<%= hidden_field_tag :modern_source_id, parent.id %>
 				<%= hidden_field_tag :reference_type, reference_type %>
 			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}person-modal .ownership-field').val()" : "") + ")") %>
+				<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}person-modal .ownership-field').val()" : (parent.class.to_s == "Content" ? "'#addContentModal' + $('##{pid}person-modal .content-field').val()" : "")) + ")") %>
 			</div>
 		</div>
 	</div>

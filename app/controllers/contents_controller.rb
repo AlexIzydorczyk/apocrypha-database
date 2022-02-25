@@ -20,7 +20,7 @@ class ContentsController < ApplicationController
     @content = Content.new(content_params)
 
     if @content.save
-      # render :json => { new_url: ownership_path(@ownership) }
+      render :json => { new_url: content_path(@content), id: @content.id }
       # redirect_to contents_url, notice: "Content was successfully created."
     else
       render :new, status: :unprocessable_entity

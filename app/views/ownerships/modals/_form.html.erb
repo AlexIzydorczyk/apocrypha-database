@@ -35,7 +35,7 @@
 						<%= form.label :institution_id, "Institution", style: "display: block" %>
 						<div class="d-flex">
 							<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
-							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn', '#ownership-new-institution-modal')" data-backdrop="static" data-keyboard="false">New</button>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn', '#modal-ownership-<%= (ownership.id.to_s + '-') if ownership.id.present? %>1-new-institution-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
 					<div class="form-group col-12 mb-2">
@@ -49,7 +49,7 @@
 						<%= form.label :location_id, "Location", style: "display: block" %>
 						<div class="d-flex">
 							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: ownership.location_id, include_blank: true}, {class: "form-control", placeholder: "Select a location"} %>
-							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn', '#ownership-location-modal')" data-backdrop="static" data-keyboard="false">New</button>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn', '#modal-ownership-location-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
 					

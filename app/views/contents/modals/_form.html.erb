@@ -11,12 +11,18 @@
 
 					<div class="form-group col-12 mb-2">
 						<%= form.label :author_id, "Author", style: "display: block" %>
-						<%= form.collection_select :author_id, Person.all, :id, :full_name, {selected: content.author_id, include_blank: true}, {class: "form-control", placeholder: "Select author"} %>
+						<div class="d-flex">
+							<%= form.collection_select :author_id, Person.all, :id, :full_name, {selected: content.author_id, include_blank: true}, {class: "form-control", placeholder: "Select author"} %>
+							<button type="button" id="content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn', '#content<%= ('-' + content.id.to_s) if content.id.present? %>-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
 					</div>
 					
 					<div class="form-group col-12 mb-2">
 						<%= form.label :title_id, "Title", style: "display: block" %>
-						<%= form.collection_select :title_id, Title.all, :id, :title_english, {selected: content.title_id, include_blank: true}, {class: "form-control", placeholder: "Select title"} %>
+						<div class="d-flex">
+							<%= form.collection_select :title_id, Title.all, :id, :title_english, {selected: content.title_id, include_blank: true}, {class: "form-control", placeholder: "Select title"} %>
+							<button type="button" id="content<%= ('-' + content.id.to_s) if content.id.present? %>-new-title-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#content<%= ('-' + content.id.to_s) if content.id.present? %>-new-title-btn', '#content<%= ('-' + content.id.to_s) if content.id.present? %>-title-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
 					</div>
 
 					<%= form.hidden_field :sequence_no, value: parent.contents.count+1 %>
@@ -32,12 +38,44 @@
 	<% end %>	
 </div>
 
+<%= render 'people/modals/form', person: Person.new, parent: content, pid: "content-#{ (content.id.to_s + '-') if content.id.present? }", depth: 1 %>
+
+<%= render 'titles/modals/form', title: Title.new, parent: content, pid: "content-#{ (content.id.to_s + '-') if content.id.present? }", depth: 1 %>
+
 <script type="text/javascript">
-	new TomSelect("#addContentModal<%= content.id %> #content_author_id",{
-		sortField: { field: "text", direction: "asc" }
+	
+
+	$( document ).ready(function() {
+		person_modal = new Vue({
+			el: "#addContentModal<%= content.try(:id) %>",
+			name: "addContentModal<%= content.try(:id) %>",
+			data: {
+				sub_modal_open: false,
+			},
+			watch: {
+			},
+			methods: {
+				openSubModal(button_selector, selector){
+					saveForm($("#addContentModal<%= content.try(:id) %> form"), $(selector + ' .content-field'));
+					$(selector).modal('show');
+					$('.modal').on('hidden.bs.modal', function() {
+						this.sub_modal_open = false;
+					}.bind(this));
+					this.sub_modal_open = true;
+				}
+			},
+			mounted(){
+				new TomSelect("#addContentModal<%= content.id %> #content_author_id",{
+					sortField: { field: "text", direction: "asc" }
+				});
+
+				new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
+					sortField: { field: "text", direction: "asc" }
+				});
+
+				createModalListeners();
+			}
+		});
 	});
 
-	new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
-		sortField: { field: "text", direction: "asc" }
-	});
 </script>

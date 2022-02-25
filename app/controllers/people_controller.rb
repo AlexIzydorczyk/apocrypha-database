@@ -22,13 +22,15 @@ class PeopleController < ApplicationController
       PersonReference.create(record: Booklet.find(params[:booklet_id]), person: @person, reference_type: params[:reference_type])
     elsif params[:ownership_id].present?
       Ownership.find(params[:ownership_id]).update(person_id: @person.id)
+    elsif params[:content_id].present?
+      Content.find(params[:content_id]).update(author_id: @person.id)
     elsif params[:modern_source_id].present?
       PersonReference.create(record: ModernSource.find(params[:modern_source_id]), person: @person, reference_type: params[:reference_type])
     end
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : people_path
       # redirect_to redirect_path, notice: "Person was successfully created."
-    else
+    elsif !request.xhr?
       render :new, status: :unprocessable_entity
     end
   end

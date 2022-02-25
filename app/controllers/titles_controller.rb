@@ -18,7 +18,13 @@ class TitlesController < ApplicationController
   def create
     @title = Title.new(title_params)
 
-    if @title.save
+    saved = @title.save
+
+    if params[:content_id].present?
+      Content.find(params[:content_id]).update(title_id: @title.id)
+    end
+
+    if saved
       if request.xhr?
         render :json => {"status": "updated"}  
       else
