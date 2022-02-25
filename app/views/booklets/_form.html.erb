@@ -62,7 +62,7 @@
 		<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :genesis_institution_id, Institution.all, :id, :display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", multiple: true, placeholder: "Select institution"} %>
-			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-institution-modal">New</button>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 		</div>
 	</div>
 	<div class="form-group col-md-12 mb-2">
@@ -110,6 +110,10 @@
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklet, pid: '', depth: 0 %>
 <%= render 'locations/modals/form', location: Location.new, parent: booklet, pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: booklet, reference_type: 'scribe', pid: '', depth: 0 %>
+
+<% if booklet.genesis_institution.present? %>
+<%= render 'institutions/modals/new', institution: booklet.genesis_institution, parent: booklet, pid: "#{booklet.genesis_institution_id}-", depth: 0 %>
+<% end %>
 
 <!-- Scripts -->
 <%= render '/booklets/scripts', booklet: booklet %>

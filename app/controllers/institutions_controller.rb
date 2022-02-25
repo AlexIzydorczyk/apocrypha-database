@@ -30,6 +30,8 @@ class InstitutionsController < ApplicationController
     if saved && !request.xhr?
       # redirect_path = params[:manuscript_id].present? ? edit_manuscript_path(params[:manuscript_id]) : (params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : institutions_path)
       # redirect_to redirect_path, notice: "Institution was successfully created."
+    elsif saved && request.xhr?
+      render json: { new_url: institution_path(@institution), id: @institution.id }
     else
       render :new, status: :unprocessable_entity
     end
@@ -43,7 +45,7 @@ class InstitutionsController < ApplicationController
       if request.xhr?
         render :json => { new_url: insitution_path(@institution), id: @institution }  
       else
-        redirect_to institutions_url, notice: "Institution was successfully updated."
+        # redirect_to institutions_url, notice: "Institution was successfully updated."
       end
     else
       render :edit, status: :unprocessable_entity

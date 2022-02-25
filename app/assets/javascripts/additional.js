@@ -23,16 +23,24 @@ var setModalPositioning = function modalPosition(){
 }
 
 function timeoutReload(location_hash){
-  if(location_hash) location.hash = location_hash;
-  else location.hash = ''
+  console.log("timeout relaoding running");
+  if(location_hash){
+    location.hash = location_hash;
+  } else {
+    location.hash = '';
+  }
   setTimeout(function(){
-    location.href = location.href;
+    // if(location_hash) 
+      window.location.reload(true);
+    // else window.location.href = window.location.href;
   }, 200)
 }
 
 function saveForm(form, input_for_id=null) {
   var id;
+  console.log("form", form);
   form.ajaxSubmit(function(data) {
+    console.log("Save form data", data);
     if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
     if(input_for_id) input_for_id.val(data.id);

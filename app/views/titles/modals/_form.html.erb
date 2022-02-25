@@ -1,5 +1,5 @@
-<div class="modal fade" id="title-modal" tabindex="-1" aria-hidden="true">
-	<%= form_with(model: title, url: (title.new_record? ? titles_path : title_path(title)), class: 'autosave') do |form| %>
+<div class="modal" id="<%= pid %>title-modal" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: title, url: (title.new_record? ? titles_path : title_path(title))) do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -7,7 +7,9 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<%= form.hidden_field :apocryphon_id, value: @apocryphon.id %>
+				<% if @apocryphon.present? %>
+					<%= form.hidden_field :apocryphon_id, value: @apocryphon.id %>
+				<% end %>
 				<%= form.label "Language", class: "fw-bolder" %>
 				<%= select_tag("title[language_id]", options_for_select([ ['English', english_id ] , ['Latin', latin_id ]]), class: "form-control") %>
 
@@ -20,8 +22,15 @@
 				<%= form.radio_button "is_standard", false, checked: @apocryphon.main_english_title_id.present? && @apocryphon.main_latin_title_id.present? %>
 				<%= form.label "is_standard", "Other title", value: false %>
 			</div>
+			<% if parent.class == Content %>
+				<%= hidden_field_tag :content_id, parent.id, class: "content-field" %>
+			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+				<% unless parent.class == Content %>
+					<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>
+				<% else %>
+					<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: ("timeoutReload(" + (parent.class.to_s == "Content" ? "'#addContentModal' + $('##{pid}title-modal .content-field').val()" : "") + ")") %>
+				<% end %>
 			</div>
 		</div>
 	</div>
@@ -29,5 +38,5 @@
 </div>
 
 <script type="text/javascript">
-	new TomSelect("#title_language_id",{ sortField: {field: "text", direction: "asc"}, maxItems: 1});
+	new TomSelect("#<%= pid %>title-modal #title_language_id",{ sortField: {field: "text", direction: "asc"}, maxItems: 1});
 </script>

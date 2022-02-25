@@ -19,7 +19,13 @@ class TitlesController < ApplicationController
   def create
     @title = Title.new(title_params)
 
-    if @title.save
+    saved = @title.save
+
+    if params[:content_id].present?
+      Content.find(params[:content_id]).update(title_id: @title.id)
+    end
+
+    if saved
       if request.xhr?
         if @title.apocryphon_id.present? && params[:title][:is_standard] == "true" && @title.try(:language_id) == helpers.english_id
           @title.apocryphon.update(main_english_title_id: @title.id)
