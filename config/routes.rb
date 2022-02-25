@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 	devise_for :users
 	root to: "application#index"
 
+  get 'new_title_or_apocryphon', to: 'apocrypha#form_container'
+
   resources :person_references
   resources :modern_source_references
   resources :source_urls

@@ -4,8 +4,8 @@ namespace :migrate_old_db do
 	
 	task :parse_apocrypha_json => :environment do
 		
-		english_id = Language.find_by(language_name: "English")
-		latin_id = Language.find_by(language_name: "Latin")
+		english_id = Language.find_or_create_by(language_name: "English")
+		latin_id = Language.find_or_create_by(language_name: "Latin")
 
 		ap = JSON.parse(File.read('public/apocrypha_export.json'))
 

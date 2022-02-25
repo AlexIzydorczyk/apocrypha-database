@@ -26,6 +26,15 @@ class TitlesController < ApplicationController
 
     if saved
       if request.xhr?
+        puts 'here1'.red
+        if @title.apocryphon_id.present? && params[:title][:is_standard] == "true" && @title.try(:language_id) == helpers.english_id
+          puts 'here2'.blue
+          @title.apocryphon.update(main_english_title_id: @title.id)
+        elsif @title.apocryphon_id.present? && params[:title][:is_standard] == "true" &&  @title.try(:language_id) == helpers.latin_id
+          puts 'here2'.green
+          @title.apocryphon.update(main_latin_title_id: @title.id)
+        end
+        puts 'here3'.yellow
         render :json => {"status": "updated"}  
       else
         redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path
