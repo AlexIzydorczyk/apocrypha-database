@@ -16,11 +16,13 @@
 				<%= form.label "Title", class: "fw-bolder mt-2" %>
 				<%= form.text_field :title_orig, class: "form-control" %>
 
-				<%= form.label "Apocryphon title type", class: "fw-bolder mt-2 d-block" %>
-				<%= form.radio_button "is_standard", true, checked: @apocryphon.main_english_title_id.blank? || @apocryphon.main_latin_title_id.blank? %>
-				<%= form.label "is_standard", "Standard title", value: true %>
-				<%= form.radio_button "is_standard", false, checked: @apocryphon.main_english_title_id.present? && @apocryphon.main_latin_title_id.present? %>
-				<%= form.label "is_standard", "Other title", value: false %>
+				<% if @apocryphon.present? %>
+					<%= form.label "Apocryphon title type", class: "fw-bolder mt-2 d-block" %>
+					<%= form.radio_button "is_standard", true, checked: @apocryphon.main_english_title_id.blank? || @apocryphon.main_latin_title_id.blank? %>
+					<%= form.label "is_standard", "Standard title", value: true %>
+					<%= form.radio_button "is_standard", false, checked: @apocryphon.main_english_title_id.present? && @apocryphon.main_latin_title_id.present? %>
+					<%= form.label "is_standard", "Other title", value: false %>
+				<% end %>
 			</div>
 			<% if parent.class == Content %>
 				<%= hidden_field_tag :content_id, parent.id, class: "content-field" %>
