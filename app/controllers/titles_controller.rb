@@ -26,17 +26,17 @@ class TitlesController < ApplicationController
     end
 
     if saved
+      ta = @title.apocryphon
+      if ta.present? && params[:title][:is_standard] == "true" && @title.try(:language_id) == helpers.english_id
+          ta.update(main_english_title_id: @title.id)
+      elsif ta.present? && params[:title][:is_standard] == "true" &&  @title.try(:language_id) == helpers.latin_id
+        ta.update(main_latin_title_id: @title.id)
+      end
+      if ta.present? && ta.content_id.present?
+        Content.find(ta.content_id).update(title_id: @title.id)
+        ta.update(content_id: nil)
+      end
       if request.xhr?
-        if @title.apocryphon_id.present? && params[:title][:is_standard] == "true" && @title.try(:language_id) == helpers.english_id
-          @title.apocryphon.update(main_english_title_id: @title.id)
-        elsif @title.apocryphon_id.present? && params[:title][:is_standard] == "true" &&  @title.try(:language_id) == helpers.latin_id
-          @title.apocryphon.update(main_latin_title_id: @title.id)
-        end
-        ta = @title.apocryphon
-        if ta.present? && ta.content_id.present?
-          Content.find(ta.content_id).update(title_id: @title.id)
-          ta.update(content_id: nil)
-        end
         render :json => {"status": "updated"}  
       else
         redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path

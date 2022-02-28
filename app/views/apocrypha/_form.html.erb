@@ -171,6 +171,12 @@
 		</div>
 		<% end %>
 	</div>
+	<div class="row">
+		<div class="form-group col-12 mb-2">
+			<%= form.label :notes, style: "display: block" %>
+			<%= form.text_area :notes, class: "form-control" %>
+		</div>
+	</div>
 
 	<%= render 'layouts/save_now', form: form %>
 	<% end %>
