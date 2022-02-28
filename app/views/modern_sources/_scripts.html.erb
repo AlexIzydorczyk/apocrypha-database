@@ -13,13 +13,15 @@ $(document).ready(function(){
 			title_orig_label(){
 				switch(this.source_type){
 					case 'journal_article':
-						return "Title of article in original language";
+						return "Article title";
 					case 'unpublished_document':
-						return 'Document title in original language';
+						return 'Document title';
 					case 'web_page':
 						return "Title of webpage";
 					case "handwritten_document":
-						return "Document title in original language";
+						return "Document title";
+					case "book_chapter":
+						return "Chapter title"
 					default: 
 						return 'Book title in original language';
 				}
@@ -35,7 +37,7 @@ function runTomSelects(){
 	new TomSelect("#modern_source_source_type",{
 		sortField: {
 			field: "text",
-			direction: "asc"
+			direction: "asc",
 		},
 		maxItems: 1,
 	});
@@ -83,8 +85,17 @@ function runTomSelects(){
 			direction: "asc"
 		},
 		maxItems: 1,
+		create: true,
 	});
 	new TomSelect("#modern_source_publisher",{
+		sortField: {
+			field: "text",
+			direction: "asc"
+		},
+		maxItems: 1,
+		create: true,
+	});
+	new TomSelect("#modern_source_edition",{
 		sortField: {
 			field: "text",
 			direction: "asc"

@@ -25,7 +25,7 @@ namespace :migrate_old_db do
 				e_clavis_link: a["linkToEClavis"] || "",
 				created_at: created_at,
 				updated_at: updated_at,
-				abbreviation: a["_id"]
+				english_abbreviation: a["_id"]
 			)
 			r.save!
 
@@ -228,7 +228,7 @@ namespace :migrate_old_db do
 									apoc = Apocryphon.find_or_create_by(id: title.apocryphon_id)
 									content = br.contents.create(title_id: title.id, sequence_no: i+1)
 								else
-									apoc = Apocryphon.find_or_create_by(abbreviation: a["apocryphonId"])
+									apoc = Apocryphon.find_or_create_by(english_abbreviation: a["apocryphonId"])
 									content = br.contents.create(sequence_no: i+1)
 								end
 								text = Text.create(
@@ -363,7 +363,7 @@ namespace :migrate_old_db do
 				source_type: source_type,
 				created_at: created_at,
 				updated_at: updated_at,
-				isbn: nested_hash_value(b, 'isbn'),
+				ISBN: nested_hash_value(b, 'isbn'),
 				publisher: nested_hash_value(b, 'publisher'),
 				publication_location_id: l.id,
 				publication_creation_date: nested_hash_value(b, 'datePublished') || nested_hash_value(b, 'year'),
@@ -390,9 +390,9 @@ namespace :migrate_old_db do
 			if author_type == "regular"
 				b["author"].each do |a|
 					person = Person.find_or_create_by(
-						first_name_vernacular: nested_hash_value(a, 'first'),
-						middle_name_vernacular: nested_hash_value(a, 'middle'),
-						last_name_vernacular: nested_hash_value(a, 'last'),
+					first_name_vernacular: nested_hash_value(a, 'first') || "",
+					middle_name_vernacular: nested_hash_value(a, 'middle') || "",
+					last_name_vernacular: nested_hash_value(a, 'last') || "",
 						viaf: nested_hash_value(a, 'lod'),
 					)
 					PersonReference.find_or_create_by(
@@ -405,9 +405,9 @@ namespace :migrate_old_db do
 
 			nested_hash_value(b, 'editor').each do |e|
 				person = Person.find_or_create_by(
-					first_name_vernacular: nested_hash_value(e, 'first'),
-					middle_name_vernacular: nested_hash_value(e, 'middle'),
-					last_name_vernacular: nested_hash_value(e, 'last'),
+					first_name_vernacular: nested_hash_value(e, 'first') || "",
+					middle_name_vernacular: nested_hash_value(e, 'middle') || "",
+					last_name_vernacular: nested_hash_value(e, 'last') || "",
 					viaf: nested_hash_value(e, 'lod'),
 				)
 				PersonReference.find_or_create_by(

@@ -22,7 +22,7 @@ class ModernSource < ApplicationRecord
   has_many :booklist_sections
 
   def display_name
-    self.publication_title_orig || self.publication_title  
+    self.title_orig.present? ? self.title_orig : (self.publication_title_orig.present? ? self.publication_title_orig : (self.source_type.present? ? self.source_type.humanize : "New bibliographic item"))
   end
 
 end

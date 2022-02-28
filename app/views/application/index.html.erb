@@ -45,7 +45,7 @@
 			<div class="card-body">
 				<h5 class="card-title">Bibliography (<%= ModernSource.count.to_s %>)</h5>
 				<p class="pt-2"><%= link_to "View Bibliography Grid", modern_sources_path,  class: "card-link" %></p>
-				<p><%= button_to 'New Modern Source', modern_sources_path, class: "card-link", params: { modern_source: { publication_title_orig: "" } } %></p>
+				<p><%= button_to 'New bibliographic item', modern_sources_path, class: "card-link", params: { modern_source: { publication_title_orig: "" } } %></p>
 			</div>
 		</div>
 	</div>

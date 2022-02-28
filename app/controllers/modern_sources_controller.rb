@@ -21,7 +21,9 @@ class ModernSourcesController < ApplicationController
     @editor_reference = @modern_source.editor_references.build
     @translator_reference = @modern_source.editor_references.build
     @modern_source.source_urls.build if @modern_source.source_urls.count < 1
-    @publishers = ModernSource.where.not(publisher: "").pluck(:publisher)
+    @publishers = ModernSource.where.not(publisher: "").pluck(:publisher).uniq
+    @editions = ModernSource.where.not(edition: "").pluck(:edition).uniq
+    @document_types = (ModernSource.where.not(document_type: "").pluck(:document_type) + ["Book", "Journal Article", "Website"]).uniq
   end
 
   def create
