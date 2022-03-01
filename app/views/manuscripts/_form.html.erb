@@ -8,7 +8,7 @@
 	</div>
 	<div class="form-group col-md-3 mb-2">
 		<%= form.label :status, style: "display: block" %>
-		<%= form.select :status, options_for_select(%w(extant lost destroyed), manuscript.status), {include_blank: true}, class: "form-control" %>
+		<%= form.select :status, options_for_select(%w(extant lost destroyed), manuscript.status), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
 	</div>
 	<div class="form-group col-md-12 mb-2">
 		<%= form.label :institution_id, "Repository", style: "display: block" %>
@@ -17,11 +17,11 @@
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 		</div>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-6 mb-2">
 		<%= form.label :shelfmark, style: "display: block" %>
 		<%= form.text_field :shelfmark, class: "form-control" %>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-6 mb-2">
 		<%= form.label :old_shelfmark, "Old shelfmarks", style: "display: block" %>
 		<%= form.text_field :old_shelfmark, class: "form-control" %>
 	</div>
@@ -31,51 +31,56 @@
 <div class="row">
 	<div class="form-group col-md-3 mb-2">
 		<%= form.label :material, style: "display: block" %>
-		<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper"]), {include_blank: true}, class: "form-control" %>
+		<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper"]), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
+	</div>
+	<div class="form-group col-md-3 mb-2 d-flex align-items-start pt-4">
+		<%= form.hidden_field :is_folios, "v-model": "is_folios" %>
+		<span @click="is_folios = true" class="pointer">
+			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-dot-circle' : 'fa-circle'"></i>
+			<label>Foliated</label>
+		</span>
+		<span @click="is_folios = false" class="pointer ms-3">
+			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-circle' : 'fa-dot-circle'"></i>
+			<label>Paginated</label>
+		</span>
+	</div>
+	<div class="form-group col-md-3 mb-2">
+		<label for="manuscript_leaf_page_no" style="display: block;">No. of {{ is_folios ? 'folios' : 'pages' }}</label>
+		<div class="input-group">
+			<%= form.text_field :leaf_page_no, class: "form-control border-end-0"%>
+			<span class="input-group-text bg-white">{{ is_folios ? 'ff.' : 'pp.' }}</span>
+		</div>
 	</div>
 	<div class="form-group col-md-3 mb-2">
 		<%= form.label :dimensions, style: "display: block" %>
 		<%= form.text_field :dimensions, class: "form-control" %>
 	</div>
-	<div class="form-group col-md-6 mb-2">
-		<%= form.label :content_type, style: "display: block" %>
-		<%= form.select :content_type, options_for_select(@content_types, manuscript.content_type), {include_blank: true}, {class: "form-control", placeholder: "Select or add…"} %>
-	</div>
+</div>
+<div class="row">
 	<div class="col-md-6">
+		<%= form.label :date_from, "Date range of manuscript", style: "display: block" %>
 		<div class="row">
-			<div class="form-group col-md-6 mb-2">
-				<label for="manuscript_leaf_page_no" style="display: block;">Number of {{ is_folios ? 'folios' : 'pages' }}</label>
-				<div class="input-group">
-					<%= form.text_field :leaf_page_no, class: "form-control border-end-0"%>
-					<span class="input-group-text bg-white">{{ is_folios ? 'ff.' : 'pp.' }}</span>
-				</div>
-			</div>
-			<div class="form-group col-md-6 mb-2 d-flex align-items-start pt-4">
-				<%= form.hidden_field :is_folios, "v-model": "is_folios" %>
-				<span @click="is_folios = true" class="pointer">
-					<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-dot-circle' : 'fa-circle'"></i>
-					<label>Folios</label>
-				</span>
-				<span @click="is_folios = false" class="pointer ms-3">
-					<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-circle' : 'fa-dot-circle'"></i>
-					<label>Pages</label>
-				</span>
-			</div>
-			<div class="form-group col-md-6 mb-2">
-				<%= form.label :date_from, style: "display: block" %>
+			<div class="form-group col-md-5 mb-2">
 				<%= form.text_field :date_from, class: "form-control" %>
 			</div>
-			<div class="form-group col-md-6 mb-2">
-				<%= form.label :date_to, style: "display: block" %>
+			<div class="col-md-1 mb-2">-</div>
+			<div class="form-group col-md-5 mb-2">
 				<%= form.text_field :date_to, class: "form-control" %>
 			</div>
-			<%= fields_for(@language_references) do |lr| %>
-				<div class="form-group col-md-12 mb-2">
-					<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
-					<%= lr.collection_select :id, @languages, "id", "language_name", {selected: manuscript.languages.map(&:id)}, {class: "form-control", multiple: true} %>
-				</div>
-			<% end %>
 		</div>
+	</div>
+	<div class="col-md-6">another date field here? (to be discussed)</div>
+</div>
+<div class="row">
+	<%= fields_for(@language_references) do |lr| %>
+		<div class="form-group col-md-6 mb-2">
+			<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
+			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: manuscript.languages.map(&:id), include_blank: true}, {class: "form-control", multiple: true, placeholder: "Select or add…"} %>
+		</div>
+	<% end %>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :content_type, "Type of content", style: "display: block" %>
+		<%= form.select :content_type, options_for_select(@content_types, manuscript.content_type), {include_blank: true}, {class: "form-control", placeholder: "Select or add…"} %>
 	</div>
 	<div class="form-group col-md-6 mb-2">
 		<%= form.label :notes, style: "display: block" %>
