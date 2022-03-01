@@ -14,6 +14,7 @@ Vue.component('language-form-groups', {
 		record_class: {default: ""},
 		record_id: {default: ""},
 		depth: {default: -1},
+		inside_group: {default: false},
 	},
 	data: function() {
 		return {
@@ -43,6 +44,9 @@ Vue.component('language-form-groups', {
 		},
 		pid(){
 			return this.$vnode.key + '-';
+		},
+		group(){
+			return this.inside_group ? ("[" + this.record_id + "]") : "";
 		}
 	},
 	mounted(){

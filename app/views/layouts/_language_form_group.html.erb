@@ -1,13 +1,13 @@
 <div>
 	<div class="row" :id="$vnode.key">
 		<div class="form-group col-md-3 mb-2">
-			<select placeholder="Language" v-model="lang_val2" :name="record_type + '[' + language_column + ']'" class="form-control">
+			<select placeholder="Language" v-model="lang_val2" :name="record_type + group + '[' + language_column + ']'" class="form-control">
 				<option value=""></option>
 				<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
 			</select>
 		</div>
 		<div class="form-group col-md-9 mb-2">
-			<input :placeholder="title + ' in original language'" v-model="orig_val2" type="text" :name="record_type + '[' + orig + ']'" class="form-control">
+			<input :placeholder="title + ' in original language'" v-model="orig_val2" type="text" :name="record_type + group + '[' + orig + ']'" class="form-control">
 		</div>
 		<div class="col-md-12" v-show="requires_translit">
 			<div class="row">
@@ -15,7 +15,7 @@
 					<input type="text" disabled="disabled" value="Transliteration" class="form-control bg-white">
 				</div> 
 				<div class="form-group col-md-8 mb-2">
-					<input :placeholder="title + ' as transliteration to english'" v-model="translit_val2" type="text" :name="record_type + '[' + translit + ']'" class="form-control">
+					<input :placeholder="title + ' as transliteration to english'" v-model="translit_val2" type="text" :name="record_type + group + '[' + translit + ']'" class="form-control">
 				</div> 
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 					<input type="text" disabled="disabled" value="English" class="form-control bg-white">
 				</div> 
 				<div class="form-group col-md-8 mb-2">
-					<input :placeholder="title + ' in English'" v-model="eng_val2" type="text" :name="record_type + '[' + eng + ']'" class="form-control">
+					<input :placeholder="title + group + ' in English'" v-model="eng_val2" type="text" :name="record_type + '[' + eng + ']'" class="form-control">
 				</div>
 			</div>
 		</div>

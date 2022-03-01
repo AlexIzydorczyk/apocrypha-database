@@ -15,6 +15,7 @@ class TextsController < ApplicationController
   def edit
     @languages = Language.all
     @language_references = @text.language_references.build
+    @section_names = Section.all.pluck(:section_name).uniq.select{ |n| n.present? }
   end
 
   def create
@@ -62,7 +63,7 @@ class TextsController < ApplicationController
   end
 
   def text_params
-    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_folios_pages, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent)
+    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to)
   end
 
   def build_language_references_for ids

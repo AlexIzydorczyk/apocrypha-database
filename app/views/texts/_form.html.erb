@@ -2,146 +2,201 @@
 
 <div class="row">
 	<%= form.hidden_field :content_id%>
-	<div class="form-group col-md-5 mb-2">
-		<!-- this needs to include to, from, and folios type -->
-		<%= form.label "Location of #{text.find_manuscript.is_folios ? "folios" : "pages"} of the text", style: "display: block" %>
-		<div class="d-flex align-items-baseline">
-			<div class="input-group">
-				<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-				<%= form.text_field :text_pages_folios_from, class: "form-control border-start-0" %>
-			</div>
-			<span class="mx-2">to</span>
-			<div class="input-group">
-				<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-				<%= form.text_field :text_pages_folios_to, class: "form-control border-start-0" %>
-			</div>
+	<div class="form-group col-md-2 mb-2">
+		<%= form.label "Location in ms.", style: "display: block" %>
+		<div class="input-group">
+			<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'ff' : 'p' %>.</span>
+			<%= form.text_field :text_pages_folios_to, class: "form-control border-start-0" %>
 		</div>
 	</div>
 	<%= fields_for(@language_references) do |lr| %>
-		<div class="form-group col-md-5 mb-2">
-			<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
-			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: text.languages.map(&:id)}, {class: "form-control", multiple: true} %>
+		<div class="form-group col-md-4 offset-md-3 mb-2">
+			<%= lr.label :id, "Language", style: "display: block" %>
+			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: text.languages.map(&:id)}, {class: "form-control", multiple: true, placeholder: "Select or add"} %>
 		</div>
 	<% end %>
-	<div class="form-group col-10 mb-2">
+	<div class="form-group col-md-5 mb-2">
+		<%= form.label :date_to, "Date range", style: "display: block;" %>
+		<div class="d-flex align-items-baseline">
+			<%= form.text_field :date_to, class: "form-control" %>
+			<i class="far fa-minus mx-2"></i>
+			<%= form.text_field :date_from, class: "form-control" %>
+		</div>
+	</div>
+	<div class="form-group col-md-4 mb-2">
+		<%= form.hidden_field :date_exact, "v-model": "exact" %>
+		<label>
+			Date (<span @click="exact = true" class="pointer">exact
+				<i class="far" style="color: var(--orange)" :class="exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+			</span>
+			or<span @click="exact = false" class="pointer">
+				approximate
+				<i class="far" style="color: var(--orange)" :class="exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+			</span>
+			)
+		</label>
+		<%= form.text_field :date, class: "form-control" %>
+	</div>
+	<div class="col-md-5">
+		<div class="row">
+			<div class="form-group col-md-6 mb-2">
+				<%= form.label :no_columns, "No. of columns" %>
+				<%= form.text_field :no_columns, class: "form-control" %>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-md-7 mb-2">
+		<%= form.label :script, style: "display: block;" %>
+		<%= form.text_field :script, class: "form-control" %>
+	</div>
+	<div class="form-group col-12 mb-2">
 		<%= form.label :decoration, style: "display: block" %>
 		<%= form.text_field :decoration, class: "form-control" %>
 	</div>
+</div>
 
-	<div class="row my-3">
-		<div class="col col-lg-3" v-show="!add_title">
-			<button type="button" class="btn btn-action w-100" @click="add_title = true">Add Title</button>
-		</div>
-		<div class="col col-lg-3" v-show="!add_colophon">
-			<button type="button" class="btn btn-action w-100" @click="add_colophon = true">Add Colophon</button>
+<h2 class="mt-3">Title as in manuscript <button type="button" class="btn btn-action" @click="add_title = true" v-show="!add_title">Add manuscript title</button></h2>
+<div class="row" v-show="add_title">
+	<div class="form-group col-md-2 mb-2">
+		<label class="w-100"></label>
+		<div class="input-group">
+			<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+			<%= form.text_field :title_pages_folios_to, class: "form-control border-start-0" %>
 		</div>
 	</div>
+	<div class="form-group col-md-10 mb-2">
+		<label>Title as in manuscript</label>
+		<language-form-groups
+			key="text-manuscript-title"
+			record_type="text"
+			name="Title"
+			language_column="manuscript_title_language_id"
+			orig="manuscript_title_orig"
+			translit="manuscript_title_orig_transliteration"
+			eng="manuscript_title_translation"
+			lang_val="<%= text.manuscript_title_language_id %>"
+			orig_val="<%= text.manuscript_title_orig %>"
+			translit_val="<%= text.manuscript_title_orig_transliteration %>"
+			eng_val="<%= text.manuscript_title_translation %>"
+			record_class="Text"
+			record_id="<%= text.id %>"
+		></language-form-groups>
+	</div>
+</div>
 
-
-	<div class="row pt-4" v-show="add_title">
-		<div class="col-1" style="border-right: 3px solid rgba(0,0,0,0.3)">
-			<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Title</div>
-		</div>
-		<div class="col">
-			<div class="row">
-				<div class="form-group col-md-6 mb-2">
-					<!-- this needs to include to, from, and folios type -->
-					<%= form.label "Location of #{text.find_manuscript.is_folios ? "folios" : "pages"} of the text", style: "display: block" %>
-					<div class="d-flex align-items-baseline">
+<h2>Incipits and explicits <button type="button" class="btn btn-action" onclick="$('#add-section').click();">Add incipits and explicits</button></h2>
+<% text.sections.each do |section| %>
+	<%= fields_for("sections[#{section.id}]") do |f| %>
+		<%= f.hidden_field :id %>
+		<div class="row">
+			<div class="col-md-4 mb-2">
+				<%= f.label :section_name %>
+				<%= f.select :section_name, options_for_select(@section_names, section.section_name), {include_blank: true}, {class: "form-control", placeholder: "Select or add"} %>
+			</div>
+			<div class="col-md-12 mb-2">
+				<div class="row">
+					<div class="col-2">
+						<label class="w-100"></label>
 						<div class="input-group">
 							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= form.text_field :title_pages_folios_from, class: "form-control border-start-0" %>
-						</div>
-						<span class="mx-2">to</span>
-						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= form.text_field :title_pages_folios_to, class: "form-control border-start-0" %>
+							<%= form.text_field :pages_folios_incipit, class: "form-control border-start-0" %>
 						</div>
 					</div>
+					<div class="col">
+						<label>Incipit</label>
+						<language-form-groups
+							key="text-section-<%= section.id %>-incipit"
+							record_type="section"
+							name="Incipit"
+							language_column="incipit_language_id"
+							orig="incipit_orig"
+							translit="incipit_orig_transliteration"
+							eng="incipit_translation"
+							lang_val="<%= section.incipit_language_id %>"
+							orig_val="<%= section.incipit_orig %>"
+							translit_val="<%= section.incipit_orig_transliteration %>"
+							eng_val="<%= section.incipit_translation %>"
+							record_class="Section"
+							record_id="<%= section.id %>"
+							:inside_group="true"
+						></language-form-groups>
+					</div>
 				</div>
-				<div class="form-group col-md-6 mb-2">
-					<%= form.label :manuscript_title_orig, style: "display: block" %>
-					<%= form.text_field :manuscript_title_orig, class: "form-control" %>
-				</div>
-				<div class="form-group col-md-6 mb-2">
-					<%= form.label :manuscript_title_orig_transliteration, style: "display: block" %>
-					<%= form.text_field :manuscript_title_orig_transliteration, class: "form-control" %>
-				</div>
-				<div class="form-group col-md-6 mb-2">
-					<%= form.label :manuscript_title_translation, style: "display: block" %>
-					<%= form.text_field :manuscript_title_translation, class: "form-control" %>
+				<div class="row">
+					<div class="col-2">
+						<label class="w-100"></label>
+						<div class="input-group">
+							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<%= form.text_field :pages_folios_explicit, class: "form-control border-start-0" %>
+						</div>
+					</div>
+					<div class="col">
+						<label>Explicit</label>
+						<language-form-groups
+							key="text-section-<%= section.id %>-explicit"
+							record_type="section"
+							name="Explicit"
+							language_column="explicit_language_id"
+							orig="explicit_orig"
+							translit="explicitorig_transliteration"
+							eng="explicit_translation"
+							lang_val="<%= section.explicit_language_id %>"
+							orig_val="<%= section.explicit_orig %>"
+							translit_val="<%= section.explicitorig_transliteration %>"
+							eng_val="<%= section.explicit_translation %>"
+							record_class="Section"
+							record_id="<%= section.id %>"
+							:inside_group="true"
+						></language-form-groups>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	<% end %>
+<% end %>
 
-
-	<div class="row pt-4" v-show="add_colophon">
-		<div class="col-1" style="border-right: 3px solid rgba(0,0,0,0.3)">
-			<div class="sideway-title" style="transform: rotate(-90deg); transform-origin: bottom right;">Colophon</div>
-		</div>
-		<div class="col">
-			<div class="row">
-				<div class="form-group col-md-6 mb-2">
-					<!-- this needs to include to, from, and folios type -->
-					<%= form.label "Location of #{text.find_manuscript.is_folios ? "folios" : "pages"} of the text", style: "display: block" %>
-					<div class="d-flex align-items-baseline">
-						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= form.text_field :colophon_pages_folios_from, class: "form-control border-start-0" %>
-						</div>
-						<span class="mx-2">to</span>
-						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= form.text_field :colophon_pages_folios_to, class: "form-control border-start-0" %>
-						</div>
-					</div>
-				</div>
-				<div class="form-group col-md-6 mb-2">
-					<%= form.label :colophon_orig, style: "display: block" %>
-					<%= form.text_field :colophon_orig, class: "form-control" %>
-				</div>
-				<div class="form-group col-md-6 mb-2">
-					<%= form.label :colophon_transliteration, style: "display: block" %>
-					<%= form.text_field :colophon_transliteration, class: "form-control" %>
-				</div>
-				<div class="form-group col-md-6 mb-2">
-					<%= form.label :colophon_translation, style: "display: block" %>
-					<%= form.text_field :colophon_translation, class: "form-control" %>
-				</div>
-			</div>
+<h2>Colophon <button type="button" class="btn btn-action" @click="add_colophon = true" v-show="!add_colophon">Add colophon</button></h2>
+<div class="row" v-show="add_colophon">
+	<div class="form-group col-md-2 mb-2">
+		<label class="w-100"></label>
+		<div class="input-group">
+			<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+			<%= form.text_field :colophon_pages_folios_to, class: "form-control border-start-0" %>
 		</div>
 	</div>
-	
-	<div class="block-section"style="position: relative;">
-		
-		
+	<div class="form-group col-md-10 mb-2">
+		<label>Colophon</label>
+		<language-form-groups
+			key="text-colophon"
+			record_type="text"
+			name="Title"
+			language_column="colophon_language_id"
+			orig="colophon_orig"
+			translit="colophon_transliteration"
+			eng="colophon_translation"
+			lang_val="<%= text.colophon_language_id %>"
+			orig_val="<%= text.colophon_orig %>"
+			translit_val="<%= text.colophon_transliteration %>"
+			eng_val="<%= text.colophon_translation %>"
+			record_class="Text"
+			record_id="<%= text.id %>"
+		></language-form-groups>
 	</div>
-	
-	
 </div>
 
 <h2 id="research-notes">Research Notes</h2>
 <div class="row">
-	<div class="form-group col-4 mb-2">
-		<%= form.label :version, "Version of text", style: "display: block" %>
-		<%= form.text_field :version, class: "form-control" %>
+	<div class="form-group col-5 mb-2">
+		<%= form.label :version, style: "display: block" %>
+		<%= form.text_field :version, class: "form-control", placeholder: "Version of text" %>
 	</div>
-	<div class="form-group col-4 mb-2">
-		<%= form.label :extent, "Extent of text", style: "display: block" %>
-		<%= form.text_field :extent, class: "form-control" %>
+	<div class="form-group col-5 mb-2">
+		<%= form.label :extent, "Extent", style: "display: block" %>
+		<%= form.text_field :extent, class: "form-control", placeholder: "Extent of text" %>
 	</div>
-	<div class="form-group col-8 mb-2">
+	<div class="form-group col-12 mb-2">
 		<%= form.label :notes, style: "display: block" %>
 		<%= form.text_area :notes, class: "form-control" %>
-	</div>
-</div>
-
-<h2 id="credit">Credit & correspondance</h2>
-<div class="row">
-	<div class="form-group col-4 mb-2">
-		<%= form.label :transcriber_id, "Transcribed by", style: "display: block" %>
-		<%= form.collection_select :transcriber_id, Person.all, :id, :full_name, {selected: text.transcriber_id, include_blank: true}, {class: "form-control", placeholder: "Select a transcriber"} %>
 	</div>
 </div>
 
@@ -150,6 +205,9 @@
 </div>
 <% end %>
 
+<%= button_to 'Add incipits and explicits', sections_path, class: "btn btn-action d-none", id: "add-section", params: { section: { text_id: text.id } } %>
+<%= render "layouts/vue_language_form_group" %>
+
 <script type="text/javascript">
 	let textVue;
 	$(document).ready(function(){
@@ -157,8 +215,9 @@
 			name: 'textVue',
 			el: '#text-form',
 			data: {
-				add_title: false,
-				add_colophon: false,
+				add_title: <%= %w(title_pages_folios_to manuscript_title_language_id manuscript_title_orig manuscript_title_orig_transliteration manuscript_title_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
+				add_colophon: <%= %w(colophon_pages_folios_to colophon_language_id colophon_orig colophon_transliteration colophon_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
+				exact: <%= text.date_exact ? "true" : "false" %>,
 			},
 			mounted(){
 
@@ -182,5 +241,17 @@
 			},
 			maxItems: 1,
 		});
+
+		<% text.sections.each do |section| %>
+			new TomSelect("#sections_<%= section.id %>_section_name",{
+				sortField: {
+					field: "text",
+					direction: "asc"
+				},
+				maxItems: 1,
+				create: true,
+			});
+		<% end %>
+
 	});
 </script>

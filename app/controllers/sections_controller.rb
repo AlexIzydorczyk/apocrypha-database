@@ -19,7 +19,7 @@ class SectionsController < ApplicationController
     @section = Section.new(section_params)
 
     if @section.save
-      redirect_to sections_url, notice: "Section was successfully created."
+      redirect_to edit_manuscript_booklet_content_text_path(@section.text.content.booklet.manuscript, @section.text.content.booklet, @section.text.content, @section.text), notice: "Section was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
