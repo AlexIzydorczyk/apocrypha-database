@@ -41,7 +41,7 @@ class ApocryphaController < ApplicationController
 
     if @apocryphon.save
       #redirect_to apocrypha_url, notice: "Apocryphon was successfully created."
-      redirect_to edit_apocryphon_path(@apocryphon)
+      redirect_to edit_apocryphon_path(@apocryphon, old_path: params[:from])
     else
       render :new, status: :unprocessable_entity
     end

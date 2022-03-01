@@ -9,6 +9,7 @@
 			<div class="modal-body">
 				<% if @apocryphon.present? %>
 					<%= form.hidden_field :apocryphon_id, value: @apocryphon.id %>
+					<input type="hidden" name="old_path" value="<%= params[:old_path] %>">
 				<% end %>
 				<%= form.label "Language", class: "fw-bolder" %>
 				<%= select_tag("title[language_id]", options_for_select([ ['English', english_id ] , ['Latin', latin_id ]]), class: "form-control") %>

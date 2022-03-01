@@ -39,7 +39,7 @@ class TitlesController < ApplicationController
       if request.xhr?
         render :json => {"status": "updated"}  
       else
-        redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id) : titles_path
+        redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id, old_path: params[:old_path]) : titles_path
         redirect_to redirect_path, notice: "Title was successfully created."
       end
     else
