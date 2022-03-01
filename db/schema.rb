@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_25_211614) do
+ActiveRecord::Schema.define(version: 2022_03_01_224245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -353,6 +353,10 @@ ActiveRecord::Schema.define(version: 2022_02_25_211614) do
     t.string "explicit_translation", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "incipit_language_id"
+    t.bigint "explicit_language_id"
+    t.index ["explicit_language_id"], name: "index_sections_on_explicit_language_id"
+    t.index ["incipit_language_id"], name: "index_sections_on_incipit_language_id"
     t.index ["text_id"], name: "index_sections_on_text_id"
   end
 
@@ -395,7 +399,17 @@ ActiveRecord::Schema.define(version: 2022_02_25_211614) do
     t.string "text_pages_folios_to", default: "", null: false
     t.string "title_pages_folios_to", default: "", null: false
     t.string "colophon_pages_folios_to", default: "", null: false
+    t.string "date_to", default: "", null: false
+    t.string "date_from", default: "", null: false
+    t.boolean "date_exact", default: true, null: false
+    t.string "date", default: "", null: false
+    t.string "no_columns", default: "", null: false
+    t.string "script", default: "", null: false
+    t.bigint "manuscript_title_language_id"
+    t.bigint "colophon_language_id"
+    t.index ["colophon_language_id"], name: "index_texts_on_colophon_language_id"
     t.index ["content_id"], name: "index_texts_on_content_id"
+    t.index ["manuscript_title_language_id"], name: "index_texts_on_manuscript_title_language_id"
     t.index ["transcriber_id"], name: "index_texts_on_transcriber_id"
   end
 
@@ -483,10 +497,14 @@ ActiveRecord::Schema.define(version: 2022_02_25_211614) do
   add_foreign_key "ownerships", "religious_orders"
   add_foreign_key "people", "languages"
   add_foreign_key "person_references", "people"
+  add_foreign_key "sections", "languages", column: "explicit_language_id"
+  add_foreign_key "sections", "languages", column: "incipit_language_id"
   add_foreign_key "sections", "texts"
   add_foreign_key "source_urls", "modern_sources"
   add_foreign_key "text_urls", "texts"
   add_foreign_key "texts", "contents"
+  add_foreign_key "texts", "languages", column: "colophon_language_id"
+  add_foreign_key "texts", "languages", column: "manuscript_title_language_id"
   add_foreign_key "texts", "people", column: "transcriber_id"
   add_foreign_key "titles", "apocrypha"
   add_foreign_key "titles", "languages"
