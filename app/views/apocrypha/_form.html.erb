@@ -164,12 +164,10 @@
 		</div>
 	</div>
 	<div class="row">
-		<%= fields_for(@language_references) do |lr| %>
-		<div class="form-group col-md-8 mb-2">
-			<%= lr.label :id, "Languages", style: "display: block" %>
-			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: apocryphon.languages.map(&:id)}, {class: "form-control", multiple: true} %>
+		<div class="form-group col-12 mb-2">
+			<%= form.label "Languages", "Languages", style: "display: block" %>
+			<%= form.text_field "list_of_languages", value: @list_of_languages, class: "form-control", disabled: true %>
 		</div>
-		<% end %>
 	</div>
 	<div class="row">
 		<div class="form-group col-12 mb-2">

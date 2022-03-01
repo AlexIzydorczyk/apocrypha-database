@@ -22,6 +22,11 @@ class ApocryphaController < ApplicationController
     @other_english_titles = @english_titles.where.not(id: @apocryphon.main_english_title_id).all
     @other_latin_titles = @latin_titles.where.not(id: @apocryphon.main_latin_title_id).all
 
+    titles = Title.where(apocryphon_id: @apocryphon.id).map(&:id)
+    contents = Content.where(title_id: titles).map(&:id)
+    texts = Text.where(content_id: contents).map(&:id)
+    langRef = LanguageReference.where(record_type: 'Text').where(record_id: texts).map(&:language_id)
+    @list_of_languages = Language.where(id: langRef).map(&:language_name).join(', ')
   end
 
   def create
