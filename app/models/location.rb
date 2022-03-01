@@ -8,6 +8,6 @@ class Location < ApplicationRecord
 	belongs_to :diocese_orig_language, class_name: "Language", optional: true
 
 	def city_region_country
-		self.city_orig + ', ' + self.region_orig + ', ' + self.country  
+		[self.city_orig, self.region_orig, self.country].select{ |s| s.present? }.join(", ")
 	end
 end

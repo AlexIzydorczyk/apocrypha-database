@@ -29,7 +29,7 @@
 					<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || source_type != 'book'">
 						<label style="display: block;">{{ source_type == 'book' ? "Regular author(s)" : "Author(s)" }}</label>
 						<div class="d-flex">
-							<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author">
+							<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
 								<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 									<optgroup label="<%= group.humanize %>">
 										<% people.each do |person| %>
@@ -102,7 +102,7 @@
 					<div class="form-group col-md-12 mb-2">
 						<%= er.label :id, "Editor(s)", style: "display: block" %>
 						<div class="d-flex">
-							<select class="form-control" multiple="multiple" name="editor_reference[id][]" id="editor_reference_id" placeholder="Select editor">
+							<select class="form-control" multiple="multiple" name="editor_reference[id][]" id="editor_reference_id" placeholder="Select editor(s)">
 								<% sort_hash_keys(@grouped_people, ['editor', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 									<optgroup label="<%= group.humanize %>">
 										<% people.each do |person| %>
@@ -119,7 +119,7 @@
 					<div class="form-group col-md-12 mb-2">
 						<%= tr.label :id, "Translator(s)", style: "display: block" %>
 						<div class="d-flex">
-							<select class="form-control" multiple="multiple" name="translator_reference[id][]" id="translator_reference_id" placeholder="Select translator">
+							<select class="form-control" multiple="multiple" name="translator_reference[id][]" id="translator_reference_id" placeholder="Select translator(s)">
 								<% sort_hash_keys(@grouped_people, ['translator', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 									<optgroup label="<%= group.humanize %>">
 										<% people.each do |person| %>

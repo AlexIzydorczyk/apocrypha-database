@@ -85,9 +85,9 @@ class ModernSourcesController < ApplicationController
         render :json => {"status": "updated"}  
       else
          if params[:old_path].present?
-          redirect_to params[:old_path], notice: "Modern source was successfully updated."
+          redirect_to params[:old_path], notice: "Bibliography was successfully updated."
         else
-          redirect_to modern_sources_url, notice: "Modern source was successfully updated."
+          redirect_to modern_sources_url, notice: "Bibliography was successfully updated."
         end
       end
     else
