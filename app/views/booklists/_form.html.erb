@@ -13,7 +13,7 @@
 		<div class="form-group col-md-4 mb-2">
 			<%= form.label :institution_id, style: "display: block" %>
 			<div class="d-flex">
-				<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {selected: booklist.institution_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select institution"} %>
+				<%= form.collection_select :institution_id, Institution.all, :id, :long_display_name, {selected: booklist.institution_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select institution"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-institution-modal">New</button>
 			</div>
 		</div>
@@ -56,7 +56,7 @@
 			<label style="line-height: 35px;">Preserved in Manuscript</label>	
 		</div>
 		<div class="col text-end">
-			<%= link_to "Add", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#preserved-modal" } %>
+			<%= link_to "Add Bibliographic Reference", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#preserved-modal" } %>
 		</div>
 		
 		<% if booklist.modern_sources.any? %>
@@ -72,27 +72,45 @@
 				<% end %>
 			</ul>
 		</div>
+		<% else %>
+			<div class="col-12 my-3">
+				<%= form.text_field :none, value: "No bibliographic reference added" ,class: "form-control", disabled: true %>
+			</div>
 		<% end %>
 	</div>
 	<div class="row">
-		<div class="form-group col-6 mb-2">
+		<div class="form-group col-12 col-lg-6 mb-2">
 			<%= form.label :scribe_id, "Author", style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :scribe_id, Person.all, :id, :full_name, {selected: booklist.scribe_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select person"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
 			</div>
 		</div>
-		<div class="form-group col-2 mb-2">
-			<%= form.label :date_from, style: "display: block" %>
-			<%= form.text_field :date_from, class: "form-control" %>
-		</div>
-		<div class="form-group col-2 mb-2">
-			<%= form.label :date_to, style: "display: block" %>
-			<%= form.text_field :date_to, class: "form-control" %>
-		</div>
-		<div class="form-group col-2 mb-2">
-			<%= form.label :specific_date, style: "display: block" %>
-			<%= form.text_field :specific_date, class: "form-control" %>
+		<div class="col-12 col-lg-6">
+			<div class="row">
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :date_to, "Date range", style: "display: block;" %>
+					<div class="d-flex align-items-baseline">
+						<%= form.text_field :date_to, class: "form-control" %>
+						<i class="far fa-minus m-2"></i>
+						<%= form.text_field :date_from, class: "form-control" %>
+					</div>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+					<label>
+						Date (<span @click="date_exact = true" class="pointer">exact
+							<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+						</span>
+						or<span @click="date_exact = false" class="pointer">
+							approximate
+							<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+						</span>
+						)
+					</label>
+					<%= form.text_field :specific_date, class: "form-control" %>
+				</div>
+			</div>
 		</div>
 		<div class="form-group col-12 mb-2">
 			<%= form.label :title_orig, "Booklist title",style: "display: block" %>
@@ -107,7 +125,7 @@
 			<%= form.text_field :title_orig_translation, class: "form-control" %>
 		</div>
 		<div class="form-group col-12 mb-2">
-			<%= form.label :notes, style: "display: block" %>
+			<%= form.label :notes, "Notes on booklist", style: "display: block" %>
 			<%= form.text_area :notes, class: "form-control" %>
 		</div>
 	</div>
@@ -117,7 +135,7 @@
 	<%= render 'layouts/save_now', form: form %>
 	<% end %>
 
-	<h2>Records of apocrypha <%= button_to 'New record', booklist_sections_path, class: "btn btn-action", params: { booklist_section: { booklist_id: @booklist.id, sequence_no: @booklist.booklist_sections.count + 1 } } %></h2>
+	<h2>Excerpts <%= button_to 'Add excerpt', booklist_sections_path, class: "btn btn-action", params: { booklist_section: { booklist_id: @booklist.id, sequence_no: @booklist.booklist_sections.count + 1 } } %></h2>
 	<%= render 'booklist_sections/list', booklist: @booklist %>
 
 </div>

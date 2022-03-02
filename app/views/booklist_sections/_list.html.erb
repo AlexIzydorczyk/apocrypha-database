@@ -2,10 +2,10 @@
 	<% booklist.booklist_sections.each_with_index do |bs, i| %>
 		<div class="grey-bubble py-4">
 			<h5 id="section-<%= bs.id %>">
-				Reference <%= bs.sequence_no %> 
+				Excerpt <%= bs.sequence_no %> 
 				<span class="float-end">
 					<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteBooklistSection(<%= bs.id %>)">
-						<i class="far fa-trash-alt"></i> Delete reference <%= bs.sequence_no %> 
+						<i class="far fa-trash-alt"></i> Delete excerpt <%= bs.sequence_no %> 
 					</button>
 				</span>
 			</h5>
