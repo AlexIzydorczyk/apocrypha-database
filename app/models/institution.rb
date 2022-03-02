@@ -12,4 +12,8 @@ class Institution < ApplicationRecord
   def display_name
     self.name_orig
   end
+
+  def long_display_name
+    self.location.present? ? self.name_orig + ', ' + self.location.city_country : self.name_orig + '(no location specified)'
+  end
 end

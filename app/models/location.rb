@@ -10,4 +10,8 @@ class Location < ApplicationRecord
 	def city_region_country
 		[self.city_orig, self.region_orig, self.country].select{ |s| s.present? }.join(", ")
 	end
+
+	def city_country
+		self.city_orig + ', ' + self.country  
+	end
 end
