@@ -41,6 +41,10 @@ class TextsController < ApplicationController
     LanguageReference.where(record: @text, language_id: @text.languages.ids - new_set).destroy_all
     build_language_references_for new_set - @text.languages.ids
 
+    params[:sections].each do |id, prms|
+      Section.find(id).update(section_params(prms))
+    end
+
     if @text.update(text_params)
       if request.xhr?
         render :json => {"status": "updated"}  
@@ -63,7 +67,11 @@ class TextsController < ApplicationController
   end
 
   def text_params
-    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to)
+    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to, :colophon_language_id)
+  end
+
+  def section_params(prms)
+    prms.permit(:section_name, :incipit_language_id, :incipit_orig, :incipit_orig_transliteration, :incipit_translation, :explicit_language_id, :explicit_orig, :explicitorig_transliteration, :explicit_translation, :pages_folios_incipit, :pages_folios_explicit)
   end
 
   def build_language_references_for ids

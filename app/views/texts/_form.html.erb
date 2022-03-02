@@ -87,7 +87,6 @@
 <h2>Incipits and explicits <button type="button" class="btn btn-action" onclick="$('#add-section').click();">Add incipits and explicits</button></h2>
 <% text.sections.each do |section| %>
 	<%= fields_for("sections[#{section.id}]") do |f| %>
-		<%= f.hidden_field :id %>
 		<div class="row">
 			<div class="col-md-4 mb-2">
 				<%= f.label :section_name %>
@@ -99,14 +98,14 @@
 						<label class="w-100"></label>
 						<div class="input-group">
 							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= form.text_field :pages_folios_incipit, class: "form-control border-start-0" %>
+							<%= f.text_field :pages_folios_incipit, class: "form-control border-start-0", value: section.pages_folios_incipit %>
 						</div>
 					</div>
 					<div class="col">
 						<label>Incipit</label>
 						<language-form-groups
 							key="text-section-<%= section.id %>-incipit"
-							record_type="section"
+							record_type="sections"
 							name="Incipit"
 							language_column="incipit_language_id"
 							orig="incipit_orig"
@@ -127,14 +126,14 @@
 						<label class="w-100"></label>
 						<div class="input-group">
 							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= form.text_field :pages_folios_explicit, class: "form-control border-start-0" %>
+							<%= f.text_field :pages_folios_explicit, class: "form-control border-start-0", value: section.pages_folios_explicit %>
 						</div>
 					</div>
 					<div class="col">
 						<label>Explicit</label>
 						<language-form-groups
 							key="text-section-<%= section.id %>-explicit"
-							record_type="section"
+							record_type="sections"
 							name="Explicit"
 							language_column="explicit_language_id"
 							orig="explicit_orig"
@@ -226,14 +225,6 @@
 	});
 
 	$(function() {
-		new TomSelect("#text_transcriber_id",{
-			sortField: {
-				field: "text",
-				direction: "asc"
-			},
-			maxItems: 1,
-		});
-
 		new TomSelect("#language_reference_id",{
 			sortField: {
 				field: "text",
