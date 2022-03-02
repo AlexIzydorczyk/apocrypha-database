@@ -224,6 +224,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_183317) do
     t.string "siglum", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "reference_type", default: "", null: false
     t.index ["modern_source_id"], name: "index_modern_source_references_on_modern_source_id"
     t.index ["record_type", "record_id"], name: "index_modern_source_references_on_record"
   end

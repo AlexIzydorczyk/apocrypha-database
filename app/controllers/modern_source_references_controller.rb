@@ -19,7 +19,11 @@ class ModernSourceReferencesController < ApplicationController
     @modern_source_reference = ModernSourceReference.new(modern_source_reference_params)
     
     if @modern_source_reference.save
-      redirect_to modern_source_references_url, notice: "Modern source reference was successfully created."
+      if request.xhr?
+        render :json => { new_url: modern_source_reference_path(@modern_source_reference), id: @modern_source_reference.id }
+      else 
+        redirect_to modern_source_references_url, notice: "Modern source reference was successfully created."
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -52,6 +56,6 @@ class ModernSourceReferencesController < ApplicationController
     end
 
     def modern_source_reference_params
-      params.require(:modern_source_reference).permit(:record_id, :record_type, :modern_source_id, :specific_page, :siglum)
+      params.require(:modern_source_reference).permit(:record_id, :record_type, :modern_source_id, :specific_page, :siglum, :reference_type)
     end
 end

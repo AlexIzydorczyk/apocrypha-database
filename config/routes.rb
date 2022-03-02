@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :modern_sources do
     collection do
       post :create_from_booklist
+      post :create_from_text
     end
   end
   resources :sections

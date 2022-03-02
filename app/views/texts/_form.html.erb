@@ -193,9 +193,23 @@
 		<%= form.label :extent, "Extent", style: "display: block" %>
 		<%= form.text_field :extent, class: "form-control", placeholder: "Extent of text" %>
 	</div>
-	<div class="form-group col-12 mb-2">
+	<div class="form-group col-10 mb-2">
 		<%= form.label :notes, style: "display: block" %>
 		<%= form.text_area :notes, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<label>Inventoried by</label>
+		<div class="d-flex w-100 justify-content-end align-items-start">
+			<%= render 'modern_source_references/list', modern_source_references: text.inventoried %>
+			<button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('inventoried')">Add bibliographic reference</button>
+		</div>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<label>Used for edition by</label>
+		<div class="d-flex w-100 justify-content-end align-items-start">
+			<%= render 'modern_source_references/list', modern_source_references: text.edition_by %>
+			<button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('edition_by')">Add bibliographic reference</button>
+		</div>
 	</div>
 </div>
 
@@ -206,6 +220,11 @@
 
 <%= button_to 'Add incipits and explicits', sections_path, class: "btn btn-action d-none", id: "add-section", params: { section: { text_id: text.id } } %>
 <%= render "layouts/vue_language_form_group" %>
+
+<% text.modern_source_references.each do |msr| %>
+	<%= render 'modern_source_references/modals/form', parent: text, msr: msr %>
+<% end %>
+<%= render 'modern_source_references/modals/form', parent: text, msr: text.modern_source_references.new %>
 
 <script type="text/javascript">
 	let textVue;

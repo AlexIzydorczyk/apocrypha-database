@@ -51,6 +51,12 @@ class ModernSourcesController < ApplicationController
     end
   end
 
+  def create_from_text
+    @modern_source = ModernSource.create
+    ModernSourceReference.find(params[:modern_source_reference_id]).update(modern_source: @modern_source)
+    redirect_to edit_modern_source_path(@modern_source, old_path: params[:from])
+  end
+
   def update
     if params[:author_reference].present?
       new_set = params[:author_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }

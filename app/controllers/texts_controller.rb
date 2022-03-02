@@ -16,6 +16,7 @@ class TextsController < ApplicationController
     @languages = Language.all
     @language_references = @text.language_references.build
     @section_names = Section.all.pluck(:section_name).uniq.select{ |n| n.present? }
+    @modern_sources = ModernSource.all
   end
 
   def create

@@ -8,9 +8,10 @@ class Text < ApplicationRecord
   has_many :booklists, through: :booklist_references
   has_many :sections, -> { order("created_at ASC") }
   has_many :modern_source_references, as: :record
-  has_many :manuscripts, through: :modern_source_references
   has_many :person_references
   has_many :scribes, as: "Person", through: :person_references
+  has_many :inventoried, -> { where(reference_type: "inventoried") }, as: :record, class_name: "ModernSourceReference"
+  has_many :edition_by, -> { where(reference_type: "edition_by") }, as: :record, class_name: "ModernSourceReference"
 
   def find_manuscript
     self.content.parent.class == Manuscript ? self.content.parent : self.content.parent.manuscript

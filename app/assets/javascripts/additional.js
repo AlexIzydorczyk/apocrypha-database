@@ -36,7 +36,7 @@ function timeoutReload(location_hash){
   }, 200)
 }
 
-function saveForm(form, input_for_id=null) {
+function saveForm(form, input_for_id=null, callback=null) {
   var id;
   console.log("form", form);
   form.ajaxSubmit(function(data) {
@@ -44,6 +44,7 @@ function saveForm(form, input_for_id=null) {
     if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
     if(input_for_id) input_for_id.val(data.id);
+    if(callback != null) callback();
   })
 }
 
