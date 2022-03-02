@@ -8,7 +8,7 @@
 	</div>
 	<div class="form-group col-md-4 mb-2">
 		<!-- this needs to include to, from, and folios type -->
-		<%= form.label "Location of booklet in ms", style: "display: block" %>
+		<%= form.label "Location in ms.", style: "display: block" %>
 		<div class="d-flex align-items-baseline">
 			<div class="input-group">
 				<span class="input-group-text bg-white">f.</span>
@@ -21,31 +21,45 @@
 			</div>
 		</div>
 	</div>
-	<div class="form-group col-md-2 mb-2">
-		<%= form.label :date_from, style: "display: block" %>
-		<%= form.text_field :date_from, class: "form-control" %>
-	</div>
-	<div class="form-group col-md-2 mb-2">
-		<%= form.label :date_to, style: "display: block" %>
-		<%= form.text_field :date_to, class: "form-control" %>
-	</div>
-	<div class="form-group col-md-2 mb-2">
-		<%= form.label :specific_date, style: "display: block" %>
-		<%= form.text_field :specific_date, class: "form-control" %>
-	</div>
+
 	<div class="form-group col-md-6 mb-2">
-		<%= form.label :content_type, style: "display: block" %>	
+		<%= form.label :content_type, "Type of content", style: "display: block" %>	
 		<%= form.select :content_type, options_for_select(@content_types, booklet.content_type), {include_blank: true}, {class: "form-control", placeholder: "Select or add…"} %>
 	</div>
 </div>
 
-<h2>Booklet origin</h2>
+<h2>Origin</h2>
+<div class="row">
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :date_to, "Date range", style: "display: block;" %>
+		<div class="d-flex align-items-baseline">
+			<%= form.text_field :date_to, class: "form-control" %>
+			<i class="far fa-minus m-2"></i>
+			<%= form.text_field :date_from, class: "form-control" %>
+		</div>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+		<label>
+			Date (<span @click="date_exact = true" class="pointer">exact
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+			</span>
+			or<span @click="date_exact = false" class="pointer">
+				approximate
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+			</span>
+			)
+		</label>
+		<%= form.text_field :specific_date, class: "form-control" %>
+	</div>
+</div>
 <div class="row">
 	<%= fields_for(@scribe_reference) do |sr| %>
-		<div class="form-group col-md-12 mb-2">
-			<%= sr.label :id, "Scribes", style: "display: block" %>
+		<div class="form-group col-md-6 mb-2">
+			<%= sr.label :id, "Scribe(s)", style: "display: block" %>
 			<div class="d-flex">
 				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id">
+					<option value="">Select scribe</option>
 					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 						<optgroup label="<%= group.humanize %>">
 							<% people.each do |person| %>
@@ -58,26 +72,32 @@
 			</div>
 		</div>
 	<% end %>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-6 mb-2">
 		<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :genesis_institution_id, Institution.all, :id, :display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", multiple: true, placeholder: "Select institution"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 		</div>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-6 mb-2">
 		<%= form.label :genesis_religious_order_id, "Religious order", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: booklet.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select religious order"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
 		</div>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-6 mb-2">
 		<%= form.label :genesis_location_id, "Location", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#location-modal">New</button>
 		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col form-group">
+		<%= form.label :origin_notes, "Notes on origin", style: "display: block" %>
+		<%= form.text_area :origin_notes, class: "form-control" %>
 	</div>
 </div>
 

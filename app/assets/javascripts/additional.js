@@ -106,3 +106,31 @@ $(function() {
   }, 100); 
 
 });
+
+// -------- Tom Select presets --------
+
+var ts_sort_text_asc_max_null = {
+  sortField: {
+    field: "text",
+    direction: "asc"
+  },
+  maxItems: null,
+};
+
+var ts_sort_text_asc_max_1 = {
+  sortField: {
+    field: "text",
+    direction: "asc"
+  },
+  maxItems: 1,
+};
+
+var ts_sort_text_asc_max_1_create = {
+  sortField: {
+    field: "text",
+    direction: "asc"
+  },
+  maxItems: 1,
+  create: true,
+};
+

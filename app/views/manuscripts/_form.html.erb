@@ -57,19 +57,28 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-6">
-		<%= form.label :date_from, "Date range of manuscript", style: "display: block" %>
-		<div class="row">
-			<div class="form-group col-md-5 mb-2">
-				<%= form.text_field :date_from, class: "form-control" %>
-			</div>
-			<div class="col-md-1 mb-2">-</div>
-			<div class="form-group col-md-5 mb-2">
-				<%= form.text_field :date_to, class: "form-control" %>
-			</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :date_to, "Date range", style: "display: block;" %>
+		<div class="d-flex align-items-baseline">
+			<%= form.text_field :date_to, class: "form-control" %>
+			<i class="far fa-minus m-2"></i>
+			<%= form.text_field :date_from, class: "form-control" %>
 		</div>
 	</div>
-	<div class="col-md-6">another date field here? (to be discussed)</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+		<label>
+			Date (<span @click="date_exact = true" class="pointer">exact
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+			</span>
+			or<span @click="date_exact = false" class="pointer">
+				approximate
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+			</span>
+			)
+		</label>
+		<%= form.text_field :specific_date, class: "form-control" %>
+	</div>
 </div>
 <div class="row">
 	<%= fields_for(@language_references) do |lr| %>
@@ -121,12 +130,12 @@
 <% end %>
 
 <template v-if="!known_booklet_composition || has_ownerships">
-	<h2 id="manuscripts">Provenance of manuscript <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<h2 id="manuscripts">Provenance <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 	<%= render 'ownerships/list', parent: manuscript %>
 </template>
 
 <template v-if="!known_booklet_composition || has_contents">
-	<h2 id="contents">Contents of manuscript <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
+	<h2 id="contents">Contents <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 	<%= render 'contents/list', parent: manuscript %>
 </template>
 

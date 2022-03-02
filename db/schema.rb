@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_01_224245) do
+ActiveRecord::Schema.define(version: 2022_03_02_175210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 2022_03_01_224245) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "pages_folios_to", default: "", null: false
+    t.boolean "date_exact", default: true, null: false
+    t.string "origin_notes", default: "", null: false
     t.index ["genesis_institution_id"], name: "index_booklets_on_genesis_institution_id"
     t.index ["genesis_location_id"], name: "index_booklets_on_genesis_location_id"
     t.index ["genesis_religious_order_id"], name: "index_booklets_on_genesis_religious_order_id"
@@ -208,6 +210,8 @@ ActiveRecord::Schema.define(version: 2022_03_01_224245) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "known_booklet_composition", default: true, null: false
     t.boolean "is_folios", default: true, null: false
+    t.string "specific_date", default: "", null: false
+    t.boolean "date_exact", default: true, null: false
     t.index ["institution_id"], name: "index_manuscripts_on_institution_id"
   end
 

@@ -1,40 +1,22 @@
 <script type="text/javascript">
-$(function() {
-	new TomSelect("#person_reference_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
+let bookletVue;
+$(document).ready(function(){
+	bookletVue = new Vue({
+		name: 'bookletVue',
+		el: '#booklet-form',
+		data: {
+			date_exact: <%= booklet.date_exact ? "true" : "false" %>,
 		},
-		maxItems: null,
-	});
-	new TomSelect("#booklet_genesis_location_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
+		mounted(){
+			runTomSelects();
 		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_genesis_institution_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_genesis_religious_order_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#booklet_content_type",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-		create: true,
 	});
 });
+function runTomSelects() {
+	new TomSelect("#person_reference_id", ts_sort_text_asc_max_null);
+	new TomSelect("#booklet_genesis_location_id",ts_sort_text_asc_max_1);
+	new TomSelect("#booklet_genesis_institution_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklet_genesis_religious_order_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklet_content_type", ts_sort_text_asc_max_1_create);
+};
 </script>
