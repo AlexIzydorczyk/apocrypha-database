@@ -8,6 +8,7 @@ $(document).ready(function(){
 			languages: <%= Language.all.to_json.html_safe %>,
 			language_id: <%= booklist.language_id ||= 'null' %>,
 			english_id: <%= english_id %>
+			date_exact: <%= booklist.date_exact ? "true" : "false" %>
 		},
 		mounted(){
 			runTomSelects();
@@ -16,13 +17,13 @@ $(document).ready(function(){
 });
 
 function runTomSelects(){
-	new TomSelect("#booklist_library_owner_id",{sortField: { field: "text", direction: "asc" }, maxItems: 1});
-	new TomSelect("#booklist_booklist_type",{create: true,  sortField: { field: "text", direction: "asc" }, maxItems: 1, });
-	new TomSelect("#booklist_institution_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
-	new TomSelect("#booklist_location_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
-	new TomSelect("#booklist_religious_order_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
-	new TomSelect("#booklist_language_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
-	new TomSelect("#booklist_scribe_id",{ sortField: { field: "text", direction: "asc" }, maxItems: 1, });
+	new TomSelect("#booklist_library_owner_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_booklist_type", ts_sort_text_asc_max_1_create);
+	new TomSelect("#booklist_institution_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_location_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_religious_order_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_language_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_scribe_id", ts_sort_text_asc_max_1);
 	<% booklist.booklist_sections.each do |bs| %>
 		new TomSelect("#apocrypha-mentioned-section-<%= bs.id %>",{
 			options: [
