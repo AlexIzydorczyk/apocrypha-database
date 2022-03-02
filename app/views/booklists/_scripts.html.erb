@@ -7,7 +7,7 @@ $(document).ready(function(){
 		data: {
 			languages: <%= Language.all.to_json.html_safe %>,
 			language_id: <%= booklist.language_id ||= 'null' %>,
-			english_id: <%= english_id %>
+			english_id: <%= english_id %>,
 			date_exact: <%= booklist.date_exact ? "true" : "false" %>
 		},
 		mounted(){
