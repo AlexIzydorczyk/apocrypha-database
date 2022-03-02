@@ -8,24 +8,32 @@
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="form-group col-6 mb-2">
-						<%= form.label :date_from, style: "display: block" %>
-						<%= form.text_field :date_from, class: "form-control" %>
+					<div class="form-group col-md-12 mb-2">
+						<%= form.label :date_to, "Date range", style: "display: block;" %>
+						<div class="d-flex align-items-baseline">
+							<%= form.text_field :date_to, class: "form-control" %>
+							<i class="far fa-minus m-2"></i>
+							<%= form.text_field :date_from, class: "form-control" %>
+						</div>
 					</div>
-					<div class="form-group col-6 mb-2">
-						<%= form.label :date_to, style: "display: block" %>
-						<%= form.text_field :date_to, class: "form-control" %>
+					<div class="form-group col-md-12 mb-2">
+						<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+						<label>
+							Specific date (<span @click="date_exact = true" class="pointer">exact
+								<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+							</span>
+							or<span @click="date_exact = false" class="pointer">
+								approximate
+								<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+							</span>
+							)
+						</label>
+						<%= form.text_field :specific_date, class: "form-control" %>
 					</div>
-					<div class="form-group col-6 mb-2">
-						<%= form.label :date_for_owner, style: "display: block" %>
-						<%= form.text_field :date_for_owner, class: "form-control" %>
-					</div>
-					<div class="form-group col-6 mb-2">
-						<%= form.check_box :owner_date_is_approximate, class: "form-check-input" %>
-						<%= form.label :owner_date_is_approximate %>
-					</div>
+				</div>
+				<div class="row">
 					<div class="form-group col-12 mb-2">
-						<%= form.label :person_id, "Person", style: "display: block" %>
+						<%= form.label :person_id, "Person (owner)", style: "display: block" %>
 						<div class="d-flex">
 							<%= form.collection_select :person_id, Person.all, :id, :full_name, {selected: ownership.person_id, include_blank: true}, {class: "form-control", placeholder: "Select a person"} %>
 							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn', '#ownership-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
@@ -34,7 +42,7 @@
 					<div class="form-group col-12 mb-2">
 						<%= form.label :institution_id, "Institution", style: "display: block" %>
 						<div class="d-flex">
-							<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
+							<%= form.collection_select :institution_id, Institution.all, :id, :long_display_name, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
 							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn', '#modal-ownership-<%= (ownership.id.to_s + '-') if ownership.id.present? %>1-new-institution-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
@@ -54,7 +62,7 @@
 					</div>
 					
 					<div class="form-group col-12 mb-2">
-						<%= form.label :provenance_notes, style: "display: block" %>
+						<%= form.label :provenance_notes, "Notes on provenance", style: "display: block" %>
 						<%= form.text_area :provenance_notes, class: "form-control" %>
 					</div>
 					<%= form.hidden_field parent.class == Manuscript ? :manuscript_id : :booklet_id %>
@@ -83,6 +91,7 @@
 			name: "ProvenanceModal<%= ownership.try(:id) %>",
 			data: {
 				sub_modal_open: false,
+				date_exact: <%= ownership.date_exact ? "false" : "true" %>,
 			},
 			watch: {
 			},
@@ -99,34 +108,10 @@
 			computed: {
 			},
 			mounted(){
-				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id",{
-					sortField: {
-						field: "text",
-						direction: "asc"
-					}
-				});
-
-				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id",{
-					sortField: {
-						field: "text",
-						direction: "asc"
-					}
-				});
-
-				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id",{
-					sortField: {
-						field: "text",
-						direction: "asc"
-					}
-				});
-
-				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id",{
-					sortField: {
-						field: "text",
-						direction: "asc"
-					}
-				});
-
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id", ts_sort_text_asc_max_1);
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id", ts_sort_text_asc_max_1);
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id", ts_sort_text_asc_max_1);
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id", ts_sort_text_asc_max_1);
 				createModalListeners();
 			}
 		});

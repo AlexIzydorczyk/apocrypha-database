@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_175210) do
+ActiveRecord::Schema.define(version: 2022_03_02_183317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_175210) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "booklist_no"
+    t.boolean "date_exact", default: true, null: false
     t.index ["institution_id"], name: "index_booklists_on_institution_id"
     t.index ["language_id"], name: "index_booklists_on_language_id"
     t.index ["library_owner_id"], name: "index_booklists_on_library_owner_id"
@@ -285,8 +286,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_175210) do
     t.bigint "religious_order_id"
     t.string "date_from", default: "", null: false
     t.string "date_to", default: "", null: false
-    t.string "date_for_owner", default: "", null: false
-    t.boolean "owner_date_is_approximate", default: true, null: false
+    t.string "specific_date", default: "", null: false
+    t.boolean "date_exact", default: true, null: false
     t.text "provenance_notes", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -406,7 +407,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_175210) do
     t.string "date_to", default: "", null: false
     t.string "date_from", default: "", null: false
     t.boolean "date_exact", default: true, null: false
-    t.string "date", default: "", null: false
+    t.string "specific_date", default: "", null: false
     t.string "no_columns", default: "", null: false
     t.string "script", default: "", null: false
     t.bigint "manuscript_title_language_id"
