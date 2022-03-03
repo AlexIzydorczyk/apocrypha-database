@@ -1,5 +1,5 @@
 <div id="modern-source-form">
-<%= form_with(model: modern_source, class: "autosave block-submit") do |form| %>
+<%= form_with(model: modern_source, class: "autosave #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 <div class="row">
 	<div class="form-group col-md-4 mb-2">
 		<%= form.label :source_type, "Type of bibliographic item", style: "display: block" %>
@@ -182,11 +182,11 @@
 				key="modern-souce-part-title"
 				record_type="modern_source"
 				name="Title"
-				language_column="part_title_language"
+				language_column="part_title_language_id"
 				orig="part_title_orig"
 				translit="part_title_transliteration"
 				eng="part_title_translation"
-				lang_val="<%= modern_source.part_title_language %>"
+				lang_val="<%= modern_source.part_title_language_id %>"
 				orig_val="<%= modern_source.part_title_orig %>"
 				translit_val="<%= modern_source.part_title_transliteration %>"
 				eng_val="<%= modern_source.part_title_translation %>"
@@ -217,11 +217,11 @@
 				</div>
 				<div class="form-group col-2 mb-2" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == 'journal_article' ? "Issue no." : "Series no." }}</label>
-					<%= form.text_field :series_no, class: "form-control" %>
+					<%= form.number_field :series_no, class: "form-control", max: Date.today.year %>
 				</div>
-				<div class="form-group col-md-2 mb-2" v-if="source_type == 'journal_article' && source_type != 'handwritten_document' && source_type != 'web_page'">
+				<div class="form-group col-md-2 mb-2" v-if="source_type == 'journal_article'">
 					<label style="display: block;">Year</label>
-					<%= form.text_field :publication_creation_date, class: "form-control", placeholder: "Year" %>
+					<%= form.number_field :publication_creation_date, class: "form-control", placeholder: "Year", max: Date.today.year %>
 				</div>
 				<div class="form-group col-md-2 mb-2" v-show="source_type == 'book_chapter' || source_type == 'journal_article' || source_type == 'handwritten_document'" v-if="source_type != 'handwritten_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == 'handwritten_document' ? "Folios" : (source_type == 'book_chapter' ? "Pages in book" : (source_type == 'journal_article' ? "Pages" : "Pages in publication")) }}</label>
@@ -238,7 +238,7 @@
 			<div class="row">
 				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'web_page'">
 					<label style="display: block;">Originally published</label>
-					<%= form.text_field :original_publication_creation_date, class: "form-control", placeholder: "Year" %>
+					<%= form.number_field :original_publication_creation_date, class: "form-control", placeholder: "Year", max: Date.today.year %>
 				</div>
 				<div class="form-group col-md-4 mb-2" v-show="source_type != 'journal_article' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == "handwritten_document" ? "Location" : "Place of publication" }}</label>
@@ -267,8 +267,8 @@
 					<%= form.select :publisher, options_for_select(@publishers, modern_source.publisher), {include_blank: true}, {class: "form-control", placeholder: "Publisher"} %>
 				</div>
 				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document'" v-if="source_type != 'journal_article'">
-					<label style="display: block;">{{ source_type == 'web_page' ? "Last modified" : ( source_type == 'unpublished_document' || source_type == 'journal_article' ? "Year" : "Year") }}</label>
-					<%= form.text_field :publication_creation_date, class: "form-control", ":placeholder": "source_type == 'web_page' ? 'Date' : 'Year'" %>
+				<label style="display: block;">{{ source_type == 'web_page' ? "Last modified" : "Year" }}</label>
+					<%= form.number_field :publication_creation_date, class: "form-control", ":placeholder": "source_type == 'web_page' ? 'Date' : 'Year'", max: Date.today.year %>
 				</div>
 				<div class="col-md-12">
 					<div class="row">
@@ -281,7 +281,7 @@
 								<div v-for="(source, index) in sources" class="row mb-2">
 									<div class="col-4">
 										<label style="display: block;">Accessed</label>
-										<input type="text" name="source_urls[urls][][date_accessed]" class="form-control" v-model="source.accessed" placeholder="Date accessed">			
+										<input type="text" name="source_urls[urls][][date_accessed]" class="form-control accessed-field" v-model="source.accessed" placeholder="Date accessed">			
 									</div>
 									<div class="col">
 										<label style="display: block;">URL</label>

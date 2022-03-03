@@ -6,7 +6,7 @@ $(document).ready(function(){
 		el: '#modern-source-form',
 		data: {
 			author_type: '<%= modern_source.author_type %>',
-			sources: <%= modern_source.source_urls.map{ |ms| {url: ms.url, accessed: ms.date_accessed} }.to_json.html_safe %>,
+			sources: <%= modern_source.source_urls.map{ |ms| {url: ms.url, accessed: format_date(ms.date_accessed)} }.to_json.html_safe %>,
 			source_type: '<%= modern_source.source_type %>',
 		},
 		computed: {
@@ -28,7 +28,16 @@ $(document).ready(function(){
 			},
 		},
 		mounted(){
+			
 			runTomSelects();
+
+		    $( ".accessed-field" ).datepicker({
+		      changeMonth: true,
+		      changeYear: true,
+		      dateFormat: "d MM, yy",
+		      maxDate: "+0"
+		    });
+		
 		},
 	});
 });

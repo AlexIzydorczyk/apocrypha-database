@@ -1,5 +1,5 @@
 <div id="manuscript-form">
-<%= form_with(model: manuscript, class: "autosave block-submit") do |form| %>
+<%= form_with(model: manuscript, class: "autosave #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 
 <div class="row">
 	<div class="form-group col-md-3 mb-2">
@@ -60,9 +60,23 @@
 	<div class="form-group col-md-6 mb-2">
 		<%= form.label :date_to, "Date range", style: "display: block;" %>
 		<div class="d-flex align-items-baseline">
-			<%= form.text_field :date_to, class: "form-control" %>
+			<select name="manuscript[date_from]" id="manuscript_date_from" class="form-control" placeholder="From" v-model="date_from">
+				<option></option>
+				<option v-for="n in <%= Date.today.year %>" v-if="
+					(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
+				" :value="n + ''">{{n}}</option>
+			</select>
 			<i class="far fa-minus m-2"></i>
-			<%= form.text_field :date_from, class: "form-control" %>
+			<select name="manuscript[date_to]" id="manuscript_date_to" class="form-control" placeholder="To" v-model="date_to">
+				<option></option>
+				<option v-for="n in <%= Date.today.year %>" v-if="
+					(
+						((date_from == '' || (parseInt(date_from)-1)%25 == 0) && n%25==0)
+					 || ((date_from == '' || ((parseInt(date_from)%100)-1)%33 == 0) && (n%100 != 99) && n%100%33==0)
+					 || n==<%= Date.today.year %>
+					) && n>date_from
+				">{{n}}</option>
+			</select>
 		</div>
 	</div>
 	<div class="form-group col-md-6 mb-2">
@@ -77,7 +91,10 @@
 			</span>
 			)
 		</label>
-		<%= form.text_field :specific_date, class: "form-control" %>
+		<div class="input-group">
+			<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
+			<%= form.number_field :specific_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
+		</div>
 	</div>
 </div>
 <div class="row">

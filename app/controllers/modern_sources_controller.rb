@@ -88,7 +88,7 @@ class ModernSourcesController < ApplicationController
       (new_set - @modern_source.source_urls.map(&:url)).each{ |url| @modern_source.source_urls.build(url: url) }
       @modern_source.save
       params[:source_urls][:urls].each{ |source|
-        @modern_source.source_urls.where(url: source[:url]).update_all(date_accessed: source[:date_accessed])
+        @modern_source.source_urls.where(url: source[:url]).update_all(date_accessed: Date.parse(source[:date_accessed]))
       }
     end
 
@@ -118,7 +118,7 @@ class ModernSourcesController < ApplicationController
     end
 
     def modern_source_params
-      params.require(:modern_source).permit(:publication_title_orig, :publication_title_transliteration, :publication_title_translation, :title_orig, :title_transliteration, :title_translation, :source_type, :num_volumes, :volume_no, :volume_title_orig, :volume_title_transliteration, :volume_title_translation, :part_no, :part_title_orig, :part_title_transliteration, :part_title_translation, :series_no, :series_title_orig, :series_title_transliteration, :series_title_translation, :edition, :publication_location_id, :publisher, :publication_creation_date, :shelfmark, :ISBN, :DOI, :author_type, :institution_id, :publication_title_language_id, :volume_title_language_id, :part_title_language_id, :series_title_language_id, :title_language_id, :pages_in_publication, :document_type, :date_accessed)
+      params.require(:modern_source).permit(:publication_title_orig, :publication_title_transliteration, :publication_title_translation, :title_orig, :title_transliteration, :title_translation, :source_type, :num_volumes, :volume_no, :volume_title_orig, :volume_title_transliteration, :volume_title_translation, :part_no, :part_title_orig, :part_title_transliteration, :part_title_translation, :series_no, :series_title_orig, :series_title_transliteration, :series_title_translation, :edition, :publication_location_id, :publisher, :publication_creation_date, :shelfmark, :ISBN, :DOI, :author_type, :institution_id, :publication_title_language_id, :volume_title_language_id, :part_title_language_id, :series_title_language_id, :title_language_id, :pages_in_publication, :document_type, :date_accessed, :part_title_language_id, :original_publication_creation_date)
     end
 
     def build_person_references_for ids, reference_type

@@ -15,4 +15,8 @@ module ApplicationHelper
 			h[k] = obj[k]
 		}
 	end
+
+	def format_date date
+		date.strftime("%-d %B, %Y")
+	end
 end

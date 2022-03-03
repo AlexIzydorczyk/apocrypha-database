@@ -79,21 +79,35 @@
 		<% end %>
 	</div>
 	<div class="row">
-		<div class="form-group col-12 col-lg-6 mb-2">
+		<div class="form-group col-12 col-lg-5 mb-2">
 			<%= form.label :scribe_id, "Author", style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :scribe_id, Person.all, :id, :full_name, {selected: booklist.scribe_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select person"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
 			</div>
 		</div>
-		<div class="col-12 col-lg-6">
+		<div class="col-12 col-lg-7">
 			<div class="row">
 				<div class="form-group col-md-6 mb-2">
 					<%= form.label :date_to, "Date range", style: "display: block;" %>
 					<div class="d-flex align-items-baseline">
-						<%= form.text_field :date_to, class: "form-control" %>
+						<select name="booklist[date_from]" id="booklist_date_from" class="form-control" placeholder="From" v-model="date_from">
+							<option></option>
+							<option v-for="n in <%= Date.today.year %>" v-if="
+								(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
+							" :value="n + ''">{{n}}</option>
+						</select>
 						<i class="far fa-minus m-2"></i>
-						<%= form.text_field :date_from, class: "form-control" %>
+						<select name="booklist[date_to]" id="booklist_date_to" class="form-control" placeholder="To" v-model="date_to">
+							<option></option>
+							<option v-for="n in <%= Date.today.year %>" v-if="
+								(
+									((date_from == '' || (parseInt(date_from)-1)%25 == 0) && n%25==0)
+								 || ((date_from == '' || ((parseInt(date_from)%100)-1)%33 == 0) && (n%100 != 99) && n%100%33==0)
+								 || n==<%= Date.today.year %>
+								) && n>date_from
+							">{{n}}</option>
+						</select>
 					</div>
 				</div>
 				<div class="form-group col-md-6 mb-2">
@@ -108,7 +122,10 @@
 						</span>
 						)
 					</label>
-					<%= form.text_field :specific_date, class: "form-control" %>
+					<div class="input-group">
+						<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
+						<%= form.number_field :specific_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
+					</div>
 				</div>
 			</div>
 		</div>
