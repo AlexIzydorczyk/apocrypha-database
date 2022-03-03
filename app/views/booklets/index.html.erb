@@ -4,7 +4,7 @@
   Booklets
 </div>
 
-<h1>Booklets <%= button_to 'New Booklet', booklets_path, class: "btn btn-action", params: { booklist: { booklet_no: "1" } } %></h1>
+<h1>Booklets <%= button_to 'New Booklet', booklets_path, class: "btn btn-action", params: { booklet: { booklet_no: "1" } } %></h1>
 
 <div id="booklets">
     <%= render 'grid', booklets: @booklets %>
