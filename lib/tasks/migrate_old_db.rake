@@ -343,10 +343,10 @@ namespace :migrate_old_db do
 				"unpublished_document"
 			end
 
-			l = Location.find_or_create_by(city_orig: nested_hash_value(b, 'place'))
+			l = Location.find_or_create_by(city_orig: nested_hash_value(b, 'place') || "")
 
 			pages = nested_hash_value(b, 'pages')
-			pages_in_publication = pages.present? ? pages : nested_hash_value(b, 'pagesFolios')
+			pages_in_publication = pages.present? ? pages : (nested_hash_value(b, 'pagesFolios') || "")
 
 			author_type = ["Laurence Witten Rare books", "Gregory of Tours."].include?(nested_hash_value(b, 'referenceName')) ? "corporate" : "regular"
 			institution_id = author_type == "corporate" ? Institution.find_or_create_by(
@@ -363,19 +363,19 @@ namespace :migrate_old_db do
 				source_type: source_type,
 				created_at: created_at,
 				updated_at: updated_at,
-				ISBN: nested_hash_value(b, 'isbn'),
-				publisher: nested_hash_value(b, 'publisher'),
+				ISBN: nested_hash_value(b, 'isbn') || "",
+				publisher: nested_hash_value(b, 'publisher') || "",
 				publication_location_id: l.id,
 				publication_creation_date: nested_hash_value(b, 'datePublished') || nested_hash_value(b, 'year'),
-				num_volumes: nested_hash_value(b, 'numberOfVolumes'),
-				volume_no: nested_hash_value(b, 'volumeNo'),
-				volume_title_orig: nested_hash_value(b, 'volumeTitle'),
-				part_no: nested_hash_value(b, 'partNo'),
-				part_title_orig: nested_hash_value(b, 'partTitle'),
-				series_no: nested_hash_value(b, 'seriesNo'),
-				series_title_orig: nested_hash_value(b, 'seriesTitle'),
+				num_volumes: nested_hash_value(b, 'numberOfVolumes') || "",
+				volume_no: nested_hash_value(b, 'volumeNo') || "",
+				volume_title_orig: nested_hash_value(b, 'volumeTitle') || "",
+				part_no: nested_hash_value(b, 'partNo') || "",
+				part_title_orig: nested_hash_value(b, 'partTitle') || "",
+				series_no: nested_hash_value(b, 'seriesNo') || "",
+				series_title_orig: nested_hash_value(b, 'seriesTitle') || "",
 				pages_in_publication: pages_in_publication,
-				shelfmark: nested_hash_value(b, 'locationRepositoryShelfmark'),
+				shelfmark: nested_hash_value(b, 'locationRepositoryShelfmark') || "",
 				author_type: author_type,
 				institution_id: institution_id,
 			})
@@ -385,45 +385,120 @@ namespace :migrate_old_db do
 			urls = []
 			urls.push(nested_hash_value(b, 'url'))
 			urls.push(b['webpage']['location']) if b['webpage'].present? and b["webpage"]["location"].present?
-			urls.each{ |url| r.source_urls.find_or_create_by(url: url) }
+			urls.each{ |url| r.source_urls.find_or_create_by(url: url || "") }
 
 			if author_type == "regular"
-				b["author"].each do |a|
+				authors = b["author"]
+				authors.each do |a|
 					person = Person.find_or_create_by(
 					first_name_vernacular: nested_hash_value(a, 'first') || "",
 					middle_name_vernacular: nested_hash_value(a, 'middle') || "",
 					last_name_vernacular: nested_hash_value(a, 'last') || "",
-						viaf: nested_hash_value(a, 'lod'),
+						viaf: nested_hash_value(a, 'lod') || "",
 					)
 					PersonReference.find_or_create_by(
 						record: r,
 						person: person,
 						reference_type: "author",
 					)
-				end
+				end if authors.class == Array
 			end
 
-			nested_hash_value(b, 'editor').each do |e|
+			editors = nested_hash_value(b, 'editor')
+			editors.each do |e|
 				person = Person.find_or_create_by(
 					first_name_vernacular: nested_hash_value(e, 'first') || "",
 					middle_name_vernacular: nested_hash_value(e, 'middle') || "",
 					last_name_vernacular: nested_hash_value(e, 'last') || "",
-					viaf: nested_hash_value(e, 'lod'),
+					viaf: nested_hash_value(e, 'lod') || "",
 				)
 				PersonReference.find_or_create_by(
 					record: r,
 					person: person,
 					reference_type: "editor",
 				)
-			end
+			end if editors.class == Array
 
 			r.update(title_orig: b["bookSection"]["title"]) if b["bookSection"].present? and b["bookSection"]["title"].present?
 			r.update(publication_title_orig: b["journalArticle"]["journalTitle"]) if b["journalArticle"].present? and b["journalArticle"]["journalTitle"].present?
 
-		# 	# referencesManuscripts
-		# 	# referencesApocrypha
+			if b["referencesManuscripts"].present?
+				b["referencesManuscripts"].each do |ref|
+					m = Manuscript.find_by(identifier: ref["manuscriptId"])
+					if m.present?
+						ModernSourceReference.find_or_create_by(
+							record: m,
+							modern_source: r
+						)
+					end
+				end
+			end
+			if b["referencesApocrypha"].present?
+				b["referencesApocrypha"].each do |ref|
+					a = Apocryphon.find_by(english_abbreviation: ref["apocryphonId"])
+					if a.present?
+						ModernSourceReference.find_or_create_by(
+							record: a,
+							modern_source: r
+						)
+					end
+				end
+			end
 			
 		end
+	end
+
+	task :parse_manuscripts_bibliography => :environment do
+		ma = JSON.parse(File.read('public/manuscripts_export.json'))
+
+		ma.each do |m|
+
+			r = Manuscript.find_by(identifier: m["_id"])
+
+			if r.present?
+
+				if m["bibliographyId"].class == Array
+					m["bibliographyId"].each do |ref|
+						ms = ModernSource.find_or_create_by(
+							title_orig: ref["source"] || (ref["incompleteSource"] || ""),
+							pages_in_publication: ref["pageRef"] || ""
+						)
+						msr = ModernSourceReference.find_or_create_by(
+							record: r,
+							modern_source: ms
+						)
+					end
+				end
+
+				if m["sourceBiblio"].class == Array
+					m["sourceBiblio"].each do |ref|
+						ms = ModernSource.find_or_create_by(
+							title_orig: ref["source"] || (ref["incompleteSource"] || ""),
+							pages_in_publication: ref["pageRef"] || ""
+						)
+						msr = ModernSourceReference.find_or_create_by(
+							record: r,
+							modern_source: ms
+						)
+					end
+				end
+
+				if m["otherBiblio"].class == Array
+					m["otherBiblio"].each do |ref|
+						ms = ModernSource.find_or_create_by(
+							title_orig: ref["source"] || (ref["incompleteSource"] || ""),
+							pages_in_publication: ref["pageRef"] || ""
+						)
+						msr = ModernSourceReference.find_or_create_by(
+							record: r,
+							modern_source: ms
+						)
+					end
+				end
+
+			end
+		end
+
 	end
 
 end
