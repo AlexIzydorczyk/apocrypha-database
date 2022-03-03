@@ -25,4 +25,45 @@ class ModernSource < ApplicationRecord
     self.title_orig.present? ? self.title_orig : (self.publication_title_orig.present? ? self.publication_title_orig : (self.source_type.present? ? self.source_type.humanize : "New bibliographic item"))
   end
 
+  private
+
+  def book_display
+    s = ""
+    
+    # name (initial)
+    if self.author_type == 'corporate'
+      s += self.insitiution.display_name + " "
+    elsif self.authors.count > 0
+      s += person_list(self.authors, false, true) + " "
+    elsif self.editors.count > 0
+      s += person_list(self.editors, true, true) + " "
+    end
+
+    # title
+    s += self.publication_title_language.requires_transliteration ? self.publication_title_transliteration + " " : self.publication_title_orig + " "
+    s.strip!
+    english = Language.find_or_create_by(language_name: 'English', requires_transliteration: false)
+    s += " [" + self.publication_title_translation + "]" unless self.publication_title_language == english || self.publication_title_translation.blank?
+    s += ". " if (self.publication_title_language.requires_transliteration && self.publication_title_transliteration.present?) || (!self.publication_title_language.requires_transliteration && self.publication_title_orig.present?) || (self.publication_title_language != english && self.publication_title_translation.present?)
+
+    #editors
+    s += "Edited by " + person_list(self.editors) + ". " if self.editors.count > 0
+
+    #translators
+    s += "Translated by " + person_list(self.translators) + ". " if self.translators.count > 0
+
+    #edition
+    s += self.edition + "ed. " if self.edition.present?
+
+    #volume
+    ### I AM HERE ###
+  end
+
+  def person_list people, are_editors=false, first_list=false,
+    names = people.map_with_index{ |p, i| p.modern_source_display(i>0 || !first_list) }
+    names = names.length > 3 ? names[0..2].join(', ') + ', et al.' : (names.length < 2 ? names[0] + '.' : names[0..-2].join(', ') + ", and " + names[-1] + '.')
+    names += people.count > 1 ? ", eds." : ", ed." if are_editors
+    names + " "
+  end
+
 end
