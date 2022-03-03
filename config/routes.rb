@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     collection do
       post :create_from_booklist
       post :create_from_text
+      post :create_from_manuscript
     end
   end
   resources :sections

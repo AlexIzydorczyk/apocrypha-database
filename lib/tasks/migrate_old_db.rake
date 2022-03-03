@@ -363,6 +363,7 @@ namespace :migrate_old_db do
 				source_type: source_type,
 				created_at: created_at,
 				updated_at: updated_at,
+				old_id: b["_id"],
 				ISBN: nested_hash_value(b, 'isbn') || "",
 				publisher: nested_hash_value(b, 'publisher') || "",
 				publication_location_id: l.id,
@@ -459,10 +460,14 @@ namespace :migrate_old_db do
 
 				if m["bibliographyId"].class == Array
 					m["bibliographyId"].each do |ref|
-						ms = ModernSource.find_or_create_by(
-							title_orig: ref["source"] || (ref["incompleteSource"] || ""),
+
+						title = ref["source"].present? ? ModernSource.find_by(old_id: ref["source"]) : (ref["incompleteSource"] || "")
+
+						ms = title.class == String ? ModernSource.find_or_create_by(
+							title_orig: title,
 							pages_in_publication: ref["pageRef"] || ""
-						)
+						) : title
+
 						msr = ModernSourceReference.find_or_create_by(
 							record: r,
 							modern_source: ms
@@ -472,10 +477,14 @@ namespace :migrate_old_db do
 
 				if m["sourceBiblio"].class == Array
 					m["sourceBiblio"].each do |ref|
-						ms = ModernSource.find_or_create_by(
-							title_orig: ref["source"] || (ref["incompleteSource"] || ""),
+
+						title = ref["source"].present? ? ModernSource.find_by(old_id: ref["source"]) : (ref["incompleteSource"] || "")
+
+						ms = title.class == String ? ModernSource.find_or_create_by(
+							title_orig: title,
 							pages_in_publication: ref["pageRef"] || ""
-						)
+						) : title
+
 						msr = ModernSourceReference.find_or_create_by(
 							record: r,
 							modern_source: ms
@@ -485,10 +494,14 @@ namespace :migrate_old_db do
 
 				if m["otherBiblio"].class == Array
 					m["otherBiblio"].each do |ref|
-						ms = ModernSource.find_or_create_by(
-							title_orig: ref["source"] || (ref["incompleteSource"] || ""),
+
+						title = ref["source"].present? ? ModernSource.find_by(old_id: ref["source"]) : (ref["incompleteSource"] || "")
+
+						ms = title.class == String ? ModernSource.find_or_create_by(
+							title_orig: title,
 							pages_in_publication: ref["pageRef"] || ""
-						)
+						) : title
+						
 						msr = ModernSourceReference.find_or_create_by(
 							record: r,
 							modern_source: ms

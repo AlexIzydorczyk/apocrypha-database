@@ -36,6 +36,7 @@
 	</div>
 	<% end %>
 	<%= button_to 'New', create_from_text_modern_sources_path, class: "btn btn-action ms-2 d-none new-ms", params: { from: request.original_fullpath, modern_source_reference_id: msr.try(:id) } %>
+	<%= button_to 'New', create_from_manuscript_modern_sources_path, class: "btn btn-action ms-2 d-none new-ms", params: { from: request.original_fullpath, modern_source_reference_id: msr.try(:id) } %>
 </div>
 
 <script type="text/javascript">
@@ -44,7 +45,6 @@
 
 	<% unless msr.id.present? %>
 		function newModernSource(id) {
-			console.log("form being sent is", $(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } .reference-form`));
 			saveForm($(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } .reference-form`), id == undefined ? $(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } input[name='modern_source_reference_id']`) : null, function() {
 				$(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } .new-ms`).click();
 			});

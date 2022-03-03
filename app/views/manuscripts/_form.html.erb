@@ -125,6 +125,12 @@
 	</div>
 </div>
 
+<h2>Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
+<div class="row">
+	<div class="form-group col-md-12 mb-2">
+		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>	
+	</div>
+</div>
 
 <%= render 'layouts/save_now', form: form %>
 <% end %>
@@ -162,6 +168,11 @@
 <% if manuscript.institution.present? %>
 <%= render 'institutions/modals/new', institution: manuscript.institution, parent: manuscript, pid: "#{manuscript.institution.id}-", depth: 0 %>
 <% end %>
+
+<% manuscript.modern_source_references.each do |msr| %>
+	<%= render 'modern_source_references/modals/form', parent: manuscript, msr: msr %>
+<% end %>
+<%= render 'modern_source_references/modals/form', parent: manuscript, msr: manuscript.modern_source_references.new %>
 
 <!-- Scripts -->
 <%= render '/manuscripts/scripts', manuscript: manuscript %>

@@ -19,6 +19,7 @@ class ManuscriptsController < ApplicationController
     @languages = Language.all
     @language_references = @manuscript.language_references.build
     @content_types = Manuscript.where.not(content_type: "").pluck(:content_type)
+    @modern_sources = ModernSource.all
   end
 
   def create

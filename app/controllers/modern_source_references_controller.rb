@@ -16,9 +16,15 @@ class ModernSourceReferencesController < ApplicationController
   end
 
   def create
+
+    puts 'inside create'.red
+
     @modern_source_reference = ModernSourceReference.new(modern_source_reference_params)
-    
-    if @modern_source_reference.save
+
+    if @modern_source_reference.save!
+
+      puts 'saved'.red
+
       if request.xhr?
         render :json => { new_url: modern_source_reference_path(@modern_source_reference), id: @modern_source_reference.id }
       else 
