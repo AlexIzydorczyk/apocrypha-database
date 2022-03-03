@@ -11,13 +11,8 @@
 		<%= form.label "Location in ms.", style: "display: block" %>
 		<div class="d-flex align-items-baseline">
 			<div class="input-group">
-				<span class="input-group-text bg-white">f.</span>
+				<span class="input-group-text bg-white">ff.</span>
 				<%= form.text_field :pages_folios_from, class: "form-control border-start-0" %>
-			</div>
-			<span class="mx-2">to</span>
-			<div class="input-group">
-				<span class="input-group-text bg-white">f.</span>
-				<%= form.text_field :pages_folios_to, class: "form-control border-start-0" %>
 			</div>
 		</div>
 	</div>
@@ -75,8 +70,7 @@
 		<div class="form-group col-md-6 mb-2">
 			<%= sr.label :id, "Scribe(s)", style: "display: block" %>
 			<div class="d-flex">
-				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id">
-					<option value="">Select scribe</option>
+				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
 					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 						<optgroup label="<%= group.humanize %>">
 							<% people.each do |person| %>

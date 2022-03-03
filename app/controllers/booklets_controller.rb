@@ -34,6 +34,8 @@ class BookletsController < ApplicationController
       new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @booklet, person_id: @booklet.scribes.ids - new_set).destroy_all
       build_scribe_references_for new_set - @booklet.scribes.ids
+    else
+      @booklet.scribe_references.destroy_all
     end
 
     if @booklet.update(booklet_params)
