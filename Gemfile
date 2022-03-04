@@ -18,6 +18,7 @@ gem "devise"
 gem "lograge"
 gem "colorize"
 gem "sassc-rails"
+gem "rollbar"
 
 gem 'capistrano', '~> 3.11'
 gem 'capistrano-rails', '~> 1.4'
