@@ -28,28 +28,20 @@ $(document).ready(function(){
 			},
 		},
 		mounted(){
-			
 			runTomSelects();
-
-		    $( ".accessed-field" ).datepicker({
-		      changeMonth: true,
-		      changeYear: true,
-		      dateFormat: "d MM, yy",
-		      maxDate: "+0"
-		    });
-		
+			$('#modern-source-form').removeClass('d-none');
+	    $( ".accessed-field" ).datepicker({
+	      changeMonth: true,
+	      changeYear: true,
+	      dateFormat: "d MM, yy",
+	      maxDate: "+0"
+	    });
 		},
 	});
 });
 
 function runTomSelects(){
-	new TomSelect("#modern_source_source_type",{
-		sortField: {
-			field: "text",
-			direction: "asc",
-		},
-		maxItems: 1,
-	});
+	new TomSelect("#modern_source_source_type",ts_sort_text_asc_max_1);
 	new TomSelect("#author_reference_id",{
 		sortField: {
 			field: "text",
@@ -58,13 +50,7 @@ function runTomSelects(){
 		maxItems: null,
 		lockOptgroupOrder: true,
 	});
-	new TomSelect("#modern_source_institution_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
+	new TomSelect("#modern_source_institution_id",ts_sort_text_asc_max_1);
 	new TomSelect("#editor_reference_id",{
 		sortField: {
 			field: "text",
@@ -81,36 +67,9 @@ function runTomSelects(){
 		maxItems: null,
 		lockOptgroupOrder: true,
 	});
-	new TomSelect("#modern_source_publication_location_id",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-	});
-	new TomSelect("#modern_source_document_type",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-		create: true,
-	});
-	new TomSelect("#modern_source_publisher",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-		create: true,
-	});
-	new TomSelect("#modern_source_edition",{
-		sortField: {
-			field: "text",
-			direction: "asc"
-		},
-		maxItems: 1,
-		create: true,
-	});
+	new TomSelect("#modern_source_publication_location_id",ts_sort_text_asc_max_1);
+	new TomSelect("#modern_source_document_type",ts_sort_text_asc_max_1_create);
+	new TomSelect("#modern_source_publisher", ts_sort_text_asc_max_1_create);
+	new TomSelect("#modern_source_edition",ts_sort_text_asc_max_1_create);
 };
 </script>

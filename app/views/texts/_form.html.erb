@@ -1,4 +1,4 @@
-<%= form_with(model: text, id: 'text-form', class: "autosave") do |form| %>
+<%= form_with(model: text, id: 'text-form', class: "autosave d-none") do |form| %>
 
 <div class="row">
 	<%= form.hidden_field :content_id%>
@@ -238,30 +238,16 @@
 				exact: <%= text.date_exact ? "true" : "false" %>,
 			},
 			mounted(){
-
+				$('#text-form').removeClass('d-none');
+				runTomSelects();
 			},
 		});
 	});
 
-	$(function() {
-		new TomSelect("#language_reference_id",{
-			sortField: {
-				field: "text",
-				direction: "asc"
-			},
-			maxItems: 1,
-		});
-
+	function runTomSelects(){
+		new TomSelect("#language_reference_id", ts_sort_text_asc_max_1);
 		<% text.sections.each do |section| %>
-			new TomSelect("#sections_<%= section.id %>_section_name",{
-				sortField: {
-					field: "text",
-					direction: "asc"
-				},
-				maxItems: 1,
-				create: true,
-			});
+			new TomSelect("#sections_<%= section.id %>_section_name", ts_sort_text_asc_max_1_create);
 		<% end %>
-
-	});
+	};
 </script>

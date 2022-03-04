@@ -35,6 +35,7 @@ $(document).ready(function(){
 			}
 		},
 		mounted(){
+			$('#booklet-form').removeClass('d-none');
 			runTomSelects();
 
 			this.date_to_select = new TomSelect("#booklet_date_to", {

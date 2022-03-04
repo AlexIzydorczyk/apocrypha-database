@@ -39,7 +39,7 @@ $(document).ready(function(){
 		},
 		mounted(){
 			runTomSelects();
-
+			$('#booklist-form').removeClass('d-none');
 			this.date_to_select = new TomSelect("#booklist_date_to", {
 			  maxItems: 1,
 			  maxOptions: null,

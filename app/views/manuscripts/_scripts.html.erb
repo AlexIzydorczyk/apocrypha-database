@@ -41,7 +41,7 @@ $(document).ready(function(){
 		},
 		mounted(){
 			runTomSelects();
-
+			$('#manuscript-form').removeClass('d-none');
 			this.date_to_select = new TomSelect("#manuscript_date_to", {
 			  maxItems: 1,
 			  maxOptions: null,
