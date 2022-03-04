@@ -48,6 +48,10 @@ set :keep_releases, 5
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
+set :rollbar_token, 'a3bfe308b0bd4af8872a937a124da40f'
+set :rollbar_env, Proc.new { fetch :stage }
+set :rollbar_role, Proc.new { :app }
+
 append :linked_files, "config/master.key"
 
 namespace :deploy do

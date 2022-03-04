@@ -8,6 +8,8 @@ require 'capistrano/rails'
 require 'capistrano/passenger'
 require 'capistrano/rbenv'
 
+require 'rollbar/capistrano3'
+
 set :rbenv_type, :user
 set :rbenv_ruby, '3.0.3'
 
