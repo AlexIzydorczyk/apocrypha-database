@@ -9,7 +9,7 @@ class Ownership < ApplicationRecord
   def written_date_range
     text = ''
     if self.date_from.present? && self.date_to.present?
-      text += 'circa ' if self.owner_date_is_approximate?
+      text += 'circa ' unless self.date_exact?
       text += self.date_from + ' to ' + self.date_to
     end
   end

@@ -14,7 +14,7 @@
         { headerName: "Date from", field: "date_from"},
         { headerName: "Date to", field: "date_to"},
         { headerName: "Date for owner", field: "date_for_owner"},
-        { headerName: "Owner date is approximate", field: "owner_date_is_approximate"},
+        { headerName: "Date Exact", field: "date_exact"},
         { headerName: "Provenance notes", field: "provenance_notes"},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
       return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
@@ -24,7 +24,7 @@
   const rowData = [
     <% ownerships.each do |ownership| %>
       { id:<%= ownership.id %>,
-        booklet_id: "<%= ownership.booklet_id %>",person_id: "<%= ownership.person_id %>",institution_id: "<%= ownership.institution_id %>",location_id: "<%= ownership.location_id %>",religious_order_id: "<%= ownership.religious_order_id %>",date_from: "<%= ownership.date_from %>",date_to: "<%= ownership.date_to %>",date_for_owner: "<%= ownership.date_for_owner %>",owner_date_is_approximate: "<%= ownership.owner_date_is_approximate %>",provenance_notes: "<%= ownership.provenance_notes %>",
+        booklet_id: "<%= ownership.booklet_id %>",person_id: "<%= ownership.person_id %>",institution_id: "<%= ownership.institution_id %>",location_id: "<%= ownership.location_id %>",religious_order_id: "<%= ownership.religious_order_id %>",date_from: "<%= ownership.date_from %>",date_to: "<%= ownership.date_to %>",date_for_owner: "<%= ownership.date_for_owner %>",date_exact: "<%= ownership.date_exact %>",provenance_notes: "<%= ownership.provenance_notes %>",
         links: { show: "<%= ownership_path(ownership) %>", edit: "<%= edit_ownership_path(ownership) %>" }
       },
     <% end %>

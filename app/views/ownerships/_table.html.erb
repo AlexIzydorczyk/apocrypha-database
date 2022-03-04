@@ -15,7 +15,7 @@
                       <% unless hide_columns.include? 'date_from' %><th class="col"><input type="text" class="form-control" placeholder="Date from" disabled></th><% end %>
                       <% unless hide_columns.include? 'date_to' %><th class="col"><input type="text" class="form-control" placeholder="Date to" disabled></th><% end %>
                       <% unless hide_columns.include? 'date_for_owner' %><th class="col"><input type="text" class="form-control" placeholder="Date for owner" disabled></th><% end %>
-                      <% unless hide_columns.include? 'owner_date_is_approximate' %><th class="col"><input type="text" class="form-control" placeholder="Owner date is approximate" disabled></th><% end %>
+                      <% unless hide_columns.include? 'date_exact' %><th class="col"><input type="text" class="form-control" placeholder="Date exact" disabled></th><% end %>
                       <% unless hide_columns.include? 'provenance_notes' %><th class="col"><input type="text" class="form-control" placeholder="Provenance notes" disabled></th><% end %>
                     <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
         </tr>
@@ -32,7 +32,7 @@
                       <% unless hide_columns.include? 'date_from' %><td class="col"><%= ownership.date_from %></td><% end %>
                       <% unless hide_columns.include? 'date_to' %><td class="col"><%= ownership.date_to %></td><% end %>
                       <% unless hide_columns.include? 'date_for_owner' %><td class="col"><%= ownership.date_for_owner %></td><% end %>
-                      <% unless hide_columns.include? 'owner_date_is_approximate' %><td class="col"><%= ownership.owner_date_is_approximate %></td><% end %>
+                      <% unless hide_columns.include? 'date_exact' %><td class="col"><%= ownership.date_exact %></td><% end %>
                       <% unless hide_columns.include? 'provenance_notes' %><td class="col"><%= ownership.provenance_notes %></td><% end %>
                   	<td class="col-3">
         		<% unless hide_buttons.include? 'open' %><%= link_to "Open", ownership, class: "btn btn-outline-primary me-2" %><% end %>
