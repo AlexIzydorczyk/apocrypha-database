@@ -8,7 +8,7 @@ class Apocryphon < ApplicationRecord
   before_destroy :destroy_children
   
 	def display_name
-		'Apocryphon ' + self.apocryphon_no + ' : ' + (self.main_english_title_id.present? ? self.main_eng_title : self.main_lat_title).to_s
+		self.main_english_title_id.present? ? self.main_eng_title : self.main_lat_title
 	end
 
 	def main_eng_title
