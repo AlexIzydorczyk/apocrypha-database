@@ -1,5 +1,10 @@
 class Manuscript < ApplicationRecord
   belongs_to :institution, optional: true
+  belongs_to :genesis_location, class_name: "Location", optional: true
+  belongs_to :genesis_institution, class_name: "Institution", optional: true
+  belongs_to :genesis_religious_order, class_name: "ReligiousOrder", optional: true
+  has_many :scribe_references, class_name: "PersonReference", as: :record
+  has_many :scribes, through: :scribe_references, source: :person
   has_many :language_references, as: :record
   has_many :languages, through: :language_references, as: :record
   has_many :booklets, -> { order("booklet_no ASC") }

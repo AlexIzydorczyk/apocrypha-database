@@ -125,6 +125,7 @@
 		<span @click="known_booklet_composition = false" class="pointer ms-3">
 			<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-circle' : 'fa-dot-circle'"></i>
 			<label>Unknown</label>
+		</span>
 	</p>
 	<div class="col grey-bubble py-3" v-if="!known_booklet_composition && !has_booklets">
 		<p class="m-0">Booklet structure has not been determined for this manuscript.</p>
@@ -142,12 +143,57 @@
 	</div>
 </div>
 
-<h2>Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
-<div class="row">
-	<div class="form-group col-md-12 mb-2">
-		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>	
+<div id="manuscript-origin" v-show="!known_booklet_composition">
+	<h2>Origin</h2>
+	<div class="row">
+		<%= fields_for(@scribe_reference) do |sr| %>
+			<div class="form-group col-md-6 mb-2">
+				<%= sr.label :id, "Scribe(s)", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
+						<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-scribe">New</button>
+				</div>
+			</div>
+		<% end %>
+		<div class="form-group col-md-6 mb-2">
+			<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :genesis_institution_id, Institution.all, :id, :long_display_name, {selected: manuscript.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-6 mb-2">
+			<%= form.label :genesis_religious_order_id, "Religious order", style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: manuscript.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select religious order"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-6 mb-2">
+			<%= form.label :genesis_location_id, "Location", style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: manuscript.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#location-modal">New</button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col form-group">
+			<%= form.label :origin_notes, "Notes on origin", style: "display: block" %>
+			<%= form.text_area :origin_notes, class: "form-control" %>
+		</div>
 	</div>
 </div>
+
+
 
 <%= render 'layouts/save_now', form: form %>
 <% end %>
@@ -161,6 +207,13 @@
 	<h2 id="contents">Contents <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 	<%= render 'contents/list', parent: manuscript %>
 </template>
+
+<h2>Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
+<div class="row">
+	<div class="form-group col-md-12 mb-2">
+		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>	
+	</div>
+</div>
 
 </div>
 

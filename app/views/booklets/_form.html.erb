@@ -86,7 +86,7 @@
 	<div class="form-group col-md-6 mb-2">
 		<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
 		<div class="d-flex">
-			<%= form.collection_select :genesis_institution_id, Institution.all, :id, :long_display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", multiple: true, placeholder: "Select institution"} %>
+			<%= form.collection_select :genesis_institution_id, Institution.all, :id, :long_display_name, {selected: booklet.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 		</div>
 	</div>

@@ -20,6 +20,7 @@ class ManuscriptsController < ApplicationController
     @language_references = @manuscript.language_references.build
     @content_types = Manuscript.where.not(content_type: "").pluck(:content_type)
     @modern_sources = ModernSource.all
+    @scribe_reference = @manuscript.scribe_references.build
   end
 
   def create
@@ -52,6 +53,14 @@ class ManuscriptsController < ApplicationController
       LanguageReference.where(record: @manuscript, language_id: @manuscript.languages.ids - new_set).destroy_all
       build_language_references_for new_set - @manuscript.languages.ids
     end
+
+    if params[:person_reference].present?
+      new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set).destroy_all
+      build_scribe_references_for new_set - @manuscript.scribes.ids
+    else
+      @manuscript.scribe_references.destroy_all
+    end
     
     if @manuscript.update(manuscript_params)
       if request.xhr?
@@ -80,13 +89,21 @@ class ManuscriptsController < ApplicationController
   end
 
   def manuscript_params
-    params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :known_booklet_composition, :is_folios, :specific_date, :date_exact, languages_attributes: [:id])
+    params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :known_booklet_composition, :is_folios, :specific_date, :date_exact, :genesis_institution_id, :genesis_religious_order_id, :genesis_location_id, :origin_notes, languages_attributes: [:id])
   end
 
   def build_language_references_for ids
     ids.each do |id|
       if id.present?
         @manuscript.language_references.build(language_id: id)
+      end
+    end
+  end
+
+  def build_scribe_references_for ids
+    ids.each do |id|
+      if id.present?
+        @manuscript.scribe_references.build(person_id: id)
       end
     end
   end
