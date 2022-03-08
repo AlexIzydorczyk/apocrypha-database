@@ -10,7 +10,7 @@
         { headerName: "Author type", field: "author_type", editable: false, hide: true},
         { headerName: "Corporate author", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter},
 
-        { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter},
+        { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
 
         { headerName: "Regular author", field: "authors", hide: false, editable: false },
         
@@ -69,6 +69,14 @@
   function insitutionSetter(params) {
       params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
     }
+
+    function respositoryGetter(params) {
+      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.repository_id]
+    }
+  function respositorySetter(params) {
+      params.data.repository_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+    }
+
   function locationGetter(params) {
     return params.data ? <%= Location.all.map{ |l| [l.id, l.city_region_country] }.to_h.to_json.html_safe %>[params.data.publication_location_id] : ''
   }
@@ -79,7 +87,9 @@
   const rowData = [
     <% modern_sources.each do |modern_source| %>
       { id:<%= modern_source.id %>,
-        source_type: "<%= modern_source.source_type.humanize %>", author_type: "<%= modern_source.author_type %>", authors: <%= modern_source.authors.map(&:full_name).to_json.html_safe %>, editors: <%= modern_source.editors.map(&:full_name).to_json.html_safe %>, translators: <%= modern_source.translators.map(&:full_name).to_json.html_safe %>, institution_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id %>", repository_id: "<%= modern_source.source_type != 'handwritten_document' ? '' : modern_source.institution_id %>",
+        source_type: "<%= modern_source.source_type.humanize %>", author_type: "<%= modern_source.author_type %>", authors: <%= modern_source.authors.map(&:full_name).to_json.html_safe %>, editors: <%= modern_source.editors.map(&:full_name).to_json.html_safe %>, translators: <%= modern_source.translators.map(&:full_name).to_json.html_safe %>,
+        institution_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id %>",
+        repository_id: "<%= modern_source.source_type != 'handwritten_document' ? '' : modern_source.institution_id %>",
         publication_title_orig: "<%= modern_source.publication_title_orig %>",publication_title_transliteration: "<%= modern_source.publication_title_transliteration %>",publication_title_translation: "<%= modern_source.publication_title_translation %>",title_orig: "<%= modern_source.title_orig %>",title_transliteration: "<%= modern_source.title_transliteration %>",title_translation: "<%= modern_source.title_translation %>",document_type: "<%= modern_source.document_type %>",num_volumes: "<%= modern_source.num_volumes %>",volume_no: "<%= modern_source.volume_no %>",volume_title_orig: "<%= modern_source.volume_title_orig %>",volume_title_transliteration: "<%= modern_source.volume_title_transliteration %>",volume_title_translation: "<%= modern_source.volume_title_translation %>",part_no: "<%= modern_source.part_no %>",part_title_orig: "<%= modern_source.part_title_orig %>",part_title_transliteration: "<%= modern_source.part_title_transliteration %>",part_title_translation: "<%= modern_source.part_title_translation %>",series_no: "<%= modern_source.series_no %>",series_title_orig: "<%= modern_source.series_title_orig %>",series_title_transliteration: "<%= modern_source.series_title_transliteration %>",series_title_translation: "<%= modern_source.series_title_translation %>",edition: "<%= modern_source.edition %>",publication_location_id: "<%= modern_source.publication_location_id %>",publisher: "<%= modern_source.publisher %>",publication_creation_date: "<%= modern_source.publication_creation_date %>", original_publication_creation_date: "<%= modern_source.original_publication_creation_date %>", dates_accessed: <%= modern_source.source_urls.pluck(:date_accessed).push(modern_source.date_accessed).select{ |d| d.present? }.to_json.html_safe %>, urls: <%= modern_source.source_urls.pluck(:url).select{ |u| u.present? }.to_json.html_safe %>, pages_in_publication: "<%= modern_source.pages_in_publication %>", shelfmark: "<%= modern_source.shelfmark %>",ISBN: "<%= modern_source.ISBN %>",DOI: "<%= modern_source.DOI %>", links: { show: "<%= modern_source_path(modern_source) %>", edit: "<%= edit_modern_source_path(modern_source) %>" }
       },
     <% end %>
