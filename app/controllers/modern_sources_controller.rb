@@ -75,7 +75,7 @@ class ModernSourcesController < ApplicationController
     if params[:editor_reference].present?
       new_set = params[:editor_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.editors.ids - new_set).destroy_all
-      build_person_references_for new_set - @modern_source.authors.ids, 'editor'
+      build_person_references_for new_set - @modern_source.editors.ids, 'editor'
     else
       @modern_source.editor_references.destroy_all
     end
@@ -83,7 +83,7 @@ class ModernSourcesController < ApplicationController
     if params[:translator_reference].present?
       new_set = params[:translator_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
-      build_person_references_for new_set - @modern_source.authors.ids, 'translator'
+      build_person_references_for new_set - @modern_source.translators.ids, 'translator'
     else
       @modern_source.translator_references.destroy_all
     end
