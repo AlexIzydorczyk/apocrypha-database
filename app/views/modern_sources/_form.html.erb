@@ -1,5 +1,5 @@
 <div id="modern-source-form" class="d-none">
-<%= form_with(model: modern_source, class: "autosave #{ 'block-submit' if params[:old_path].present?}") do |form| %>
+<%= form_with(model: modern_source, class: "autosave save-before-modals #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 <div class="row">
 	<div class="form-group col-md-4 mb-2">
 		<%= form.label :source_type, "Type of bibliographic item", style: "display: block" %>

@@ -73,7 +73,7 @@
 					sortField: { field: "text", direction: "asc" }
 				});
 
-				createModalListeners();
+				createModalListeners("#addContentModal<%= content.try(:id) %>");
 			}
 		});
 	});

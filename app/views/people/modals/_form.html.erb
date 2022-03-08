@@ -110,7 +110,7 @@
 				}
 			},
 			mounted(){
-				createModalListeners();
+				createModalListeners("#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>");
 				new TomSelect('#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %> select.lang-sel',{ sortField: {field: "text", direction: "asc"}, maxItems: 1 });
 			}
 		});

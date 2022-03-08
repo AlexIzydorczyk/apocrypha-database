@@ -54,12 +54,14 @@ function saveAllForms() {
   });
 }
 
-function createModalListeners() {
-  $('.modal').on('shown.bs.modal', setModalPositioning);
-  // $('.modal').on('shown.bs.modal', function() {
-  //   saveAllForms();
-  // });
-  $('.modal').on('hidden.bs.modal', setModalPositioning);
+function createModalListeners(selector) {
+  $(selector).on('shown.bs.modal', setModalPositioning);
+  $(selector).on('shown.bs.modal', function() {
+    $('form.autosave.save-before-modals').each(function() {
+      saveForm($(this));
+    })
+  });
+  $(selector).on('hidden.bs.modal', setModalPositioning);
 }
 
 // --------- rdy ---------
@@ -101,7 +103,7 @@ $(function() {
  
   $('[data-bs-toggle="popover"]').popover();
 
-  createModalListeners();
+  createModalListeners(".modal");
   if($(location.hash).hasClass("modal")) setTimeout(function() {
     $(location.hash).modal('show');
   }, 100); 

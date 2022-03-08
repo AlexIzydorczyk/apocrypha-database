@@ -73,7 +73,7 @@
 
 				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_location_id",{ sortField: {field: "text", direction: "asc"} });
 
-				createModalListeners();
+				createModalListeners("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal");
 			},
 		});
 	});

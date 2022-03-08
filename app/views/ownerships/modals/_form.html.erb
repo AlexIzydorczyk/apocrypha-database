@@ -3,7 +3,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title"><%= ownership.id.present? ? 'Edit' : 'Add' %> Provenance</h5>
+				<h5 class="modal-title"><%= ownership.id.present? ? 'Edit' : 'Add' %> provenance</h5>
 				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal" aria-label="close" :disabled="sub_modal_open">Cancel</button>
 			</div>
 			<div class="modal-body">
@@ -115,7 +115,7 @@
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id", ts_sort_text_asc_max_1);
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id", ts_sort_text_asc_max_1);
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id", ts_sort_text_asc_max_1);
-				createModalListeners();
+				createModalListeners("#addProvenanceModal<%= ownership.try(:id) %>");
 			}
 		});
 	});

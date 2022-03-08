@@ -1,5 +1,5 @@
 <div id="manuscript-form" class="d-none">
-<%= form_with(model: manuscript, class: "autosave #{ 'block-submit' if params[:old_path].present?}") do |form| %>
+<%= form_with(model: manuscript, class: "autosave save-before-modals #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 
 <div class="row">
 	<div class="form-group col-md-3 mb-2">

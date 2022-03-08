@@ -50,7 +50,7 @@ Vue.component('language-form-groups', {
 		}
 	},
 	mounted(){
-		createModalListeners();
+		createModalListeners("#new-language");
 		let vue = this;
 		new TomSelect(`#${this.$vnode.key} select`,{
 			sortField: {
