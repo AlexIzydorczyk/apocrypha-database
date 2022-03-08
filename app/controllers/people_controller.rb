@@ -51,8 +51,12 @@ class PeopleController < ApplicationController
   end
 
   def destroy
-    @person.destroy
-    redirect_to people_url, notice: "Person was successfully destroyed."
+    begin
+      @person.destroy
+      redirect_to people_url, notice: "Person was successfully destroyed."
+    rescue StandardError => e
+      redirect_to people_url, alert: "Object could not be deleted because it's being used somewhere else in the system"
+    end
   end
 
   private

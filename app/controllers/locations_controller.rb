@@ -48,8 +48,12 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    @location.destroy
-    redirect_to locations_url, notice: "Location was successfully destroyed."
+    begin
+      @location.destroy
+      redirect_to locations_url, notice: "Location was successfully destroyed."
+    rescue StandardError => e
+      redirect_to locations_url, alert: "Object could not be deleted because it's being used somewhere else in the system"
+    end
   end
 
   private

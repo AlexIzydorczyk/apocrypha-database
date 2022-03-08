@@ -44,8 +44,12 @@ class ReligiousOrdersController < ApplicationController
   end
 
   def destroy
-    @religious_order.destroy
-    redirect_to religious_orders_url, notice: "Religious order was successfully destroyed."
+    begin
+      @religious_order.destroy
+      redirect_to religious_orders_url, notice: "Religious order was successfully destroyed."
+    rescue StandardError => e
+      redirect_to religious_orders_url, alert: "Object could not be deleted because it's being used somewhere else in the system"
+    end
   end
 
   private

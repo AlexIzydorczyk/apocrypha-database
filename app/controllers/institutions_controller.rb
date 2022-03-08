@@ -53,8 +53,12 @@ class InstitutionsController < ApplicationController
   end
 
   def destroy
-    @institution.destroy
-    redirect_to institutions_url, notice: "Institution was successfully destroyed."
+    begin
+      @institution.destroy
+      redirect_to institutions_url, notice: "Institution was successfully destroyed."
+    rescue StandardError => e
+      redirect_to institutions_url, alert: "Object could not be deleted because it's being used somewhere else in the system"
+    end
   end
 
   private

@@ -1,32 +1,64 @@
 <div id="people_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
+<% people.each do |person| %>
+  <%= button_to "Delete", person_path(person), method: :delete, class: "d-none", id: 'delete_'+person.id.to_s %>
+<% end %>
+
 <script type="text/javascript" charset="utf-8">
 
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
     { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "First name", field: "first_name"},
-        { headerName: "Middle name", field: "middle_name"},
-        { headerName: "Last name", field: "last_name"},
-        { headerName: "Name english", field: "name_english"},
-        { headerName: "Name vernacular", field: "name_vernacular"},
-        { headerName: "Name vernacular transliteration", field: "name_vernacular_transliteration"},
-        { headerName: "Latin name", field: "latin_name"},
-        { headerName: "Birth date", field: "birth_date"},
-        { headerName: "Death date", field: "death_date"},
-        { headerName: "Character", field: "character"},
+        { headerName: "Prefix english", field: "prefix_english", hide:true},
+        { headerName: "First name english", field: "first_name_english"},
+        { headerName: "Middle name english", field: "middle_name_english"},
+        { headerName: "Last name english", field: "last_name_english"},
+        { headerName: "Suffix english", field: "suffix_english", hide:true},
+        { headerName: "Prefix vernacular", field: "prefix_vernacular", hide:true},
+        { headerName: "First name vernacular", field: "first_name_vernacular"},
+        { headerName: "Middle name vernacular", field: "middle_name_vernacular"},
+        { headerName: "Last name vernacular", field: "last_name_vernacular"},
+        { headerName: "Suffix vernacular", field: "suffix_vernacular", hide:true},
+        { headerName: "Prefix transliteration", field: "prefix_transliteration", hide:true},
+        { headerName: "First name transliteration", field: "first_name_transliteration", hide:true},
+        { headerName: "Middle name transliteration", field: "middle_name_transliteration", hide:true},
+        { headerName: "Last name transliteration", field: "last_name_transliteration", hide:true},
+        { headerName: "Suffix transliteration", field: "suffix_transliteration", hide:true},
+        { headerName: "Birth date", field: "birth_date", hide: true},
+        { headerName: "Death date", field: "death_date", hide: true},
+        { headerName: "Character", field: "character", hide: true},
         { headerName: "Viaf", field: "viaf"},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+      return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this object?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
     } }
   ];
 
   const rowData = [
     <% people.each do |person| %>
       { id:<%= person.id %>,
-        first_name: "<%= person.first_name %>",middle_name: "<%= person.middle_name %>",last_name: "<%= person.last_name %>",name_english: "<%= person.name_english %>",name_vernacular: "<%= person.name_vernacular %>",name_vernacular_transliteration: "<%= person.name_vernacular_transliteration %>",latin_name: "<%= person.latin_name %>",birth_date: "<%= person.birth_date %>",death_date: "<%= person.death_date %>",character: "<%= person.character %>",viaf: "<%= person.viaf %>",
-        links: { show: "<%= person_path(person) %>", edit: "<%= edit_person_path(person) %>" }
+        prefix_english: "<%= person.prefix_english %>",
+        first_name_english: "<%= person.first_name_english %>",
+        middle_name_english: "<%= person.middle_name_english %>",
+        last_name_english: "<%= person.last_name_english %>",
+        suffix_vernacular: "<%= person.suffix_vernacular %>",
+        prefix_vernacular: "<%= person.prefix_vernacular %>",
+        first_name_vernacular: "<%= person.first_name_vernacular %>",
+        middle_name_vernacular: "<%= person.middle_name_vernacular %>",
+        last_name_vernacular: "<%= person.last_name_vernacular %>",
+        suffix_vernacular: "<%= person.suffix_vernacular %>",
+        prefix_transliteration: "<%= person.prefix_transliteration %>",
+        first_name_transliteration: "<%= person.first_name_transliteration %>",
+        middle_name_transliteration: "<%= person.middle_name_transliteration %>",
+        last_name_transliteration: "<%= person.last_name_transliteration %>",
+        suffix_transliteration: "<%= person.suffix_transliteration %>",
+        birth_date: "<%= person.birth_date %>",
+        death_date: "<%= person.death_date %>",
+        character: "<%= person.character %>",
+        viaf: "<%= person.viaf %>",
+        links: { show: "<%= person_path(person) %>",
+         edit: "<%= edit_person_path(person) %>",
+         delete_btn: 'delete_<%= person.id %>' }
       },
     <% end %>
   ];
