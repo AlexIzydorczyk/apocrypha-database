@@ -56,27 +56,13 @@
 			<label style="line-height: 35px;">Preserved in Manuscript</label>	
 		</div>
 		<div class="col text-end">
-			<%= link_to "Add Bibliographic Reference", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#preserved-modal" } %>
+			<button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button>
 		</div>
 		
-		<% if booklist.modern_sources.any? %>
 		<div class="col-12 my-3">
-			<ul class="list-group">
-				<% booklist.modern_source_references.each do |mr| %>
-					<li class="list-group-item">
-						<%= mr.modern_source.display_name %> 
-						<span class="float-end">
-							<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteModernSourceReference(<%= mr.id %>)"><i class="far fa-trash-alt"></i></button>
-						</span>
-					</li>
-				<% end %>
-			</ul>
+			<%= render 'modern_source_references/list', modern_source_references: booklist.modern_source_references %>
 		</div>
-		<% else %>
-			<div class="col-12 my-3">
-				<%= form.text_field :none, value: "No bibliographic reference added" ,class: "form-control", disabled: true %>
-			</div>
-		<% end %>
+
 	</div>
 	<div class="row">
 		<div class="form-group col-12 col-lg-5 mb-2">
@@ -163,6 +149,11 @@
 <%= render 'locations/modals/form', location: Location.new, parent: @booklist, pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: @booklist, reference_type: 'owner', pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: @booklist, reference_type: 'author', pid: '', depth: 0 %>
+
+<% booklist.modern_source_references.each do |msr| %>
+	<%= render 'modern_source_references/modals/form', parent: booklist, msr: msr %>
+<% end %>
+<%= render 'modern_source_references/modals/form', parent: booklist, msr: booklist.modern_source_references.new %>
 
 <!-- Scripts -->
 <%= render '/booklists/scripts', booklist: booklist %>

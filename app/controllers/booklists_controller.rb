@@ -14,6 +14,7 @@ class BooklistsController < ApplicationController
 
   def edit
     @languages = Language.all
+    @modern_sources = ModernSource.where(source_type: "handwritten_document")
   end
 
   def create
