@@ -194,10 +194,6 @@
 </div>
 
 
-
-<%= render 'layouts/save_now', form: form %>
-<% end %>
-
 <template v-if="!known_booklet_composition || has_ownerships">
 	<h2 id="manuscripts">Provenance <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
 	<%= render 'ownerships/list', parent: manuscript %>
@@ -211,9 +207,77 @@
 <h2>Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
 <div class="row">
 	<div class="form-group col-md-12 mb-2">
-		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>	
+		<%= form.label :reproduction_online, style: "display: block;" %>
+		<%= form.text_field :reproduction_online, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>
 	</div>
 </div>
+
+<h2>Credits</h2>
+<div class="row">
+	<div class="form-group col-md-12 mb-2">
+		<%= fields_for :correspondent_reference, @correspondent_reference do |r| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= r.label :id, "Correspondent", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="correspondent_reference[id][]" id="correspondent_reference_id" placeholder="Select contributor">
+						<% sort_hash_keys(@grouped_people, ['correspondent', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.correspondents.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-correspondent">New</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= fields_for :transcriber_reference, @transcriber_reference do |r| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= r.label :id, "Transcriptions by", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="transcriber_reference[id][]" id="transcriber_reference_id" placeholder="Select contributor">
+						<% sort_hash_keys(@grouped_people, ['transcriber', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.transcribers.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-transcriber">New</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<%= fields_for :compiler_reference, @compiler_reference do |r| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= r.label :id, "Compiled by", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="compiler_reference[id][]" id="compiler_reference_id" placeholder="Select contributor">
+						<% sort_hash_keys(@grouped_people, ['compiler', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.compilers.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-compiler">New</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<%= render 'layouts/save_now', form: form %>
+<% end %>
 
 </div>
 
@@ -243,6 +307,10 @@
 	<%= render 'modern_source_references/modals/form', parent: manuscript, msr: msr %>
 <% end %>
 <%= render 'modern_source_references/modals/form', parent: manuscript, msr: manuscript.modern_source_references.new %>
+
+<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'correspondent', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'transcriber', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'compiler', pid: '', depth: 0 %>
 
 <!-- Scripts -->
 <%= render '/manuscripts/scripts', manuscript: manuscript %>

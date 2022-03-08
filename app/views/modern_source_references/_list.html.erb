@@ -2,7 +2,7 @@
 	<% modern_source_references.each do |msr| %>
 		<div class="card grey mb-2 w-100">
 			<div class="card-body d-flex align-items-center">
-				<span class="me-auto"><%= msr.modern_source.display_name %></span>
+				<span class="me-auto" style="overflow-wrap: anywhere;"><%= msr.modern_source.display_name %></span>
 				<button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal-<%= msr.id %>">Edit</button>
 			</div>
 		</div>

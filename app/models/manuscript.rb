@@ -11,7 +11,12 @@ class Manuscript < ApplicationRecord
   has_many :modern_source_references, as: :record
   has_many :modern_sources, through: :modern_source_references
   has_many :person_references
-  has_many :correspondents, class_name: "Person", through: :person_references
+  has_many :correspondent_references, -> { correspondent }, as: :record, class_name: "PersonReference"
+  has_many :correspondents, through: :correspondent_references, class_name: "Person"
+  has_many :transcriber_references, -> { transcriber }, as: :record, class_name: "PersonReference"
+  has_many :transcribers, through: :transcriber_references, class_name: "Person"
+  has_many :compiler_references, -> { compiler }, as: :record, class_name: "PersonReference"
+  has_many :compilers, through: :compiler_references, class_name: "Person"
   has_many :ownerships
   has_many :contents, -> { order("sequence_no ASC") }
   has_many :booklist_sections

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_07_180630) do
+ActiveRecord::Schema.define(version: 2022_03_08_164334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(version: 2022_03_07_180630) do
     t.bigint "genesis_institution_id"
     t.bigint "genesis_religious_order_id"
     t.bigint "genesis_location_id"
+    t.string "reproduction_online", default: "", null: false
     t.index ["genesis_institution_id"], name: "index_manuscripts_on_genesis_institution_id"
     t.index ["genesis_location_id"], name: "index_manuscripts_on_genesis_location_id"
     t.index ["genesis_religious_order_id"], name: "index_manuscripts_on_genesis_religious_order_id"

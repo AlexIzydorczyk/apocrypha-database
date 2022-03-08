@@ -304,11 +304,13 @@
 		</div>
 
 	</div>
-	<%= render 'layouts/save_now', form: form %>
+	<%= render 'layouts/save_now', form: form, save_and_new: "create-new" %>
 	<% end %>
 	</div>
 
 </div>
+
+<%= button_to 'New bibliographic item', modern_sources_path, class: "btn btn-action d-none", id: "create-new", params: { modern_source: { publication_title_orig: "" } } %>
 
 <%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'author', pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'editor', pid: '', depth: 0 %>
