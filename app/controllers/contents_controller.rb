@@ -30,7 +30,7 @@ class ContentsController < ApplicationController
   def update
     if @content.update(content_params)
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => { new_url: content_path(@content), id: @content.id }
       else
         redirect_path = params[:moved_to_booklet] ? edit_manuscript_path(@content.booklet.manuscript) : contents_path
         notice = params[:moved_to_booklet] ? "Content was successfully moved to booklet." : "Content was successfully updated."

@@ -38,12 +38,12 @@ function timeoutReload(location_hash){
 
 function saveForm(form, input_for_id=null, callback=null) {
   var id;
-  console.log("form", form);
+  console.log("form", form, input_for_id);
   form.ajaxSubmit(function(data) {
     console.log("Save form data", data);
     if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
-    if(input_for_id) input_for_id.val(data.id);
+    if(input_for_id) input_for_id.val(data.id).change();
     if(callback != null) callback();
   })
 }
