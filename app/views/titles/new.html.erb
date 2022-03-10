@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <%= button_to 'Apocryphal', apocrypha_path, class: "btn btn-action d-none", id: 'new_apocryphon_form', params: { apocryphon: { apocryphon_no: "" }, from: params[:from], parent_type: params[:parent_type], parent_id: params[:parent_id] } %>
-  <%= button_to 'Non-apocryphal', create_from_content_titles_path, class: "d-none", id: "create_new_title_btn", params: { title: { title_orig: "" }, from: params[:from], parent_type: params[:parent_type], parent_id: params[:parent_id] } %>
+  <%= button_to 'Apocryphal', apocrypha_path, class: "btn btn-action d-none", id: 'new_apocryphon_form', params: { apocryphon: { apocryphon_no: "", content_id: params[:content_id] }, from: params[:from], parent_type: params[:parent_type], parent_id: params[:parent_id] } %>
+  <%= button_to 'Non-apocryphal', create_from_content_titles_path, class: "d-none", id: "create_new_title_btn", params: { title: { title_orig: "" }, content_id: params[:content_id], from: params[:from], parent_type: params[:parent_type], parent_id: params[:parent_id] } %>
 </div>
 
