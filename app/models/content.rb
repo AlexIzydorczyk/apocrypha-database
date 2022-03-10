@@ -3,7 +3,7 @@ class Content < ApplicationRecord
   belongs_to :title, optional: true
   belongs_to :author, class_name: "Person", optional: true
   belongs_to :manuscript, optional: true
-  has_one :text
+  has_one :text, dependent: :destroy
 
   scope :with_text, -> { joins(:text).uniq }
 

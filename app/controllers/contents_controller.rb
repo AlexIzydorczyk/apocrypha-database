@@ -62,7 +62,11 @@ class ContentsController < ApplicationController
 
   def destroy
     @content.destroy
-    redirect_to contents_url, notice: "Content was successfully destroyed."
+    if request.xhr?
+      render :json => {"status": "updated"}  
+    else
+      redirect_to booklist_sections_url, notice: "Booklist section was successfully destroyed."
+    end
   end
 
   def sort
