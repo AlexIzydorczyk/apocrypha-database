@@ -48,10 +48,13 @@ class TitlesController < ApplicationController
   end
 
   def create_from_content
+    puts params.inspect.red
     @title = Title.new(title_params)
 
     if @title.save
-      if params[:parent_type].present? && params[:parent_id].present?
+      if params[:content_id].present?
+        Content.find(params[:content_id]).update(title_id: @title.id)
+      elsif params[:parent_type].present? && params[:parent_id].present?
         parent = params[:parent_type].constantize.find(params[:parent_id])
         parent.contents.create(title_id: @title.id)
       end

@@ -33,7 +33,7 @@ class ApocryphaController < ApplicationController
     @apocryphon = Apocryphon.new(apocryphon_params)
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
-    if params[:parent_type].present? && params[:parent_id].present?
+    if params[:parent_type].present? && params[:parent_id].present? && @apocryphon.content_id.blank?
       parent = params[:parent_type].constantize.find(params[:parent_id])
       c = parent.contents.create
       @apocryphon.content_id = c.id
@@ -93,7 +93,7 @@ class ApocryphaController < ApplicationController
   end
 
   def apocryphon_params
-    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :english_abbreviation, :latin_abbreviation, :main_latin_title_id, :main_english_title_id)
+    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :english_abbreviation, :latin_abbreviation, :main_latin_title_id, :main_english_title_id, :content_id)
   end
 
   def build_language_references_for ids

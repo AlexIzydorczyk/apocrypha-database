@@ -4,7 +4,7 @@ var formChanges;
 
 var autoSaveFun = function autosave() {
   $('form.autosave').each(function(index) {
-    if(formChanges[index]){
+    if(formChanges[index] && !$(this).hasClass('no-autosave')){
       $(this).ajaxSubmit(function(data) {
         formChanges[index] = false;
         if(data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
@@ -41,7 +41,7 @@ function saveForm(form, input_for_id=null, callback=null) {
   console.log("form", form, input_for_id);
   form.ajaxSubmit(function(data) {
     console.log("Save form data", data);
-    if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
+    if(data.new_url) {form.attr('action', data.new_url).attr('method', 'patch')};
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
     if(input_for_id) input_for_id.val(data.id).change();
     if(callback != null) callback();

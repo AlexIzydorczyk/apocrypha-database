@@ -18,6 +18,7 @@ class ContentsController < ApplicationController
 
   def create
     @content = Content.new(content_params)
+    @content.sequence_no = @content.parent.contents.count+1
 
     if @content.save
       render :json => { new_url: content_path(@content), id: @content.id }
