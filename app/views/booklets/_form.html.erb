@@ -101,7 +101,7 @@
 		<%= form.label :genesis_location_id, "Location", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: booklet.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
-			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#location-modal">New</button>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New</button>
 		</div>
 	</div>
 </div>

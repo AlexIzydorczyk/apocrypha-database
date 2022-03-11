@@ -5,7 +5,7 @@
 	<div class="form-group col-md-2 mb-2">
 		<%= form.label "Location in ms.", style: "display: block" %>
 		<div class="input-group">
-			<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'ff' : 'p' %>.</span>
+			<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'ff' : 'p' %>.</span>
 			<%= form.text_field :text_pages_folios_to, class: "form-control border-start-0" %>
 		</div>
 	</div>
@@ -60,7 +60,7 @@
 	<div class="form-group col-md-2 mb-2">
 		<label class="w-100"></label>
 		<div class="input-group">
-			<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+			<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
 			<%= form.text_field :title_pages_folios_to, class: "form-control border-start-0" %>
 		</div>
 	</div>
@@ -97,7 +97,7 @@
 					<div class="col-2">
 						<label class="w-100"></label>
 						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
 							<%= f.text_field :pages_folios_incipit, class: "form-control border-start-0", value: section.pages_folios_incipit %>
 						</div>
 					</div>
@@ -125,7 +125,7 @@
 					<div class="col-2">
 						<label class="w-100"></label>
 						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+							<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
 							<%= f.text_field :pages_folios_explicit, class: "form-control border-start-0", value: section.pages_folios_explicit %>
 						</div>
 					</div>
@@ -159,7 +159,7 @@
 	<div class="form-group col-md-2 mb-2">
 		<label class="w-100"></label>
 		<div class="input-group">
-			<span class="input-group-text bg-white"><%= text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
+			<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
 			<%= form.text_field :colophon_pages_folios_to, class: "form-control border-start-0" %>
 		</div>
 	</div>

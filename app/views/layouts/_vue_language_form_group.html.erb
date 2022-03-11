@@ -15,6 +15,7 @@ Vue.component('language-form-groups', {
 		record_id: {default: ""},
 		depth: {default: -1},
 		inside_group: {default: false},
+		textareas: {default: false},
 	},
 	data: function() {
 		return {
@@ -24,6 +25,7 @@ Vue.component('language-form-groups', {
 			translit_val2: this.translit_val,
 			eng_val2: this.eng_val,
 			new_lang: "",
+			real_record_id: this.record_id,
 		}
 	},
 	watch: {
@@ -46,7 +48,7 @@ Vue.component('language-form-groups', {
 			return this.$vnode.key + '-';
 		},
 		group(){
-			return this.inside_group ? ("[" + this.record_id + "]") : "";
+			return this.inside_group ? ("[" + this.real_record_id + "]") : "";
 		}
 	},
 	mounted(){
@@ -60,9 +62,13 @@ Vue.component('language-form-groups', {
 			maxItems: 1,
 			create: vue.record_class == '' ? false : function(l){
 				vue.$set(vue, 'new_lang', l);
+				saveForm($(`#${vue.$vnode.key}`).closest("form"), $(`#${vue.$vnode.key} .record-id`));
 				$('#' + vue.pid + 'new-language').modal('show');
 			},
 		});
+		$(`#${vue.$vnode.key} .record-id`).change(function() {
+			vue.$set(vue, 'real_record_id', $(this).val());
+		})
 	},
 	template: `<%= render "layouts/language_form_group" %>`
 });

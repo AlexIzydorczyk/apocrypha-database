@@ -1,5 +1,5 @@
 <div v-if="record_class != ''" class="modal" :id="pid + 'new-language'" tabindex="-1" aria-hidden="true" :data-depth="depth+1">
-	<%= form_with(model: language) do |form| %>
+	<%= form_with(model: language, class: "autosave") do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<input type="hidden" name="record_class" :value="record_class">
-			<input type="hidden" name="record_id" :value="record_id">
+			<input type="hidden" name="record_id" :value="real_record_id">
 			<input type="hidden" name="record_field_name" :value="language_column">
 			<div class="modal-footer">
 				<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()" %>

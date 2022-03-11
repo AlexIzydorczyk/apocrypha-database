@@ -10,7 +10,7 @@ class Manuscript < ApplicationRecord
   has_many :booklets, -> { order("booklet_no ASC") }
   has_many :modern_source_references, as: :record
   has_many :modern_sources, through: :modern_source_references
-  has_many :person_references
+  has_many :person_references, as: :record
   has_many :correspondent_references, -> { correspondent }, as: :record, class_name: "PersonReference"
   has_many :correspondents, through: :correspondent_references, class_name: "Person"
   has_many :transcriber_references, -> { transcriber }, as: :record, class_name: "PersonReference"
@@ -22,7 +22,7 @@ class Manuscript < ApplicationRecord
   has_many :booklist_sections
 
   def display_name
-    self.census_no.present? ? ("Manuscript " + self.census_no) : "Edit"
+    self.census_no.present? ? ("Manuscript " + self.census_no) : "Untitled manuscript"
   end
 
   def long_display_name

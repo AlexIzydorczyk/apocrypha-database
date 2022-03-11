@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_164334) do
+ActiveRecord::Schema.define(version: 2022_03_11_084317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2022_03_08_164334) do
     t.bigint "main_latin_title_id"
     t.string "latin_abbreviation", default: "", null: false
     t.bigint "content_id"
+    t.text "notes", default: "", null: false
     t.index ["content_id"], name: "index_apocrypha_on_content_id"
     t.index ["main_english_title_id"], name: "index_apocrypha_on_main_english_title_id"
     t.index ["main_latin_title_id"], name: "index_apocrypha_on_main_latin_title_id"
@@ -82,9 +83,13 @@ ActiveRecord::Schema.define(version: 2022_03_08_164334) do
     t.bigint "modern_source_id"
     t.text "notes", default: "", null: false
     t.string "page_ref", default: "", null: false
+    t.bigint "heading_language_id"
+    t.bigint "relevant_text_language_id"
     t.index ["booklist_id"], name: "index_booklist_sections_on_booklist_id"
+    t.index ["heading_language_id"], name: "index_booklist_sections_on_heading_language_id"
     t.index ["manuscript_id"], name: "index_booklist_sections_on_manuscript_id"
     t.index ["modern_source_id"], name: "index_booklist_sections_on_modern_source_id"
+    t.index ["relevant_text_language_id"], name: "index_booklist_sections_on_relevant_text_language_id"
   end
 
   create_table "booklists", force: :cascade do |t|
@@ -107,12 +112,14 @@ ActiveRecord::Schema.define(version: 2022_03_08_164334) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "booklist_no"
     t.boolean "date_exact", default: true, null: false
+    t.bigint "title_language_id"
     t.index ["institution_id"], name: "index_booklists_on_institution_id"
     t.index ["language_id"], name: "index_booklists_on_language_id"
     t.index ["library_owner_id"], name: "index_booklists_on_library_owner_id"
     t.index ["location_id"], name: "index_booklists_on_location_id"
     t.index ["religious_order_id"], name: "index_booklists_on_religious_order_id"
     t.index ["scribe_id"], name: "index_booklists_on_scribe_id"
+    t.index ["title_language_id"], name: "index_booklists_on_title_language_id"
   end
 
   create_table "contents", force: :cascade do |t|
@@ -475,10 +482,13 @@ ActiveRecord::Schema.define(version: 2022_03_08_164334) do
   add_foreign_key "booklets", "religious_orders", column: "genesis_religious_order_id"
   add_foreign_key "booklist_references", "booklist_sections"
   add_foreign_key "booklist_sections", "booklists"
+  add_foreign_key "booklist_sections", "languages", column: "heading_language_id"
+  add_foreign_key "booklist_sections", "languages", column: "relevant_text_language_id"
   add_foreign_key "booklist_sections", "manuscripts"
   add_foreign_key "booklist_sections", "modern_sources"
   add_foreign_key "booklists", "institutions"
   add_foreign_key "booklists", "languages"
+  add_foreign_key "booklists", "languages", column: "title_language_id"
   add_foreign_key "booklists", "locations"
   add_foreign_key "booklists", "people", column: "library_owner_id"
   add_foreign_key "booklists", "people", column: "scribe_id"

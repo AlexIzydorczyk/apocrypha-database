@@ -6,7 +6,7 @@
 				<span class="index me-4"><%= i+1 %></span>
 				<span class="me-auto"><%= c.display_name %></span>
 				<% if c.text.present? %>
-					<%= link_to "Open", parent.class == Manuscript ? edit_manuscript_content_text_path(parent, c, c.text) : edit_manuscript_booklet_content_text_path(parent.manuscript, parent, c, c.text), class: "btn btn-outline-action" %>
+					<%= link_to "Open", parent.class == Manuscript ? edit_manuscript_content_text_path(parent, c, c.text) : edit_booklet_content_text_path(parent, c, c.text), class: "btn btn-outline-action" %>
 				<% else %>
 					<%= button_to 'Add details', texts_path, class: "btn btn-outline-action", params: { text: { content_id: c.id } } %>
 				<% end %>

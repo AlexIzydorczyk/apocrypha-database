@@ -115,7 +115,7 @@
 </div>
 
 <h2 id="booklets">Booklets <button type="button" class="btn btn-action" onclick="$('#add-booklet').click();" v-show="known_booklet_composition">Add booklet</button></h2>
-<div id="booklets-list">
+<div>
 	<p>Booklet compositon is: 
 		<%= form.hidden_field :known_booklet_composition, "v-model": "known_booklet_composition" %>		
 		<span @click="known_booklet_composition = true" class="pointer ms-3">

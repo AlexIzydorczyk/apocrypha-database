@@ -1,5 +1,5 @@
 <div class="modal" id="modal-<%= pid %><%= depth.to_s %>-new-institution-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
-	<%= form_with(model: institution) do |form| %>
+	<%= form_with(model: institution, class: "autosave") do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -17,6 +17,8 @@
 					orig="name_orig"
 					translit="name_orig_transliteration"
 					eng="name_english"
+					record_class="Institution"
+					record_id="<%= institution.try(:id) %>"
 				></language-form-groups>
 				<label class="mt-3 fw-bolder">Location</label>
 				<div class="row">
@@ -36,6 +38,8 @@
 				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% elsif parent.class == ModernSource %>
 				<%= hidden_field_tag :modern_source_id, parent.id %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
 			<% end %>
 			<div class="modal-footer">
 				<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-institution-modal .ownership-field').val()" : "") + ")") %>
@@ -56,6 +60,7 @@
 			data: function() {
 				return {
 					sub_modal_open: false,
+					record_id: <%= institution.try(:id) || "null" %>,
 				}
 			},
 			methods: {

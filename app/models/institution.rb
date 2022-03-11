@@ -21,6 +21,6 @@ class Institution < ApplicationRecord
   end
 
   def long_display_name
-    self.location.present? ? self.location.city_country + ', ' + self.name_orig : '(no location specified)' + self.name_orig
+    [self.location.present? ? self.location.city_country : '(no location specified)', self.name_orig].join(", ")
   end
 end

@@ -62,6 +62,8 @@
 				<%= hidden_field_tag :modern_source_id, parent.id %>
 			<% elsif parent.class == Institution %>
 				<%= hidden_field_tag :institution_id, parent.id, class: "institution-field" %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
 			<% end %>
 			<div class="modal-footer">
 				<% if parent.class == Institution %>

@@ -1,5 +1,6 @@
 <div id="modern-source-form" class="d-none">
 <%= form_with(model: modern_source, class: "autosave save-before-modals #{ 'block-submit' if params[:old_path].present?}") do |form| %>
+	<%= hidden_field_tag :old_path, params[:old_path] %>
 <div class="row">
 	<div class="form-group col-md-4 mb-2">
 		<%= form.label :source_type, "Type of bibliographic item", style: "display: block" %>
@@ -289,7 +290,7 @@
 									</div>
 									<div class="col-1">
 										<label class="w-100"></label>
-										<button type="button" v-show="index == sources.length-1" class="btn btn-outline-action" @click="sources.push({url: '', accessed: ''})">New</button>	
+										<button type="button" v-show="index == sources.length-1" class="btn btn-outline-action" @click="addUrl();">New</button>	
 									</div>
 								</div>
 							</div>

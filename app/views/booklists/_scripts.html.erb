@@ -80,9 +80,6 @@ function runTomSelects(){
 			items: ['<%= bs.manuscript_id %>'],
 			sortField: { field: "city", direction: "asc" }, maxItems: 1, 
 		});
-		new TomSelect("#booklist_section_<%= bs.id %>_modern_source_id",{
-			sortField: { field: "city", direction: "asc" }, maxItems: 1, 
-		});
 	<% end %>
 	new TomSelect("#preserved-in",{
 		options: [

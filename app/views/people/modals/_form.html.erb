@@ -1,5 +1,5 @@
 <div class="modal" id="<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
-	<%= form_with(model: person, url: person.new_record? ? people_path : person_path(person)) do |form| %>
+	<%= form_with(model: person, url: person.new_record? ? people_path : person_path(person), class: parent.class == Booklist ? "autosave" : "") do |form| %>
 	<div class="modal-dialog modal-xl">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -50,12 +50,12 @@
 						<%= form.label :birth_date, "Dates", class: "fw-bolder mt-4" %>
 						<div class="row">
 							<div class="col-md-6">
-								<%= form.label :birth_date, style: "display: block;" %>
-								<%= form.text_field :birth_date, class: "form-control" %>
+								<%= form.label :birth_date, "Year of birth", style: "display: block;" %>
+								<%= form.number_field :birth_date, class: "form-control", max: Date.today.year %>
 							</div>
 							<div class="col-md-6">
-								<%= form.label :death_date, style: "display: block;" %>
-								<%= form.text_field :death_date, class: "form-control" %>
+								<%= form.label :death_date, "Year of death", style: "display: block;" %>
+								<%= form.number_field :death_date, class: "form-control", max: Date.today.year %>
 							</div>
 						</div>
 
@@ -82,6 +82,13 @@
 			<% elsif parent.class == Manuscript %>
 				<%= hidden_field_tag :manuscript_id, parent.id %>
 				<%= hidden_field_tag :reference_type, reference_type %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
+				<% if reference_type == 'author' %>
+					<%= hidden_field_tag :db_field, 'scribe_id' %>
+				<% elsif reference_type == 'owner' %>
+					<%= hidden_field_tag :db_field, 'library_owner_id' %>
+				<% end %>
 			<% end %>
 			<div class="modal-footer">
 				<%= form.submit "Save & Close", class: "btn btn-action px-4", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}person-modal .ownership-field').val()" : (parent.class.to_s == "Content" ? "'#addContentModal' + $('##{pid}person-modal .content-field').val()" : "")) + ")") %>

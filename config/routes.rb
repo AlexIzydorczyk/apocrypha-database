@@ -44,6 +44,9 @@ Rails.application.routes.draw do
       put :sort
       post :create_from_booklist
     end
+    resources :contents do
+      resources :texts
+    end
   end
   resources :manuscripts do
     collection do

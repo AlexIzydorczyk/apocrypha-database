@@ -7,7 +7,7 @@ var autoSaveFun = function autosave() {
     if(formChanges[index] && !$(this).hasClass('no-autosave')){
       $(this).ajaxSubmit(function(data) {
         formChanges[index] = false;
-        if(data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
+        if(data && data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
         window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
       }.bind($(this)))
     }
@@ -40,8 +40,7 @@ function saveForm(form, input_for_id=null, callback=null) {
   var id;
   console.log("form", form, input_for_id);
   form.ajaxSubmit(function(data) {
-    console.log("Save form data", data);
-    if(data.new_url) {form.attr('action', data.new_url).attr('method', 'patch')};
+    if(data && data.new_url) {form.attr('action', data.new_url).attr('method', 'patch')};
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
     if(input_for_id) input_for_id.val(data.id).change();
     if(callback != null) callback();
@@ -56,10 +55,12 @@ function saveAllForms() {
 
 function createModalListeners(selector) {
   $(selector).on('shown.bs.modal', setModalPositioning);
-  $(selector).on('shown.bs.modal', function() {
-    $('form.autosave.save-before-modals').each(function() {
-      saveForm($(this));
-    })
+  $(selector).each(function() {
+    if($(this).data('depth') < 1) $(this).on('shown.bs.modal', function() {
+      $('form.autosave.save-before-modals').each(function() {
+        saveForm($(this));
+      })
+    });
   });
   $(selector).on('hidden.bs.modal', setModalPositioning);
 }
@@ -71,11 +72,15 @@ $(function() {
 
     $('form.autosave').each(function(index) {
       if(!$(this).hasClass('block-submit')){
+        let form = $(this);
         $(this).ajaxForm({
           success: function(data, x, y, form) {
             formChanges[index] = false
-            if(data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
+            if(data && data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
             window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
+            if(form.hasClass("base-form")) $('.adjacent-base-form').each(function() {
+              saveForm($(this));
+            })
           }
         });
       }
@@ -131,9 +136,8 @@ var ts_sort_text_asc_max_1 = {
 var ts_sort_text_asc_max_1_create = {
   sortField: {
     field: "text",
-    direction: "asc"
+     direction: "asc"
   },
   maxItems: 1,
   create: true,
 };
-

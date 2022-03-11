@@ -1,4 +1,4 @@
-<div class="modal" id="modern-source-reference-modal<%= '-' if msr.id.present? %><%= msr.try(:id) %>" tabindex="-1" aria-hidden="true" data-depth="0">
+<div class="modal" id="modern-source-reference-modal<%= '-' if msr.id.present? %><%= msr.try(:id) %><% if local_assigns[:bl].present? && bl>0 %>-section-<%= bl %><% end %>" tabindex="-1" aria-hidden="true" data-depth="0">
 	<%= form_with(model: msr, class: "#{'autosave' unless msr.new_record?} reference-form") do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -15,11 +15,11 @@
 							<button type="button" class="btn btn-action ms-2" onclick="newModernSource(<%= msr.try(:id) %>)">New</button>
 						</div>
 					</div>
-					<div class="form-group col-5 mb-2">
+					<div class="form-group col-6 mb-2">
 						<%= form.label :specific_page, "Page reference", style: "display: block" %>
-						<%= form.text_field :specific_page, class: "form-control", placeholder: "Page reference" %>
+						<%= form.text_field :specific_page, class: "form-control", placeholder: "e.g., vol. x, pp. xx-xx" %>
 					</div>
-					<div class="form-group col-5 offset-md-1 mb-2">
+					<div class="form-group col-6 mb-2">
 						<%= form.label :siglum, style: "display: block" %>
 						<%= form.text_field :siglum, class: "form-control", placeholder: "Manuscript siglum" %>
 					</div>
@@ -41,7 +41,7 @@
 
 <script type="text/javascript">
 	
-	new TomSelect("#modern-source-reference-modal<%= '-' if msr.id.present? %><%= msr.try(:id) %> #modern_source_reference_modern_source_id", ts_sort_text_asc_max_1);
+	new TomSelect("#modern-source-reference-modal<%= '-' if msr.id.present? %><%= msr.try(:id) %><% if local_assigns[:bl].present? && bl>0 %>-section-<%= bl %><% end %> #modern_source_reference_modern_source_id", ts_sort_text_asc_max_1);
 
 	<% unless msr.id.present? %>
 		function newModernSource(id) {

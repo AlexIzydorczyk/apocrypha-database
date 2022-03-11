@@ -2,14 +2,15 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				Add Apocrypha Mentioned
+				<h5 class="modal-title">Add Apocrypha Mentioned</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="d-flex">
 						<select class="form-control" id="apocrypha-mentioned-section-<%= booklist_section.id %>" multiple placeholder="Select apocryphon mentioned" name="apocrypha-mentioned">
 						</select>
-						<%= button_to 'New', create_from_booklist_apocrypha_path, form_class: 'd-inline-block', class: "btn btn-outline-action ms-4", params: { apocryphon: { apocryphon_no: "" }, from: request.path, booklist_section_id: booklist_section.id } %>
+						<%= button_to 'New', create_from_booklist_apocrypha_path, form_class: 'd-inline-block', class: "btn btn-outline-action ms-4", params: { apocryphon: { apocryphon_no: "" }, from: request.original_fullpath, booklist_section_id: booklist_section.id } %>
 					</div>
 				</div>
 			</div>

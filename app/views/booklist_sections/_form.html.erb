@@ -1,28 +1,41 @@
-<%= form_with(model: booklist_section, class: 'autosave') do |form| %>
+<%= form_with(model: booklist_section, class: 'autosave save-before-modals adjacent-base-form') do |form| %>
 <div class="row">
 	<div class="form-group col-12 mb-2">
-		<%= form.label :heading_orig, "Booklist section", style: "display: block" %>
-		<%= form.text_field :heading_orig, class: "form-control" %>
-	</div>
-	<div class="form-group col-12 mb-2" v-show="language_id != english_id">
-		<%= form.label :heading_orig_transliteration, "Booklist section transliteration", style: "display: block" %>
-		<%= form.text_field :heading_orig_transliteration, class: "form-control" %>
-	</div>
-	<div class="form-group col-12 mb-2" v-show="language_id != english_id">
-		<%= form.label :heading_translation, "Booklist section translation", style: "display: block" %>
-		<%= form.text_field :heading_translation, class: "form-control" %>
+		<label>Booklist section</label>
+		<language-form-groups
+			key="booklist-section-<%= booklist_section.id %>-heading"
+			record_type="booklist_section"
+			name="Heading"
+			language_column="heading_language_id"
+			orig="heading_orig"
+			translit="heading_orig_transliteration"
+			eng="heading_translation"
+			lang_val="<%= booklist_section.heading_language_id %>"
+			orig_val="<%= booklist_section.heading_orig %>"
+			translit_val="<%= booklist_section.heading_orig_transliteration %>"
+			eng_val="<%= booklist_section.heading_translation %>"
+			record_class="BooklistSection"
+			record_id="<%= booklist_section.id %>"
+		></language-form-groups>
 	</div>
 	<div class="form-group col-12 mb-2">
 		<%= form.label :relevant_text_orig, "Relevant text", style: "display: block" %>
-		<%= form.text_area :relevant_text_orig, class: "form-control" %>
-	</div>
-	<div class="form-group col-12 mb-2" v-show="language_id != english_id">
-		<%= form.label :relevant_text_orig_transliteration, "Relevant text transliteration", style: "display: block" %>
-		<%= form.text_area :relevant_text_orig_transliteration, class: "form-control" %>
-	</div>
-	<div class="form-group col-12 mb-2" v-show="language_id != english_id">
-		<%= form.label :relevant_text_translation, "Relevant text translation", style: "display: block" %>
-		<%= form.text_area :relevant_text_translation, class: "form-control" %>
+		<language-form-groups
+			key="booklist-section-<%= booklist_section.id %>-relavent-text"
+			record_type="booklist_section"
+			name="Relevant text"
+			language_column="relevant_text_language_id"
+			orig="relevant_text_orig"
+			translit="relevant_text_orig_transliteration"
+			eng="relevant_text_translation"
+			lang_val="<%= booklist_section.relevant_text_language_id %>"
+			orig_val="<%= booklist_section.relevant_text_orig %>"
+			translit_val="<%= booklist_section.relevant_text_orig_transliteration %>"
+			eng_val="<%= booklist_section.relevant_text_translation %>"
+			record_class="BooklistSection"
+			record_id="<%= booklist_section.id %>"
+			:textareas="true"
+		></language-form-groups>
 	</div>
 </div>
 
@@ -67,10 +80,11 @@
 	</div>
 	<div class="form-group col-10 mb-2">
 			<%= form.label :modern_source_id, "Bibliographic reference", style: "display: block" %>
-			<div class="d-flex">
-				<%= form.collection_select :modern_source_id, ModernSource.all, :id, :display_name, {selected: booklist_section.modern_source_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select bibliographic item", id: "booklist_section_#{booklist_section.id.to_s}_modern_source_id"} %>
-				<button type="button" onclick="$('#new-bibliography-<%= booklist_section.id %>').click();" class="btn btn-outline-action ms-4">New</button>
-			</div>
+			<% if booklist_section.modern_source_references.count > 0 %>
+				<%= render 'modern_source_references/list', modern_source_references: [booklist_section.modern_source_references.first], bs: booklist_section.id %>
+			<% else %>
+				<button type="button" class="btn btn-action mt-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal-section-<%= booklist_section.id %>">Add bibliographic reference</button>
+			<% end %>
 		</div>
 		<div class="form-group col-2 mb-2">
 		<%= form.label :page_ref, style: "display: block" %>

@@ -38,7 +38,15 @@
 					<div class="form-group col-12 mb-2">
 						<%= form.label :person_id, "Person (owner)", style: "display: block" %>
 						<div class="d-flex">
-							<%= form.collection_select :person_id, Person.all, :id, :full_name, {selected: ownership.person_id, include_blank: true}, {class: "form-control", placeholder: "Select a person"} %>
+							<select class="form-control" name="ownership[person_id]" id="ownership_person_id" placeholder="Select a person">
+								<% sort_hash_keys(@grouped_people, ['owner', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<optgroup label="<%= group.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if person.id == ownership.person_id %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
 							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn', '#ownership-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>

@@ -48,16 +48,41 @@ class ManuscriptsController < ApplicationController
   end
 
   def update
+
     if params[:language_reference].present?
       new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       LanguageReference.where(record: @manuscript, language_id: @manuscript.languages.ids - new_set).destroy_all
       build_language_references_for new_set - @manuscript.languages.ids
     end
 
+    if params[:correspondent_reference].present?
+      new_set = params[:correspondent_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "correspondent").destroy_all
+      build_scribe_references_for((new_set - @manuscript.correspondents.ids), "correspondent")
+    else
+      @manuscript.correspondent_references.destroy_all
+    end
+
+    if params[:transcriber_reference].present?
+      new_set = params[:transcriber_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "transcriber").destroy_all
+      build_scribe_references_for((new_set - @manuscript.transcribers.ids), "transcriber")
+    else
+      @manuscript.transcriber_references.destroy_all
+    end
+
+    if params[:compiler_reference].present?
+      new_set = params[:compiler_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "compiler").destroy_all
+      build_scribe_references_for((new_set - @manuscript.compilers.ids), "compiler")
+    else
+      @manuscript.compiler_references.destroy_all
+    end
+
     if params[:person_reference].present?
       new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
-      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set).destroy_all
-      build_scribe_references_for new_set - @manuscript.scribes.ids
+      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "scribe").destroy_all
+      build_scribe_references_for((new_set - @manuscript.scribes.ids), "scribe")
     else
       @manuscript.scribe_references.destroy_all
     end
@@ -89,7 +114,7 @@ class ManuscriptsController < ApplicationController
   end
 
   def manuscript_params
-    params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :known_booklet_composition, :is_folios, :specific_date, :date_exact, :genesis_institution_id, :genesis_religious_order_id, :genesis_location_id, :origin_notes, languages_attributes: [:id])
+    params.require(:manuscript).permit(:identifier, :census_no, :status, :institution_id, :shelfmark, :old_shelfmark, :material, :dimensions, :leaf_page_no, :date_from, :date_to, :content_type, :notes, :known_booklet_composition, :is_folios, :specific_date, :date_exact, :genesis_institution_id, :genesis_religious_order_id, :genesis_location_id, :origin_notes, :reproduction_online, languages_attributes: [:id])
   end
 
   def build_language_references_for ids
@@ -100,10 +125,13 @@ class ManuscriptsController < ApplicationController
     end
   end
 
-  def build_scribe_references_for ids
+  def build_scribe_references_for ids, reference_type=""
+    puts "reference type is".red
+    puts reference_type
+    puts ids
     ids.each do |id|
       if id.present?
-        @manuscript.scribe_references.build(person_id: id)
+        @manuscript.person_references.build(person_id: id, reference_type: reference_type)
       end
     end
   end

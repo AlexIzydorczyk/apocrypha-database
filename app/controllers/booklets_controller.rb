@@ -73,7 +73,7 @@ class BookletsController < ApplicationController
   def build_scribe_references_for ids
     ids.each do |id|
       if id.present?
-        @booklet.scribe_references.build(person_id: id)
+        @booklet.scribe_references.build(person_id: id, reference_type: "scribe")
       end
     end
   end

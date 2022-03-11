@@ -52,6 +52,8 @@ class ApocryphaController < ApplicationController
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @apocryphon.save
+      puts 'from is'.red
+      puts params[:from]
       booklist_reference = BooklistReference.create(record: @apocryphon, booklist_section_id: params[:booklist_section_id])
       redirect_to edit_apocryphon_path(@apocryphon, old_path: params[:from])
     else
@@ -93,7 +95,7 @@ class ApocryphaController < ApplicationController
   end
 
   def apocryphon_params
-    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :english_abbreviation, :latin_abbreviation, :main_latin_title_id, :main_english_title_id, :content_id)
+    params.require(:apocryphon).permit(:apocryphon_no, :cant_no, :bhl_no, :bhg_no, :bho_no, :e_clavis_no, :e_clavis_link, :english_abbreviation, :latin_abbreviation, :main_latin_title_id, :main_english_title_id, :content_id, :notes)
   end
 
   def build_language_references_for ids

@@ -2,7 +2,7 @@
   <%= link_to "Home", root_path %>
   <i class="far fa-chevron-right"></i>
   <!-- if accessed through manuscript with booklet -->
-  <% if @text.content.parent.class == Booklet && current_page?(edit_manuscript_booklet_content_text_path(@text.find_manuscript, @text.content.booklet, @text.content, @text)) %>
+  <% if @text.content.parent.class == Booklet && @text.content.parent.manuscript.present? && @text.find_manuscript.present? && current_page?(edit_manuscript_booklet_content_text_path(@text.find_manuscript, @text.content.booklet, @text.content, @text)) %>
     <%= link_to 'Manuscripts', manuscripts_path %>
     <i class="far fa-chevron-right"></i>
     <%= link_to @text.find_manuscript.display_name, edit_manuscript_path(@text.find_manuscript) %>
@@ -10,6 +10,9 @@
     <%= link_to @text.content.booklet.display_name, edit_manuscript_booklet_path(@text.find_manuscript, @text.content.booklet) %>
     <i class="far fa-chevron-right"></i>
     <%= @text.content.display_name %>
+  <!-- else if accessed through booklet without manuscript -->
+  <% elsif @text.content.parent.class == Booklet && @text.content.parent.manuscript.blank? && @text.find_manuscript.blank? && current_page?(edit_booklet_content_text_path(@text.content.booklet, @text.content, @text)) %>
+  NEW BREADCRUMB
   <!-- else accessed through manuscript without booklet -->
   <% elsif current_page?(edit_manuscript_content_text_path(@text.find_manuscript, @text.content, @text)) %>
     <%= link_to 'Manuscripts', manuscripts_path %>
@@ -28,7 +31,7 @@
 
 <div class="row mt-2">
   <div class="col-md-4 col-lg-3">
-    <%= render 'layouts/filetree', tree: manuscript_family_tree(@text.find_manuscript) %>
+    <%= render 'layouts/filetree', tree: @text.content.parent.class == Booklet && @text.content.parent.manuscript.blank? ? booklet_family_tree(@text.content.booklet) : manuscript_family_tree(@text.find_manuscript) %>
   </div>
   <div class="col-md-8 col-lg-9">
     <h1><%= @text.content.display_name %></h1>

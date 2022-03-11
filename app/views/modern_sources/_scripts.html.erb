@@ -27,6 +27,20 @@ $(document).ready(function(){
 				}
 			},
 		},
+		methods: {
+			addUrl(){
+				this.sources.push({url: '', accessed: ''});
+				setTimeout(function() {
+					$( ".accessed-field" ).last().datepicker({
+				      changeMonth: true,
+				      changeYear: true,
+				      dateFormat: "d MM, yy",
+				      maxDate: "+0"
+				    });
+				}, 200);
+					
+			}
+		},
 		mounted(){
 			runTomSelects();
 			$('#modern-source-form').removeClass('d-none');

@@ -40,6 +40,22 @@ $(document).ready(function(){
 			}
 		},
 		mounted(){
+
+			$("#booklets-list").sortable({
+				update: function(e, ui) {
+					$.ajax({
+						url: '<%= sort_booklets_path %>',
+						type: 'PUT',
+						data: $(this).sortable('serialize') + '&authenticity_token=' + $('#sort-booklet-form').find('input[name="authenticity_token"]').val()
+					});
+					setTimeout(function() {
+						$("#booklets-list").children().each(function(i) {
+							$(this).find('span').text('Booklet ' + (i+1));
+						})
+					}, 500);
+				}
+			});
+			
 			runTomSelects();
 			$('#manuscript-form').removeClass('d-none');
 			this.date_to_select = new TomSelect("#manuscript_date_to", {

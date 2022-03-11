@@ -12,7 +12,15 @@
 					<div class="form-group col-12 mb-2">
 						<%= form.label :author_id, "Author", style: "display: block" %>
 						<div class="d-flex">
-							<%= form.collection_select :author_id, Person.all, :id, :full_name, {selected: content.author_id, include_blank: true}, {class: "form-control", placeholder: "Select author"} %>
+							<select class="form-control" name="content[author_id]" id="content_author_id" placeholder="Select author">
+								<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<optgroup label="<%= group.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if content.author_id == person.id %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
 							<button type="button" id="content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn', '#content<%= ('-' + content.id.to_s) if content.id.present? %>-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
