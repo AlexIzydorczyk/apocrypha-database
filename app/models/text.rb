@@ -6,7 +6,7 @@ class Text < ApplicationRecord
   has_many :text_urls
   has_many :booklist_references
   has_many :booklists, through: :booklist_references
-  has_many :sections, -> { order("created_at ASC") }
+  has_many :sections, -> { order("created_at ASC") }, dependent: :destroy
   has_many :modern_source_references, as: :record
   has_many :person_references
   has_many :scribes, as: "Person", through: :person_references

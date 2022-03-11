@@ -92,7 +92,7 @@ class ManuscriptsController < ApplicationController
         render :json => {"status": "updated"}  
       else
         if params[:old_path].present?
-          redirect_to params[:old_path], notice: "Apocryphon was successfully updated."
+          redirect_to params[:old_path], notice: "Manuscript was successfully updated."
         else
           redirect_to manuscripts_url, notice: "Manuscript was successfully updated."
         end

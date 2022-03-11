@@ -288,7 +288,7 @@ namespace :migrate_old_db do
 						country: o["region"] || "",
 					) : nil
 					i = Institution.find_or_create_by(
-						location_id: l.id,
+						location_id: l.try(:id),
 						name_orig: o["institution"],
 					) if o["institution"].present?
 					ro = ReligiousOrder.find_or_create_by(
