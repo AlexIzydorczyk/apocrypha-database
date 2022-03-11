@@ -1,5 +1,5 @@
 <div id="apocryphon-form">
-	<%= form_with(model: apocryphon, class: 'autosave block-submit save-before-modals') do |form| %>
+	<%= form_with(model: apocryphon, class: "autosave #{ 'block-submit' if params[:old_path].present?} save-before-modals") do |form| %>
 	<div class="row">
 		<div class="form-group col-4 my-2">
 			<%= form.label :apocryphon_no, "Apocryphon no.", style: "display: block" %>
