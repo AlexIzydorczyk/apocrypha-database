@@ -82,3 +82,7 @@ test:
 production:
   <<: *default
   database: apocrypha-database
+
+staging:
+  <<: *default
+  database: apocrypha-database
