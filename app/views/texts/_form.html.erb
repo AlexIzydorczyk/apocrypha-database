@@ -10,11 +10,15 @@
 		</div>
 	</div>
 	<%= fields_for(@language_references) do |lr| %>
-		<div class="form-group col-md-4 offset-md-3 mb-2">
+		<div class="form-group col-md-4 mb-2">
 			<%= lr.label :id, "Language", style: "display: block" %>
 			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: text.languages.map(&:id)}, {class: "form-control", multiple: true, placeholder: "Select or add"} %>
 		</div>
 	<% end %>
+	<div class="form-group col-md-4 mb-2">
+		<%= form.label :writing_system_id %>
+		<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control", "v-model": "writing_system_id"} %>
+	</div>
 	<div class="form-group col-md-5 mb-2">
 		<%= form.label :date_to, "Date range", style: "display: block;" %>
 		<div class="d-flex align-items-baseline">
@@ -66,21 +70,9 @@
 	</div>
 	<div class="form-group col-md-10 mb-2">
 		<label>Title as in manuscript</label>
-		<language-form-groups
-			key="text-manuscript-title"
-			record_type="text"
-			name="Title"
-			language_column="manuscript_title_language_id"
-			orig="manuscript_title_orig"
-			translit="manuscript_title_orig_transliteration"
-			eng="manuscript_title_translation"
-			lang_val="<%= text.manuscript_title_language_id %>"
-			orig_val="<%= text.manuscript_title_orig %>"
-			translit_val="<%= text.manuscript_title_orig_transliteration %>"
-			eng_val="<%= text.manuscript_title_translation %>"
-			record_class="Text"
-			record_id="<%= text.id %>"
-		></language-form-groups>
+		<%= form.text_field :manuscript_title_orig, class: "form-control mb-2", placeholder: "Title as it appears in ms." %>
+		<%= form.text_field :manuscript_title_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+		<%= form.text_field :manuscript_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 	</div>
 </div>
 
@@ -103,22 +95,9 @@
 					</div>
 					<div class="col">
 						<label>Incipit</label>
-						<language-form-groups
-							key="text-section-<%= section.id %>-incipit"
-							record_type="sections"
-							name="Incipit"
-							language_column="incipit_language_id"
-							orig="incipit_orig"
-							translit="incipit_orig_transliteration"
-							eng="incipit_translation"
-							lang_val="<%= section.incipit_language_id %>"
-							orig_val="<%= section.incipit_orig %>"
-							translit_val="<%= section.incipit_orig_transliteration %>"
-							eng_val="<%= section.incipit_translation %>"
-							record_class="Section"
-							record_id="<%= section.id %>"
-							:inside_group="true"
-						></language-form-groups>
+						<%= form.text_field :incipit_orig, class: "form-control mb-2", placeholder: "Incipit" %>
+						<%= form.text_field :incipit_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+						<%= form.text_field :incipit_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 					</div>
 				</div>
 				<div class="row">
@@ -131,22 +110,9 @@
 					</div>
 					<div class="col">
 						<label>Explicit</label>
-						<language-form-groups
-							key="text-section-<%= section.id %>-explicit"
-							record_type="sections"
-							name="Explicit"
-							language_column="explicit_language_id"
-							orig="explicit_orig"
-							translit="explicitorig_transliteration"
-							eng="explicit_translation"
-							lang_val="<%= section.explicit_language_id %>"
-							orig_val="<%= section.explicit_orig %>"
-							translit_val="<%= section.explicitorig_transliteration %>"
-							eng_val="<%= section.explicit_translation %>"
-							record_class="Section"
-							record_id="<%= section.id %>"
-							:inside_group="true"
-						></language-form-groups>
+						<%= form.text_field :explicit_orig, class: "form-control mb-2", placeholder: "Explicit" %>
+						<%= form.text_field :explicitorig_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+						<%= form.text_field :explicit_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 					</div>
 				</div>
 			</div>
@@ -165,21 +131,9 @@
 	</div>
 	<div class="form-group col-md-10 mb-2">
 		<label>Colophon</label>
-		<language-form-groups
-			key="text-colophon"
-			record_type="text"
-			name="Title"
-			language_column="colophon_language_id"
-			orig="colophon_orig"
-			translit="colophon_transliteration"
-			eng="colophon_translation"
-			lang_val="<%= text.colophon_language_id %>"
-			orig_val="<%= text.colophon_orig %>"
-			translit_val="<%= text.colophon_transliteration %>"
-			eng_val="<%= text.colophon_translation %>"
-			record_class="Text"
-			record_id="<%= text.id %>"
-		></language-form-groups>
+		<%= form.text_field :colophon_orig, class: "form-control mb-2", placeholder: "Colophon" %>
+		<%= form.text_field :colophon_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+		<%= form.text_field :colophon_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 	</div>
 </div>
 
@@ -236,6 +190,12 @@
 				add_title: <%= %w(title_pages_folios_to manuscript_title_language_id manuscript_title_orig manuscript_title_orig_transliteration manuscript_title_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				add_colophon: <%= %w(colophon_pages_folios_to colophon_language_id colophon_orig colophon_transliteration colophon_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				exact: <%= text.date_exact ? "true" : "false" %>,
+				writing_system_id: '<%= text.writing_system_id %>'
+			},
+			computed: {
+				not_latin(){
+					return this.writing_system_id != "<%= latin_writing_system_id %>"
+				},
 			},
 			mounted(){
 				$('#text-form').removeClass('d-none');
@@ -249,6 +209,7 @@
 		<% text.sections.each do |section| %>
 			new TomSelect("#sections_<%= section.id %>_section_name", ts_sort_text_asc_max_1_create);
 		<% end %>
+		new TomSelect("#text_writing_system_id",ts_sort_text_asc_max_1);
 	};
 
 	function deleteModernSourceReference(msr_id){

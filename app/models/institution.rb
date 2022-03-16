@@ -1,6 +1,5 @@
 class Institution < ApplicationRecord
   belongs_to :location, optional: true
-  belongs_to :language, optional: true
   has_many :manuscripts
   has_many :institutional_affiliations
   has_many :religious_orders, through: :institutional_affiliations
@@ -8,15 +7,23 @@ class Institution < ApplicationRecord
   has_many :ownerships
   has_many :booklists
   has_many :modern_sources
+  belongs_to :writing_system, optional: true
+
+  after_initialize :set_default_writing_system
+
+  def set_default_writing_system
+    ws = WritingSystem.find_by(name: 'Latin')
+    self.writing_system = ws if ws.present?
+  end
+
 
   def display_name
     self.name_orig
 
     s = ""
-    title = self.language.present? && self.language.requires_transliteration ? self.name_orig_transliteration : name_orig
+    title = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin") ? self.name_orig_transliteration : name_orig
     s += title + " " if title.present?
-    english = Language.find_or_create_by(language_name: 'English', requires_transliteration: false)
-    s += "[" + self.name_english + "]" unless self.language == english || self.name_english.blank?
+    s += "[" + self.name_english + "]" unless self.name_english.blank?
     s
   end
 

@@ -133,21 +133,7 @@
 		</div>
 		<div class="form-group col-12 mb-2">
 			<%= form.label "Booklist title",style: "display: block" %>
-			<language-form-groups
-				key="booklist-title"
-				record_type="booklist"
-				name="Title"
-				language_column="title_language_id"
-				orig="title_orig"
-				translit="title_orig_transliteration"
-				eng="title_orig_translation"
-				lang_val="<%= booklist.title_language_id %>"
-				orig_val="<%= booklist.title_orig %>"
-				translit_val="<%= booklist.title_orig_transliteration %>"
-				eng_val="<%= booklist.title_orig_translation %>"
-				record_class="Booklist"
-				record_id="<%= booklist.id %>"
-			></language-form-groups>
+			<%= form.text_field :title_orig, class: "form-control" %>
 		</div>
 			
 		<div class="form-group col-12 mb-2">

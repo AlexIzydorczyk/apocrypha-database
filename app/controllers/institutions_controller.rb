@@ -73,6 +73,6 @@ class InstitutionsController < ApplicationController
     end
 
     def institution_params
-      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :location_id, :original_language, :institution_id, :language_id)
+      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :writing_system_id, :original_language, :institution_id, :language_id)
     end
 end

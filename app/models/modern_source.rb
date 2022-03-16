@@ -20,6 +20,14 @@ class ModernSource < ApplicationRecord
   has_many :translator_references, -> { translator }, as: :record, class_name: "PersonReference"
   has_many :translators, through: :translator_references, class_name: "Person"
   has_many :booklist_sections
+  belongs_to :writing_system, optional: true
+
+  before_create :set_default_writing_system
+
+  def set_default_writing_system
+    ws = WritingSystem.find_by(name: 'Latin')
+    self.writing_system = ws if ws.present?
+  end
 
   def display_name
     s = ""
@@ -124,7 +132,7 @@ class ModernSource < ApplicationRecord
 
   def title language, orig, translit, transla, show_quotes=false, italics=false
     s = ""
-    title = language.present? && language.requires_transliteration ? translit : orig
+    title = self.writing_system != WritingSystem.find_by(name: "Latin") ? translit : orig
     if title.present?
       s += '"' if show_quotes
       s += "<i>" if italics

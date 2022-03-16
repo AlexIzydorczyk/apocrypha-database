@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :writing_systems
   resources :booklist_sections
   
 	devise_for :users

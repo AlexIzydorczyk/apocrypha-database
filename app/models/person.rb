@@ -7,7 +7,14 @@ class Person < ApplicationRecord
 	has_many :modern_sources, through: :person_references
 	has_many :texts, through: :person_references
 	has_many :manuscripts, through: :person_references
-	belongs_to :language, optional: true
+	belongs_to :writing_system, optional: true
+
+	after_initialize :set_default_writing_system
+
+  def set_default_writing_system
+    ws = WritingSystem.find_by(name: 'Latin')
+    self.writing_system = ws if ws.present?
+  end
 
 	def full_name
 		self.first_name_vernacular + ' ' + self.middle_name_vernacular + ' ' + self.last_name_vernacular

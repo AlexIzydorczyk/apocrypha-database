@@ -7,42 +7,50 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<%= form.label "Name of person", class: "fw-bolder" %>
 				<div class="row">
-					<div class="col-md-2"><label>Language</label></div>
-					<div class="col-md-2"><label>Prefix</label></div>
-					<div class="col-md-2"><label>First name</label></div>
-					<div class="col-md-2"><label>Middle name</label></div>
-					<div class="col-md-2"><label>Last name</label></div>
-					<div class="col-md-2"><label>Suffix</label></div>
-				</div>
-				<div class="row my-2">
-					<div class="col-md-2">
-						<select placeholder="Language" v-model="language" name="person[language_id]" class="lang-sel form-control" required>
-							<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
-						</select>
+					<div class="col-md-8 offset-md-2">
+						<%= form.label "Standard form used in English", class: "fw-bolder" %>		
+						<div class="row">
+							<div class="col-md"><label>First name</label></div>
+							<div class="col-md"><label>Middle name</label></div>
+							<div class="col-md"><label>Prefix</label></div>
+							<div class="col-md"><label>Last name</label></div>
+							<div class="col-md"><label>Suffix</label></div>
+						</div>
+						<div class="row my-2">
+							<div class="col-md"><%= form.text_field :first_name_vernacular, class: "form-control", placeholder: "First name" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_vernacular, class: "form-control", placeholder: "Middle name" %></div>
+							<div class="col-md"><%= form.text_field :prefix_vernacular, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md"><%= form.text_field :last_name_vernacular, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md"><%= form.text_field :suffix_vernacular, class: "form-control", placeholder: "Suffix" %></div>
+						</div>
 					</div>
-					<div class="col-md-2"><%= form.text_field :prefix_vernacular, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :first_name_vernacular, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :middle_name_vernacular, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :last_name_vernacular, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :suffix_vernacular, class: "form-control" %></div>
-				</div>
-				<div class="row my-2" v-show="requires_translit">
-					<div class="col-md-2"><input type="text" disabled value="Transliteration" class="form-control bg-white"></div>
-					<div class="col-md-2"><%= form.text_field :prefix_transliteration, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :first_name_transliteration, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :middle_name_transliteration, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :last_name_transliteration, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :suffix_transliteration, class: "form-control" %></div>
-				</div>
-				<div class="row my-2" v-show="requires_english">
-					<div class="col-md-2"><input type="text" disabled value="English" class="form-control bg-white"></div>
-					<div class="col-md-2"><%= form.text_field :prefix_english, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :first_name_english, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :middle_name_english, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :last_name_english, class: "form-control" %></div>
-					<div class="col-md-2"><%= form.text_field :suffix_english, class: "form-control" %></div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-outline-action" @click="alternative = true">Add alternative</button>
+					</div>
+					<div class="col-md-2" v-show="alternative">
+						<label>Writing system</label>
+						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "writing_system_id"} %>
+					</div>
+					<div class="col-md-8" v-show="alternative">
+						<label>Alternative or local form</label>
+						<div class="row my-2">
+							<div class="col-md"><%= form.text_field :first_name_english, class: "form-control", placeholder: "First name" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_english, class: "form-control", placeholder: "Middle name" %></div>
+							<div class="col-md"><%= form.text_field :prefix_english, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md"><%= form.text_field :last_name_english, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md"><%= form.text_field :suffix_english, class: "form-control", placeholder: "Suffix" %></div>
+						</div>
+					</div>
+					<div class="col-md-8 offset-md-2" v-show="alternative && writing_system_id != '<%= latin_writing_system_id %>'">
+						<div class="row my-2">
+							<div class="col-md"><%= form.text_field :first_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md"><%= form.text_field :prefix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md"><%= form.text_field :last_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md"><%= form.text_field :suffix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+						</div>
+					</div>
 				</div>
 
 				<div class="row">
@@ -107,18 +115,12 @@
 			data(){ return{
 				languages: <%= Language.all.to_json.html_safe %>,
 				language: '',
+				alternative: <%= ["first_name_english","middle_name_english","prefix_english","last_name_english","suffix_english","first_name_transliteration","middle_name_transliteration","prefix_transliteration","last_name_transliteration","suffix_transliteration"].any?{ |c| person[c].present? } ? "true" : "false" %>,
+				writing_system_id: '<%= person.writing_system_id %>',
 			} },
-			computed: {
-				requires_translit: function() {
-					return this.language != '' && this.languages.find( l => l.id == this.language ).requires_transliteration;
-				},
-				requires_english: function() {
-					return this.language != '' && this.languages.find( l => l.id == this.language ).language_name.toLowerCase() != 'english';
-				}
-			},
 			mounted(){
 				createModalListeners("#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>");
-				new TomSelect('#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %> select.lang-sel',{ sortField: {field: "text", direction: "asc"}, maxItems: 1 });
+				new TomSelect('#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %> #person_writing_system_id',ts_sort_text_asc_max_1);
 			}
 		});
 	});

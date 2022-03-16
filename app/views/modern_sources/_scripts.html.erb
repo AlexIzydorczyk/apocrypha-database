@@ -8,6 +8,7 @@ $(document).ready(function(){
 			author_type: '<%= modern_source.author_type %>',
 			sources: <%= modern_source.source_urls.map{ |ms| {url: ms.url, accessed: (ms.date_accessed.present? ? format_date(ms.date_accessed) : '')} }.to_json.html_safe %>,
 			source_type: '<%= modern_source.source_type %>',
+			writing_system_id: '<%= modern_source.writing_system_id %>',
 		},
 		computed: {
 			title_orig_label(){
@@ -25,6 +26,9 @@ $(document).ready(function(){
 					default: 
 						return 'Book title in original language';
 				}
+			},
+			not_latin(){
+				return this.writing_system_id != "<%= latin_writing_system_id %>" && this.source_type != "web_page"
 			},
 		},
 		methods: {
@@ -85,5 +89,6 @@ function runTomSelects(){
 	new TomSelect("#modern_source_document_type",ts_sort_text_asc_max_1_create);
 	new TomSelect("#modern_source_publisher", ts_sort_text_asc_max_1_create);
 	new TomSelect("#modern_source_edition",ts_sort_text_asc_max_1_create);
+	new TomSelect("#modern_source_writing_system_id",ts_sort_text_asc_max_1);
 };
 </script>

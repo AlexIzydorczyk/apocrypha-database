@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_11_084317) do
+ActiveRecord::Schema.define(version: 2022_03_14_191530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -155,9 +155,9 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.bigint "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "language_id"
-    t.index ["language_id"], name: "index_institutions_on_language_id"
+    t.bigint "writing_system_id"
     t.index ["location_id"], name: "index_institutions_on_location_id"
+    t.index ["writing_system_id"], name: "index_institutions_on_writing_system_id"
   end
 
   create_table "language_references", force: :cascade do |t|
@@ -192,12 +192,12 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.integer "latitude"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "city_orig_language_id"
-    t.bigint "region_orig_language_id"
-    t.bigint "diocese_orig_language_id"
-    t.index ["city_orig_language_id"], name: "index_locations_on_city_orig_language_id"
-    t.index ["diocese_orig_language_id"], name: "index_locations_on_diocese_orig_language_id"
-    t.index ["region_orig_language_id"], name: "index_locations_on_region_orig_language_id"
+    t.bigint "city_orig_writing_system_id"
+    t.bigint "region_orig_writing_system_id"
+    t.bigint "diocese_orig_writing_system_id"
+    t.index ["city_orig_writing_system_id"], name: "index_locations_on_city_orig_writing_system_id"
+    t.index ["diocese_orig_writing_system_id"], name: "index_locations_on_diocese_orig_writing_system_id"
+    t.index ["region_orig_writing_system_id"], name: "index_locations_on_region_orig_writing_system_id"
   end
 
   create_table "manuscripts", force: :cascade do |t|
@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.string "date_accessed", default: "", null: false
     t.string "original_publication_creation_date", default: "", null: false
     t.string "old_id", default: "", null: false
+    t.bigint "writing_system_id"
     t.index ["institution_id"], name: "index_modern_sources_on_institution_id"
     t.index ["part_title_language_id"], name: "index_modern_sources_on_part_title_language_id"
     t.index ["publication_location_id"], name: "index_modern_sources_on_publication_location_id"
@@ -293,6 +294,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.index ["series_title_language_id"], name: "index_modern_sources_on_series_title_language_id"
     t.index ["title_language_id"], name: "index_modern_sources_on_title_language_id"
     t.index ["volume_title_language_id"], name: "index_modern_sources_on_volume_title_language_id"
+    t.index ["writing_system_id"], name: "index_modern_sources_on_writing_system_id"
   end
 
   create_table "ownerships", force: :cascade do |t|
@@ -329,7 +331,6 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.string "viaf", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "language_id"
     t.string "prefix_vernacular", default: "", null: false
     t.string "suffix_vernacular", default: "", null: false
     t.string "prefix_transliteration", default: "", null: false
@@ -340,7 +341,8 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.string "suffix_english", default: "", null: false
     t.string "middle_name_english", default: "", null: false
     t.string "last_name_english", default: "", null: false
-    t.index ["language_id"], name: "index_people_on_language_id"
+    t.bigint "writing_system_id"
+    t.index ["writing_system_id"], name: "index_people_on_writing_system_id"
   end
 
   create_table "person_references", force: :cascade do |t|
@@ -429,10 +431,12 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.string "script", default: "", null: false
     t.bigint "manuscript_title_language_id"
     t.bigint "colophon_language_id"
+    t.bigint "writing_system_id"
     t.index ["colophon_language_id"], name: "index_texts_on_colophon_language_id"
     t.index ["content_id"], name: "index_texts_on_content_id"
     t.index ["manuscript_title_language_id"], name: "index_texts_on_manuscript_title_language_id"
     t.index ["transcriber_id"], name: "index_texts_on_transcriber_id"
+    t.index ["writing_system_id"], name: "index_texts_on_writing_system_id"
   end
 
   create_table "titles", force: :cascade do |t|
@@ -473,6 +477,13 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "writing_systems", force: :cascade do |t|
+    t.string "name"
+    t.boolean "requires_transliteration"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "apocrypha", "contents"
   add_foreign_key "apocrypha", "titles", column: "main_english_title_id"
   add_foreign_key "apocrypha", "titles", column: "main_latin_title_id"
@@ -499,12 +510,11 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
   add_foreign_key "contents", "titles"
   add_foreign_key "institutional_affiliations", "institutions"
   add_foreign_key "institutional_affiliations", "religious_orders"
-  add_foreign_key "institutions", "languages"
   add_foreign_key "institutions", "locations"
   add_foreign_key "language_references", "languages"
-  add_foreign_key "locations", "languages", column: "city_orig_language_id"
-  add_foreign_key "locations", "languages", column: "diocese_orig_language_id"
-  add_foreign_key "locations", "languages", column: "region_orig_language_id"
+  add_foreign_key "locations", "writing_systems", column: "city_orig_writing_system_id"
+  add_foreign_key "locations", "writing_systems", column: "diocese_orig_writing_system_id"
+  add_foreign_key "locations", "writing_systems", column: "region_orig_writing_system_id"
   add_foreign_key "manuscripts", "institutions"
   add_foreign_key "manuscripts", "institutions", column: "genesis_institution_id"
   add_foreign_key "manuscripts", "locations", column: "genesis_location_id"
@@ -517,13 +527,13 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
   add_foreign_key "modern_sources", "languages", column: "title_language_id"
   add_foreign_key "modern_sources", "languages", column: "volume_title_language_id"
   add_foreign_key "modern_sources", "locations", column: "publication_location_id"
+  add_foreign_key "modern_sources", "writing_systems"
   add_foreign_key "ownerships", "booklets"
   add_foreign_key "ownerships", "institutions"
   add_foreign_key "ownerships", "locations"
   add_foreign_key "ownerships", "manuscripts"
   add_foreign_key "ownerships", "people"
   add_foreign_key "ownerships", "religious_orders"
-  add_foreign_key "people", "languages"
   add_foreign_key "person_references", "people"
   add_foreign_key "sections", "languages", column: "explicit_language_id"
   add_foreign_key "sections", "languages", column: "incipit_language_id"
@@ -534,6 +544,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_084317) do
   add_foreign_key "texts", "languages", column: "colophon_language_id"
   add_foreign_key "texts", "languages", column: "manuscript_title_language_id"
   add_foreign_key "texts", "people", column: "transcriber_id"
+  add_foreign_key "texts", "writing_systems"
   add_foreign_key "titles", "apocrypha"
   add_foreign_key "titles", "languages"
 end

@@ -1,25 +1,32 @@
 <div class="modal" id="modal-<%= pid %><%= depth.to_s %>-new-institution-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: institution, class: "autosave") do |form| %>
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Add instiution</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<label class="fw-bolder">Institution name</label>
-				<language-form-groups
-					class="mb-4"
-					key="field-<%= pid %>instiution-name"
-					record_type="institution"
-					name="Institution"
-					language_column="language_id"
-					orig="name_orig"
-					translit="name_orig_transliteration"
-					eng="name_english"
-					record_class="Institution"
-					record_id="<%= institution.try(:id) %>"
-				></language-form-groups>
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label>Institution name</label>
+						<%= form.text_field :name_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
+					</div>
+					<div class="col-md-3">
+						<button type="button" class="btn btn-outline-action" @click="alternative_name = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_name">
+						<label>Writing system</label>
+						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_name">
+						<label>Name of institution: alternative or local name of institution</label>
+						<%= form.text_field :name_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Публичная библиотека" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_name && writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :name_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
+					</div>
+				</div>
 				<label class="mt-3 fw-bolder">Location</label>
 				<div class="row">
 					<div class="form-group col-md-12 mb-2">
@@ -61,6 +68,8 @@
 				return {
 					sub_modal_open: false,
 					record_id: <%= institution.try(:id) || "null" %>,
+					alternative_name: <%= institution.name_english.present? || institution.name_orig_transliteration.present? ? "true" : "false" %>,
+					writing_system_id: '<%= institution.writing_system_id %>',
 				}
 			},
 			methods: {
@@ -75,12 +84,10 @@
 				}
 			},
 			mounted(){
-
-				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_location_id",{ sortField: {field: "text", direction: "asc"} });
+				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_writing_system_id",ts_sort_text_asc_max_1);
 
 				createModalListeners("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal");
 			},
 		});
 	});
 </script>
-<%= render "layouts/vue_language_form_group" %>

@@ -1,56 +1,83 @@
 <div class="modal" id="modal-<%= pid %>location-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
 	<%= form_with(model: location, url: location.new_record? ? locations_path : location_path(location)) do |form| %>
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Location</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<label><span class="fw-bolder">Location</span> (City, town, village, other)</label>
-				<language-form-groups
-					class="mb-4"
-					key="field-<%= pid %>location-name"
-					record_type="location"
-					name="Location"
-					language_column="city_orig_language_id"
-					orig="city_orig"
-					translit="city_translilteration"
-					eng="city_english"
-				></language-form-groups>
-				<%= form.label "Diocese", class: "fw-bolder" %>
-				<language-form-groups
-					class="mb-4"
-					key="field-<%= pid %>diocese"
-					record_type="location"
-					name="Diocese"
-					language_column="diocese_orig_language"
-					orig="diocese_orig"
-					translit="diocese_transliteration"
-					eng="diocese_english"
-				></language-form-groups>
-				<%= form.label "Region", class: "fw-bolder" %>
-				<language-form-groups
-					class="mb-4"
-					key="field-<%= pid %>region"
-					record_type="location"
-					name="Region"
-					language_column="region_orig_language"
-					orig="region_orig"
-					translit="region_transliteration"
-					eng="region_english"
-				></language-form-groups>
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label class="fw-bolder">City, town, village, settlement</label>
+						<%= form.text_field :city_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Warsaw" %>
+					</div>
+					<div class="col-md-3">
+						<button type="button" class="btn btn-outline-action" @click="alternative_location = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_location">
+						<label>Writing system</label>
+						<%= form.collection_select :city_orig_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "city_writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_location">
+						<label>City, town, village, settlement: alternative or local name</label>
+						<%= form.text_field :city_english, class: "form-control mb-2", placeholder: "Alternative location name, e.g., Москва" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_location && city_writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :city_translilteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label class="fw-bolder">Diocese</label>
+						<%= form.text_field :diocese_orig, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
+					</div>
+					<div class="col-md-3">
+						<button type="button" class="btn btn-outline-action" @click="alternative_diocese = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_diocese">
+						<label>Writing system</label>
+						<%= form.collection_select :diocese_orig_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "diocese_writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_diocese">
+						<label>Diocese: alternative or local name</label>
+						<%= form.text_field :diocese_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_diocese && diocese_writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :diocese_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label class="fw-bolder">Region</label>
+						<%= form.text_field :region_orig, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
+					</div>
+					<div class="col-md-3">
+						<button type="button" class="btn btn-outline-action" @click="alternative_region = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_region">
+						<label>Writing system</label>
+						<%= form.collection_select :region_orig_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "region_writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_region">
+						<label>Region: alternative or local name</label>
+						<%= form.text_field :region_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_region && region_writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :region_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
+					</div>
+				</div>
 				<%= form.label "Country", class: "fw-bolder" %>
-				<%= form.text_field :country, placeholder: "Country in English", class:"form-control mb-4" %>
+				<%= form.text_field :country, placeholder: "Standard name used in English", class:"form-control mb-4" %>
 				<%= form.label "Coordinates of location", class: "fw-bolder" %>
 				<div class="row">
-					<div class="col-md-6 d-flex align-items-center">
+					<div class="col-md-6">
 						<%= form.label :longitude %>
-						<%= form.text_field :longitude, placeholder: "degrees north", class: "form-control" %>
+						<%= form.text_field :longitude, placeholder: "Degrees north/south", class: "form-control" %>
 					</div>
-					<div class="col-md-6 d-flex align-items-center">
+					<div class="col-md-6">
 						<%= form.label :latitude %>
-						<%= form.text_field :latitude, placeholder: "degrees east", class: "form-control" %>
+						<%= form.text_field :latitude, placeholder: "Degrees east/west", class: "form-control" %>
 					</div>
 				</div>
 			</div>
@@ -83,10 +110,22 @@
 		location_modal_vue = new Vue({
 			el: "#modal-<%= pid %>location-modal",
 			name: "modal-<%= pid %>LocationModal",
+			data: function() {
+				return {
+					alternative_location: <%= location.city_english.present? || location.city_translilteration.present? ? "true" : "false" %>,
+					city_writing_system_id: '<%= location.city_orig_writing_system_id %>',
+					alternative_diocese: <%= location.diocese_english.present? || location.diocese_transliteration.present? ? "true" : "false" %>,
+					diocese_writing_system_id: '<%= location.diocese_orig_writing_system_id %>',
+					alternative_region: <%= location.region_english.present? || location.region_transliteration.present? ? "true" : "false" %>,
+					region_writing_system_id: '<%= location.region_orig_writing_system_id %>',
+				}
+			},
 			mounted(){
+				new TomSelect("#modal-<%= pid %>location-modal #location_city_orig_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_diocese_orig_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_region_orig_writing_system_id",ts_sort_text_asc_max_1);
 				createModalListeners("#modal-<%= pid %>location-modal");
 			},
 		});
 	});
 </script>
-<%= render "layouts/vue_language_form_group" %>

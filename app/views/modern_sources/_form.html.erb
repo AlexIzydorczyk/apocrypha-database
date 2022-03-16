@@ -6,6 +6,10 @@
 		<%= form.label :source_type, "Type of bibliographic item", style: "display: block" %>
 		<%= form.select :source_type, options_for_select(%w(book book_chapter journal_article unpublished_document web_page handwritten_document).map{ |i| [ i.humanize, i ]}, modern_source.source_type), {include_blank: true}, {class: "form-control", placeholder: "Select one of new bibliographic item", "v-model": "source_type"} %>
 	</div>
+	<div class="form-group col-md-3 mb-2" v-show="source_type != 'web_page'">
+		<%= form.label :writing_system_id %>
+		<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control", "v-model": "writing_system_id"} %>
+	</div>
 </div>
 
 <div v-show="source_type != ''">
@@ -55,44 +59,16 @@
 
 		<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document' ? 'col-md-12' : 'col-md-12'" v-show="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document'">
 			<label>{{ title_orig_label }}</label>
-			<language-form-groups
-				key="modern-souce-chapter-title"
-				record_type="modern_source"
-				name="Title"
-				language_column="title_language_id"
-				orig="title_orig"
-				translit="title_transliteration"
-				eng="title_translation"
-				lang_val="<%= modern_source.title_language_id %>"
-				orig_val="<%= modern_source.title_orig %>"
-				translit_val="<%= modern_source.title_transliteration %>"
-				eng_val="<%= modern_source.title_translation %>"
-				record_class="ModernSource"
-				record_id="<%= modern_source.id %>"
-				v-if="source_type != 'web_page'"
-			></language-form-groups>
-			<%= form.text_field :title_orig, class: "form-control", "v-if": "source_type == 'web_page'" %>
+			<%= form.text_field :title_orig, class: "form-control mb-2", ":placeholder": "title_orig_label" %>
+			<%= form.text_field :title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 		</div>
 
 		<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' ? 'col-md-12' : 'col-md-12'" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document'">
 			<label>{{ source_type == 'journal_article' ? "Journal title" : (source_type == 'web_page' ? "Title of website" : "Book title") }}</label>
-			<language-form-groups
-				key="modern-souce-publication-title"
-				record_type="modern_source"
-				name="Title"
-				language_column="publication_title_language_id"
-				orig="publication_title_orig"
-				translit="publication_title_transliteration"
-				eng="publication_title_translation"
-				lang_val="<%= modern_source.publication_title_language_id %>"
-				orig_val="<%= modern_source.publication_title_orig %>"
-				translit_val="<%= modern_source.publication_title_transliteration %>"
-				eng_val="<%= modern_source.publication_title_translation %>"
-				record_class="ModernSource"
-				record_id="<%= modern_source.id %>"
-				v-if="source_type != 'web_page'"
-			></language-form-groups>
-			<%= form.text_field :publication_title_orig, class: "form-control", "v-if": "source_type == 'web_page'" %>
+			<%= form.text_field :publication_title_orig, class: "form-control mb-2", ":placeholder": "source_type == 'journal_article' ? 'Journal title' : (source_type == 'web_page' ? 'Title of website' : 'Book title')" %>
+			<%= form.text_field :publication_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :publication_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 		</div>
 
 		<div class="col-md-6" v-show="!(source_type == 'book' || source_type == 'book_chapter' || source_type == 'journal_article' || source_type == 'web_page' || source_type == 'unpublished_document')"></div>
@@ -156,21 +132,9 @@
 		</div>
 		<div class="form-group col-md-10 mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
 			<label>Volume title</label>
-			<language-form-groups
-				key="modern-souce-volume-title"
-				record_type="modern_source"
-				name="Title"
-				language_column="volume_title_language_id"
-				orig="volume_title_orig"
-				translit="volume_title_transliteration"
-				eng="volume_title_translation"
-				lang_val="<%= modern_source.volume_title_language_id %>"
-				orig_val="<%= modern_source.volume_title_orig %>"
-				translit_val="<%= modern_source.volume_title_transliteration %>"
-				eng_val="<%= modern_source.volume_title_translation %>"
-				record_class="ModernSource"
-				record_id="<%= modern_source.id %>"
-			></language-form-groups>
+			<%= form.text_field :volume_title_orig, class: "form-control mb-2", placeholder: "Volume title" %>
+			<%= form.text_field :volume_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :volume_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 		</div>
 
 		<div class="form-group col-2 mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
@@ -179,42 +143,18 @@
 		</div>
 		<div class="form-group col-md-10  mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
 			<label>Part title</label>
-			<language-form-groups
-				key="modern-souce-part-title"
-				record_type="modern_source"
-				name="Title"
-				language_column="part_title_language_id"
-				orig="part_title_orig"
-				translit="part_title_transliteration"
-				eng="part_title_translation"
-				lang_val="<%= modern_source.part_title_language_id %>"
-				orig_val="<%= modern_source.part_title_orig %>"
-				translit_val="<%= modern_source.part_title_transliteration %>"
-				eng_val="<%= modern_source.part_title_translation %>"
-				record_class="ModernSource"
-				record_id="<%= modern_source.id %>"
-			></language-form-groups>
+			<%= form.text_field :part_title_orig, class: "form-control mb-2", placeholder: "Part title" %>
+			<%= form.text_field :part_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :part_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 		</div>
 
 		<div class="col-md-12">
 			<div class="row">
 				<div class="form-group col-md mb-2" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == 'journal_article' ? "Journal series" : "Series title" }}</label>
-					<language-form-groups
-						key="modern-souce-series-title"
-						record_type="modern_source"
-						:name="source_type === 'journal_article' ? 'Series' : 'Title'"
-						language_column="series_title_language_id"
-						orig="series_title_orig"
-						translit="series_title_transliteration"
-						eng="series_title_translation"
-						lang_val="<%= modern_source.series_title_language_id %>"
-						orig_val="<%= modern_source.series_title_orig %>"
-						translit_val="<%= modern_source.title_transliteration %>"
-						eng_val="<%= modern_source.series_title_translation %>"
-						record_class="ModernSource"
-						record_id="<%= modern_source.id %>"
-					></language-form-groups>
+					<%= form.text_field :series_title_orig, class: "form-control mb-2", ":placeholder": "source_type == 'journal_article' ? 'Journal series' : 'Series title'" %>
+					<%= form.text_field :series_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+					<%= form.text_field :series_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
 				</div>
 				<div class="form-group col-2 mb-2" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == 'journal_article' ? "Issue no." : "Series no." }}</label>

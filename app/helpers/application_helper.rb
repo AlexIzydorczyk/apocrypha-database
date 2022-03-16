@@ -7,6 +7,10 @@ module ApplicationHelper
 		Language.find_or_create_by(language_name: 'Latin', requires_transliteration: false).id
 	end
 
+	def latin_writing_system_id
+		WritingSystem.find_or_create_by(name: "Latin").id
+	end
+
 	def sort_hash_keys obj, keys
 		new_keys = obj.keys.sort_by{ |k|
 			keys.include?(k) ? keys.index(k) : keys.length
