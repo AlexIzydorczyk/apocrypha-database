@@ -68,7 +68,7 @@ class TextsController < ApplicationController
   end
 
   def text_params
-    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :specific_date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to, :colophon_language_id)
+    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :specific_date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to, :colophon_language_id, :writing_system_id)
   end
 
   def section_params(prms)

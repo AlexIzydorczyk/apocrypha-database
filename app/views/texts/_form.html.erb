@@ -70,9 +70,9 @@
 	</div>
 	<div class="form-group col-md-10 mb-2">
 		<label>Title as in manuscript</label>
-		<%= form.text_field :manuscript_title_orig, class: "form-control mb-2", placeholder: "Title as it appears in ms." %>
-		<%= form.text_field :manuscript_title_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
-		<%= form.text_field :manuscript_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+		<%= form.text_area :manuscript_title_orig, class: "form-control mb-2 one-line", placeholder: "Title as it appears in ms." %>
+		<%= form.text_area :manuscript_title_orig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
+		<%= form.text_area :manuscript_title_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
 	</div>
 </div>
 
@@ -95,9 +95,9 @@
 					</div>
 					<div class="col">
 						<label>Incipit</label>
-						<%= form.text_field :incipit_orig, class: "form-control mb-2", placeholder: "Incipit" %>
-						<%= form.text_field :incipit_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
-						<%= form.text_field :incipit_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+						<%= form.text_area :incipit_orig, class: "form-control mb-2 one-line", placeholder: "Incipit" %>
+						<%= form.text_area :incipit_orig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
+						<%= form.text_area :incipit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
 					</div>
 				</div>
 				<div class="row">
@@ -131,9 +131,9 @@
 	</div>
 	<div class="form-group col-md-10 mb-2">
 		<label>Colophon</label>
-		<%= form.text_field :colophon_orig, class: "form-control mb-2", placeholder: "Colophon" %>
-		<%= form.text_field :colophon_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
-		<%= form.text_field :colophon_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+		<%= form.text_area :colophon_orig, class: "form-control mb-2 one-line", placeholder: "Colophon" %>
+		<%= form.text_area :colophon_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
+		<%= form.text_area :colophon_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
 	</div>
 </div>
 

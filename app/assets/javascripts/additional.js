@@ -96,10 +96,14 @@ $(function() {
     });
       
     $("textarea").each(function () {
-      this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+      this.setAttribute("style", "height:" + (Math.max(38, this.scrollHeight)) + "px;overflow-y:hidden;");
     }).on("input", function () {
       this.style.height = "auto";
-      this.style.height = (this.scrollHeight) + "px";
+      this.style.height = (Math.max(38, this.scrollHeight - 26)) + "px";
+    });
+
+    $("textarea.one-line").keydown(function(e){
+      if (e.keyCode == 13 && !e.shiftKey) e.preventDefault();
     });
 
     setInterval(autoSaveFun,10000);
