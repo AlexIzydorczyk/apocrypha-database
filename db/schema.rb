@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_17_125703) do
+ActiveRecord::Schema.define(version: 2022_03_17_140030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,19 @@ ActiveRecord::Schema.define(version: 2022_03_17_125703) do
     t.index ["religious_order_id"], name: "index_booklists_on_religious_order_id"
     t.index ["scribe_id"], name: "index_booklists_on_scribe_id"
     t.index ["title_language_id"], name: "index_booklists_on_title_language_id"
+  end
+
+  create_table "change_logs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "controller_name"
+    t.string "action_name"
+    t.string "record_type"
+    t.bigint "record_id"
+    t.string "additional_info", default: "", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id"], name: "index_change_logs_on_record"
+    t.index ["user_id"], name: "index_change_logs_on_user_id"
   end
 
   create_table "contents", force: :cascade do |t|
@@ -473,6 +486,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_125703) do
     t.datetime "locked_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "new", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -481,7 +495,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_125703) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration"
+    t.boolean "requires_transliteration", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -506,6 +520,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_125703) do
   add_foreign_key "booklists", "people", column: "library_owner_id"
   add_foreign_key "booklists", "people", column: "scribe_id"
   add_foreign_key "booklists", "religious_orders"
+  add_foreign_key "change_logs", "users"
   add_foreign_key "contents", "booklets"
   add_foreign_key "contents", "manuscripts"
   add_foreign_key "contents", "people", column: "author_id"

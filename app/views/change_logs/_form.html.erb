@@ -1,0 +1,41 @@
+
+
+<%= form_with(model: change_log) do |form| %>
+  <% if change_log.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(change_log.errors.count, "error") %> prohibited this change_log from being saved:</h2>
+
+      <ul>
+        <% change_log.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="row">
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :user_id, style: "display: block" %>
+	    <%= form.text_field :user_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :controller_name, style: "display: block" %>
+	    <%= form.text_field :controller_name, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :action_name, style: "display: block" %>
+	    <%= form.text_field :action_name, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :record_id, style: "display: block" %>
+	    <%= form.text_field :record_id, class: "form-control" %>
+		</div>
+  <div class="form-group col-4 mb-2">
+		    <%= form.label :additional_info, style: "display: block" %>
+	    <%= form.text_field :additional_info, class: "form-control" %>
+		</div>
+</div>
+  <div>
+    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
+  </div>
+<% end %>
+	

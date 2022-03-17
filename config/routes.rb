@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  resources :writing_systems
-  resources :booklist_sections
-  
+
 	devise_for :users
+  resources :users
+  
 	root to: "application#index"
 
   get 'new_title_or_apocryphon', to: 'apocrypha#form_container'
@@ -74,5 +74,8 @@ Rails.application.routes.draw do
   resources :institutions
   resources :languages
   resources :locations
+  resources :writing_systems
+  resources :change_logs
+  resources :booklist_sections
 
 end

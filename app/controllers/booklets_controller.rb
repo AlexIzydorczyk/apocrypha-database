@@ -22,6 +22,7 @@ class BookletsController < ApplicationController
     @booklet = Booklet.new(booklet_params)
 
     if @booklet.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Booklet', record_id: @booklet.id, controller_name: 'booklets', action_name: 'create')
       redirect_path = params[:in_manuscript] ? edit_manuscript_booklet_path(@booklet.manuscript, @booklet) : edit_booklet_path(@booklet)
       redirect_to redirect_path, notice: "Booklet was successfully created."
     else

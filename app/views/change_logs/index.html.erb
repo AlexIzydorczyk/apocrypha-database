@@ -1,0 +1,6 @@
+<h1>Change logs</h1>
+<p><%= link_to "New change log", new_change_log_path, class: "btn btn-outline-success" %></p>
+
+<div id="change_logs">
+    <%= render 'grid', change_logs: @change_logs %>
+</div>
