@@ -37,6 +37,7 @@ $(document).ready(function(){
 		mounted(){
 			$('#booklet-form').removeClass('d-none');
 			runTomSelects();
+			setDraggable();
 
 			this.date_to_select = new TomSelect("#booklet_date_to", {
 			  maxItems: 1,

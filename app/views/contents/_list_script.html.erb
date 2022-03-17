@@ -1,18 +1,20 @@
 <script type="text/javascript">
-$("#contents-list").sortable({
-	update: function(e, ui) {
-		$.ajax({
-			url: '<%= sort_contents_path %>',
-			type: 'PUT',
-			data: $(this).sortable('serialize') + '&authenticity_token=' + $('#sort-content-form').find('input[name="authenticity_token"]').val()
+	function setDraggable() {
+		$("#contents-list").sortable({
+			update: function(e, ui) {
+				$.ajax({
+					url: '<%= sort_contents_path %>',
+					type: 'PUT',
+					data: $(this).sortable('serialize') + '&authenticity_token=' + $('#sort-content-form').find('input[name="authenticity_token"]').val()
+				});
+				setTimeout(function() {
+					$("#contents-list").children().each(function(i) {
+						$(this).find('.index').text(i+1);
+					})
+				}, 500);
+			}
 		});
-		setTimeout(function() {
-			$("#contents-list").children().each(function(i) {
-				$(this).find('.index').text(i+1);
-			})
-		}, 500);
 	}
-});
 function deleteContent(content_id){
 	if(confirm("Are you sure you want to remove this content?")){
     $.ajax({

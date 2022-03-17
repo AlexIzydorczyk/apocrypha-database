@@ -69,6 +69,6 @@ class PeopleController < ApplicationController
   end
 
   def person_params
-    params.require(:person).permit(:writing_system_id, :prefix_vernacular, :suffix_vernacular, :first_name_vernacular, :middle_name_vernacular, :last_name_vernacular, :prefix_transliteration, :suffix_transliteration, :first_name_transliteration, :middle_name_transliteration, :last_name_transliteration, :prefix_english, :suffix_english, :first_name_english, :middle_name_english, :last_name_english, :birth_date, :death_date, :character, :viaf)
+    params.require(:person).permit(:writing_system_id, :prefix_vernacular, :suffix_vernacular, :first_name_vernacular, :middle_name_vernacular, :last_name_vernacular, :prefix_transliteration, :suffix_transliteration, :first_name_transliteration, :middle_name_transliteration, :last_name_transliteration, :prefix_english, :suffix_english, :first_name_english, :middle_name_english, :last_name_english, :birth_date, :death_date, :character, :viaf, :birth_date_exact, :death_date_exact)
   end
 end

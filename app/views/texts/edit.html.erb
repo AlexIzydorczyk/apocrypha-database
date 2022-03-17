@@ -11,8 +11,12 @@
     <i class="far fa-chevron-right"></i>
     <%= @text.content.display_name %>
   <!-- else if accessed through booklet without manuscript -->
-  <% elsif @text.content.parent.class == Booklet && @text.content.parent.manuscript.blank? && @text.find_manuscript.blank? && current_page?(edit_booklet_content_text_path(@text.content.booklet, @text.content, @text)) %>
-  NEW BREADCRUMB
+  <% elsif current_page?(edit_booklet_content_text_path(@text.content.booklet, @text.content, @text)) %>
+    <%= link_to 'Booklets', booklets_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to @text.content.booklet.display_name, edit_booklet_path(@text.content.booklet) %>
+    <i class="far fa-chevron-right"></i>
+    <%= @text.content.display_name %>
   <!-- else accessed through manuscript without booklet -->
   <% elsif current_page?(edit_manuscript_content_text_path(@text.find_manuscript, @text.content, @text)) %>
     <%= link_to 'Manuscripts', manuscripts_path %>

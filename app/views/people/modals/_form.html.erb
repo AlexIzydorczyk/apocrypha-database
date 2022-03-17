@@ -54,15 +54,35 @@
 				</div>
 
 				<div class="row">
-					<div class="col-lg-6">
+					<div class="col-lg-9">
 						<%= form.label :birth_date, "Dates", class: "fw-bolder mt-4" %>
 						<div class="row">
 							<div class="col-md-6">
-								<%= form.label :birth_date, "Year of birth", style: "display: block;" %>
+								<%= form.hidden_field :birth_date_exact, "v-model": "birth_date_exact" %>
+								<label>
+									Year of birth (<span @click="birth_date_exact = true" class="pointer">exact
+										<i class="far" style="color: var(--orange)" :class="birth_date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+									</span>
+									or<span @click="birth_date_exact = false" class="pointer">
+										approximate
+										<i class="far" style="color: var(--orange)" :class="birth_date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+									</span>
+									)
+								</label>
 								<%= form.number_field :birth_date, class: "form-control", max: Date.today.year %>
 							</div>
 							<div class="col-md-6">
-								<%= form.label :death_date, "Year of death", style: "display: block;" %>
+								<%= form.hidden_field :death_date_exact, "v-model": "death_date_exact" %>
+								<label>
+									Year of death (<span @click="death_date_exact = true" class="pointer">exact
+										<i class="far" style="color: var(--orange)" :class="death_date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+									</span>
+									or<span @click="death_date_exact = false" class="pointer">
+										approximate
+										<i class="far" style="color: var(--orange)" :class="death_date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+									</span>
+									)
+								</label>
 								<%= form.number_field :death_date, class: "form-control", max: Date.today.year %>
 							</div>
 						</div>
@@ -117,6 +137,8 @@
 				language: '',
 				alternative: <%= ["first_name_english","middle_name_english","prefix_english","last_name_english","suffix_english","first_name_transliteration","middle_name_transliteration","prefix_transliteration","last_name_transliteration","suffix_transliteration"].any?{ |c| person[c].present? } ? "true" : "false" %>,
 				writing_system_id: '<%= person.writing_system_id %>',
+				birth_date_exact: <%= person.birth_date_exact ? "true" : "false" %>,
+				death_date_exact: <%= person.death_date_exact ? "true" : "false" %>,
 			} },
 			mounted(){
 				createModalListeners("#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>");
