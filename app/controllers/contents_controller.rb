@@ -1,5 +1,7 @@
 class ContentsController < ApplicationController
   before_action :set_content, only: %i[ show edit update destroy create_text ]
+  skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create move_to_booklet sort create_text ]
 
   def index
     @contents = Content.all

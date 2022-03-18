@@ -1,5 +1,7 @@
 class BookletsController < ApplicationController
   before_action :set_booklet, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create sort ]
 
   def index
     @booklets = Booklet.all

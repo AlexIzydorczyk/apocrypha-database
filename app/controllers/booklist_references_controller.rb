@@ -1,5 +1,7 @@
 class BooklistReferencesController < ApplicationController
   before_action :set_booklist_reference, only: %i[ show edit update destroy ]
+  #skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
     @booklist_references = BooklistReference.all

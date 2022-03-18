@@ -1,5 +1,7 @@
 class InstitutionalAffiliationsController < ApplicationController
   before_action :set_institutional_affiliation, only: %i[ show edit update destroy ]
+  #skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ index edit update destroy create ]
 
   def index
     @institutional_affiliations = InstitutionalAffiliation.all

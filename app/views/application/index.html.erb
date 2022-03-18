@@ -59,6 +59,7 @@
 				<p><%= link_to "View religious orders grid", religious_orders_path, class: "card-link" %></p>
 				<p><%= link_to "View titles grid", titles_path, class: "card-link" %></p>
 				<p><%= link_to "View languages grid", languages_path, class: "card-link" %></p>
+				<% if current_user.admin? %><p><%= link_to "View users grid", users_path, class: "card-link" %></p><% end %>
 			</div>
 		</div>
 	</div>

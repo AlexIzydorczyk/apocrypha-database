@@ -1,5 +1,6 @@
 class ChangeLogsController < ApplicationController
   before_action :set_change_log, only: %i[ show edit update destroy ]
+  before_action :allow_for_admin
 
   def index
     @change_logs = ChangeLog.all

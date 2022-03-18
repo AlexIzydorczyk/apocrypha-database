@@ -1,5 +1,7 @@
 class WritingSystemsController < ApplicationController
   before_action :set_writing_system, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
     @writing_systems = WritingSystem.all
