@@ -7,19 +7,19 @@ class ModernSource < ApplicationRecord
   belongs_to :part_title_language, class_name: "Language", optional: true
   belongs_to :series_title_language, class_name: "Language", optional: true
   belongs_to :title_language, class_name: "Language", optional: true
-  has_many :source_urls
-  has_many :modern_source_references
+  has_many :source_urls, dependent: :destroy
+  has_many :modern_source_references, dependent: :destroy
   has_many :booklists, through: :modern_source_references
   has_many :manuscripts, through: :modern_source_references
   has_many :texts, through: :modern_source_references
-  has_many :person_references, as: :record
+  has_many :person_references, as: :record, dependent: :destroy
   has_many :author_references, -> { author }, as: :record, class_name: "PersonReference"
   has_many :authors, through: :author_references, class_name: "Person"
   has_many :editor_references, -> { editor }, as: :record, class_name: "PersonReference"
   has_many :editors, through: :editor_references, class_name: "Person"
   has_many :translator_references, -> { translator }, as: :record, class_name: "PersonReference"
   has_many :translators, through: :translator_references, class_name: "Person"
-  has_many :booklist_sections
+  has_many :booklist_sections, dependent: :nullify
   belongs_to :writing_system, optional: true
 
   before_create :set_default_writing_system

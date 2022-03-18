@@ -1,13 +1,12 @@
 class Apocryphon < ApplicationRecord
 	has_many :languages, as: :record
-	has_many :titles
-	has_many :booklists
-	has_many :language_references, as: :record
-  has_many :languages, through: :language_references, as: :record
+	has_many :titles, dependent: :destroy
+	has_many :language_references, as: :record, dependent: :destroy
+  	has_many :languages, through: :language_references, as: :record
 
-  before_destroy :destroy_children
+	before_destroy :destroy_children
   
-	def display_name
+	def display_name 
 		title = self.main_english_title_id.present? ? self.main_eng_title : self.main_lat_title
 		title.present? ? title : self.apocryphon_no
 	end

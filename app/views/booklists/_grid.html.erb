@@ -1,5 +1,9 @@
 <div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
+<% booklists.each do |booklist| %>
+  <%= button_to "Delete", booklist_path(booklist), method: :delete, class: "d-none", id: 'delete_'+booklist.id.to_s %>
+<% end %>
+
 <script type="text/javascript" charset="utf-8">
 
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
@@ -21,7 +25,7 @@
         { headerName: "Title orig translation", field: "title_orig_translation", hide: true},
         { headerName: "Notes", field: "notes", hide: true},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
+      return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this booklist?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
     } }
   ];
 
@@ -44,7 +48,7 @@
         date_to: "<%= bl.date_to %>",
         specific_date: "<%= bl.specific_date %>",
         notes: "<%= bl.notes %>",
-        links: { edit: "<%= edit_booklist_path(bl) %>" }
+        links: { edit: "<%= edit_booklist_path(bl) %>", delete_btn: 'delete_<%= bl.id %>' }
       },
     <% end %>
   ];

@@ -6,7 +6,7 @@ class Booklist < ApplicationRecord
   belongs_to :scribe, class_name: "Person", optional: true
   belongs_to :language, optional: true
   has_many :texts, through: :booklist_references
-  has_many :modern_source_references, as: :record
+  has_many :modern_source_references, as: :record, dependent: :destroy
   has_many :modern_sources, through: :modern_source_references
   has_many :booklist_sections, dependent: :destroy
 

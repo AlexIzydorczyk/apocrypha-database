@@ -1,5 +1,11 @@
+<div class="breadcrumbs">
+  <%= link_to "Home", root_path %>
+  <i class="far fa-chevron-right"></i>
+  People
+</div>
+
 <h1>People</h1>
-<p><%= link_to "New person", new_person_path, class: "btn btn-outline-success" %></p>
+<!-- <p><%= link_to "New person", new_person_path, class: "btn btn-outline-success" %></p> -->
 
 <div id="people">
     <%= render 'grid', people: @people %>
