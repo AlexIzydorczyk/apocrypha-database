@@ -4,14 +4,14 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :omniauthable, :registerable, :recoverable, :rememberable
 
   def admin?
-    return self.role = 'admin'
+    return self.role == 'admin'
   end
 
   def editor?
-    return self.role = 'editor'
+    return self.role == 'editor'
   end
 
   def adm_editor?
-    return (self.role = 'admin' || self.role = 'editor')
+    return (self.role == 'admin' || self.role == 'editor')
   end
 end

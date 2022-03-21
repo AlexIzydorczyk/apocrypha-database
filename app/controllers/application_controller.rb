@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def allow_for_admin
-		if current_user.present? and current_user.admin?
+		unless current_user.present? and current_user.admin?
 			flash[:alert] = 'access not authorized'
 			redirect_back(fallback_location: root_path)
 		end
