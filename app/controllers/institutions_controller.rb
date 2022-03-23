@@ -35,6 +35,7 @@ class InstitutionsController < ApplicationController
     elsif params[:booklist_id]
       Booklist.find(params[:booklist_id]).update(institution: @institution)
     end
+    ChangeLog.create(user_id: current_user.id, record_type: 'Institution', record_id: @institution.id, controller_name: 'institution', action_name: 'create') if saved
     if saved && !request.xhr?
       # redirect_path = params[:manuscript_id].present? ? edit_manuscript_path(params[:manuscript_id]) : (params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : institutions_path)
       # redirect_to redirect_path, notice: "Institution was successfully created."
@@ -50,6 +51,7 @@ class InstitutionsController < ApplicationController
       Ownership.find(params[:ownership_id]).update(institution_id: @institution.id)
     end
     if @institution.update(institution_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Institution', record_id: @institution.id, controller_name: 'institution', action_name: 'update')
       if request.xhr?
         render :json => { new_url: insitution_path(@institution), id: @institution }  
       else
@@ -63,6 +65,7 @@ class InstitutionsController < ApplicationController
   def destroy
     begin
       @institution.destroy
+      ChangeLog.create(user_id: current_user.id, record_type: 'Institution', record_id: @institution.id, controller_name: 'institution', action_name: 'destroy')
       redirect_to institutions_url, notice: "Institution was successfully destroyed."
     rescue StandardError => e
       redirect_to institutions_url, alert: "Object could not be deleted because it's being used somewhere else in the system"

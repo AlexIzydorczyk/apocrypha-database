@@ -23,6 +23,7 @@ class BooklistsController < ApplicationController
     @booklist = Booklist.new(booklist_params)
 
     if @booklist.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Booklist', record_id: @booklist.id, controller_name: 'booklist', action_name: 'create')
       #redirect_to booklists_url, notice: "Booklist was successfully created."
       redirect_to edit_booklist_path(@booklist)
     else
@@ -32,6 +33,7 @@ class BooklistsController < ApplicationController
 
   def update
     if @booklist.update(booklist_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Booklist', record_id: @booklist.id, controller_name: 'booklist', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -44,6 +46,7 @@ class BooklistsController < ApplicationController
 
   def destroy
     @booklist.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Booklist', record_id: @booklist.id, controller_name: 'booklist', action_name: 'destroy')
     redirect_to booklists_url, notice: "Booklist was successfully destroyed."
   end
 

@@ -23,6 +23,7 @@ class ContentsController < ApplicationController
     @content.sequence_no = @content.parent.contents.count+1
 
     if @content.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Content', record_id: @content.id, controller_name: 'content', action_name: 'create')
       render :json => { new_url: content_path(@content), id: @content.id }
       # redirect_to contents_url, notice: "Content was successfully created."
     else

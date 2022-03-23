@@ -11,6 +11,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'User', record_id: @user.id, controller_name: 'user', action_name: 'create')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -22,6 +23,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'User', record_id: @user.id, controller_name: 'user', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else

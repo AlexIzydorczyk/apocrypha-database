@@ -21,6 +21,7 @@ class BooklistSectionsController < ApplicationController
     @booklist_section = BooklistSection.new(booklist_section_params)
 
     if @booklist_section.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'BooklistSection', record_id: @booklist_section.id, controller_name: 'booklist_section', action_name: 'create')
       #redirect_to booklist_sections_url, notice: "Booklist section was successfully created."
       redirect_to edit_booklist_url(@booklist_section.booklist), notice: "Booklist section was successfully created."
     else
@@ -30,6 +31,7 @@ class BooklistSectionsController < ApplicationController
 
   def update
     if @booklist_section.update(booklist_section_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'BooklistSection', record_id: @booklist_section.id, controller_name: 'booklist_section', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -42,6 +44,7 @@ class BooklistSectionsController < ApplicationController
 
   def destroy
     @booklist_section.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'BooklistSection', record_id: @booklist_section.id, controller_name: 'booklist_section', action_name: 'destroy')
     if request.xhr?
       render :json => {"status": "updated"}  
     else

@@ -19,6 +19,7 @@ class OwnershipsController < ApplicationController
 
   def create
     @ownership = Ownership.new(ownership_params)
+    ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'create')
 
     if @ownership.save
       if request.xhr?
@@ -31,6 +32,7 @@ class OwnershipsController < ApplicationController
 
   def update
     if @ownership.update(ownership_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -45,6 +47,7 @@ class OwnershipsController < ApplicationController
 
   def destroy
     @ownership.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'destroy')
     redirect_to ownerships_url, notice: "Ownership was successfully destroyed."
   end
 

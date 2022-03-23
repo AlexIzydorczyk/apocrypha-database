@@ -26,6 +26,7 @@ class TextsController < ApplicationController
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @text.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Text', record_id: @text.id, controller_name: 'text', action_name: 'create')
       content_parent = @text.content.try(:parent)
       if content_parent.class == Manuscript
         redirect_to edit_manuscript_content_text_path(content_parent, @text.content, @text)
@@ -49,6 +50,7 @@ class TextsController < ApplicationController
     end
 
     if @text.update(text_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Text', record_id: @text.id, controller_name: 'text', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -61,6 +63,7 @@ class TextsController < ApplicationController
 
   def destroy
     @text.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Text', record_id: @text.id, controller_name: 'text', action_name: 'destroy')
     redirect_to texts_url, notice: "Text was successfully destroyed."
   end
 

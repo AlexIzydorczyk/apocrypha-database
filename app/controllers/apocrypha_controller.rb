@@ -42,6 +42,7 @@ class ApocryphaController < ApplicationController
     end
 
     if @apocryphon.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Apocryphon', record_id: @apocryphon.id, controller_name: 'apocryphon', action_name: 'create')
       #redirect_to apocrypha_url, notice: "Apocryphon was successfully created."
       redirect_to edit_apocryphon_path(@apocryphon, old_path: params[:from])
     else
@@ -54,6 +55,7 @@ class ApocryphaController < ApplicationController
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @apocryphon.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Apocryphon', record_id: @apocryphon.id, controller_name: 'apocryphon', action_name: 'create_from_booklist')
       puts 'from is'.red
       puts params[:from]
       booklist_reference = BooklistReference.create(record: @apocryphon, booklist_section_id: params[:booklist_section_id])
@@ -71,6 +73,7 @@ class ApocryphaController < ApplicationController
     end
 
     if @apocryphon.update(apocryphon_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Apocryphon', record_id: @apocryphon.id, controller_name: 'apocryphon', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -87,6 +90,7 @@ class ApocryphaController < ApplicationController
 
   def destroy
     @apocryphon.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Apocryphon', record_id: @apocryphon.id, controller_name: 'apocryphon', action_name: 'destroy')
     redirect_to apocrypha_url, notice: "Apocryphon was successfully destroyed."
   end
 

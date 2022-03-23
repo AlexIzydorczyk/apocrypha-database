@@ -28,6 +28,7 @@ class TitlesController < ApplicationController
     end
 
     if saved
+      ChangeLog.create(user_id: current_user.id, record_type: 'Title', record_id: @title.id, controller_name: 'title', action_name: 'create')
       ta = @title.apocryphon
       if ta.present? && params[:title][:is_standard] == "true" && @title.try(:language_id) == helpers.english_id
           ta.update(main_english_title_id: @title.id)
@@ -54,6 +55,7 @@ class TitlesController < ApplicationController
     @title = Title.new(title_params)
 
     if @title.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Title', record_id: @title.id, controller_name: 'title', action_name: 'create_from_content')
       if params[:content_id].present?
         Content.find(params[:content_id]).update(title_id: @title.id)
       elsif params[:parent_type].present? && params[:parent_id].present?
@@ -69,6 +71,7 @@ class TitlesController < ApplicationController
 
   def update
     if @title.update(title_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Title', record_id: @title.id, controller_name: 'title', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -85,6 +88,7 @@ class TitlesController < ApplicationController
 
   def destroy
     @title.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Title', record_id: @title.id, controller_name: 'title', action_name: 'destroy')
     if request.xhr?
       render :json => {"status": "updated"}  
     else

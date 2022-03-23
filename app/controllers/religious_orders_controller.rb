@@ -27,6 +27,7 @@ class ReligiousOrdersController < ApplicationController
     elsif params[:booklist_id].present?
       Booklist.find(params[:booklist_id]).update(religious_order: @religious_order)
     end
+    ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'create')
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path
       # redirect_to redirect_path, notice: "Religious order was successfully created."
@@ -37,6 +38,7 @@ class ReligiousOrdersController < ApplicationController
 
   def update
     if @religious_order.update(religious_order_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'update')
       if request.xhr?
         render json: {status: "updated"}  
       else
@@ -50,6 +52,7 @@ class ReligiousOrdersController < ApplicationController
   def destroy
     begin
       @religious_order.destroy
+      ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'destroy')
       redirect_to religious_orders_url, notice: "Religious order was successfully destroyed."
     rescue StandardError => e
       redirect_to religious_orders_url, alert: "Object could not be deleted because it's being used somewhere else in the system"

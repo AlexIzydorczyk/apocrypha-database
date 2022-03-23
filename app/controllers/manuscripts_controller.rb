@@ -30,6 +30,7 @@ class ManuscriptsController < ApplicationController
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @manuscript.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Manuscript', record_id: @manuscript.id, controller_name: 'manuscript', action_name: 'create')
       # render :json => { new_url: manuscript_path(@manuscript) }
       redirect_to edit_manuscript_path(@manuscript)
     else
@@ -42,6 +43,7 @@ class ManuscriptsController < ApplicationController
     build_language_references_for params[:language_reference][:id] if params[:language_reference].present?
 
     if @manuscript.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Manuscript', record_id: @manuscript.id, controller_name: 'manuscript', action_name: 'create')
       booklist_reference = BooklistReference.create(record: @manuscript, booklist_section_id: params[:booklist_section_id])
       redirect_to edit_manuscript_path(@manuscript, old_path: params[:from])
     else
@@ -90,6 +92,7 @@ class ManuscriptsController < ApplicationController
     end
     
     if @manuscript.update(manuscript_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Manuscript', record_id: @manuscript.id, controller_name: 'manuscript', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -106,6 +109,7 @@ class ManuscriptsController < ApplicationController
 
   def destroy
     @manuscript.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Manuscript', record_id: @manuscript.id, controller_name: 'manuscript', action_name: 'destroy')
     redirect_to manuscripts_url, notice: "Manuscript was successfully destroyed."
   end
 

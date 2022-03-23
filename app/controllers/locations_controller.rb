@@ -20,6 +20,7 @@ class LocationsController < ApplicationController
   def create
     @location = Location.new(location_params)
     saved = @location.save
+    ChangeLog.create(user_id: current_user.id, record_type: 'Location', record_id: @location.id, controller_name: 'location', action_name: 'create') if saved
     if params[:booklet_id].present?
       Booklet.find(params[:booklet_id]).update(genesis_location_id: @location.id)
     elsif params[:ownership_id].present?
@@ -41,6 +42,7 @@ class LocationsController < ApplicationController
 
   def update
     if @location.update(location_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Location', record_id: @location.id, controller_name: 'location', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -52,6 +54,7 @@ class LocationsController < ApplicationController
   end
 
   def destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Location', record_id: @location.id, controller_name: 'location', action_name: 'destroy')
     begin
       @location.destroy
       redirect_to locations_url, notice: "Location was successfully destroyed."

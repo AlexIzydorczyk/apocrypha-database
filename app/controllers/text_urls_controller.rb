@@ -21,6 +21,7 @@ class TextUrlsController < ApplicationController
     @text_url = TextUrl.new(text_url_params)
 
     if @text_url.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'TextUrl', record_id: @text_url.id, controller_name: 'text_url', action_name: 'create')
       redirect_to text_urls_url, notice: "Text url was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -29,6 +30,7 @@ class TextUrlsController < ApplicationController
 
   def update
     if @text_url.update(text_url_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'TextUrl', record_id: @text_url.id, controller_name: 'text_url', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -41,6 +43,7 @@ class TextUrlsController < ApplicationController
 
   def destroy
     @text_url.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'TextUrl', record_id: @text_url.id, controller_name: 'text_url', action_name: 'destroy')
     redirect_to text_urls_url, notice: "Text url was successfully destroyed."
   end
 

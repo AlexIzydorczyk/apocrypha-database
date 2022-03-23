@@ -18,7 +18,8 @@ class LanguagesController < ApplicationController
   end
 
   def create
-    @language = Language.create(language_params)  
+    @language = Language.create(language_params)
+    ChangeLog.create(user_id: current_user.id, record_type: 'Language', record_id: @language.id, controller_name: 'language', action_name: 'create')
     
     if params[:record_class].present?
       r = params[:record_class].constantize.find(params[:record_id])
@@ -34,6 +35,7 @@ class LanguagesController < ApplicationController
 
   def update
     if @language.update(language_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Language', record_id: @language.id, controller_name: 'language', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -46,6 +48,7 @@ class LanguagesController < ApplicationController
 
   def destroy
     @language.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Language', record_id: @language.id, controller_name: 'language', action_name: 'destroy')
     redirect_to languages_url, notice: "Language was successfully destroyed."
   end
 

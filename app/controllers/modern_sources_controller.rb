@@ -33,6 +33,7 @@ class ModernSourcesController < ApplicationController
     build_person_references_for params[:language_reference][:id], 'author' if params[:language_reference].present?
 
     if @modern_source.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'create')
       #redirect_to modern_sources_url, notice: "Modern source was successfully created."
       redirect_to edit_modern_source_path(@modern_source)
     else
@@ -45,6 +46,7 @@ class ModernSourcesController < ApplicationController
     build_person_references_for params[:language_reference][:id], 'author' if params[:language_reference].present?
 
     if @modern_source.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'create_from_booklist')
       BooklistSection.find(params[:booklist_section_id]).update({modern_source_id: @modern_source.id}) if params[:booklist_section_id].present?
       ModernSourceReference.create(modern_source_id: @modern_source.id, record: Booklist.find(params[:booklist_id])) if params[:booklist_id].present?
       redirect_to edit_modern_source_path(@modern_source, old_path: params[:from])
@@ -55,12 +57,14 @@ class ModernSourcesController < ApplicationController
 
   def create_from_text
     @modern_source = ModernSource.create
+    ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'create_from_text')
     ModernSourceReference.find(params[:modern_source_reference_id]).update(modern_source: @modern_source)
     redirect_to edit_modern_source_path(@modern_source, old_path: params[:from])
   end
 
   def create_from_manuscript
     @modern_source = ModernSource.create
+    ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'create_from_manuscript')
     ModernSourceReference.find(params[:modern_source_reference_id]).update(modern_source: @modern_source)
     redirect_to edit_modern_source_path(@modern_source, old_path: params[:from])
   end
@@ -101,6 +105,7 @@ class ModernSourcesController < ApplicationController
     end
 
     if @modern_source.update(modern_source_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -117,6 +122,7 @@ class ModernSourcesController < ApplicationController
 
   def destroy
     @modern_source.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'destroy')
     redirect_to modern_sources_url, notice: "Modern source was successfully destroyed."
   end
 

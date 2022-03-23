@@ -35,6 +35,7 @@ class PeopleController < ApplicationController
       b[params[:db_field]] = @person.id
       b.save
     end
+    ChangeLog.create(user_id: current_user.id, record_type: 'Person', record_id: @person.id, controller_name: 'person', action_name: 'create')
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : people_path
       # redirect_to redirect_path, notice: "Person was successfully created."
@@ -46,6 +47,7 @@ class PeopleController < ApplicationController
 
   def update
     if @person.update(person_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Person', record_id: @person.id, controller_name: 'person', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}
         elsez
@@ -59,6 +61,7 @@ class PeopleController < ApplicationController
   def destroy
     begin
       @person.destroy
+      ChangeLog.create(user_id: current_user.id, record_type: 'Person', record_id: @person.id, controller_name: 'person', action_name: 'destroy')
       redirect_to people_url, notice: "Person was successfully destroyed."
     rescue StandardError => e
       redirect_to people_url, alert: "Object could not be deleted because it's being used somewhere else in the system"

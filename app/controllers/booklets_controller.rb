@@ -42,6 +42,7 @@ class BookletsController < ApplicationController
     end
 
     if @booklet.update(booklet_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Booklet', record_id: @booklet.id, controller_name: 'booklets', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -54,6 +55,7 @@ class BookletsController < ApplicationController
 
   def destroy
     @booklet.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Booklet', record_id: @booklet.id, controller_name: 'booklets', action_name: 'destroy')
     redirect_to booklets_url, notice: "Booklet was successfully destroyed."
   end
 

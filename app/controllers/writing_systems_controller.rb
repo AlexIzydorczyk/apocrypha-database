@@ -21,6 +21,7 @@ class WritingSystemsController < ApplicationController
     @writing_system = WritingSystem.new(writing_system_params)
 
     if @writing_system.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'WritingSystem', record_id: @writing_system.id, controller_name: 'writing_system', action_name: 'create')
       redirect_to writing_systems_url, notice: "Writing system was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -29,6 +30,7 @@ class WritingSystemsController < ApplicationController
 
   def update
     if @writing_system.update(writing_system_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'WritingSystem', record_id: @writing_system.id, controller_name: 'writing_system', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -41,6 +43,7 @@ class WritingSystemsController < ApplicationController
 
   def destroy
     @writing_system.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'WritingSystem', record_id: @writing_system.id, controller_name: 'writing_system', action_name: 'destroy')
     redirect_to writing_systems_url, notice: "Writing system was successfully destroyed."
   end
 

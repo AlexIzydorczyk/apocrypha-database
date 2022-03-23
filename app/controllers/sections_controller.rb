@@ -21,6 +21,7 @@ class SectionsController < ApplicationController
     @section = Section.new(section_params)
 
     if @section.save
+      ChangeLog.create(user_id: current_user.id, record_type: 'Section', record_id: @section.id, controller_name: 'section', action_name: 'create')
       redirect_to edit_manuscript_booklet_content_text_path(@section.text.content.booklet.manuscript, @section.text.content.booklet, @section.text.content, @section.text), notice: "Section was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -29,6 +30,7 @@ class SectionsController < ApplicationController
 
   def update
     if @section.update(section_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Section', record_id: @section.id, controller_name: 'section', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  
       else
@@ -41,6 +43,7 @@ class SectionsController < ApplicationController
 
   def destroy
     @section.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Section', record_id: @section.id, controller_name: 'section', action_name: 'destroy')
     redirect_to sections_url, notice: "Section was successfully destroyed."
   end
 
