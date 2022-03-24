@@ -76,11 +76,11 @@
 			},
 			mounted(){
 				new TomSelect("#addContentModal<%= content.id %> #content_author_id",{
-					sortField: { field: "text", direction: "asc" }
+					sortField: { field: "text", direction: "asc" },maxOptions: null,
 				});
 
 				new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
-					sortField: { field: "text", direction: "asc" }
+					sortField: { field: "text", direction: "asc" },maxOptions: null,
 				});
 				$('#addContentModal<%= content.try(:id) %> #content_content_id').change(function(){
 					console.log('running on change');
