@@ -13,6 +13,7 @@
 						<%= form.text_field :city_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Warsaw" %>
 					</div>
 					<div class="col-md-3">
+						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
 						<button type="button" class="btn btn-outline-action" @click="alternative_location = true">Add alternative</button>
 					</div>
 					<div class="col-md-3" v-show="alternative_location">
@@ -33,6 +34,7 @@
 						<%= form.text_field :diocese_orig, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
 					</div>
 					<div class="col-md-3">
+						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
 						<button type="button" class="btn btn-outline-action" @click="alternative_diocese = true">Add alternative</button>
 					</div>
 					<div class="col-md-3" v-show="alternative_diocese">
@@ -53,6 +55,7 @@
 						<%= form.text_field :region_orig, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
 					</div>
 					<div class="col-md-3">
+						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
 						<button type="button" class="btn btn-outline-action" @click="alternative_region = true">Add alternative</button>
 					</div>
 					<div class="col-md-3" v-show="alternative_region">
@@ -67,8 +70,12 @@
 						<%= form.text_field :region_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
 					</div>
 				</div>
-				<%= form.label "Country", class: "fw-bolder" %>
-				<%= form.text_field :country, placeholder: "Standard name used in English", class:"form-control mb-4" %>
+				<div class="row">
+					<div class="col-md-12 mb-4">
+						<%= form.label "Country", class: "fw-bolder" %>
+						<%= form.select :country, options_for_select(Location.all.map{ |l| l.country }.uniq, location.country), class: "form-control",  data: { placeholder: "Standard name used in English"} %>
+					</div>
+				</div>
 				<%= form.label "Coordinates of location", class: "fw-bolder" %>
 				<div class="row">
 					<div class="col-md-6">
@@ -124,6 +131,7 @@
 				new TomSelect("#modal-<%= pid %>location-modal #location_city_orig_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#modal-<%= pid %>location-modal #location_diocese_orig_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#modal-<%= pid %>location-modal #location_region_orig_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_country",ts_sort_text_asc_max_1);
 				createModalListeners("#modal-<%= pid %>location-modal");
 			},
 		});
