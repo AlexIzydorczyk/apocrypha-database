@@ -127,6 +127,7 @@ var ts_sort_text_asc_max_null = {
     direction: "asc"
   },
   maxItems: null,
+  maxOptions: null
 };
 
 var ts_sort_text_asc_max_1 = {
@@ -135,6 +136,7 @@ var ts_sort_text_asc_max_1 = {
     direction: "asc"
   },
   maxItems: 1,
+  maxOptions: null
 };
 
 var ts_sort_text_asc_max_1_create = {
@@ -144,4 +146,5 @@ var ts_sort_text_asc_max_1_create = {
   },
   maxItems: 1,
   create: true,
+  maxOptions: null
 };
