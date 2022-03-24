@@ -97,10 +97,10 @@ $(function() {
     });
       
     $("textarea").each(function () {
-      this.setAttribute("style", "height:" + (Math.max(38, this.scrollHeight)) + "px;overflow-y:hidden;");
+      $(this).css("height", Math.max(38, this.scrollHeight) + "px").css('overflow-y','hidden');
     }).on("input", function () {
       this.style.height = "auto";
-      this.style.height = (Math.max(38, this.scrollHeight - 26)) + "px";
+      this.style.height = (Math.max(38, this.scrollHeight)) + "px";
     });
 
     $("textarea.one-line").keydown(function(e){

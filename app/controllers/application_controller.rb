@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def set_grouped_people
-		@grouped_people = Person.all.group_by{ |person|
+		@grouped_people = Person.all.order('last_name_vernacular').group_by{ |person|
 			types = person.person_references.map{ |pr| pr.reference_type }.filter{ |t| t.present? }.uniq
 			types.length < 1 ? 'no_role_assigned' : (types.length > 1 ? 'multiple_roles' : types.first)
 		}	

@@ -1,5 +1,5 @@
 <div class="fixed-bottom justify-content-end d-flex w-100 pb-3 pe-3" style="z-index: 0">
-	<% if local_assigns[:save_and_new] %>
+	<% if local_assigns[:save_and_new] && params[:old_path].blank? %>
 		<%= form.submit "Save & New", class: "btn btn-action px-3 me-3", onclick: "$('##{save_and_new}').click();" %>
 	<% end %>
 	<% if params[:old_path].present? %>

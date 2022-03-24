@@ -6,7 +6,7 @@
 	</div>
 	<div class="form-group col-12 mb-2">
 		<%= form.label :relevant_text_orig, "Relevant text", style: "display: block" %>
-		<%= form.text_field :relevant_text_orig, class: "form-control" %>
+		<%= form.text_area :relevant_text_orig, class: "form-control" %>
 	</div>
 </div>
 
@@ -58,8 +58,8 @@
 			<% end %>
 		</div>
 		<div class="form-group col-2 mb-2">
-		<%= form.label :page_ref, style: "display: block" %>
-		<%= form.text_field :page_ref, class: "form-control" %>
+		<%= form.label :page_ref, style: "display: none" %>
+		<%= form.text_field :page_ref, class: "form-control d-none" %>
 	</div>
 
 </div>

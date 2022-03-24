@@ -110,9 +110,9 @@
 					</div>
 					<div class="col">
 						<label>Explicit</label>
-						<%= form.text_field :explicit_orig, class: "form-control mb-2", placeholder: "Explicit" %>
-						<%= form.text_field :explicitorig_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
-						<%= form.text_field :explicit_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+						<%= form.text_area :explicit_orig, class: "form-control mb-2 one-line", placeholder: "Explicit" %>
+						<%= form.text_area :explicitorig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
+						<%= form.text_area :explicit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
 					</div>
 				</div>
 			</div>
@@ -190,11 +190,11 @@
 				add_title: <%= %w(title_pages_folios_to manuscript_title_language_id manuscript_title_orig manuscript_title_orig_transliteration manuscript_title_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				add_colophon: <%= %w(colophon_pages_folios_to colophon_language_id colophon_orig colophon_transliteration colophon_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				exact: <%= text.date_exact ? "true" : "false" %>,
-				writing_system_id: '<%= text.writing_system_id %>'
+				writing_system_id: "<%= text.writing_system_id %>"
 			},
 			computed: {
 				not_latin(){
-					return this.writing_system_id != "<%= latin_writing_system_id %>"
+					return this.writing_system_id !== "<%= latin_writing_system_id %>";
 				},
 			},
 			mounted(){
