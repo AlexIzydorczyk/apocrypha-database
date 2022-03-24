@@ -33,6 +33,7 @@ class ContentsController < ApplicationController
 
   def update
     if @content.update(content_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Content', record_id: @content.id, controller_name: 'content', action_name: 'update')
       if request.xhr?
         render :json => { new_url: content_path(@content), id: @content.id }
       else
@@ -65,6 +66,7 @@ class ContentsController < ApplicationController
 
   def destroy
     @content.destroy
+    ChangeLog.create(user_id: current_user.id, record_type: 'Content', record_id: @content.id, controller_name: 'content', action_name: 'create')
     if request.xhr?
       render :json => {"status": "updated"}  
     else
