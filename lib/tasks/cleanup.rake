@@ -95,4 +95,10 @@ namespace :cleanup do
 		end
 
 	end
+
+	task :clean_blank_modern_sources => :environment do
+		ModernSource.all.each do |ms|
+			ms.destroy if ms.display_name == '.'
+		end
+	end
 end
