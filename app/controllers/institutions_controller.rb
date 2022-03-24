@@ -24,7 +24,11 @@ class InstitutionsController < ApplicationController
       m = Manuscript.find(params[:manuscript_id])
       puts 'manuscript is'.blue
       puts m.inspect
-      m.update(institution_id: @institution.id)
+      if params[:genesis].present?
+        m.update(genesis_institution_id: @institution.id)
+      else
+        m.update(institution_id: @institution.id)
+      end
       puts m.inspect
     elsif params[:booklet_id].present?
       Booklet.find(params[:booklet_id]).update(genesis_institution_id: @institution.id)
@@ -78,6 +82,6 @@ class InstitutionsController < ApplicationController
     end
 
     def institution_params
-      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :writing_system_id, :original_language, :institution_id, :language_id)
+      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :writing_system_id, :original_language, :institution_id, :language_id, :location_id)
     end
 end

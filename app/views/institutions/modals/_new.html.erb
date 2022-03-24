@@ -38,6 +38,10 @@
 					</div>
 				</div>
 			</div>
+			<%= local_assigns.inspect %>
+			<% if local_assigns[:genesis].present? %>
+				<%= hidden_field_tag :genesis, true %>
+			<% end %>
 			<% if parent.class == Manuscript %>
 				<%= hidden_field_tag :manuscript_id, parent.id %>
 			<% elsif parent.class == Booklet %>
