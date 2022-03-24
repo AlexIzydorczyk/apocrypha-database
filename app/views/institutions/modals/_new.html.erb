@@ -13,6 +13,7 @@
 						<%= form.text_field :name_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
 					</div>
 					<div class="col-md-3">
+						<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
 						<button type="button" class="btn btn-outline-action" @click="alternative_name = true">Add alternative</button>
 					</div>
 					<div class="col-md-3" v-show="alternative_name">
@@ -85,7 +86,7 @@
 			},
 			mounted(){
 				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_writing_system_id",ts_sort_text_asc_max_1);
-
+				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_location_id", ts_sort_text_asc_max_1);
 				createModalListeners("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal");
 			},
 		});
