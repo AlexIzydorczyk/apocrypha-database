@@ -9,7 +9,7 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Census no.", field: "census_no" },
+    { headerName: "Census no.", field: "census_no", comparator: numberSort },
     { headerName: "Status", field: "status", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ['extant', 'lost', 'destroyed'] }},
     { headerName: "Repository", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
     { headerName: "Shelfmark", field: "shelfmark"},
@@ -48,6 +48,10 @@
       rowData: rowData,
       onCellValueChanged: onCellValueChanged,
       sideBar: 'columns',
+    };
+
+    function numberSort(num1, num2){
+      return num1 - num2;
     };
 
     function onCellValueChanged(event){
