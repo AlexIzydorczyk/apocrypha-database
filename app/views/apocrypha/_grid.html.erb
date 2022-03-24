@@ -10,20 +10,20 @@
 
   const columnDefs = [
     { headerName: "Id", field: "id", editable: false, hide: true},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Apocryphon no", field: "apocryphon_no"},
-        { headerName: "Main English Title", field: "main_english_title", editable: false},
-        { headerName: "Main Latin Title", field: "main_latin_title", editable: false},
-        { headerName: "Cant no", field: "cant_no"},
-        { headerName: "Bhl no", field: "bhl_no", hide: true},
-        { headerName: "Bhg no", field: "bhg_no", hide: true},
-        { headerName: "Bho no", field: "bho_no", hide: true},
-        { headerName: "E clavis no", field: "e_clavis_no"},
-        { headerName: "E clavis link", field: "e_clavis_link", hide: true},
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-            var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
-            return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
-          } 
-        }
+    { headerName: "Apocryphon no", field: "apocryphon_no", comparator: numberSort },
+    { headerName: "Main English Title", field: "main_english_title", editable: false},
+    { headerName: "Main Latin Title", field: "main_latin_title", editable: false},
+    { headerName: "Cant no", field: "cant_no", comparator: numberSort },
+    { headerName: "Bhl no", field: "bhl_no", hide: true},
+    { headerName: "Bhg no", field: "bhg_no", hide: true},
+    { headerName: "Bho no", field: "bho_no", hide: true},
+    { headerName: "E clavis no", field: "e_clavis_no", comparator: numberSort },
+    { headerName: "E clavis link", field: "e_clavis_link", hide: true},
+    { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+        var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
+        return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
+      } 
+    }
   ];
 
   const rowData = [
@@ -55,6 +55,10 @@
     console.log('cell value changed ', event);
     saveChange(event.data.id, event.data);
   }
+
+  function numberSort(num1, num2){
+    return num1 - num2;
+  };
 
   function saveChange(id, data){
     var my_data = {};

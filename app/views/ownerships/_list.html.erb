@@ -2,12 +2,12 @@
 	<% parent.ownerships.each do |p| %>
 		<div class="card grey mb-3">
 			<div class="card-body row">
-				<div class="col-sm-4 text-end fw-bolder">
+				<div class="col-sm-4 text-end">
 					<%= p.written_date_range %>
 					<% if p.written_date_range.present? && (p.display_name.present? || p.location.try(:city_region_country).present? || p.provenance_notes.present?) %><span class="ms-3">&#124;</span><% end %>
 				</div>
 				<div class="col-sm">
-					<span class="fw-bolder"><%= p.display_name %></span>
+					<span class=""><%= p.display_name %></span>
 					<% if p.location.try(:city_region_country).present? %><br><%= p.location.try(:city_region_country) %><% end %>
 					<% if p.provenance_notes.present? %><br><%= p.provenance_notes %><% end %>
 				</div>
