@@ -22,7 +22,7 @@ class Manuscript < ApplicationRecord
   has_many :booklist_sections, dependent: :destroy
 
   def display_name
-    d_name = [self.institution.try(:location).present? ? self.institution.location.city_orig : self.genesis_location.city_orig, self.institution.try(:name_orig), self.shelfmark].select{ |d| d.present? }.join(",")
+    d_name = [self.institution.try(:location).present? ? self.institution.location.try(:city_orig) : self.genesis_location.try(:city_orig), self.institution.try(:name_orig), self.shelfmark].select{ |d| d.present? }.join(",")
     d_name.present? ? d_name : "Untitled manuscript"
   end
 

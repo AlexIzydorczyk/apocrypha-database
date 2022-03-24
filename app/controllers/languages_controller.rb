@@ -22,9 +22,13 @@ class LanguagesController < ApplicationController
     ChangeLog.create(user_id: current_user.id, record_type: 'Language', record_id: @language.id, controller_name: 'language', action_name: 'create')
     
     if params[:record_class].present?
-      r = params[:record_class].constantize.find(params[:record_id])
-      r[params[:record_field_name]] = @language.id
-      r.save
+      if params[:record_class] == "Manuscript"
+        LanguageReference.create(record: Manuscript.find(params[:record_id]), language: @language)
+      else
+        r = params[:record_class].constantize.find(params[:record_id])
+        r[params[:record_field_name]] = @language.id
+        r.save
+      end
     end
     # if @language.save
     #   # redirect_to languages_url, notice: "Language was successfully created."

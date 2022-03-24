@@ -42,6 +42,7 @@ function saveForm(form, input_for_id=null, callback=null) {
   form.ajaxSubmit(function(data) {
     if(data && data.new_url) {form.attr('action', data.new_url).attr('method', 'patch')};
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
+    console.log("record id", data.id);
     if(input_for_id) input_for_id.val(data.id).change();
     if(callback != null) callback();
   })

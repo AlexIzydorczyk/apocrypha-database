@@ -299,6 +299,8 @@
 <%= render 'contents/modals/form', parent: manuscript, content: manuscript.contents.new %>
 <%= render 'institutions/modals/new', institution: Institution.new, parent: manuscript, pid: '', depth: 0 %>
 
+<%= render '/languages/modals/new', language: Language.new, pid: "", in_vue: false, parent: manuscript %>
+
 <% if manuscript.institution.present? %>
 <%= render 'institutions/modals/new', institution: manuscript.institution, parent: manuscript, pid: "#{manuscript.institution.id}-", depth: 0 %>
 <% end %>

@@ -74,7 +74,19 @@ function runTomSelects(){
 	new TomSelect("#manuscript_institution_id", ts_sort_text_asc_max_1);
 	new TomSelect("#manuscript_status");
 	new TomSelect("#manuscript_material",ts_sort_text_asc_max_1);
-	new TomSelect("#language_reference_id", ts_sort_text_asc_max_null);
+	new TomSelect("#language_reference_id", {
+		sortField: {
+			field: "text",
+			direction: "asc",
+		},
+		maxItems: 1,
+		create: function(l){
+			saveForm($(`#manuscript-form form`), $(`#new-language #record-id`));
+			$("#new-language #language_language_name").val(l);
+			$('#new-language').modal('show');
+		}
+	});
+
 	new TomSelect("#manuscript_content_type", ts_sort_text_asc_max_1_create);
 	new TomSelect("#manuscript_genesis_location_id",ts_sort_text_asc_max_1);
 	new TomSelect("#manuscript_genesis_institution_id", ts_sort_text_asc_max_1);
