@@ -35,10 +35,10 @@ class ModernSource < ApplicationRecord
     # name (initial)
     if self.author_type == 'corporate'
       s += self.institution.display_name + " " if self.institution.present?
-    elsif self.authors.count > 0
-      s += person_list(self.authors, false, true) + " "
-    elsif self.editors.count > 0
-      s += person_list(self.editors, true, true) + " "
+    # elsif self.authors.count > 0
+    #   s += person_list(self.authors, false, true) + " "
+    # elsif self.editors.count > 0
+    #   s += person_list(self.editors, true, true) + " "
     end
 
     # title
@@ -48,10 +48,10 @@ class ModernSource < ApplicationRecord
     s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true) + ". "
 
     #editors
-    s += "Edited by " + person_list(self.editors) + ". " if self.editors.count > 0
+    # s += "Edited by " + person_list(self.editors) + ". " if self.editors.count > 0
 
     #translators
-    s += "Translated by " + person_list(self.translators) + ". " if self.translators.count > 0
+    # s += "Translated by " + person_list(self.translators) + ". " if self.translators.count > 0
 
     #edition
     s += self.edition + "ed. " if self.edition.present?
