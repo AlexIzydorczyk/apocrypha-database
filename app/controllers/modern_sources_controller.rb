@@ -104,7 +104,7 @@ class ModernSourcesController < ApplicationController
       }
     end
 
-    if @modern_source.update(modern_source_params)
+    if @modern_source.update!(modern_source_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  

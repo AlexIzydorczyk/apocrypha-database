@@ -23,13 +23,14 @@ class ModernSource < ApplicationRecord
   belongs_to :writing_system, optional: true
 
   before_create :set_default_writing_system
+  after_update :set_display_name
 
   def set_default_writing_system
     ws = WritingSystem.find_by(name: 'Latin')
     self.writing_system = ws if ws.present?
   end
 
-  def display_name
+  def set_display_name
     s = ""
     
     # name (initial)
@@ -120,7 +121,7 @@ class ModernSource < ApplicationRecord
     #doi
     s += "doi: " + self.DOI + ". " if self.DOI.present?
 
-    s.strip.gsub("  ", " ").gsub(" .", ".").gsub("...", ".").gsub("..", ".").html_safe
+    self.display_name = s.strip.gsub("  ", " ").gsub(" .", ".").gsub("...", ".").gsub("..", ".").html_safe
   end
 
   def person_list people, are_editors=false, first_list=false,

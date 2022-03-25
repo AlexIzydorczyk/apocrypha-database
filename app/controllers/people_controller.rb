@@ -50,7 +50,7 @@ class PeopleController < ApplicationController
       ChangeLog.create(user_id: current_user.id, record_type: 'Person', record_id: @person.id, controller_name: 'person', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}
-        elsez
+        else
         redirect_to people_url, notice: "Person was successfully updated."
       end
     else

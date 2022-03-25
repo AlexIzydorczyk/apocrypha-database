@@ -10,6 +10,14 @@ class Person < ApplicationRecord
 	belongs_to :writing_system, optional: true
 
 	after_initialize :set_default_writing_system
+	after_update :update_modern_sources
+
+	def update_modern_sources
+		self.modern_sources.each do |ms|
+			ms.set_display_name
+			ms.save!
+		end
+	end
 
   def set_default_writing_system
     ws = WritingSystem.find_by(name: 'Latin')

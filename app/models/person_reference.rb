@@ -7,6 +7,7 @@ class PersonReference < ApplicationRecord
   belongs_to :correspondent, foreign_key: :person_id, class_name: "Person"
   belongs_to :transcriber, foreign_key: :person_id, class_name: "Person"
   belongs_to :compiler, foreign_key: :person_id, class_name: "Person"
+  belongs_to :modern_source, foreign_key: :record_id, class_name: "ModernSource"
   scope :author, -> { where(reference_type: "author") }
   scope :editor, -> { where(reference_type: "editor") }
   scope :translator, -> { where(reference_type: "translator") }
