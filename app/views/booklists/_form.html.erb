@@ -8,6 +8,7 @@
 			<div class="d-flex">
 				<select class="form-control" name="booklist[library_owner_id]" id="booklist_library_owner_id" placeholder="Select person">
 					<% sort_hash_keys(@grouped_people, ['owner', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+						<option></option>
 						<optgroup label="<%= group.humanize %>">
 							<% people.each do |person| %>
 								<option value="<%= person.id %>" <%= 'selected' if booklist.library_owner_id == person.id %>><%= person.full_name %></option>
