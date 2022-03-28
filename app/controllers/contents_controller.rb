@@ -35,7 +35,7 @@ class ContentsController < ApplicationController
     if @content.update(content_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Content', record_id: @content.id, controller_name: 'content', action_name: 'update')
       if request.xhr?
-        render :json => { new_url: content_path(@content), id: @content.id }
+        render :json => { id: @content.id }
       else
         redirect_path = params[:moved_to_booklet] ? edit_manuscript_path(@content.booklet.manuscript) : contents_path
         notice = params[:moved_to_booklet] ? "Content was successfully moved to booklet." : "Content was successfully updated."

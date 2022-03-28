@@ -94,7 +94,7 @@ class ManuscriptsController < ApplicationController
     if @manuscript.update(manuscript_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Manuscript', record_id: @manuscript.id, controller_name: 'manuscript', action_name: 'update')
       if request.xhr?
-        render :json => { new_url: manuscript_path(@manuscript), id: @manuscript.id }
+        render :json => { id: @manuscript.id }
       else
         if params[:old_path].present?
           redirect_to params[:old_path], notice: "Manuscript was successfully updated."
