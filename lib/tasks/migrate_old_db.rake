@@ -265,13 +265,13 @@ namespace :migrate_old_db do
 
 					end
 
-			# else #unknown booklet composition
-			# 	puts m["_id"]
+			else #unknown booklet composition
+				puts m["_id"]
 
-			# 	m["context"]["contents"].each_with_index do |c, i|
-			# 		t = Title.find_or_create_by(title_orig: c)
-			# 		r.contents.find_or_create_by(title_id: t.id, sequence_no: i+1)
-			# 	end
+				m["context"]["contents"].each_with_index do |c, i|
+					t = Title.find_or_create_by(title_orig: c)
+					r.contents.find_or_create_by(title_id: t.id, sequence_no: i+1)
+				end
 
 			end
 
