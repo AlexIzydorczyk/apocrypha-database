@@ -113,6 +113,33 @@ class ManuscriptsController < ApplicationController
     redirect_to manuscripts_url, notice: "Manuscript was successfully destroyed."
   end
 
+  def revert_known_composition
+    puts 'reverting'.red
+    manuscript = Manuscript.find(params[:manuscript_id])
+    manuscript.booklets.each do |b|
+      puts 'booklet:'.green
+      puts b.id
+      b.ownerships.each do |o|
+        puts 'ownership:'.green
+        puts o.id
+        o.update(booklet_id: nil, manuscript_id: manuscript.id)
+      end
+      b.contents.each do |c|
+        puts 'content:'.green
+        puts c.id
+        c.update(booklet_id: nil, manuscript_id: manuscript.id)
+      end
+      puts 'should be transfered now'.yellow
+      puts b.contents.count
+      puts b.ownerships.count
+      b.delete
+    end
+    manuscript.update(known_booklet_composition: false)
+    if request.xhr?
+      render :json => { id: manuscript.id }
+    end
+  end
+
   private
 
   def set_manuscript

@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     end
   end
   resources :manuscripts do
+    post :revert_known_composition
     collection do
       post :create_from_booklist
     end

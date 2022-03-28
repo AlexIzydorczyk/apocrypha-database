@@ -20,7 +20,7 @@ $(document).ready(function(){
 			},
 		},
 		methods: {
-			setFrom(){
+			setFrom: function(){
 				let new_options = [];
 				for(let i=0; i<<%= Date.today.year%>; i++){
 					if (
@@ -37,6 +37,25 @@ $(document).ready(function(){
 				this.date_to_select.clearOptions(true);
 				this.date_to_select.addOptions(new_options.map( o => ({value: o, text: o})));
 				if(this.date_to_select.items.length < 1) this.date_to_select.refreshOptions(true);
+			},
+			clickUnknown: function(){
+				if(<%= manuscript.booklets.count %> >= 1){
+					if(confirm('Are you sure you want to destroy Booklet(s) and move their content to the Manuscript?')){
+						$.ajax({
+				      url: "/manuscripts/"+<%= manuscript.id %>+"/revert_known_composition",
+				      type: 'POST',
+				      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+				      contentType: 'application/json',
+				      success: function(data) {
+				      	console.log('success');
+				      	known_booklet_composition = false;
+				        timeoutReload();
+				      }
+				    });
+					}
+				}else{
+					known_booklet_composition = false
+				}
 			}
 		},
 		mounted(){
