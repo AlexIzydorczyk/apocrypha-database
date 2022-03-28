@@ -11,9 +11,23 @@
 					<div class="form-group col-md-12 mb-2">
 						<%= form.label :date_to, "Date range", style: "display: block;" %>
 						<div class="d-flex align-items-baseline">
-							<%= form.text_field :date_to, class: "form-control" %>
+							<select name="manuscript[date_from]" class="form-control date-from" placeholder="From" v-model="date_from">
+								<option></option>
+								<option v-for="n in <%= Date.today.year %>" v-if="
+									(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
+								" :value="n + ''">{{n}}</option>
+							</select>
 							<i class="far fa-minus m-2"></i>
-							<%= form.text_field :date_from, class: "form-control" %>
+							<select name="manuscript[date_to]" class="form-control date-to" placeholder="To" v-model="date_to">
+								<option></option>
+								<option v-for="n in <%= Date.today.year %>" v-if="
+									(
+										((date_from == '' || (parseInt(date_from)-1)%25 == 0) && n%25==0)
+									 || ((date_from == '' || ((parseInt(date_from)%100)-1)%33 == 0) && (n%100 != 99) && n%100%33==0)
+									 || n==<%= Date.today.year %>
+									) && n>date_from
+								">{{n}}</option>
+							</select>
 						</div>
 					</div>
 					<div class="form-group col-md-12 mb-2">
@@ -103,8 +117,13 @@
 			data: {
 				sub_modal_open: false,
 				date_exact: <%= ownership.date_exact ? "false" : "true" %>,
+				date_to: '<%= ownership.date_to %>', date_from: '<%= ownership.date_from %>',
+				date_to_select: null, date_from_select: null,
 			},
 			watch: {
+				date_from(){
+					this.setFrom();
+				},
 			},
 			methods: {
 				openSubModal(button_selector, selector){
@@ -114,6 +133,24 @@
 						this.sub_modal_open = false;
 					}.bind(this));
 					this.sub_modal_open = true;
+				},
+				setFrom(){
+					let new_options = [];
+					for(let i=0; i<<%= Date.today.year%>; i++){
+						if (
+							(
+								this.date_from == ''
+							 || (( (parseInt(this.date_from)-1)%25 == 0) && i%25==0)
+							 || (( ((parseInt(this.date_from)%100)-1)%33 == 0) && (i%100 != 99) && i%100%33==0)
+							 || i==<%= Date.today.year %>
+							)
+							&& i>this.date_from
+						) new_options.push(i);
+					}
+					if(!(this.date_to_select.items.length > 0 && this.date_from != '' && (((this.date_from-1)%100%33==0 && this.date_to_select.items[0]%100%33==0) || ((this.date_from-1)%25==0 && this.date_to_select.items[0]%25==0)))) this.date_to_select.clear();
+					this.date_to_select.clearOptions(true);
+					this.date_to_select.addOptions(new_options.map( o => ({value: o, text: o})));
+					if(this.date_to_select.items.length < 1) this.date_to_select.refreshOptions(true);
 				}
 			},
 			computed: {
@@ -124,6 +161,14 @@
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id", ts_sort_text_asc_max_1);
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id", ts_sort_text_asc_max_1);
 				createModalListeners("#addProvenanceModal<%= ownership.try(:id) %>");
+				this.date_to_select = new TomSelect(".date-to", {
+				  maxItems: 1,
+				  maxOptions: null,
+				});
+				this.date_from_select = new TomSelect(".date-from", {
+				  maxItems: 1,
+				  maxOptions: null,
+				});
 			}
 		});
 	});
