@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_17_140030) do
+ActiveRecord::Schema.define(version: 2022_03_28_170004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_140030) do
     t.string "original_publication_creation_date", default: "", null: false
     t.string "old_id", default: "", null: false
     t.bigint "writing_system_id"
+    t.string "display_name", default: "", null: false
     t.index ["institution_id"], name: "index_modern_sources_on_institution_id"
     t.index ["part_title_language_id"], name: "index_modern_sources_on_part_title_language_id"
     t.index ["publication_location_id"], name: "index_modern_sources_on_publication_location_id"
@@ -462,6 +463,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_140030) do
     t.bigint "language_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "italicized", default: false, null: false
     t.index ["apocryphon_id"], name: "index_titles_on_apocryphon_id"
     t.index ["language_id"], name: "index_titles_on_language_id"
   end
@@ -495,7 +497,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_140030) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration"
+    t.boolean "requires_transliteration", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -8,6 +8,7 @@
     { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
         { headerName: "Apocryphon", field: "apocryphon_id"},
         { headerName: "Title orig", field: "title_orig"},
+        { headerName: "Italicized?", field: "italicized"},
         { headerName: "Title orig transliteration", field: "title_orig_transliteration"},
         { headerName: "Title translation", field: "title_translation"},
         { headerName: "Language", field: "language_id"},
@@ -16,7 +17,12 @@
   const rowData = [
     <% titles.each do |title| %>
       { id:<%= title.id %>,
-        apocryphon_id: "<%= title.apocryphon_id %>",title_orig: "<%= title.title_orig %>",title_orig_transliteration: "<%= title.title_orig_transliteration %>",title_translation: "<%= title.title_translation %>",language_id: "<%= title.language_id %>",
+        apocryphon_id: "<%= title.apocryphon_id %>",
+        title_orig: "<%= title.title_orig.html_safe %>",
+        title_orig_transliteration: "<%= title.title_orig_transliteration %>",
+        title_translation: "<%= title.title_translation %>",
+        language_id: "<%= title.language_id %>",
+        italicized: "<%= title.italicized %>",
         links: { show: "<%= title_path(title) %>", edit: "<%= edit_title_path(title) %>" }
       },
     <% end %>

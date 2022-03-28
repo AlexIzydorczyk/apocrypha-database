@@ -101,4 +101,15 @@ namespace :cleanup do
 			ms.destroy if ms.display_name == '.'
 		end
 	end
+
+	task :italics_for_titles => :environment do
+		Title.all.each do |title|
+			if title.title_orig.starts_with?('<i>')
+				puts 'cleaning this: '+title.title_orig
+				title.italicized = true
+				title.title_orig = ActionView::Base.full_sanitizer.sanitize(title.title_orig, ['i'])
+				title.save!
+			end
+		end
+	end
 end
