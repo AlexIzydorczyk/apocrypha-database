@@ -209,7 +209,7 @@ namespace :migrate_old_db do
 					puts m["_id"] 
 
 					m["booklet"].each_with_index do |b, i|
-						br = r.booklets.create(
+						br = r.booklets.find_or_create_by(
 							pages_folios_from: parse_folios(b["ffpp"], true),
 							pages_folios_to: parse_folios(b["ffpp"], false),
 							booklet_no: i+1
@@ -217,8 +217,8 @@ namespace :migrate_old_db do
 
 						b["contents"].each_with_index do |c, i|
 							if c["notApocryphon"].present?
-								t = Title.create(title_orig: c["notApocryphon"])
-								br.contents.create(title_id: t.id, sequence_no: i+1)
+								t = Title.find_or_create_by(title_orig: c["notApocryphon"])
+								br.contents.find_or_create_by(title_id: t.id, sequence_no: i+1)
 							elsif c["apocryphon"].present? #apocryphon content
 								a = c["apocryphon"]
 								lang = Language.find_or_create_by(language_name: a["language"]) if a["language"].present?
@@ -226,12 +226,12 @@ namespace :migrate_old_db do
 									title = Title.find_or_create_by(title_orig: a["title"])
 									title.update(language_id: lang.id) if title.language_id.blank? && lang.present?
 									apoc = Apocryphon.find_or_create_by(id: title.apocryphon_id)
-									content = br.contents.create(title_id: title.id, sequence_no: i+1)
+									content = br.contents.find_or_create_by(title_id: title.id, sequence_no: i+1)
 								else
 									apoc = Apocryphon.find_or_create_by(english_abbreviation: a["apocryphonId"])
-									content = br.contents.create(sequence_no: i+1)
+									content = br.contents.find_or_create_by(sequence_no: i+1)
 								end
-								text = Text.create(
+								text = Text.find_or_create_by(
 									content_id: content.id,
 									text_pages_folios_from: parse_folios(a["ffpp"], true),
 									text_pages_folios_to: parse_folios(a["ffpp"], false),
@@ -245,7 +245,7 @@ namespace :migrate_old_db do
 									colophon_pages_folios_to: parse_single_folio(a["ffppColophon"]),
 								) if ["ffpp", "notes", "extent", "msTitle", "ffppMsTitle", "colophon", "ffppColophon", "section"].any?{ |s| a[s].present? }
 								a["section"].each_with_index do |s, i|
-									section = Section.create(
+									section = Section.find_or_create_by(
 										incipit_orig: s["incipit"] || "",
 										explicit_orig: s["explicit"] || "",
 										pages_folios_incipit: s["ffppIncipit"] || "",
@@ -265,13 +265,13 @@ namespace :migrate_old_db do
 
 					end
 
-			else #unknown booklet composition
-				puts m["_id"]
+			# else #unknown booklet composition
+			# 	puts m["_id"]
 
-				m["context"]["contents"].each_with_index do |c, i|
-					t = Title.create(title_orig: c)
-					r.contents.create(title_id: t.id, sequence_no: i+1)
-				end
+			# 	m["context"]["contents"].each_with_index do |c, i|
+			# 		t = Title.find_or_create_by(title_orig: c)
+			# 		r.contents.find_or_create_by(title_id: t.id, sequence_no: i+1)
+			# 	end
 
 			end
 
