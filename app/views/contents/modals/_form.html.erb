@@ -25,11 +25,23 @@
 							<button type="button" id="content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn', '#content<%= ('-' + content.id.to_s) if content.id.present? %>-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
-					
+
 					<div class="form-group col-12 mb-2">
 						<%= form.label :title_id, "Title", style: "display: block" %>
 						<div class="d-flex">
-							<%= form.collection_select :title_id, Title.all, :id, :title_english, {selected: content.title_id, include_blank: true}, {class: "form-control", placeholder: "Select title"} %>
+							<select class="form-control" name="content[title_id]" id="content_title_id" placeholder="Select title">
+								<option></option>
+								<optgroup label="Apocryphal">
+									<%  Apocryphon.all.map{ |a| a.main_latin_title_id.present? ? [a.main_lat_title, a.main_latin_title_id] : a.main_english_title_id.present? ? [a.main_eng_title, a.main_english_title_id] : nil }.compact.sort_by { |a| a[0] }.each do |at| %>
+										<option value="<%= at[1] %>" <%= 'selected' if content.title_id == at[1] %>><%= at[0] %></option>
+									<% end %>
+								</optgroup>
+								<optgroup label="Non-Apocryphal">
+									<%  Title.where(apocryphon_id: nil).order('title_orig').all.each do |nt| %>
+										<option value="<%= nt.id %>" <%= 'selected' if content.title_id == nt.id %>><%= nt.title_orig %></option>
+									<% end %>
+								</optgroup>
+							</select>
 							<button type="button" class="btn btn-outline-action ms-4" id="new_title" onclick="saveForm($('#addContentModal<%= content.try(:id) %> form'), $('#addContentModal<%= content.try(:id) %> #content_content_id'))">New</button>
 						</div>
 					</div>
@@ -80,7 +92,8 @@
 				});
 
 				new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
-					sortField: { field: "text", direction: "asc" },maxOptions: null,
+					//sortField: { field: "text", direction: "asc" },
+					maxOptions: null,
 				});
 				$('#addContentModal<%= content.try(:id) %> #content_content_id').change(function(){
 					console.log('running on change');
