@@ -33,7 +33,6 @@ function timeoutReload(location_hash){
     // if(location_hash) 
       window.location.reload(true);
     // else window.location.href = window.location.href;
-  }, 200)
   }, 300)
 }
 
