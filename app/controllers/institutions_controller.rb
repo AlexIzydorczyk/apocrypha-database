@@ -24,12 +24,15 @@ class InstitutionsController < ApplicationController
       m = Manuscript.find(params[:manuscript_id])
       if params[:genesis].present?
         m.update(genesis_institution_id: @institution.id)
+        m.update(genesis_location_id: @institution.location_id) if @institution.location_id.present?
       else
         m.update(institution_id: @institution.id)
       end
       puts m.inspect
     elsif params[:booklet_id].present?
-      Booklet.find(params[:booklet_id]).update(genesis_institution_id: @institution.id)
+      b = Booklet.find(params[:booklet_id])
+      b.update(genesis_institution_id: @institution.id)
+      b.update(genesis_location_id: @institution.location_id) if @institution.location_id.present?
     elsif params[:ownership_id].present?
       Ownership.find(params[:ownership_id]).update(institution_id: @institution.id)
     elsif params[:modern_source_id].present?
@@ -53,6 +56,15 @@ class InstitutionsController < ApplicationController
       Ownership.find(params[:ownership_id]).update(institution_id: @institution.id)
     end
     if @institution.update(institution_params)
+      if params[:manuscript_id].present?
+        m = Manuscript.find(params[:manuscript_id])
+        m.update(genesis_location_id: @institution.location_id) if @institution.id == m.genesis_institution_id && @institution.location_id.present?
+      elsif params[:booklet_id].present?
+        b = Booklet.find(params[:booklet_id])
+        b.update(genesis_location_id: @institution.location_id) if @institution.id == b.genesis_institution_id && @institution.location_id.present?
+      elsif params[:booklist_id].present?
+        Booklist.find(params[:booklist_id]).update(location_id: @institution.location_id) if @institution.location_id.present?
+      end
       ChangeLog.create(user_id: current_user.id, record_type: 'Institution', record_id: @institution.id, controller_name: 'institution', action_name: 'update')
       if request.xhr?
         render :json => { new_url: insitution_path(@institution), id: @institution }  

@@ -55,8 +55,32 @@ $(document).ready(function(){
 function runTomSelects(){
 	new TomSelect("#booklist_library_owner_id", ts_sort_text_asc_max_1);
 	new TomSelect("#booklist_booklist_type", ts_sort_text_asc_max_1_create);
-	new TomSelect("#booklist_institution_id", ts_sort_text_asc_max_1);
-	new TomSelect("#booklist_location_id", ts_sort_text_asc_max_1);
+	var booklist_location_select = new TomSelect("#booklist_location_id",ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_institution_id", {
+		maxItems: 1,
+		valueField: 'id',
+		searchField: ['institution','location_name'],
+		options: [
+			<% Institution.all.each do |i| %>
+			{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>"},
+			<% end %>
+		],
+		onItemAdd: function(value, item){
+			let location_id = $(item).attr('location_id');
+			booklist_location_select.addItem(location_id);
+		},
+		render: {
+			option: function(data, escape) {
+				return '<div class="double-ts-option">' +
+						'<span class="title">' + escape(data.institution) + '</span>' +
+						'<span class="subtitle">' + escape(data.location_name) + '</span>' +
+					'</div>';
+			},
+			item: function(data, escape) {
+				return '<div location_id="' + escape(data.location_id) + '">' + escape(data.institution) + '</div>';
+			}
+		}
+	});
 	new TomSelect("#booklist_religious_order_id", ts_sort_text_asc_max_1);
 	new TomSelect("#booklist_language_id", ts_sort_text_asc_max_1);
 	new TomSelect("#booklist_scribe_id", ts_sort_text_asc_max_1);

@@ -48,13 +48,13 @@ $(document).ready(function(){
 				      contentType: 'application/json',
 				      success: function(data) {
 				      	console.log('success');
-				      	known_booklet_composition = false;
+				      	manuscriptVue.known_booklet_composition = false;
 				        timeoutReload();
 				      }
 				    });
 					}
 				}else{
-					known_booklet_composition = false
+					this.known_booklet_composition = false
 				}
 			}
 		},
@@ -107,8 +107,32 @@ function runTomSelects(){
 	});
 
 	new TomSelect("#manuscript_content_type", ts_sort_text_asc_max_1_create);
-	new TomSelect("#manuscript_genesis_location_id",ts_sort_text_asc_max_1);
-	new TomSelect("#manuscript_genesis_institution_id", ts_sort_text_asc_max_1);
+	var manuscript_genesis_location_select = new TomSelect("#manuscript_genesis_location_id",ts_sort_text_asc_max_1);
+	new TomSelect("#manuscript_genesis_institution_id", {
+		maxItems: 1,
+		valueField: 'id',
+		searchField: ['institution','location_name'],
+		options: [
+			<% Institution.all.each do |i| %>
+			{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>"},
+			<% end %>
+		],
+		onItemAdd: function(value, item){
+			let location_id = $(item).attr('location_id');
+			manuscript_genesis_location_select.addItem(location_id);
+		},
+		render: {
+			option: function(data, escape) {
+				return '<div class="double-ts-option">' +
+						'<span class="title">' + escape(data.institution) + '</span>' +
+						'<span class="subtitle">' + escape(data.location_name) + '</span>' +
+					'</div>';
+			},
+			item: function(data, escape) {
+				return '<div location_id="' + escape(data.location_id) + '">' + escape(data.institution) + '</div>';
+			}
+		}
+	});
 	new TomSelect("#manuscript_genesis_religious_order_id", ts_sort_text_asc_max_1);
 	new TomSelect("#person_reference_id", ts_max_null);
 	new TomSelect("#correspondent_reference_id",{

@@ -158,6 +158,10 @@
 <%= render 'people/modals/form', person: Person.new, parent: booklist, reference_type: 'owner', pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: booklist, reference_type: 'author', pid: '', depth: 0 %>
 
+<% if booklist.institution.present? %>
+<%= render 'institutions/modals/new', institution: booklist.institution, parent: booklist, pid: "#{booklist.institution.id}-", depth: 0 %>
+<% end %>
+
 <% booklist.modern_source_references.each do |msr| %>
 	<%= render 'modern_source_references/modals/form', parent: booklist, msr: msr %>
 <% end %>

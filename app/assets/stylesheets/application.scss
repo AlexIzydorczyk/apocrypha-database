@@ -263,3 +263,14 @@ text-decoration: underline;
   background-size: 16px 12px;
   padding-right: 2rem;
 }
+
+.double-ts-option{
+  .title{
+    display: block;
+  }
+  .subtitle{
+    font-size: 12px;
+    display: block;
+    color: #a0a0a0;
+  }
+}
