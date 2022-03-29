@@ -13,7 +13,7 @@
 	<div class="form-group col-md-12 mb-2">
 		<%= form.label :institution_id, "Repository", style: "display: block" %>
 		<div class="d-flex">
-			<%= form.collection_select :institution_id, Institution.all, :id, :long_display_name, {selected: manuscript.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select a repository"} %>
+			<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {selected: manuscript.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select a repository"} %>
 			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 		</div>
 	</div>
@@ -152,7 +152,8 @@
 				<div class="d-flex">
 					<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
 						<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-							<optgroup label="<%= group.humanize %>">
+						<option></option>
+						<optgroup label="<%= group.humanize %>">
 								<% people.each do |person| %>
 									<option value="<%= person.id %>" <%= 'selected' if manuscript.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 								<% end %>
@@ -166,7 +167,7 @@
 		<div class="form-group col-md-6 mb-2">
 			<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
 			<div class="d-flex">
-				<%= form.collection_select :genesis_institution_id, Institution.all, :id, :long_display_name, {selected: manuscript.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
+				<%= form.collection_select :genesis_institution_id, Institution.all, :id, :display_name, {selected: manuscript.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-genesis_location0-new-institution-modal">New</button>
 			</div>
 		</div>
@@ -181,7 +182,7 @@
 			<%= form.label :genesis_location_id, "Location", style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: manuscript.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
-				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#location-modal">New</button>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New</button>
 			</div>
 		</div>
 	</div>

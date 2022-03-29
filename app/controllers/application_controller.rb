@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 		@grouped_people = Person.all.order('last_name_vernacular', 'first_name_vernacular').group_by{ |person|
 			types = person.person_references.map{ |pr| pr.reference_type }.filter{ |t| t.present? }.uniq
 			types.length < 1 ? 'no_role_assigned' : (types.length > 1 ? 'multiple_roles' : types.first)
-		}	
+		}
 	end
 
 	def allow_for_editor

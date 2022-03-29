@@ -1,5 +1,5 @@
 <div class="modal" id="modal-<%= pid %><%= depth.to_s %>-new-institution-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
-	<%= form_with(model: institution, class: "autosave") do |form| %>
+	<%= form_with(model: institution) do |form| %>
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -28,15 +28,7 @@
 						<%= form.text_field :name_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
 					</div>
 				</div>
-				<label class="mt-3 fw-bolder">Location</label>
-				<div class="row">
-					<div class="form-group col-md-12 mb-2">
-						<div class="d-flex">
-							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
-							<button type="button" id="instiution<%= ('-' + institution.id.to_s) if institution.id.present? %>-location-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#modal-instiution<%= ('-' + institution.id.to_s) if institution.id.present? %>-location-btn', '#modal-institution-<%= depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') %>location-modal')" data-backdrop="static" data-keyboard="false">New</button>	
-						</div>
-					</div>
-				</div>
+				<!-- location removed mar 29 2022 -->
 			</div>
 			<% if local_assigns[:genesis].present? %>
 				<%= hidden_field_tag :genesis, true %>
@@ -60,7 +52,7 @@
 	<% end %>	
 </div>
 
-<%= render 'locations/modals/form', location: Location.new, parent: institution, pid: "institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
+<%#= render 'locations/modals/form', location: Location.new, parent: institution, pid: "institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
 
 <script type="text/javascript">
 	var institutution_modal_vue;

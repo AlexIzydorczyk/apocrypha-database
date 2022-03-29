@@ -28,6 +28,8 @@
 				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% elsif parent.class == Booklist %>
 				<%= hidden_field_tag :booklist_id, parent.id %>;
+			<% elsif parent.class == Manuscript %>
+				<%= hidden_field_tag :manuscript_id, parent.id %>;
 			<% end %>
 			<div class="modal-footer">
 				<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "") + ")") %>

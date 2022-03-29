@@ -54,6 +54,7 @@
 						<div class="d-flex">
 							<select class="form-control" name="ownership[person_id]" id="ownership_person_id" placeholder="Select a person">
 								<% sort_hash_keys(@grouped_people, ['owner', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<option></option>
 									<optgroup label="<%= group.humanize %>">
 										<% people.each do |person| %>
 											<option value="<%= person.id %>" <%= 'selected' if person.id == ownership.person_id %>><%= person.full_name %></option>

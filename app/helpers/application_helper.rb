@@ -15,9 +15,10 @@ module ApplicationHelper
 		new_keys = obj.keys.sort_by{ |k|
 			keys.include?(k) ? keys.index(k) : keys.length
 		}
-		new_keys.each_with_object({}) { |k,h|
+		sorted = new_keys.each_with_object({}) { |k,h|
 			h[k] = obj[k]
 		}
+		sorted
 	end
 
 	def format_date date

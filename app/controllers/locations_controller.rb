@@ -31,6 +31,8 @@ class LocationsController < ApplicationController
       Institution.find(params[:institution_id]).update(location_id: @location.id)
     elsif params[:booklist_id].present?
       Booklist.find(params[:booklist_id]).update(location: @location)
+    elsif params[:manuscript_id].present?
+      Manuscript.find(params[:manuscript_id]).update(genesis_location: @location)
     end
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : locations_path

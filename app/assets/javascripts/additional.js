@@ -131,6 +131,11 @@ var ts_sort_text_asc_max_null = {
   maxOptions: null
 };
 
+ts_max_null = {
+  maxItems: null,
+  maxOptions: null
+};
+
 var ts_sort_text_asc_max_1 = {
   sortField: {
     field: "text",

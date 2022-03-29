@@ -98,6 +98,8 @@
 				<%= hidden_field_tag :institution_id, parent.id, class: "institution-field" %>
 			<% elsif parent.class == Booklist %>
 				<%= hidden_field_tag :booklist_id, parent.id %>
+			<% elsif parent.class == Manuscript %>
+				<%= hidden_field_tag :manuscript_id, parent.id %>
 			<% end %>
 			<div class="modal-footer">
 				<% if parent.class == Institution %>
@@ -131,7 +133,7 @@
 				new TomSelect("#modal-<%= pid %>location-modal #location_city_orig_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#modal-<%= pid %>location-modal #location_diocese_orig_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#modal-<%= pid %>location-modal #location_region_orig_writing_system_id",ts_sort_text_asc_max_1);
-				new TomSelect("#modal-<%= pid %>location-modal #location_country",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_country",ts_sort_text_asc_max_1_create);
 				createModalListeners("#modal-<%= pid %>location-modal");
 			},
 		});

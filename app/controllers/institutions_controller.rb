@@ -22,8 +22,6 @@ class InstitutionsController < ApplicationController
     saved = @institution.save
     if params[:manuscript_id].present?
       m = Manuscript.find(params[:manuscript_id])
-      puts 'manuscript is'.blue
-      puts m.inspect
       if params[:genesis].present?
         m.update(genesis_institution_id: @institution.id)
       else

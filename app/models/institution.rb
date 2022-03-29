@@ -28,13 +28,13 @@ class Institution < ApplicationRecord
 
   def display_name
     s = ""
-    title = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin") ? self.name_orig_transliteration : name_orig
+    title = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin") ? self.name_orig_transliteration : self.name_orig
     s += title + " " if title.present?
     s += "[" + self.name_english + "]" unless self.name_english.blank?
     s
   end
 
   def long_display_name
-    [self.location.present? ? self.location.city_country : '(no location specified)', self.name_orig].join(", ")
+    self.name_orig
   end
 end
