@@ -102,7 +102,7 @@ function runTomSelects(){
 				<% end %>
 			],
 			items: ['<%= bs.manuscript_id %>'],
-			sortField: { field: "city", direction: "asc" }, maxItems: 1, 
+			sortField: { field: "city", direction: "asc" }, maxItems: 1, maxOptions: null
 		});
 	<% end %>
 	new TomSelect("#preserved-in",{

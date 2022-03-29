@@ -34,6 +34,7 @@ function timeoutReload(location_hash){
       window.location.reload(true);
     // else window.location.href = window.location.href;
   }, 200)
+  }, 300)
 }
 
 function saveForm(form, input_for_id=null, callback=null) {
@@ -131,8 +132,13 @@ var ts_sort_text_asc_max_null = {
   maxOptions: null
 };
 
-ts_max_null = {
+var ts_max_null = {
   maxItems: null,
+  maxOptions: null
+};
+
+var ts_max_1 = {
+  maxItems: 1,
   maxOptions: null
 };
 

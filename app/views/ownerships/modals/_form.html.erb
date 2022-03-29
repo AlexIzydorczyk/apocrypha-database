@@ -11,14 +11,14 @@
 					<div class="form-group col-md-12 mb-2">
 						<%= form.label :date_to, "Date range", style: "display: block;" %>
 						<div class="d-flex align-items-baseline">
-							<select name="manuscript[date_from]" class="form-control date-from" placeholder="From" v-model="date_from">
+							<select name="ownership[date_from]" class="form-control" id="addProvenanceModal<%= ownership.try(:id) %>-from" placeholder="From" v-model="date_from">
 								<option></option>
 								<option v-for="n in <%= Date.today.year %>" v-if="
 									(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
 								" :value="n + ''">{{n}}</option>
 							</select>
 							<i class="far fa-minus m-2"></i>
-							<select name="manuscript[date_to]" class="form-control date-to" placeholder="To" v-model="date_to">
+							<select name="ownership[date_to]" class="form-control date-to" id="addProvenanceModal<%= ownership.try(:id) %>-to" placeholder="To" v-model="date_to">
 								<option></option>
 								<option v-for="n in <%= Date.today.year %>" v-if="
 									(
@@ -62,7 +62,7 @@
 									</optgroup>
 								<% end %>
 							</select>
-							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn', '#ownership-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn', '#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
 					<div class="form-group col-12 mb-2">
@@ -117,7 +117,7 @@
 			name: "ProvenanceModal<%= ownership.try(:id) %>",
 			data: {
 				sub_modal_open: false,
-				date_exact: <%= ownership.date_exact ? "false" : "true" %>,
+				date_exact: <%= ownership.date_exact ? "true" : "false" %>,
 				date_to: '<%= ownership.date_to %>', date_from: '<%= ownership.date_from %>',
 				date_to_select: null, date_from_select: null,
 			},
@@ -157,16 +157,16 @@
 			computed: {
 			},
 			mounted(){
-				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id", ts_sort_text_asc_max_1);
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id", ts_max_1);
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id", ts_sort_text_asc_max_1);
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id", ts_sort_text_asc_max_1);
 				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_location_id", ts_sort_text_asc_max_1);
 				createModalListeners("#addProvenanceModal<%= ownership.try(:id) %>");
-				this.date_to_select = new TomSelect(".date-to", {
+				this.date_to_select = new TomSelect("#addProvenanceModal<%= ownership.try(:id) %>-to", {
 				  maxItems: 1,
 				  maxOptions: null,
 				});
-				this.date_from_select = new TomSelect(".date-from", {
+				this.date_from_select = new TomSelect("#addProvenanceModal<%= ownership.try(:id) %>-from", {
 				  maxItems: 1,
 				  maxOptions: null,
 				});

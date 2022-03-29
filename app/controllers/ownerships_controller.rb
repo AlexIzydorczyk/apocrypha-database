@@ -34,7 +34,7 @@ class OwnershipsController < ApplicationController
     if @ownership.update(ownership_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'update')
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {id: @ownership.id}  
       else
         redirect_path = params[:moved_to_booklet] ? edit_manuscript_path(@ownership.booklet.manuscript) : ownerships_path
         notice = params[:moved_to_booklet] ? "Provenance was successfully moved to booklet." : "Ownership was successfully updated."
