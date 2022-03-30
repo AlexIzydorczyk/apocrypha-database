@@ -19,8 +19,9 @@ class ApocryphaController < ApplicationController
   def edit
     @languages = Language.all
     @language_references = @apocryphon.language_references.build
-    @english_titles = Title.where(apocryphon_id: @apocryphon.id, language_id: helpers.english_id).all
-    @latin_titles = Title.where(apocryphon_id: @apocryphon.id, language_id: helpers.latin_id).all
+    @apocryphon_titles = Title.where(apocryphon_id: @apocryphon.id).all
+    @english_titles = @apocryphon_titles.where(language_id: helpers.english_id).all
+    @latin_titles = @apocryphon_titles.where(language_id: helpers.latin_id).all
     @other_english_titles = @english_titles.where.not(id: @apocryphon.main_english_title_id).all
     @other_latin_titles = @latin_titles.where.not(id: @apocryphon.main_latin_title_id).all
 

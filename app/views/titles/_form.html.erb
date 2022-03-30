@@ -13,6 +13,10 @@
 		eng="title_translation"
 	></language-form-groups>
 </div>
+<div class="form-check mt-2">
+	<%= form.check_box :italicized, class: 'form-check-input' %>
+	<%= form.label "Italicized?", class: "form-check-label" %>
+</div>
 <div class="row"></div>
 <%= render 'layouts/save_now', form: form %>
 <% end %>
