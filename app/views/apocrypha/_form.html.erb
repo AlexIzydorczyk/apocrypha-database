@@ -24,7 +24,7 @@
 		<div class="col-6">
 			<%= form.label "Standard title", style: "display: block" %>
 			<div class="d-flex">
-				<%= text_field_tag "main_english_title", @apocryphon.main_eng_title, class: "form-control",  disabled: true  %>
+				<%= text_field_tag "main_english_title", @apocryphon.main_eng_title, class: "form-control #{'italic' if @apocryphon.main_english_title_id.present? && Title.find(@apocryphon.main_english_title_id).italicized }",  disabled: true  %>
 				<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= @apocryphon.main_english_title_id %>-title-modal">
 					<i class="far fa-pencil"></i>
 				</a>
@@ -45,7 +45,7 @@
 		<div class="col-6">
 			<%= form.label "Other titles", style: "display: block" %>
 			<div class="d-flex">
-				<%= text_field_tag "main_english_title", t.title_orig, class: "form-control",  disabled: true  %>
+				<%= text_field_tag "main_english_title", t.title_orig, class: "form-control #{'italic' if t.italicized}",  disabled: true  %>
 				<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= t.id %>-title-modal">
 					<i class="far fa-pencil"></i>
 				</a>
@@ -90,7 +90,7 @@
 		<div class="col-6">
 			<%= form.label "Other titles", style: "display: block" %>
 			<div class="d-flex">
-				<%= text_field_tag "main_latin_title", t.title_orig, class: "form-control",  disabled: true  %>
+				<%= text_field_tag "main_latin_title", t.title_orig, class: "form-control #{'italic' if t.italicized}",  disabled: true  %>
 				<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= t.id %>-title-modal">
 					<i class="far fa-pencil"></i>
 				</a>
