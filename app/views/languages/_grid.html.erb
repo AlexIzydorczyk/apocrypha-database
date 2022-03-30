@@ -5,14 +5,15 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
     { headerName: "Language name", field: "language_name"},
+    { headerName: "Requires transliteration", field: "requires_transliteration", cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: ["true", "false"]}, suppressColumnsToolPanel: true},
   ];
 
   const rowData = [
     <% languages.each do |language| %>
       { id:<%= language.id %>,
         language_name: "<%= language.language_name %>",
+        requires_transliteration: "<%= language.requires_transliteration %>",
         links: { show: "<%= language_path(language) %>", edit: "<%= edit_language_path(language) %>" }
       },
     <% end %>

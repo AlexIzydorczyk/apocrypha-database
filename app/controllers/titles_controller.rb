@@ -102,6 +102,6 @@ class TitlesController < ApplicationController
     end
 
     def title_params
-      params.require(:title).permit(:apocryphon_id, :title_orig, :title_orig_transliteration, :title_translation, :language_id, :abbreviation)
+      params.require(:title).permit(:apocryphon_id, :title_orig, :title_orig_transliteration, :title_translation, :language_id, :abbreviation, :italicized)
     end
 end

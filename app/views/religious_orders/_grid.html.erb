@@ -9,8 +9,8 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
         { headerName: "Order name", field: "order_name"},
+        { headerName: "Abbreviation", field: "abbreviation"},
         { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
       return "<!-- <a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a> --><a href='#' onclick='if(confirm(\"Are you sure you want to delete this object?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
     } }
@@ -20,6 +20,7 @@
     <% religious_orders.each do |religious_order| %>
       { id:<%= religious_order.id %>,
         order_name: "<%= religious_order.order_name %>",
+        abbreviation: "<%= religious_order.abbreviation %>",
         links: { show: "<%= religious_order_path(religious_order) %>", edit: "<%= edit_religious_order_path(religious_order) %>", delete_btn: 'delete_<%= religious_order.id %>' }
       },
     <% end %>
