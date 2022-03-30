@@ -60,7 +60,7 @@
 	<% end %>	
 </div>
 
-<%= render 'locations/modals/form', location: Location.new, parent: institution, pid: "institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
+<%= render 'locations/modals/form', location: Location.new, parent: institution, pid: "#{'gen-' if defined?(genesis) && genesis}institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
 
 <script type="text/javascript">
 	var institutution_modal_vue;
