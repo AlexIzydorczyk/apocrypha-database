@@ -34,7 +34,9 @@ class InstitutionsController < ApplicationController
       b.update(genesis_institution_id: @institution.id)
       b.update(genesis_location_id: @institution.location_id) if @institution.location_id.present?
     elsif params[:ownership_id].present?
-      Ownership.find(params[:ownership_id]).update(institution_id: @institution.id)
+      o = Ownership.find(params[:ownership_id])
+      o.update(institution_id: @institution.id)
+      o.update(location_id: @institution.location_id) if @institution.location_id.present?
     elsif params[:modern_source_id].present?
       ModernSource.find(params[:modern_source_id]).update(institution_id: @institution.id)
     elsif params[:booklist_id]
