@@ -55,7 +55,7 @@
 							<select class="form-control" name="ownership[person_id]" id="ownership_person_id" placeholder="Select a person">
 								<% sort_hash_keys(@grouped_people, ['owner', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 									<option></option>
-									<optgroup label="<%= group.humanize %>">
+									<optgroup label="<%= group.to_s.humanize %>">
 										<% people.each do |person| %>
 											<option value="<%= person.id %>" <%= 'selected' if person.id == ownership.person_id %>><%= person.full_name %></option>
 										<% end %>
@@ -165,7 +165,7 @@
 					valueField: 'id',
 					searchField: ['institution','location_name'],
 					options: [
-						<% Institution.all.each do |i| %>
+						<% Institution.all.includes(:location).each do |i| %>
 						{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>"},
 						<% end %>
 					],

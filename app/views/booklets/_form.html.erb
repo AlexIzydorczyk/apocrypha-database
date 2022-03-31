@@ -72,7 +72,7 @@
 			<div class="d-flex">
 				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
 					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-						<optgroup label="<%= group.humanize %>">
+						<optgroup label="<%= group.to_s.humanize %>">
 							<% people.each do |person| %>
 								<option value="<%= person.id %>" <%= 'selected' if booklet.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 							<% end %>
