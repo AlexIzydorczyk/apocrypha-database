@@ -36,7 +36,7 @@
 						<div class="d-flex">
 							<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
 								<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-									<optgroup label="<%= group.humanize %>">
+									<optgroup label="<%= group.to_s.humanize %>">
 										<% people.each do |person| %>
 											<option value="<%= person.id %>" <%= 'selected' if modern_source.authors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 										<% end %>
@@ -81,7 +81,7 @@
 						<div class="d-flex">
 							<select class="form-control" multiple="multiple" name="editor_reference[id][]" id="editor_reference_id" placeholder="Select editor(s)">
 								<% sort_hash_keys(@grouped_people, ['editor', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-									<optgroup label="<%= group.humanize %>">
+									<optgroup label="<%= group.to_s.humanize %>">
 										<% people.each do |person| %>
 											<option value="<%= person.id %>" <%= 'selected' if modern_source.editors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 										<% end %>
@@ -98,7 +98,7 @@
 						<div class="d-flex">
 							<select class="form-control" multiple="multiple" name="translator_reference[id][]" id="translator_reference_id" placeholder="Select translator(s)">
 								<% sort_hash_keys(@grouped_people, ['translator', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-									<optgroup label="<%= group.humanize %>">
+									<optgroup label="<%= group.to_s.humanize %>">
 										<% people.each do |person| %>
 											<option value="<%= person.id %>" <%= 'selected' if modern_source.translators.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 										<% end %>

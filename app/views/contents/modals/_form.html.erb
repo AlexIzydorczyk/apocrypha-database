@@ -15,7 +15,7 @@
 							<select class="form-control" name="content[author_id]" id="content_author_id" placeholder="Select author">
 								<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 									<option></option>
-									<optgroup label="<%= group.humanize %>">
+									<optgroup label="<%= group.to_s.humanize %>">
 										<% people.each do |person| %>
 											<option value="<%= person.id %>" <%= 'selected' if content.author_id == person.id %>><%= person.full_name %></option>
 										<% end %>
@@ -32,8 +32,8 @@
 							<select class="form-control" name="content[title_id]" id="content_title_id" placeholder="Select title">
 								<option></option>
 								<optgroup label="Apocryphal">
-									<%  Apocryphon.all.map{ |a| a.main_latin_title_id.present? ? [a.main_lat_title, a.main_latin_title_id] : a.main_english_title_id.present? ? [a.main_eng_title, a.main_english_title_id] : nil }.compact.sort_by { |a| a[0] }.each do |at| %>
-										<option value="<%= at[1] %>" <%= 'selected' if content.title_id == at[1] %>><%= at[0] %></option>
+									<%  Title.where(id: Apocryphon.all.map{ |a| a.main_latin_title_id.present? ? a.main_latin_title_id : (a.main_english_title_id.present? ? a.main_english_title_id : nil )}.compact).order('title_orig').each do |at| %>
+										<option value="<%= at.id %>" <%= 'selected' if content.title_id == at.id %>><%= at.title_orig %></option>
 									<% end %>
 								</optgroup>
 								<optgroup label="Non-Apocryphal">

@@ -7,10 +7,23 @@ class ApplicationController < ActionController::Base
 	end
 
 	def set_grouped_people
-		@grouped_people = Person.all.order('last_name_vernacular', 'first_name_vernacular').group_by{ |person|
-			types = (person.person_references.map{ |pr| pr.reference_type } + [person.ownerships.count > 0 ? 'owner' : nil]).filter{ |t| t.present? }.uniq
-			types.length < 1 ? 'no_role_assigned' : (types.length > 1 ? 'multiple_roles' : types.first)
-		}
+		@scribes = Person.joins(:person_references).where(person_references: { reference_type: 'scribe' })
+		@authors = Person.joins(:person_references).where(person_references: { reference_type: 'author' })
+		@editors = Person.joins(:person_references).where(person_references: { reference_type: 'editor' })
+		@translators = Person.joins(:person_references).where(person_references: { reference_type: 'translator' })
+		@correspondents = Person.joins(:person_references).where(person_references: { reference_type: 'correspondent' })
+		@transcribers = Person.joins(:person_references).where(person_references: { reference_type: 'transcriber' })
+		@compilers = Person.joins(:person_references).where(person_references: { reference_type: 'compiler' })
+		@owners = Person.joins(:ownerships).all
+		@grouped_people = { 
+			scribe: @scribes,
+			author: @authors,
+			editor: @editors,
+			translator: @translators,
+			correspondent: @correspondents,
+			transcriber: @transcribers,
+			compiler: @compilers,
+		 }
 	end
 
 	def allow_for_editor

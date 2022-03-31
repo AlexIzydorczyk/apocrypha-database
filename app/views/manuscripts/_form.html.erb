@@ -1,4 +1,5 @@
 <div id="manuscript-form" class="d-none">
+
 <%= form_with(model: manuscript, class: "autosave save-before-modals #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 
 <div class="row">
@@ -153,7 +154,7 @@
 					<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
 						<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 						<option></option>
-						<optgroup label="<%= group.humanize %>">
+						<optgroup label="<%= group.to_s.humanize %>">
 								<% people.each do |person| %>
 									<option value="<%= person.id %>" <%= 'selected' if manuscript.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 								<% end %>
@@ -225,7 +226,7 @@
 				<div class="d-flex">
 					<select class="form-control" multiple="multiple" name="correspondent_reference[id][]" id="correspondent_reference_id" placeholder="Select contributor">
 						<% sort_hash_keys(@grouped_people, ['correspondent', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-							<optgroup label="<%= group.humanize %>">
+							<optgroup label="<%= group.to_s.humanize %>">
 								<% people.each do |person| %>
 									<option value="<%= person.id %>" <%= 'selected' if manuscript.correspondents.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 								<% end %>
@@ -244,7 +245,7 @@
 				<div class="d-flex">
 					<select class="form-control" multiple="multiple" name="transcriber_reference[id][]" id="transcriber_reference_id" placeholder="Select contributor">
 						<% sort_hash_keys(@grouped_people, ['transcriber', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-							<optgroup label="<%= group.humanize %>">
+							<optgroup label="<%= group.to_s.humanize %>">
 								<% people.each do |person| %>
 									<option value="<%= person.id %>" <%= 'selected' if manuscript.transcribers.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 								<% end %>
@@ -263,7 +264,7 @@
 				<div class="d-flex">
 					<select class="form-control" multiple="multiple" name="compiler_reference[id][]" id="compiler_reference_id" placeholder="Select contributor">
 						<% sort_hash_keys(@grouped_people, ['compiler', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-							<optgroup label="<%= group.humanize %>">
+							<optgroup label="<%= group.to_s.humanize %>">
 								<% people.each do |person| %>
 									<option value="<%= person.id %>" <%= 'selected' if manuscript.compilers.map(&:id).include?(person.id) %>><%= person.full_name %></option>
 								<% end %>
