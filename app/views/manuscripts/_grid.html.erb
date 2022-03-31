@@ -11,10 +11,10 @@
   const columnDefs = [
     { headerName: "Census no.", field: "census_no", comparator: numberSort },
     { headerName: "Status", field: "status", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ['extant', 'lost', 'destroyed'] }},
-    { headerName: "Repository", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
     { headerName: "City", field: "city", editable: false },
     { headerName: "Region", field: "region"},
     { headerName: "Country", field: "country"},
+    { headerName: "Repository", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
     { headerName: "Shelfmark", field: "shelfmark"},
     { headerName: "Old shelfmarks", field: "old_shelfmark"},
     { headerName: "Material", field: "material", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ["paper", "parchment", "parchment and paper"] } },
