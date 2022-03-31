@@ -103,9 +103,9 @@
 			<% end %>
 			<div class="modal-footer">
 				<% if parent.class == Institution %>
-					<%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload('#modal-' + $('#modal-#{pid}location-modal .institution-field').val() + '-#{depth-1}-new-institution-modal')" %>
+					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('<%= "#modal-$('#modal-#{pid}location-modal .institution-field').val() + '-#{depth-1}-new-institution-modal'" %>', 0);})">Save & Close</button>
 				<% else %>
-					<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}location-modal .ownership-field').val()" : "") + ")") %>
+					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('<%= "timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}location-modal .ownership-field').val()" : "") + ")" %>', 0);})">Save & Close</button>
 				<% end %>
 			</div>
 		</div>

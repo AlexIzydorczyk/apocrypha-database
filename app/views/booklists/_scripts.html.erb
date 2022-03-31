@@ -118,7 +118,7 @@ function runTomSelects(){
 
 function addResource(obj, bs_id){
 	if($(obj).val()[0] == ""){
-		timeoutReload();
+		timeoutReload(null, 0);
 	}else{
 		var split = $(obj).val()[0].split('_');
 		var my_data = {};
@@ -136,7 +136,7 @@ function addResource(obj, bs_id){
 	    contentType: 'application/json',
 	    success: function(data) {
 	    	console.log('reloading?')
-	      timeoutReload();
+	      timeoutReload(null, 0);
 	    }
 	  });
 	}
@@ -144,7 +144,7 @@ function addResource(obj, bs_id){
 
 function addPreserved(obj, b_id){
 	if($(obj).val()[0] == ""){
-		timeoutReload();
+		timeoutReload(null, 0);
 	}else{
 		var ms_id = $(obj).val()[0];
 		var my_data = {};
@@ -162,7 +162,7 @@ function addPreserved(obj, b_id){
 	    contentType: 'application/json',
 	    success: function(data) {
 	    	console.log('reloading?')
-	      timeoutReload();
+	      timeoutReload(null, 0);
 	    }
 	  });
 	}
@@ -176,7 +176,7 @@ function deleteBooklistReference(br_id){
       data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
       contentType: 'application/json',
       success: function(data) {
-        timeoutReload();
+        timeoutReload(null, 0);
       }
     });
 	}
@@ -190,7 +190,7 @@ function deleteBooklistSection(bs_id){
       data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
       contentType: 'application/json',
       success: function(data) {
-        timeoutReload();
+        timeoutReload(null, 0);
       }
     });
 	}
@@ -204,7 +204,7 @@ function deleteModernSourceReference(msr_id){
       data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
       contentType: 'application/json',
       success: function(data) {
-        timeoutReload();
+        timeoutReload(null, 0);
       }
     });
 	}

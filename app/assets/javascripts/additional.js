@@ -22,7 +22,7 @@ var setModalPositioning = function modalPosition(){
   });
 }
 
-function timeoutReload(location_hash){
+function timeoutReload(location_hash, time=300){
   console.log("timeout relaoding running");
   if(location_hash){
     location.hash = location_hash;
@@ -33,7 +33,7 @@ function timeoutReload(location_hash){
     // if(location_hash) 
       window.location.reload(true);
     // else window.location.href = window.location.href;
-  }, 300)
+  }, time)
 }
 
 function saveForm(form, input_for_id=null, callback=null) {

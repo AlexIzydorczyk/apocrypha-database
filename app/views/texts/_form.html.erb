@@ -220,7 +220,7 @@
 	      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
 	      contentType: 'application/json',
 	      success: function(data) {
-	        timeoutReload();
+	        timeoutReload(null, 0);
 	      }
 	    });
 		}

@@ -96,7 +96,7 @@
 
 			</div>
 			<div class="modal-footer">
-				 <%= form.submit "Save & Close", class: "btn btn-action", onclick: "timeoutReload()", ":disabled": "sub_modal_open" %>
+				 <button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(null, 0);})">Save & Close</button>
 			</div>
 		</div> 
 	</div>

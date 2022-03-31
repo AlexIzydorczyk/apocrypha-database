@@ -32,7 +32,7 @@
 				<%= hidden_field_tag :manuscript_id, parent.id %>;
 			<% end %>
 			<div class="modal-footer">
-				<%= form.submit "Save & Close", class: "btn btn-action", onclick: ("timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "") + ")") %>
+				<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "" %>', 0);})">Save & Close</button>
 			</div>
 		</div>
 	</div>
