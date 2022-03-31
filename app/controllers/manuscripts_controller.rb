@@ -150,9 +150,6 @@ class ManuscriptsController < ApplicationController
   end
 
   def build_scribe_references_for ids, reference_type=""
-    puts "reference type is".red
-    puts reference_type
-    puts ids
     ids.each do |id|
       if id.present?
         @manuscript.person_references.build(person_id: id, reference_type: reference_type)
