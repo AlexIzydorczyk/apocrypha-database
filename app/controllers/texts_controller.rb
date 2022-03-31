@@ -47,7 +47,7 @@ class TextsController < ApplicationController
 
     params[:sections].each do |id, prms|
       Section.find(id).update(section_params(prms))
-    end
+    end if params[:sections].present?
 
     if @text.update(text_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Text', record_id: @text.id, controller_name: 'text', action_name: 'update')
