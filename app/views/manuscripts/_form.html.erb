@@ -138,6 +138,12 @@
 					<i class="fas fa-bars me-4 grab"></i>
 					<span><%= booklet.display_name %></span>
 					<%= link_to "Open", edit_manuscript_booklet_path(manuscript, booklet), class: "btn btn-outline-action ms-auto" %>
+					<button class="btn btn-outline-action ms-2" type="button" id="booklet-options-<%= booklet.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+					  	<i class="far fa-ellipsis-h"></i>
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="booklet-options-<%= booklet.id %>">
+					    <li><%= link_to "Delete booklet", '', class: "dropdown-item", onclick: "deleteBooklet('"+booklet.id.to_s+"')" %></li>
+					  </ul>
 				</div>
 			</div>
 		<% end %>
