@@ -37,6 +37,8 @@ class LocationsController < ApplicationController
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : locations_path
       # redirect_to redirect_path, notice: "Location was successfully created."
+    elsif request.xhr?
+      render json: {id: @location.id}
     else
       render :new, status: :unprocessable_entity
     end

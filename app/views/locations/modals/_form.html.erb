@@ -102,8 +102,10 @@
 				<%= hidden_field_tag :manuscript_id, parent.id %>
 			<% end %>
 			<div class="modal-footer">
-				<% if parent.class == Institution %>
-					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('<%= "#modal-$('#modal-#{pid}location-modal .institution-field').val() + '-#{depth-1}-new-institution-modal'" %>', 0);})">Save & Close</button>
+				<% if parent.class == Institution && depth == 2 %>
+					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('#modal-ownership-institution-' + $('#modal-<%= pid %>location-modal .institution-field').val() + '-<%= depth-1 %>-new-institution-modal', 0);})">Save & Close</button>
+				<% elsif parent.class == Institution %>
+					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('#modal-' + $('#modal-<%= pid %>location-modal .institution-field').val() + '-<%= depth-1 %>-new-institution-modal', 0);})">Save & Close</button>
 				<% else %>
 					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('<%= "timeoutReload(" + (parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}location-modal .ownership-field').val()" : "") + ")" %>', 0);})">Save & Close</button>
 				<% end %>

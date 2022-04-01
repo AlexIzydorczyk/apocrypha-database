@@ -1,4 +1,5 @@
 <div class="modal" id="modal-<%= pid %><%= depth.to_s %>-new-institution-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+	<% if parent.class == Ownership %><span class="second-modal" data-other-render="#addProvenanceModal<%= parent.try(:id) %>"></span><% end %>
 	<%= form_with(model: institution) do |form| %>
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -53,11 +54,11 @@
 				<%= hidden_field_tag :booklist_id, parent.id %>
 			<% end %>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}#{depth.to_s}-new-institution-modal .ownership-field').val()" : "" %>', 0);})">Save & Close</button>
+				<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}#{depth.to_s}-new-institution-modal .ownership-field').val()" : "null" %>, 0);})">Save & Close</button>
 			</div>
 		</div>
 	</div>
-	<% end %>	
+	<% end %>
 </div>
 
 <%= render 'locations/modals/form', location: Location.new, parent: institution, pid: "#{'gen-' if defined?(genesis) && genesis}institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
