@@ -19,6 +19,7 @@
 					  </button>
 					  <ul class="dropdown-menu" aria-labelledby="ownership-options-<%= p.id %>">
 					    <% if parent.class == Manuscript %><li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#move-ownership-<%= p.id %>">Move to booklet</button></li><% end %>
+					    <li><%= link_to "Delete provenance", '', class: "dropdown-item", onclick: "deleteOwnership('"+p.id.to_s+"')" %></li>
 					  </ul>
 					</div>
 				</div>

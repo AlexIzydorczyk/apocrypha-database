@@ -33,6 +33,8 @@ class ReligiousOrdersController < ApplicationController
     if saved && !request.xhr?
       # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path
       # redirect_to redirect_path, notice: "Religious order was successfully created."
+    elsif request.xhr?
+      render json: {id: @religious_order.id}
     else
       render :new, status: :unprocessable_entity
     end
