@@ -40,7 +40,7 @@ class ModernSourceReferencesController < ApplicationController
   def update
     if @modern_source_reference.update(modern_source_reference_params)
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {id: @modern_source_reference.id}  
       else
         redirect_to modern_source_references_url, notice: "Modern source reference was successfully updated."
       end
