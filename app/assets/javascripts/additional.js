@@ -115,8 +115,11 @@ $(function() {
 
   createModalListeners(".modal");
   if($(location.hash).hasClass("modal")) setTimeout(function() {
+    if($(location.hash).find('span.second-modal').length > 0){
+      $($(location.hash).find('span.second-modal').data("other-render")).modal('show');
+    }
     $(location.hash).modal('show');
-  }, 100); 
+  }, 100);
 
 });
 

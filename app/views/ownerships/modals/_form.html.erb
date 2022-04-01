@@ -105,6 +105,9 @@
 
 <%= render 'people/modals/form', person: Person.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
 <%= render 'institutions/modals/new', institution: Institution.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<% if ownership.institution_id.present? %>
+<%= render 'institutions/modals/new', institution: ownership.institution, parent: ownership, pid: "ownership-institution-#{ownership.institution_id}-", depth: 1 %>
+<% end %>
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
 <%= render 'locations/modals/form', location: Location.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
 

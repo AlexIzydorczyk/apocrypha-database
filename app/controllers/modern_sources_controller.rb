@@ -4,7 +4,7 @@ class ModernSourcesController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
-    @modern_sources = ModernSource.all
+    @modern_sources = @modern_sources = ModernSource.joins(:authors).order("people.last_name_vernacular", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all
   end
 
   def show

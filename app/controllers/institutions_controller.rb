@@ -69,7 +69,7 @@ class InstitutionsController < ApplicationController
       end
       ChangeLog.create(user_id: current_user.id, record_type: 'Institution', record_id: @institution.id, controller_name: 'institution', action_name: 'update')
       if request.xhr?
-        render :json => { new_url: insitution_path(@institution), id: @institution }  
+        render :json => { new_url: institution_path(@institution), id: @institution }  
       else
         # redirect_to institutions_url, notice: "Institution was successfully updated."
       end
