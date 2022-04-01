@@ -44,7 +44,7 @@ class ReligiousOrdersController < ApplicationController
     if @religious_order.update(religious_order_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'update')
       if request.xhr?
-        render json: {status: "updated"}  
+        render json: {id: @religious_order.id}  
       else
         redirect_to religious_orders_url, notice: "Religious order was successfully updated."
       end

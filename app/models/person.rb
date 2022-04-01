@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
 	has_many :ownerships
-	has_many :contents
+	has_many :contents, foreign_key: "author_id"
 	has_many :texts
 	has_many :booklists
 	has_many :person_references

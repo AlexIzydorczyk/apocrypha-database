@@ -8,13 +8,14 @@ class ApplicationController < ActionController::Base
 
 	def set_grouped_people
 		@scribes = Person.joins(:person_references).where(person_references: { reference_type: 'scribe' })
-		@authors = Person.joins(:person_references).where(person_references: { reference_type: 'author' })
+		@authors = (Person.joins(:person_references).where(person_references: { reference_type: 'author' }) + Person.joins(:contents)).uniq
 		@editors = Person.joins(:person_references).where(person_references: { reference_type: 'editor' })
 		@translators = Person.joins(:person_references).where(person_references: { reference_type: 'translator' })
 		@correspondents = Person.joins(:person_references).where(person_references: { reference_type: 'correspondent' })
 		@transcribers = Person.joins(:person_references).where(person_references: { reference_type: 'transcriber' })
 		@compilers = Person.joins(:person_references).where(person_references: { reference_type: 'compiler' })
 		@owners = Person.joins(:ownerships).all
+		@no_role = Person.where.not(id: @scribes.map(&:id) + @authors.map(&:id) + @editors.map(&:id) + @translators.map(&:id) + @correspondents.map(&:id) + @transcribers.map(&:id) + @compilers.map(&:id) + @owners.map(&:id))
 		@grouped_people = { 
 			scribe: @scribes,
 			author: @authors,
@@ -23,6 +24,7 @@ class ApplicationController < ActionController::Base
 			correspondent: @correspondents,
 			transcriber: @transcribers,
 			compiler: @compilers,
+			owner: @owners,
 		 }
 	end
 

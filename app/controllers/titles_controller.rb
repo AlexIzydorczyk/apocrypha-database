@@ -73,7 +73,7 @@ class TitlesController < ApplicationController
     if @title.update(title_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Title', record_id: @title.id, controller_name: 'title', action_name: 'update')
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {id: @title.id}  
       else
         if params[:old_path].present?
           redirect_to params[:old_path], notice: "Title was successfully updated."
