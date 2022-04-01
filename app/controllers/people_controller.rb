@@ -29,7 +29,11 @@ class PeopleController < ApplicationController
     elsif params[:modern_source_id].present?
       PersonReference.create(record: ModernSource.find(params[:modern_source_id]), person: @person, reference_type: params[:reference_type])
     elsif params[:manuscript_id].present?
-      PersonReference.create(record: Manuscript.find(params[:manuscript_id]), person: @person, reference_type: params[:reference_type])
+      puts 'inside manuscript refrence creation'.red
+      manuscript = Manuscript.find(params[:manuscript_id])
+      puts @person.inspect
+      puts manuscript.inspect
+      puts PersonReference.create(record: manuscript, person: @person, reference_type: params[:reference_type]).inspect
     elsif params[:booklist_id].present?
       b = Booklist.find(params[:booklist_id])
       b[params[:db_field]] = @person.id
@@ -41,6 +45,8 @@ class PeopleController < ApplicationController
       # redirect_to redirect_path, notice: "Person was successfully created."
     elsif !request.xhr?
       render :new, status: :unprocessable_entity
+    elsif request.xhr?
+      render json: {id: @person.id}
     end
   end
 

@@ -4,7 +4,7 @@ class Person < ApplicationRecord
 	has_many :texts
 	has_many :booklists
 	has_many :person_references
-	has_many :modern_sources, through: :person_references
+	has_many :modern_sources, through: :person_references, source: :record, source_type: "ModernSource", as: :record
 	has_many :texts, through: :person_references
 	has_many :manuscripts, through: :person_references
 	belongs_to :writing_system, optional: true
