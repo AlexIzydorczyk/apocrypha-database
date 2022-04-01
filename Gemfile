@@ -19,6 +19,7 @@ gem "lograge"
 gem "colorize"
 gem "sassc-rails"
 gem "rollbar"
+gem 'rack-attack'
 
 gem 'capistrano', '~> 3.11'
 gem 'capistrano-rails', '~> 1.4'
