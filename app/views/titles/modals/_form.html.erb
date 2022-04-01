@@ -1,5 +1,5 @@
-<div class="modal" id="<%= pid %>title-modal" tabindex="-1" aria-hidden="true">
-	<%= form_with(model: title, url: (title.new_record? ? titles_path : title_path(title))) do |form| %>
+<div class="modal" id="<%= pid %>title-modal" tabindex="-1" aria-hidden="true" data-depth="0">
+	<%= form_with(model: title, url: (title.new_record? ? titles_path : title_path(title)), class: "autosave") do |form| %>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -47,4 +47,8 @@
 
 <script type="text/javascript">
 	new TomSelect("#<%= pid %>title-modal #title_language_id",{ sortField: {field: "text", direction: "asc"}, maxItems: 1, maxOptions: null,});
+	$(function() {
+		console.log("CREATING THAT LISTENER")
+		createModalListeners("#<%= pid %>title-modal");
+	})
 </script>
