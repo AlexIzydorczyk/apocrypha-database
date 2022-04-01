@@ -30,6 +30,9 @@ class LanguagesController < ApplicationController
         r.save
       end
     end
+    if request.xhr?
+      render json: {id: @language.id}
+    end
     # if @language.save
     #   # redirect_to languages_url, notice: "Language was successfully created."
     # else
@@ -41,7 +44,7 @@ class LanguagesController < ApplicationController
     if @language.update(language_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Language', record_id: @language.id, controller_name: 'language', action_name: 'update')
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {id: @language.id}  
       else
         redirect_to languages_url, notice: "Language was successfully updated."
       end
