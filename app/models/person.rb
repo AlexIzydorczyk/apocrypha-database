@@ -1,11 +1,12 @@
 class Person < ApplicationRecord
-	has_many :ownerships
-	has_many :contents, foreign_key: "author_id"
-	has_many :texts
-	has_many :booklists
-	has_many :person_references
+	has_many :ownerships, dependent: :nullify
+	has_many :contents, foreign_key: "author_id", dependent: :nullify
+	has_many :texts, dependent: :nullify
+	has_many :booklists, dependent: :nullify, foreign_key: "scribe_id"
+	has_many :booklists, dependent: :nullify, foreign_key: "library_owner_id"
+	has_many :person_references, dependent: :destroy
 	has_many :modern_sources, through: :person_references, source: :record, source_type: "ModernSource", as: :record
-	has_many :texts, through: :person_references
+	has_many :texts, through: :person_references, source: :record, source_type: "Text", as: :record
 	has_many :manuscripts, through: :person_references
 	belongs_to :writing_system, optional: true
 

@@ -1,12 +1,12 @@
 class Institution < ApplicationRecord
   belongs_to :location, optional: true
-  has_many :manuscripts
-  has_many :institutional_affiliations
+  has_many :manuscripts, dependent: :nullify
+  has_many :institutional_affiliations, dependent: :nullify
   has_many :religious_orders, through: :institutional_affiliations
-  has_many :booklets
-  has_many :ownerships
-  has_many :booklists
-  has_many :modern_sources
+  has_many :booklets, foreign_key: "genesis_institution_id", dependent: :nullify
+  has_many :ownerships, dependent: :nullify
+  has_many :booklists, dependent: :nullify
+  has_many :modern_sources, dependent: :nullify
   belongs_to :writing_system, optional: true
 
   after_initialize :set_default_writing_system
