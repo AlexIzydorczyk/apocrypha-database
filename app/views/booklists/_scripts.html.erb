@@ -82,7 +82,18 @@ function runTomSelects(){
 		}
 	});
 	new TomSelect("#booklist_religious_order_id", ts_sort_text_asc_max_1);
-	new TomSelect("#booklist_language_id", ts_sort_text_asc_max_1);
+	new TomSelect("#booklist_language_id", {
+		sortField: {
+			field: "text",
+			direction: "asc",
+		},
+		maxItems: 1,
+		create: function(l){
+			saveForm($(`#booklist-form form`), $(`#new-language #record-id`));
+			$("#new-language #language_language_name").val(l);
+			$('#new-language').modal('show');
+		}
+	});
 	new TomSelect("#booklist_scribe_id", ts_sort_text_asc_max_1);
 	<% booklist.booklist_sections.each do |bs| %>
 		new TomSelect("#apocrypha-mentioned-section-<%= bs.id %>",{

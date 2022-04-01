@@ -31,9 +31,6 @@ class PeopleController < ApplicationController
     elsif params[:manuscript_id].present?
       puts 'inside manuscript refrence creation'.red
       manuscript = Manuscript.find(params[:manuscript_id])
-      puts @person.inspect
-      puts manuscript.inspect
-      puts PersonReference.create(record: manuscript, person: @person, reference_type: params[:reference_type]).inspect
     elsif params[:booklist_id].present?
       b = Booklist.find(params[:booklist_id])
       b[params[:db_field]] = @person.id

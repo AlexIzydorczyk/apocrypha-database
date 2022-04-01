@@ -8,13 +8,13 @@ class ApplicationController < ActionController::Base
 
 	def set_grouped_people
 		@scribes = Person.joins(:person_references).where(person_references: { reference_type: 'scribe' })
-		@authors = (Person.joins(:person_references).where(person_references: { reference_type: 'author' }) + Person.joins(:contents)).uniq
+		@authors = (Person.joins(:person_references).where(person_references: { reference_type: 'author' }) + Person.joins(:contents) + Person.joins("INNER JOIN booklists ON booklists.scribe_id = people.id").all).uniq
 		@editors = Person.joins(:person_references).where(person_references: { reference_type: 'editor' })
 		@translators = Person.joins(:person_references).where(person_references: { reference_type: 'translator' })
 		@correspondents = Person.joins(:person_references).where(person_references: { reference_type: 'correspondent' })
 		@transcribers = Person.joins(:person_references).where(person_references: { reference_type: 'transcriber' })
 		@compilers = Person.joins(:person_references).where(person_references: { reference_type: 'compiler' })
-		@owners = Person.joins(:ownerships).all
+		@owners = (Person.joins(:ownerships).all + Person.joins("INNER JOIN booklists ON booklists.library_owner_id = people.id").all).uniq
 		@no_role = Person.where.not(id: @scribes.map(&:id) + @authors.map(&:id) + @editors.map(&:id) + @translators.map(&:id) + @correspondents.map(&:id) + @transcribers.map(&:id) + @compilers.map(&:id) + @owners.map(&:id))
 		@grouped_people = { 
 			scribe: @scribes,

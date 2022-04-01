@@ -35,7 +35,7 @@ class BooklistsController < ApplicationController
     if @booklist.update(booklist_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Booklist', record_id: @booklist.id, controller_name: 'booklist', action_name: 'update')
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {id: @booklist.id}  
       else
         redirect_to booklists_url, notice: "Booklist was successfully updated."
       end

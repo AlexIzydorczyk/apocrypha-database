@@ -78,6 +78,7 @@
 			<%= form.label :scribe_id, "Author", style: "display: block" %>
 			<div class="d-flex">
 				<select class="form-control" name="booklist[scribe_id]" id="booklist_scribe_id" placeholder="Select scribe">
+					<option></option>
 					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 						<optgroup label="<%= group.to_s.humanize %>">
 							<% people.each do |person| %>
@@ -173,6 +174,8 @@
 		<%= render 'modern_source_references/modals/form', parent: bs, msr: bs.modern_source_references.first, bl: bs.id %>
 	<% end %>
 <% end %>
+
+<%= render '/languages/modals/new', language: Language.new, pid: "", in_vue: false, parent: booklist %>
 
 <!-- Scripts -->
 <%= render '/booklists/scripts', booklist: booklist %>

@@ -24,6 +24,8 @@ class LanguagesController < ApplicationController
     if params[:record_class].present?
       if params[:record_class] == "Manuscript"
         LanguageReference.create(record: Manuscript.find(params[:record_id]), language: @language)
+      elsif params[:record_class] == "Booklist"
+        Booklist.find(params[:record_id]).update(language: @language)
       else
         r = params[:record_class].constantize.find(params[:record_id])
         r[params[:record_field_name]] = @language.id
