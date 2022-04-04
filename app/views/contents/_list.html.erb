@@ -19,7 +19,7 @@
 				    	<li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#move-content-<%= c.id %>">Move to booklet</button></li>
 				    <% end %>
 				    <li><%= link_to "Edit Author/Title", '#contents', class: "dropdown-item", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"+c.id.to_s} %></li>
-				    <li><%= link_to "Delete content", '#contents', class: "dropdown-item", onclick: "deleteContent("+c.id.to_s+")" %></li>
+				    <li><%= link_to "Delete content", '', class: "dropdown-item", onclick: "deleteContent("+c.id.to_s+")" %></li>
 				  </ul>
 				</div>
 			</div>

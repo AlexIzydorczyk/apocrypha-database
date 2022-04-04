@@ -22,7 +22,8 @@ class SectionsController < ApplicationController
 
     if @section.save
       ChangeLog.create(user_id: current_user.id, record_type: 'Section', record_id: @section.id, controller_name: 'section', action_name: 'create')
-      redirect_to edit_manuscript_booklet_content_text_path(@section.text.content.booklet.manuscript, @section.text.content.booklet, @section.text.content, @section.text), notice: "Section was successfully created."
+      redirect_url = @section.text.content.booklet.present? ? edit_manuscript_booklet_content_text_path(@section.text.content.booklet.manuscript, @section.text.content.booklet, @section.text.content, @section.text) : edit_manuscript_content_text_path(@section.text.content.manuscript, @section.text.content, @section.text)
+      redirect_to redirect_url, notice: "Section was successfully created."
     else
       render :new, status: :unprocessable_entity
     end

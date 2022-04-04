@@ -11,7 +11,7 @@
 					<div class="col-12 mb-2">
 						<%= form.label :modern_source_id, "Bibliographic item", style: "display: block" %>
 						<div class="d-flex align-items-baseline">
-							<%= form.collection_select :modern_source_id, @modern_sources, "id", "display_name", {selected: msr.modern_source_id, include_blank: true}, {class: "form-control", placeholder: "Select bibliographic item"} %>
+							<%= form.collection_select :modern_source_id, @modern_sources, "id", "display_name_html_safe", {selected: msr.modern_source_id, include_blank: true}, {class: "form-control", placeholder: "Select bibliographic item"} %>
 							<button type="button" class="btn btn-action ms-2" onclick="newModernSource(<%= msr.try(:id) %>)">New</button>
 						</div>
 					</div>

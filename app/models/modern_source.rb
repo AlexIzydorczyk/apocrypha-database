@@ -30,6 +30,10 @@ class ModernSource < ApplicationRecord
     self.writing_system = ws if ws.present?
   end
 
+  def display_name_html_safe
+    self.display_name.html_safe
+  end
+
   def set_display_name
     s = ""
     
@@ -43,10 +47,10 @@ class ModernSource < ApplicationRecord
     end
 
     # title
-    (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true) + ". ") if ['book_chapter', 'journal_article', 'handwritten_document'].include?(self.source_type)
+    (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true, true) + ". ") if ['book_chapter', 'journal_article', 'handwritten_document'].include?(self.source_type)
 
     # publication title
-    s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true) + ". "
+    s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true)
 
     #editors
     s += "Edited by " + person_list(self.editors) + ". " if self.editors.count > 0
@@ -121,7 +125,7 @@ class ModernSource < ApplicationRecord
     #doi
     s += "doi: " + self.DOI + ". " if self.DOI.present?
 
-    self.display_name = s.strip.gsub("  ", " ").gsub(" .", ".").gsub("...", ".").gsub("..", ".").html_safe
+    self.display_name = s.strip.gsub("  ", " ").gsub("<i></i>", "").gsub(" .", ".").gsub("...", ".").gsub("..", ".").html_safe
   end
 
   def person_list people, are_editors=false, first_list=false,
