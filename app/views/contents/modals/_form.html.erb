@@ -48,7 +48,7 @@
 
 					<input type="hidden" name="content_id" id="content_content_id">
 					<% unless content.id.present? %><input type="hidden" name="_method" id="form-method-input" value="post" autocomplete="off"><% end %>
-					<%= form.hidden_field :sequence_no, value: parent.contents.count+1 %>
+					<%= form.hidden_field :sequence_no, value: content.sequence_no || parent.contents.count+1 %>
 					<%= form.hidden_field parent.class == Manuscript ? :manuscript_id : :booklet_id %>
 				</div>
 

@@ -1,5 +1,5 @@
 <div id="contents-list">
-	<% parent.contents.each_with_index do |c, i| %>
+	<% parent.contents.order("sequence_no ASC").each_with_index do |c, i| %>
 		<div class="card grey mb-2" id="<%= dom_id c %>">
 			<div class="card-body d-flex align-items-center">
 				<i class="fas fa-bars me-2 grab"></i>

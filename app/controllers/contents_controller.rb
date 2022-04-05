@@ -75,8 +75,11 @@ class ContentsController < ApplicationController
   end
 
   def sort
-    params[:content].each_with_index do |id, index|
-      Content.where(id: id).update_all(sequence_no: index + 1)
+    params[:content].each_with_index do |id, i|
+      c = Content.where(id: id)
+      c.update_all(sequence_no: i + 1)
+      puts i.to_s.red
+      puts c.inspect
     end
   end
 
@@ -86,6 +89,6 @@ class ContentsController < ApplicationController
     end
 
     def content_params
-      params.require(:content).permit(:booklet_id, :sequence_no, :title_id, :author_id, :manuscript_id)
+      params.require(:content).permit(:booklet_id, :title_id, :author_id, :manuscript_id)
     end
 end
