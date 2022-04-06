@@ -12,7 +12,11 @@ class Content < ApplicationRecord
     # self.title.present? && self.title.title_translation.present? ? self.title.title_translation : (self.author.present? ? (self.author.first_name_vernacular + self.author.middle_name_vernacular + self.author.last_name_vernacular) : "")
     s = []
     s.push(self.author.full_name) if self.author.present?
-    s.push("<i>" + self.title.title_english + "</i>") if self.title.present?
+    if self.title.present? && self.title.italicized?
+      s.push("<i>" + self.title.title_english + "</i>")
+    elsif self.title.present?
+      s.push(self.title.title_english)
+    end
     s.join(', ').html_safe
   end
 

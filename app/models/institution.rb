@@ -34,6 +34,14 @@ class Institution < ApplicationRecord
     s
   end
 
+  def display_name_with_city_country
+    if self.location.present?
+      self.display_name + ', '+ self.location.city_country
+    else
+      self.display_name
+    end
+  end
+
   def long_display_name
     self.name_orig
   end
