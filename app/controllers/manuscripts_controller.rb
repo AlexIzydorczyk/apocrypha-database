@@ -63,7 +63,7 @@ class ManuscriptsController < ApplicationController
       new_set = params[:correspondent_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "correspondent").destroy_all
       build_scribe_references_for((new_set - @manuscript.correspondents.ids), "correspondent")
-    else
+    elsif params[:in_grid].blank?
       @manuscript.correspondent_references.destroy_all
     end
 
@@ -71,7 +71,7 @@ class ManuscriptsController < ApplicationController
       new_set = params[:transcriber_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "transcriber").destroy_all
       build_scribe_references_for((new_set - @manuscript.transcribers.ids), "transcriber")
-    else
+    elsif params[:in_grid].blank?
       @manuscript.transcriber_references.destroy_all
     end
 
@@ -79,7 +79,7 @@ class ManuscriptsController < ApplicationController
       new_set = params[:compiler_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "compiler").destroy_all
       build_scribe_references_for((new_set - @manuscript.compilers.ids), "compiler")
-    else
+    elsif params[:in_grid].blank?
       @manuscript.compiler_references.destroy_all
     end
 
@@ -87,7 +87,7 @@ class ManuscriptsController < ApplicationController
       new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set, reference_type: "scribe").destroy_all
       build_scribe_references_for((new_set - @manuscript.scribes.ids), "scribe")
-    else
+    elsif params[:in_grid].blank?
       @manuscript.scribe_references.destroy_all
     end
     
