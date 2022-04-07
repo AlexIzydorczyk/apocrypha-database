@@ -36,7 +36,7 @@ class Institution < ApplicationRecord
 
   def display_name_with_city_country
     if self.location.present?
-      self.display_name + ', '+ self.location.city_country
+      self.location.city_country + ', '+ self.display_name
     else
       self.display_name
     end
