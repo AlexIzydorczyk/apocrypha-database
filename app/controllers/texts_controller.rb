@@ -46,7 +46,10 @@ class TextsController < ApplicationController
     build_language_references_for new_set - @text.languages.ids
 
     params[:sections].each do |id, prms|
-      Section.find(id).update(section_params(prms))
+      section = Section.find(id)
+      section.update(section_params(prms))
+      puts 'section'.red
+      puts section.inspect
     end if params[:sections].present?
 
     if @text.update(text_params)

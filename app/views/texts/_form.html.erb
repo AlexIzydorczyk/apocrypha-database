@@ -116,9 +116,9 @@
 					</div>
 					<div class="col">
 						<label>Incipit</label>
-						<%= form.text_area :incipit_orig, class: "form-control mb-2 one-line", placeholder: "Incipit" %>
-						<%= form.text_area :incipit_orig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
-						<%= form.text_area :incipit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
+						<%= f.text_area :incipit_orig, class: "form-control mb-2 one-line", placeholder: "Incipit", value: section.incipit_orig %>
+						<%= f.text_area :incipit_orig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin", value: section.incipit_orig_transliteration %>
+						<%= f.text_area :incipit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin", value: section.incipit_translation %>
 					</div>
 				</div>
 				<div class="row">
@@ -131,9 +131,9 @@
 					</div>
 					<div class="col">
 						<label>Explicit</label>
-						<%= form.text_area :explicit_orig, class: "form-control mb-2 one-line", placeholder: "Explicit" %>
-						<%= form.text_area :explicitorig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
-						<%= form.text_area :explicit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
+						<%= f.text_area :explicit_orig, class: "form-control mb-2 one-line", placeholder: "Explicit", value: section.explicit_orig %>
+						<%= f.text_area :explicitorig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin", value: section.explicitorig_transliteration %>
+						<%= f.text_area :explicit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin", value: section.explicit_translation %>
 					</div>
 				</div>
 			</div>
