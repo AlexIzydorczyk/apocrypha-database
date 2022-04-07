@@ -45,7 +45,17 @@
       city: "<%= manuscript.institution.try(:location).try(:city_orig) %>",
       region: "<%= manuscript.institution.try(:location).try(:region_orig) %>",
       country: "<%= manuscript.institution.try(:location).try(:country) %>",
-      shelfmark: "<%= manuscript.shelfmark %>",old_shelfmark: "<%= manuscript.old_shelfmark %>",material: "<%= manuscript.material %>",dimensions: "<%= manuscript.dimensions %>",leaf_page_no: "<%= manuscript.leaf_page_no %>",date_from: "<%= manuscript.date_from %>",date_to: "<%= manuscript.date_to %>",content_type: "<%= manuscript.content_type %>",notes: `<%= manuscript.notes %>`,languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>, links: { show: "<%= manuscript_path(manuscript) %>", edit: "<%= edit_manuscript_path(manuscript) %>", delete_btn: 'delete_<%= manuscript.id %>' }
+      shelfmark: "<%= manuscript.shelfmark.html_safe %>",
+      old_shelfmark: "<%= manuscript.old_shelfmark.html_safe  %>",
+      material: "<%= manuscript.material.html_safe  %>",
+      dimensions: "<%= manuscript.dimensions.html_safe %>",
+      leaf_page_no: "<%= manuscript.leaf_page_no %>",
+      date_from: "<%= manuscript.date_from.html_safe  %>",
+      date_to: "<%= manuscript.date_to.html_safe  %>",
+      content_type: "<%= manuscript.content_type.html_safe %>",
+      notes: `<%= manuscript.notes.html_safe  %>`,
+      languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
+      links: { show: "<%= manuscript_path(manuscript) %>", edit: "<%= edit_manuscript_path(manuscript) %>", delete_btn: 'delete_<%= manuscript.id %>' }
     },
     <% end %>
     ];

@@ -23,7 +23,7 @@ var setModalPositioning = function modalPosition(){
 }
 
 function timeoutReload(location_hash, time=300){
-  console.log("timeout relaoding running");
+  console.log("timeout reloading running");
   if(location_hash){
     location.hash = location_hash;
   } else {
