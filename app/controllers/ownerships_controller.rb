@@ -48,7 +48,7 @@ class OwnershipsController < ApplicationController
   def destroy
     @ownership.destroy
     ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'destroy')
-    redirect_to ownerships_url, notice: "Ownership was successfully destroyed."
+    redirect_to ownerships_url, notice: "Ownership was successfully destroyed." unless request.xhr?
   end
 
   private
