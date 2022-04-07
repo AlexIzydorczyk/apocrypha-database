@@ -73,7 +73,6 @@
     };
 
     function onCellValueChanged(event){
-      console.log('cell value changed ', event);
       saveChange(event.data.id, event.data);
     }
 
@@ -82,7 +81,6 @@
       my_data.in_grid = "1";
       my_data.authenticity_token = "<%= form_authenticity_token %>";
       my_data.manuscript = data;
-      console.log('my_data', my_data);
       $.ajax({
         url: "/manuscripts/"+id,
         type: 'PUT',
