@@ -35,6 +35,8 @@ class ModernSource < ApplicationRecord
   end
 
   def set_display_name
+    puts 'running set display name for'.blue
+    puts self.inspect
     s = ""
     
     # name (initial)
@@ -50,7 +52,7 @@ class ModernSource < ApplicationRecord
     (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true, true) + ". ") if ['book_chapter', 'journal_article', 'handwritten_document'].include?(self.source_type)
 
     # publication title
-    s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true)
+    s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true) + ". "
 
     #editors
     s += "Edited by " + person_list(self.editors) + ". " if self.editors.count > 0
@@ -116,7 +118,7 @@ class ModernSource < ApplicationRecord
     #first url
     self.source_urls.each_with_index do |source, source_index|
       if source.url.present?
-        s += "Accssed " if source_index == 0 if source.date_accessed.present?
+        s += "Accessed " if source_index == 0 if source.date_accessed.present?
         s += source.date_accessed.strftime("%-d %B, %Y") + ". " if source.date_accessed.present?
         s += source.url + ". "
       end
@@ -137,17 +139,22 @@ class ModernSource < ApplicationRecord
 
   def title language, orig, translit, transla, show_quotes=false, italics=false
     s = ""
-    title = self.writing_system != WritingSystem.find_by(name: "Latin") ? translit : orig
+    not_latin = self.writing_system != WritingSystem.find_by(name: "Latin")
+    title = not_latin ? translit : orig
+    puts 'title'.red
+    puts title
     if title.present?
       s += '"' if show_quotes
       s += "<i>" if italics
       s += title
       s += "</i>" if italics
-      s = '"' if show_quotes
+      s += '"' if show_quotes
       s += " "
     end
-    english = Language.find_or_create_by(language_name: 'English', requires_transliteration: false)
-    s += "[" + transla + "]" unless language == english || transla.blank?
+    # english = Language.find_or_create_by(language_name: 'English', requires_transliteration: false)
+    s += "[" + transla + "]" unless !not_latin || transla.blank?
+    puts 'setting name as'.red
+    puts s
     s
   end
 
