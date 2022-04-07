@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 			transcriber: @transcribers,
 			compiler: @compilers,
 			owner: @owners,
+			no_role: @no_role,
 		 }
 	end
 
