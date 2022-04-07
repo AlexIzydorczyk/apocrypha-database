@@ -94,9 +94,16 @@
 <% text.sections.each do |section| %>
 	<%= fields_for("sections[#{section.id}]") do |f| %>
 		<div class="row">
-			<div class="col-md-4 mb-2">
-				<%= f.label :section_name %>
-				<%= f.select :section_name, options_for_select(@section_names, section.section_name), {include_blank: true}, {class: "form-control", placeholder: "Select or add"} %>
+			<div class="col-md-12 mb-2">
+				<div class="d-flex">
+					<div class="form-group">
+						<%= f.label :section_name %>
+						<%= f.select :section_name, options_for_select(@section_names, section.section_name), {include_blank: true}, {class: "form-control", placeholder: "Select or add"} %>	
+					</div>
+					<button type="button" class="btn btn-outline-action ms-auto px-4" onclick="deleteSection('<%= section.id %>')">
+						<i class="far fa-trash-alt"></i>
+					</button>
+				</div>
 			</div>
 			<div class="col-md-12 mb-2">
 				<div class="row">
@@ -274,4 +281,19 @@
 	    });
 		}
 	}
+
+	function deleteSection(section_id){
+		if(confirm("Are you sure you want to remove this section?")){
+	    $.ajax({
+	      url: "/sections/"+section_id,
+	      type: 'DELETE',
+	      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+	      contentType: 'application/json',
+	      success: function(data) {
+	        timeoutReload(null, 0);
+	      }
+	    });
+		}
+	}
+
 </script>

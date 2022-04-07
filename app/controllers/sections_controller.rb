@@ -45,7 +45,7 @@ class SectionsController < ApplicationController
   def destroy
     @section.destroy
     ChangeLog.create(user_id: current_user.id, record_type: 'Section', record_id: @section.id, controller_name: 'section', action_name: 'destroy')
-    redirect_to sections_url, notice: "Section was successfully destroyed."
+    redirect_to sections_url, notice: "Section was successfully destroyed." unless request.xhr?
   end
 
   private
