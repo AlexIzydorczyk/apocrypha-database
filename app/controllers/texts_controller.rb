@@ -67,7 +67,11 @@ class TextsController < ApplicationController
   def destroy
     @text.destroy
     ChangeLog.create(user_id: current_user.id, record_type: 'Text', record_id: @text.id, controller_name: 'text', action_name: 'destroy')
-    redirect_to texts_url, notice: "Text was successfully destroyed."
+    if request.xhr?
+      render :json => {"status": "updated"}  
+    else
+      redirect_to texts_url, notice: "Text details were successfully destroyed."
+    end
   end
 
   private
