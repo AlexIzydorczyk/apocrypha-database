@@ -28,6 +28,8 @@ class ReligiousOrdersController < ApplicationController
       Booklist.find(params[:booklist_id]).update(religious_order: @religious_order)
     elsif params[:manuscript_id].present?
       Manuscript.find(params[:manuscript_id]).update(genesis_religious_order_id: @religious_order.id)
+    elsif params[:institution_id].present?
+      Institution.find(params[:institution_id]).update(religious_order_id: @religious_order.id)
     end
     ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'create')
     if saved && !request.xhr?

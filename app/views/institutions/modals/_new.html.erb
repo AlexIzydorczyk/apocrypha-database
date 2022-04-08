@@ -43,7 +43,7 @@
 						<%= form.label :religious_order_id, "Religious Order", style: "display: block", class: " fw-bolder" %>
 						<div class="d-flex">
 							<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: institution.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
-							<button type="button" id="institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn', '#institution-new-religious-order-modal')" data-backdrop="static" data-keyboard="false">New</button>
+							<button type="button" id="institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn', '#<%= 'gen-' if defined?(genesis) && genesis %>institution-<%= depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') %>new-religious-order-modal')" data-backdrop="static" data-keyboard="false">New</button>
 						</div>
 					</div>
 					<div class="form-group col-12 mb-2">

@@ -27,12 +27,18 @@
 			<% elsif parent.class == Ownership %>
 				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
 			<% elsif parent.class == Booklist %>
-				<%= hidden_field_tag :booklist_id, parent.id %>;
+				<%= hidden_field_tag :booklist_id, parent.id %>
 			<% elsif parent.class == Manuscript %>
-				<%= hidden_field_tag :manuscript_id, parent.id %>;
+				<%= hidden_field_tag :manuscript_id, parent.id %>
+			<% elsif parent.class == Institution %>
+				<%= hidden_field_tag :institution_id, parent.id, class: "institution-field" %>
 			<% end %>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "null" %>, 0);})">Save & Close</button>
+				<% if parent.class == Institution && depth == 2 %>
+					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('#modal-ownership-institution-' + $('#<%= pid %>new-religious-order-modal .institution-field').val() + '-<%= depth-1 %>-new-institution-modal', 0);})">Save & Close</button>
+				<% else %>
+					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "null" %>, 0);})">Save & Close</button>
+				<% end %>
 			</div>
 		</div>
 	</div>
