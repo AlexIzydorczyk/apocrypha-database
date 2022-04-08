@@ -1,4 +1,13 @@
 var formChanges;
+// --------- avoid unsaved modal --------
+
+var confirmLeavePage = false;
+window.onbeforeunload = askConfirm;
+function askConfirm(){
+  if (confirmLeavePage != false){
+      return confirmLeavePage;
+  }
+}
 
 // --------- declarations ---------
 
@@ -6,6 +15,7 @@ var autoSaveFun = function autosave() {
   $('form.autosave').each(function(index) {
     if(formChanges[index] && !$(this).hasClass('no-autosave')){
       $(this).ajaxSubmit(function(data) {
+        confirmLeavePage = false;
         formChanges[index] = false;
         if(data && data.new_url) this.attr('action', data.new_url).attr('method', 'patch');
         window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
@@ -39,6 +49,7 @@ function timeoutReload(location_hash, time=300){
 function saveForm(form, input_for_id=null, callback=null) {
   var id;
   console.log("form", form, input_for_id);
+  confirmLeavePage = false;
   form.ajaxSubmit(function(data) {
     if(data && data.new_url) {form.attr('action', data.new_url).attr('method', 'patch')};
     window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
@@ -76,7 +87,8 @@ $(function() {
         let form = $(this);
         $(this).ajaxForm({
           success: function(data, x, y, form) {
-            formChanges[index] = false
+            confirmLeavePage = false;
+            formChanges[index] = false;
             if(data && data.new_url) form.attr('action', data.new_url).attr('method', 'patch');
             window.SnackBar({message: "<i class='far fa-save'></i>", position: "tr", dismissible: false, timeout: 2000});
             if(form.hasClass("base-form")) $('.adjacent-base-form').each(function() {
@@ -99,6 +111,7 @@ $(function() {
     $("textarea").each(function () {
       $(this).css("height", Math.max(38, this.scrollHeight) + "px").css('overflow-y','hidden');
     }).on("input", function () {
+      var confirmLeavePage = "Are you sure you want to exit this page, you have unsaved changes...";
       this.style.height = "auto";
       this.style.height = (Math.max(38, this.scrollHeight)) + "px";
     });
