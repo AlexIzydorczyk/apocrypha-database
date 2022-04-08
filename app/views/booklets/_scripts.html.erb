@@ -53,18 +53,21 @@ $(document).ready(function(){
 function runTomSelects() {
 	new TomSelect("#person_reference_id", ts_max_null);
 	var booklet_genesis_location_select = new TomSelect("#booklet_genesis_location_id",ts_sort_text_asc_max_1);
+	var booklet_genesis_religious_order_select = new TomSelect("#booklet_genesis_religious_order_id", ts_sort_text_asc_max_1);
 	new TomSelect("#booklet_genesis_institution_id", {
 		maxItems: 1,
 		valueField: 'id',
 		searchField: ['institution','location_name'],
 		options: [
 			<% Institution.includes(:location).all.each do |i| %>
-			{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>"},
+			{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>", religious_order_id: "<%= i.religious_order_id %>"},
 			<% end %>
 		],
 		onItemAdd: function(value, item){
 			let location_id = $(item).attr('location_id');
 			booklet_genesis_location_select.addItem(location_id);
+			let religious_order_id = $(item).attr('religious_order_id');
+			booklet_genesis_religious_order_select.addItem(religious_order_id);
 		},
 		render: {
 			option: function(data, escape) {
@@ -74,11 +77,10 @@ function runTomSelects() {
 					'</div>';
 			},
 			item: function(data, escape) {
-				return '<div location_id="' + escape(data.location_id) + '">' + escape(data.institution) + '</div>';
+				return '<div location_id="' + escape(data.location_id) + '" religious_order_id="' + escape(data.religious_order_id) + '">' + escape(data.institution) + '</div>';
 			}
 		}
 	});
-	new TomSelect("#booklet_genesis_religious_order_id", ts_sort_text_asc_max_1);
 	new TomSelect("#booklet_content_type", ts_sort_text_asc_max_1_create);
 };
 

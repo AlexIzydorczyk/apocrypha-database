@@ -61,11 +61,15 @@ class InstitutionsController < ApplicationController
       if params[:manuscript_id].present?
         m = Manuscript.find(params[:manuscript_id])
         m.update(genesis_location_id: @institution.location_id) if @institution.id == m.genesis_institution_id && @institution.location_id.present?
+        m.update(genesis_religious_order_id: @institution.religious_order_id) if @institution.id == m.genesis_institution_id && @institution.religious_order_id.present?
       elsif params[:booklet_id].present?
         b = Booklet.find(params[:booklet_id])
         b.update(genesis_location_id: @institution.location_id) if @institution.id == b.genesis_institution_id && @institution.location_id.present?
+        b.update(genesis_religious_order_id: @institution.religious_order_id) if @institution.id == b.genesis_institution_id && @institution.religious_order_id.present?
       elsif params[:booklist_id].present?
-        Booklist.find(params[:booklist_id]).update(location_id: @institution.location_id) if @institution.location_id.present?
+        bl = Booklist.find(params[:booklist_id]).
+        bl.update(location_id: @institution.location_id) if @institution.location_id.present?
+        bl.update(location_id: @institution.religious_order_id) if @institution.religious_order_id.present?
       end
       ChangeLog.create(user_id: current_user.id, record_type: 'Institution', record_id: @institution.id, controller_name: 'institution', action_name: 'update')
       if request.xhr?
@@ -94,6 +98,6 @@ class InstitutionsController < ApplicationController
     end
 
     def institution_params
-      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :writing_system_id, :original_language, :institution_id, :language_id, :location_id)
+      params.require(:institution).permit(:name_english, :name_orig, :name_orig_transliteration, :writing_system_id, :original_language, :institution_id, :language_id, :location_id, :religious_order_id, :notes)
     end
 end

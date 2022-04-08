@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_08_142800) do
+ActiveRecord::Schema.define(version: 2022_04_08_145419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,7 +169,10 @@ ActiveRecord::Schema.define(version: 2022_04_08_142800) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "writing_system_id"
+    t.bigint "religious_order_id"
+    t.text "notes", default: "", null: false
     t.index ["location_id"], name: "index_institutions_on_location_id"
+    t.index ["religious_order_id"], name: "index_institutions_on_religious_order_id"
     t.index ["writing_system_id"], name: "index_institutions_on_writing_system_id"
   end
 
@@ -498,7 +501,7 @@ ActiveRecord::Schema.define(version: 2022_04_08_142800) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration"
+    t.boolean "requires_transliteration", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -531,6 +534,7 @@ ActiveRecord::Schema.define(version: 2022_04_08_142800) do
   add_foreign_key "institutional_affiliations", "institutions"
   add_foreign_key "institutional_affiliations", "religious_orders"
   add_foreign_key "institutions", "locations"
+  add_foreign_key "institutions", "religious_orders"
   add_foreign_key "language_references", "languages"
   add_foreign_key "locations", "writing_systems", column: "city_orig_writing_system_id"
   add_foreign_key "locations", "writing_systems", column: "diocese_orig_writing_system_id"

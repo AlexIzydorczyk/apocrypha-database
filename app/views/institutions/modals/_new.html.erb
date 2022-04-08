@@ -38,6 +38,19 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="form-group col-12 mb-2">
+						<%= form.label :religious_order_id, "Religious Order", style: "display: block", class: " fw-bolder" %>
+						<div class="d-flex">
+							<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: institution.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
+							<button type="button" id="institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn', '#institution-new-religious-order-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+					<div class="form-group col-12 mb-2">
+						<%= form.label :notes, "Notes", style: "display: block" %>
+						<%= form.text_area :notes, class: "form-control" %>
+					</div>
+				</div>
 			</div>
 			<% if local_assigns[:genesis].present? %>
 				<%= hidden_field_tag :genesis, true %>
@@ -62,6 +75,7 @@
 </div>
 
 <%= render 'locations/modals/form', location: Location.new, parent: institution, pid: "#{'gen-' if defined?(genesis) && genesis}institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: institution, pid: "#{'gen-' if defined?(genesis) && genesis}institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
 
 <script type="text/javascript">
 	var institutution_modal_vue;
@@ -91,6 +105,7 @@
 			mounted(){
 				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_location_id", ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_religious_order_id", ts_sort_text_asc_max_1);
 				createModalListeners("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal");
 			},
 		});
