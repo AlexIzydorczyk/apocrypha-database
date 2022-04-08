@@ -65,13 +65,17 @@ function saveAllForms() {
   });
 }
 
+function saveBeforeModalForms() {
+  $('form.autosave.save-before-modals').each(function() {
+      saveForm($(this));
+    })
+}
+
 function createModalListeners(selector) {
   $(selector).on('shown.bs.modal', setModalPositioning);
   $(selector).each(function() {
     if($(this).data('depth') < 1) $(this).on('shown.bs.modal', function() {
-      $('form.autosave.save-before-modals').each(function() {
-        saveForm($(this));
-      })
+      saveBeforeModalForms();
     });
   });
   $(selector).on('hidden.bs.modal', setModalPositioning);

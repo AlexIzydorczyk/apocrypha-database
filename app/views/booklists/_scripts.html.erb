@@ -183,6 +183,7 @@ function addPreserved(obj, b_id){
 
 function deleteBooklistReference(br_id){
 	if(confirm("Are you sure you want to remove this record from this booklist?")){
+		saveBeforeModalForms();
     $.ajax({
       url: "/booklist_references/"+br_id,
       type: 'DELETE',
@@ -197,6 +198,7 @@ function deleteBooklistReference(br_id){
 
 function deleteBooklistSection(bs_id){
 	if(confirm("Are you sure you want to remove this record from this booklist?")){
+		saveBeforeModalForms();
     $.ajax({
       url: "/booklist_sections/"+bs_id,
       type: 'DELETE',
@@ -211,6 +213,7 @@ function deleteBooklistSection(bs_id){
 
 function deleteModernSourceReference(msr_id){
 	if(confirm("Are you sure you want to remove this record from this booklist?")){
+		saveBeforeModalForms();
     $.ajax({
       url: "/modern_source_references/"+msr_id,
       type: 'DELETE',
