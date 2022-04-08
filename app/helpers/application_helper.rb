@@ -24,4 +24,29 @@ module ApplicationHelper
 	def format_date date
 		date.strftime("%-d %B, %Y")
 	end
+
+	def page_title
+		if action_name == "edit" || action_name == "show"
+			if controller_name == "manuscripts"
+				Manuscript.find(params[:id]).display_name
+			elsif controller_name == "booklets"
+				b = Booklet.find(params[:id])
+				"Booklet " + b.booklet_no + ' - ' + b.manuscript.display_name
+			elsif controller_name == "texts"
+				strip_tags(Text.find(params[:id]).content.display_name)
+			elsif controller_name == "apocrypha"
+				strip_tags(Apocryphon.find(params[:id]).display_name)
+			elsif controller_name == "modern_sources"
+				strip_tags(ModernSource.find(params[:id]).display_name_html_safe)
+			elsif controller_name == "booklists"
+				strip_tags(Booklist.find(params[:id]).display_name)
+			else
+				controller_name.humanize
+			end
+		elsif action_name == "index"
+			controller_name == 'application' ? 'Home' : controller_name.humanize + ' Grid'
+		else
+			controller_name.humanize
+		end
+	end
 end
