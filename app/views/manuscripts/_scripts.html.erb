@@ -77,6 +77,7 @@ $(document).ready(function(){
 			
 			runTomSelects();
 			setDraggable();
+			setOwnershipDraggable();
 			$('#manuscript-form').removeClass('d-none');
 			$('#manuscript-preloader').addClass('d-none');
 			this.date_to_select = new TomSelect("#manuscript_date_to", {

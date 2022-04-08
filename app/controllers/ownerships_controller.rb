@@ -51,6 +51,12 @@ class OwnershipsController < ApplicationController
     redirect_to ownerships_url, notice: "Ownership was successfully destroyed." unless request.xhr?
   end
 
+  def sort
+    params[:ownership].each_with_index do |id, i|
+      Ownership.where(id: id).update_all(index: i + 1)
+    end
+  end
+
   private
     def set_ownership
       @ownership = Ownership.find(params[:id])

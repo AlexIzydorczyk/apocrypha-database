@@ -76,10 +76,7 @@ class ContentsController < ApplicationController
 
   def sort
     params[:content].each_with_index do |id, i|
-      c = Content.where(id: id)
-      c.update_all(sequence_no: i + 1)
-      puts i.to_s.red
-      puts c.inspect
+      Content.where(id: id).update_all(sequence_no: i + 1)
     end
   end
 

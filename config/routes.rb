@@ -38,7 +38,11 @@ Rails.application.routes.draw do
       post :create_from_booklist
     end
   end
-  resources :ownerships
+  resources :ownerships do
+    collection do
+      put :sort
+    end
+  end
   resources :people
   resources :booklets do
     collection do
