@@ -33,19 +33,19 @@
         { headerName: "Editors", field: "editors", hide: false, editable: false },
         { headerName: "Translators", field: "translators", hide: false, editable: false },
         
-        { headerName: "Edition", field: "edition", hide: true},
+        { headerName: "Edition", field: "edition", hide: true, comparator: numberSort},
 
-        { headerName: "Volume no.", field: "volume_no", hide: true},
+        { headerName: "Volume no.", field: "volume_no", hide: true, comparator: numberSort},
         { headerName: "Volume title", field: "volume_title_orig", hide: true},
         { headerName: "Volume title transliteration", field: "volume_title_transliteration", hide: true},
         { headerName: "Volume title translation", field: "volume_title_translation", hide: true},
 
-        { headerName: "Part no.", field: "part_no", hide: true},
+        { headerName: "Part no.", field: "part_no", hide: true, comparator: numberSort},
         { headerName: "Part title", field: "part_title_orig", hide: true},
         { headerName: "Part title transliteration", field: "part_title_transliteration", hide: true},
         { headerName: "Part title translation", field: "part_title_translation", hide: true},
 
-        { headerName: "Series no.", field: "series_no", hide: true},
+        { headerName: "Series no.", field: "series_no", hide: true, comparator: numberSort},
         { headerName: "Series title orig", field: "series_title_orig", hide: true},
         { headerName: "Series title transliteration", field: "series_title_transliteration", hide: true},
         { headerName: "Series title translation", field: "series_title_translation", hide: true},
@@ -57,9 +57,9 @@
         { headerName: "ISBN", field: "ISBN", hide: true},
         { headerName: "DOI", field: "DOI", hide: true},
 
-        { headerName: "Original publication year", field: "original_publication_creation_date", hide: true},
-        { headerName: "Publication year", field: "publication_creation_date", hide: true},
-        { headerName: "Pages in publication", field: "pages_in_publication", hide: true},
+        { headerName: "Original publication year", field: "original_publication_creation_date", hide: true, comparator: numberSort},
+        { headerName: "Publication year", field: "publication_creation_date", hide: true, comparator: numberSort},
+        { headerName: "Pages in publication", field: "pages_in_publication", hide: true, comparator: numberSort},
         { headerName: "Publication location", field: "publication_location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
         { headerName: "Publisher", field: "publisher", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ModernSource.all.pluck(:publisher).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
 
@@ -70,6 +70,10 @@
       return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm' target='_blank'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this bibliography?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
     } }
   ];
+
+  function numberSort(num1, num2){
+    return num1 - num2;
+  };
 
   function insitutionGetter(params) {
       return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]

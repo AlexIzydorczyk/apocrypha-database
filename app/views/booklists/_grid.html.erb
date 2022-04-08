@@ -1,4 +1,4 @@
-<div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+, comparator: numberSort <div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% booklists.each do |booklist| %>
   <%= button_to "Delete", booklist_path(booklist), method: :delete, class: "d-none", id: 'delete_'+booklist.id.to_s %>
@@ -9,7 +9,7 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-        { headerName: "Booklist no.", field: "booklist_no" },
+        { headerName: "Booklist no.", field: "booklist_no", comparator: numberSort },
         { headerName: "Type of booklist", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         { headerName: "Language", field: "language_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
         { headerName: "Library owner", field: "library_owner_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Person.all.map(&:full_name).to_json.html_safe %> }, valueGetter: personGetter, valueSetter: personSetter},
@@ -17,9 +17,9 @@
         { headerName: "Religious order", field: "religious_order_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.all.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
         { headerName: "Location", field: "location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
         { headerName: "Author", field: "scribe_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Person.all.map(&:full_name).to_json.html_safe %> }, valueGetter: authorGetter, valueSetter: authorSetter },
-        { headerName: "Date from", field: "date_from", hide: true},
-        { headerName: "Date to", field: "date_to", hide: true},
-        { headerName: "Specific date", field: "specific_date", hide: true},
+        { headerName: "Date from", field: "date_from", hide: true, comparator: numberSort },
+        { headerName: "Date to", field: "date_to", hide: true, comparator: numberSort },
+        { headerName: "Specific date", field: "specific_date", hide: true, comparator: numberSort },
         { headerName: "Title orig", field: "title_orig"},
         { headerName: "Title orig transliteration", field: "title_orig_transliteration", hide: true},
         { headerName: "Title orig translation", field: "title_orig_translation", hide: true},
@@ -52,6 +52,10 @@
       },
     <% end %>
   ];
+
+  function numberSort(num1, num2){
+      return num1 - num2;
+    };
 
   function personGetter(params) {
     return params.data ? <%= Person.all.map{ |p| [p.id, p.full_name] }.to_h.to_json.html_safe %>[params.data.library_owner_id] : ''
