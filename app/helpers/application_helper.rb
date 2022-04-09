@@ -44,7 +44,7 @@ module ApplicationHelper
 				controller_name.humanize
 			end
 		elsif action_name == "index"
-			controller_name == 'application' ? 'Home' : controller_name.humanize + ' Grid'
+			controller_name == 'application' ? 'Home' : controller_name.humanize.gsub("Modern sources", "Bibliography") + ' Grid'
 		else
 			controller_name.humanize
 		end

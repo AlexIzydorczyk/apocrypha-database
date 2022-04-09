@@ -100,7 +100,7 @@ class ModernSourcesController < ApplicationController
       (new_set - @modern_source.source_urls.map(&:url)).each{ |url| @modern_source.source_urls.build(url: url) }
       @modern_source.save
       params[:source_urls][:urls].each{ |source|
-        @modern_source.source_urls.where(url: source[:url]).update_all(date_accessed: source[:date_accseed].present? ? Date.parse(source[:date_accessed]) : nil)
+        @modern_source.source_urls.where(url: source[:url]).update_all(date_accessed: source[:date_accessed].present? ? Date.parse(source[:date_accessed]) : nil)
       }
     end
 

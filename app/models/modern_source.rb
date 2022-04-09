@@ -49,7 +49,7 @@ class ModernSource < ApplicationRecord
     end
 
     # title
-    (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true, true) + ". ") if ['book_chapter', 'journal_article', 'handwritten_document'].include?(self.source_type)
+    (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true, true) + ". ") if ['book_chapter', 'journal_article', 'handwritten_document', 'unpublished_document'].include?(self.source_type)
 
     # publication title
     s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true) + ". "
@@ -110,6 +110,12 @@ class ModernSource < ApplicationRecord
         self.shelfmark.present? ? ("MS " + self.shelfmark) : "",
       ].select{ |b| b.present? }.join(", ") + ". "
       s += pub + ". " if pub.present?
+    else
+      pub = [
+        self.document_type,
+        self.publication_creation_date
+      ].select{ |b| b.present? }.join(", ") + ". "
+      s += pub + ". " if pub.present?
     end
 
     #shelfmark
@@ -118,7 +124,7 @@ class ModernSource < ApplicationRecord
     #first url
     self.source_urls.each_with_index do |source, source_index|
       if source.url.present?
-        s += "Accessed " if source_index == 0 if source.date_accessed.present?
+        s += "Accessed " if source_index == 0 && source.date_accessed.present?
         s += source.date_accessed.strftime("%-d %B, %Y") + ". " if source.date_accessed.present?
         s += source.url + ". "
       end
@@ -139,7 +145,7 @@ class ModernSource < ApplicationRecord
 
   def title language, orig, translit, transla, show_quotes=false, italics=false
     s = ""
-    not_latin = self.writing_system != WritingSystem.find_by(name: "Latin")
+    not_latin = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin")
     title = not_latin ? translit : orig
     puts 'title'.red
     puts title

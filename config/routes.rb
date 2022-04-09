@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :person_references
   resources :modern_source_references
   resources :source_urls
-  resources :modern_sources do
+  resources :modern_sources, path: "bibliography" do
     collection do
       post :create_from_booklist
       post :create_from_text

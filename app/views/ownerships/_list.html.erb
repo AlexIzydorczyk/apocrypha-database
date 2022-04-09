@@ -7,7 +7,14 @@
 					<div class="row w-100">
 						<div class="col-sm-4 text-end">
 							<%= p.written_date_range %>
-							<% if p.written_date_range.present? && (p.display_name.present? || p.location.try(:city_region_country).present? || p.provenance_notes.present?) %><span class="ms-3">&#124;</span><% end %>
+							<% if p.written_date_range.present? && p.specific_date.present? %>
+								<br>
+							<% end %>
+							<% unless p.date_exact %><span>ca. </span><% end %>
+							<%= p.specific_date %>
+							<% if p.written_date_range.present? && (p.display_name.present? || p.location.try(:city_region_country).present? || p.provenance_notes.present?) %>
+								<span class="ms-3">&#124;</span>
+							<% end %>
 						</div>
 						<div class="col-sm">
 							<span class=""><%= p.display_name %></span>
