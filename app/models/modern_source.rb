@@ -35,8 +35,6 @@ class ModernSource < ApplicationRecord
   end
 
   def set_display_name
-    puts 'running set display name for'.blue
-    puts self.inspect
     s = ""
     
     # name (initial)
@@ -147,8 +145,6 @@ class ModernSource < ApplicationRecord
     s = ""
     not_latin = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin")
     title = not_latin ? translit : orig
-    puts 'title'.red
-    puts title
     if title.present?
       s += '"' if show_quotes
       s += "<i>" if italics
@@ -159,8 +155,6 @@ class ModernSource < ApplicationRecord
     end
     # english = Language.find_or_create_by(language_name: 'English', requires_transliteration: false)
     s += "[" + transla + "]" unless !not_latin || transla.blank?
-    puts 'setting name as'.red
-    puts s
     s
   end
 
