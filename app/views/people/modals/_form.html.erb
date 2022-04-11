@@ -9,7 +9,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-8 offset-md-2">
-						<%= form.label "Standard form used in English", class: "fw-bolder" %>		
+						<%= form.label "Standard form used in English", "Standard form used in English", class: "fw-bolder" %>		
 						<div class="row">
 							<div class="col-md"><label>First name</label></div>
 							<div class="col-md"><label>Middle name</label></div>
@@ -19,14 +19,14 @@
 							<div class="col-md"><%= form.text_field :middle_name_vernacular, class: "form-control", placeholder: "Middle name" %></div>
 						</div>
 						<div class="row mt-2">
-							<div class="col-md"><label>Prefix</label></div>
-							<div class="col-md"><label>Last name</label></div>
-							<div class="col-md"><label>Suffix</label></div>
+							<div class="col-md-3"><label>Prefix</label></div>
+							<div class="col-md-6"><label>Last name</label></div>
+							<div class="col-md-3"><label>Suffix</label></div>
 						</div>
 						<div class="row mb-2">
-							<div class="col-md"><%= form.text_field :prefix_vernacular, class: "form-control", placeholder: "Prefix" %></div>
-							<div class="col-md"><%= form.text_field :last_name_vernacular, class: "form-control", placeholder: "Last name" %></div>
-							<div class="col-md"><%= form.text_field :suffix_vernacular, class: "form-control", placeholder: "Suffix" %></div>
+							<div class="col-md-3"><%= form.text_field :prefix_vernacular, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_vernacular, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_vernacular, class: "form-control", placeholder: "Suffix" %></div>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -43,9 +43,9 @@
 							<div class="col-md"><%= form.text_field :middle_name_english, class: "form-control", placeholder: "Middle name" %></div>
 						</div>
 						<div class="row mb-2">
-							<div class="col-md"><%= form.text_field :prefix_english, class: "form-control", placeholder: "Prefix" %></div>
-							<div class="col-md"><%= form.text_field :last_name_english, class: "form-control", placeholder: "Last name" %></div>
-							<div class="col-md"><%= form.text_field :suffix_english, class: "form-control", placeholder: "Suffix" %></div>
+							<div class="col-md-3"><%= form.text_field :prefix_english, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_english, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_english, class: "form-control", placeholder: "Suffix" %></div>
 						</div>
 					</div>
 					<div class="col-md-8 offset-md-2" v-show="alternative && writing_system_id != '<%= latin_writing_system_id %>'">
@@ -54,9 +54,9 @@
 							<div class="col-md"><%= form.text_field :middle_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
 						</div>
 						<div class="row mb-2">
-							<div class="col-md"><%= form.text_field :prefix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
-							<div class="col-md"><%= form.text_field :last_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
-							<div class="col-md"><%= form.text_field :suffix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-3"><%= form.text_field :prefix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
 						</div>
 					</div>
 				</div>
