@@ -68,7 +68,7 @@ class ModernSource < ApplicationRecord
       s += "Vol. "
       s += [
         self.volume_no,
-        title(self.volume_title_language, self.volume_title_orig, self.volume_title_transliteration, self.volume_title_translation)
+        title(self.volume_title_language, self.volume_title_orig, self.volume_title_transliteration, self.volume_title_translation, false, true)
       ].select{ |v| v.present? }.join(", ") + ". "
     end
 
