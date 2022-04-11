@@ -11,7 +11,7 @@ class Content < ApplicationRecord
     # needs to be updated to include incipit
     # self.title.present? && self.title.title_translation.present? ? self.title.title_translation : (self.author.present? ? (self.author.first_name_vernacular + self.author.middle_name_vernacular + self.author.last_name_vernacular) : "")
     s = []
-    s.push(self.author.full_name) if self.author.present?
+    s.push(self.author.full_name.strip) if self.author.present?
     if self.title.present? && self.title.italicized?
       s.push("<i>" + self.title.title_english + "</i>")
     elsif self.title.present?
