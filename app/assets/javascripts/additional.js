@@ -150,7 +150,11 @@ var ts_sort_text_asc_max_null = {
   maxItems: null,
   maxOptions: null,
   closeAfterSelect: true,
-  hidePlaceholder: true
+  hidePlaceholder: true,
+  onDropdownClose: function(d) {
+    $("*:focus").blur();
+  },
+  hideSelected: false,
 };
 
 var ts_max_null = {
@@ -158,6 +162,10 @@ var ts_max_null = {
   maxOptions: null,
   closeAfterSelect: true,
   hidePlaceholder: true,
+  onDropdownClose: function(d) {
+    $("*:focus").blur();
+  },
+  hideSelected: false,
 };
 
 var ts_max_1 = {
