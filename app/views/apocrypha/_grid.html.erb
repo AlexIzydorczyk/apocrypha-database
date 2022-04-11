@@ -1,3 +1,6 @@
+<div class="form-group mb-2">
+  <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+</div>
 <div id="apocrypha_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% apocrypha.each do |apocryphon| %>
@@ -62,6 +65,12 @@
   function numberSort(num1, num2){
     return num1 - num2;
   };
+
+  function onFilterTextBoxChanged() {
+    gridOptions.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
+  }
 
   function saveChange(id, data){
     var my_data = {};

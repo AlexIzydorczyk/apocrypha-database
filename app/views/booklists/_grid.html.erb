@@ -1,4 +1,7 @@
-, comparator: numberSort <div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+<div class="form-group mb-2">
+  <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+</div>
+<div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% booklists.each do |booklist| %>
   <%= button_to "Delete", booklist_path(booklist), method: :delete, class: "d-none", id: 'delete_'+booklist.id.to_s %>
@@ -56,6 +59,12 @@
   function numberSort(num1, num2){
       return num1 - num2;
     };
+
+  function onFilterTextBoxChanged() {
+    gridOptions.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
+  }
 
   function personGetter(params) {
     return params.data ? <%= Person.all.map{ |p| [p.id, p.full_name] }.to_h.to_json.html_safe %>[params.data.library_owner_id] : ''

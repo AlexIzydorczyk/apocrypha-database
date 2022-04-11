@@ -1,3 +1,6 @@
+<div class="form-group mb-2">
+  <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+</div>
 <div id="religious_orders_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% religious_orders.each do |religious_order| %>
@@ -36,6 +39,12 @@
   function onCellValueChanged(event){
     console.log('cell value changed ', event);
     saveChange(event.data.id, event.data);
+  }
+  
+  function onFilterTextBoxChanged() {
+    gridOptions.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
   }
 
   function saveChange(id, data){
