@@ -158,11 +158,11 @@
 				</div>
 				<div class="form-group col-2 mb-2" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == 'journal_article' ? "Issue no." : "Series no." }}</label>
-					<%= form.number_field :series_no, class: "form-control", max: Date.today.year %>
+					<%= form.text_field :series_no, class: "form-control" %>
 				</div>
 				<div class="form-group col-md-2 mb-2" v-if="source_type == 'journal_article'">
 					<label style="display: block;">Year</label>
-					<%= form.number_field :publication_creation_date, class: "form-control", placeholder: "Year", max: Date.today.year %>
+					<%= form.text_field :publication_creation_date, class: "form-control", placeholder: "Year" %>
 				</div>
 				<div class="form-group col-md-2 mb-2" v-show="source_type == 'book_chapter' || source_type == 'journal_article' || source_type == 'handwritten_document'" v-if="source_type != 'handwritten_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == 'handwritten_document' ? "Folios" : (source_type == 'book_chapter' ? "Pages in book" : (source_type == 'journal_article' ? "Pages" : "Pages in publication")) }}</label>
@@ -179,7 +179,7 @@
 			<div class="row">
 				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'web_page'">
 					<label style="display: block;">Originally published</label>
-					<%= form.number_field :original_publication_creation_date, class: "form-control", placeholder: "Year", max: Date.today.year %>
+					<%= form.text_field :original_publication_creation_date, class: "form-control", placeholder: "Year (for reprints only)" %>
 				</div>
 				<div class="form-group col-md-4 mb-2" v-show="source_type != 'journal_article' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'web_page'">
 					<label style="display: block;">{{ source_type == "handwritten_document" ? "Location" : "Place of publication" }}</label>
@@ -209,7 +209,7 @@
 				</div>
 				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document'" v-if="source_type != 'journal_article'">
 				<label style="display: block;">{{ source_type == 'web_page' ? "Last modified" : "Year" }}</label>
-					<%= form.number_field :publication_creation_date, class: "form-control", ":placeholder": "source_type == 'web_page' ? 'Date' : 'Year'", max: Date.today.year %>
+					<%= form.text_field :publication_creation_date, class: "form-control", ":placeholder": "source_type == 'web_page' ? 'Date' : 'Year'" %>
 				</div>
 				<div class="col-md-12">
 					<div class="row">
