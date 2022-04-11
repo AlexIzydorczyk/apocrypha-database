@@ -55,7 +55,7 @@
       leaf_page_no: "<%= manuscript.leaf_page_no %>",
       date_from: "<%= manuscript.date_from.html_safe  %>",
       date_to: "<%= manuscript.date_to.html_safe  %>",
-      content_type: "<%= manuscript.content_type.html_safe %>",
+      content_type: `<%= manuscript.content_type.html_safe %>`,
       notes: `<%= manuscript.notes.html_safe  %>`,
       languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
       links: { show: "<%= manuscript_path(manuscript) %>", edit: "<%= edit_manuscript_path(manuscript) %>", delete_btn: 'delete_<%= manuscript.id %>' }

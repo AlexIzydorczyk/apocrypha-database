@@ -148,17 +148,22 @@ var ts_sort_text_asc_max_null = {
     direction: "asc"
   },
   maxItems: null,
-  maxOptions: null
+  maxOptions: null,
+  closeAfterSelect: true,
+  hidePlaceholder: true
 };
 
 var ts_max_null = {
   maxItems: null,
-  maxOptions: null
+  maxOptions: null,
+  closeAfterSelect: true,
+  hidePlaceholder: true,
 };
 
 var ts_max_1 = {
   maxItems: 1,
-  maxOptions: null
+  maxOptions: null,
+  hidePlaceholder: true,
 };
 
 var ts_sort_text_asc_max_1 = {
@@ -167,7 +172,8 @@ var ts_sort_text_asc_max_1 = {
     direction: "asc"
   },
   maxItems: 1,
-  maxOptions: null
+  maxOptions: null,
+  hidePlaceholder: true,
 };
 
 var ts_sort_text_asc_max_1_create = {
@@ -177,5 +183,6 @@ var ts_sort_text_asc_max_1_create = {
   },
   maxItems: 1,
   create: true,
-  maxOptions: null
+  maxOptions: null,
+  hidePlaceholder: true,
 };
