@@ -4,9 +4,10 @@
   People
 </div>
 
-<h1>People</h1>
-<!-- <p><%= link_to "New person", new_person_path, class: "btn btn-outline-success" %></p> -->
+<h1>People<button type="button" class="btn btn-action" style="margin-top: 0" data-bs-toggle="modal" data-bs-target="#person-modal">New person</button></h1>
 
 <div id="people">
     <%= render 'grid', people: @people %>
 </div>
+
+<%= render 'people/modals/form', person: Person.new, parent: nil, pid: '', depth: 0 %>

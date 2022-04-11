@@ -23,7 +23,7 @@ class ModernSource < ApplicationRecord
   belongs_to :writing_system, optional: true
 
   before_create :set_default_writing_system
-  after_update :set_display_name
+  before_update :set_display_name
 
   def set_default_writing_system
     ws = WritingSystem.find_by(name: 'Latin')
@@ -39,7 +39,7 @@ class ModernSource < ApplicationRecord
     
     # name (initial)
     if self.author_type == 'corporate'
-      s += self.institution.display_name + " " if self.institution.present?
+      s += self.institution.display_name + ". " if self.institution.present?
     elsif self.authors.count > 0
       s += person_list(self.authors, false, true) + " "
     elsif self.editors.count > 0
@@ -104,7 +104,7 @@ class ModernSource < ApplicationRecord
           self.publisher
         ].select{ |v| v.present? }.join(": "),
         self.publication_creation_date.present? ? (self.source_type == 'web_page' ? "Last modified " : "") + self.publication_creation_date : "",
-        self.institution.present? ? self.institution.display_name : "",
+        self.institution.present? && self.author_type != "corporate" ? self.institution.display_name : "",
         self.shelfmark.present? ? ("MS " + self.shelfmark) : "",
       ].select{ |b| b.present? }.join(", ") + ". "
       s += pub + ". " if pub.present?

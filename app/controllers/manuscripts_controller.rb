@@ -21,7 +21,7 @@ class ManuscriptsController < ApplicationController
     @languages = Language.all
     @language_references = @manuscript.language_references.build
     @content_types = Manuscript.where.not(content_type: "").pluck(:content_type)
-    @modern_sources = ModernSource.joins(:authors).order("people.last_name_vernacular", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all
+    @modern_sources = ModernSource.left_outer_joins([:authors, :institution]).order("people.last_name_vernacular", "institutions.name_orig", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all
     @scribe_reference = @manuscript.scribe_references.build
   end
 

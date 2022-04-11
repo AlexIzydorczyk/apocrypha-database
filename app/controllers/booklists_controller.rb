@@ -16,7 +16,7 @@ class BooklistsController < ApplicationController
 
   def edit
     @languages = Language.all
-    @modern_sources = @modern_sources = ModernSource.joins(:authors).order("people.last_name_vernacular", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").where(source_type: "handwritten_document")
+    @modern_sources = ModernSource.left_outer_joins([:authors, :institution]).order("people.last_name_vernacular", "institutions.name_orig", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all
   end
 
   def create
