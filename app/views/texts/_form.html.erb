@@ -116,9 +116,14 @@
 					</div>
 					<div class="col">
 						<label>Incipit</label>
-						<%= f.text_area :incipit_orig, class: "form-control mb-2 one-line", placeholder: "Incipit", value: section.incipit_orig %>
-						<%= f.text_area :incipit_orig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin", value: section.incipit_orig_transliteration %>
-						<%= f.text_area :incipit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin", value: section.incipit_translation %>
+						<%= f.hidden_field :incipit_orig, value: section.incipit_orig %>
+						<component is="trix-editor" input="sections_<%= section.id %>_incipit_orig" placeholder="Incipit"></component>
+						<div v-show="not_latin">
+							<%= f.hidden_field :incipit_orig_transliteration, value: section.incipit_orig_transliteration %>
+							<component is="trix-editor" input="sections_<%= section.id %>_incipit_orig_transliteration" placeholder="Transliteration"></component>
+							<%= f.hidden_field :incipit_translation, value: section.incipit_translation %>
+							<component is="trix-editor" input="sections_<%= section.id %>_incipit_translation" placeholder="Translation"></component>
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -131,9 +136,14 @@
 					</div>
 					<div class="col">
 						<label>Explicit</label>
-						<%= f.text_area :explicit_orig, class: "form-control mb-2 one-line", placeholder: "Explicit", value: section.explicit_orig %>
-						<%= f.text_area :explicitorig_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin", value: section.explicitorig_transliteration %>
-						<%= f.text_area :explicit_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin", value: section.explicit_translation %>
+						<%= f.hidden_field :explicit_orig, value: section.explicit_orig %>
+						<component is="trix-editor" input="sections_<%= section.id %>_explicit_orig" placeholder="Explicit"></component>
+						<div v-show="not_latin">
+							<%= f.hidden_field :explicitorig_transliteration, value: section.explicitorig_transliteration %>
+							<component is="trix-editor" input="sections_<%= section.id %>_explicitorig_transliteration" placeholder="Transliteration"></component>
+							<%= f.hidden_field :explicit_translation, value: section.explicit_translation %>
+							<component is="trix-editor" input="sections_<%= section.id %>_explicit_translation" placeholder="Translation"></component>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -295,5 +305,4 @@
 	    });
 		}
 	}
-
 </script>

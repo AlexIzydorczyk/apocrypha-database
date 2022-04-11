@@ -5,3 +5,4 @@
 //= link js-snackbar.js
 //= link Filter.js
 //= link additional.js
+//= link trix-mod.js

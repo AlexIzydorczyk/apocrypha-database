@@ -283,3 +283,10 @@ text-decoration: underline;
     color: #a0a0a0;
   }
 }
+
+trix-editor {
+  background-color: white;
+}
+.trix-button-group--file-tools {
+  display: none !important;
+}
