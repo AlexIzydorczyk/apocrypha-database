@@ -222,7 +222,7 @@
 				add_colophon: <%= %w(colophon_pages_folios_to colophon_language_id colophon_orig colophon_transliteration colophon_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				exact: <%= text.date_exact ? "true" : "false" %>,
 				writing_system_id: "<%= text.writing_system_id %>",
-				date_to: '<%= text.date_to %>', date_from: '<%= text.date_from %>',
+				date_to: '<%= text.date_to.present? ? text.date_to : text.content.parent.date_to %>', date_from: '<%= text.date_from.present? ? text.date_from : text.content.parent.date_from %>',
 				date_to_select: null, date_from_select: null,
 			},
 			watch: {
