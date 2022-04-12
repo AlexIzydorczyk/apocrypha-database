@@ -14,7 +14,7 @@
 		<%= form.label :status, style: "display: block" %>
 		<%= form.select :status, options_for_select(%w(extant lost destroyed), manuscript.status), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-12 mb-2" id="institution">
 		<%= form.label :institution_id, "Repository", style: "display: block" %>
 		<div class="d-flex">
 			<%= form.collection_select :institution_id, Institution.includes(:location).all, :id, :display_name_with_city_country, {selected: manuscript.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select a repository"} %>
@@ -153,11 +153,11 @@
 	</div>
 </div>
 
-<div id="manuscript-origin" v-show="!known_booklet_composition">
+<div id="origin" v-show="!known_booklet_composition">
 	<h2>Origin</h2>
 	<div class="row">
 		<%= fields_for(@scribe_reference) do |sr| %>
-			<div class="form-group col-md-6 mb-2">
+			<div class="form-group col-md-6 mb-2" id="scribe">
 				<%= sr.label :id, "Scribe(s)", style: "display: block" %>
 				<div class="d-flex">
 					<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
@@ -181,14 +181,14 @@
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-genesis_location0-new-institution-modal">New</button>
 			</div>
 		</div>
-		<div class="form-group col-md-6 mb-2">
+		<div class="form-group col-md-6 mb-2" id="religious-order">
 			<%= form.label :genesis_religious_order_id, "Religious order", style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: manuscript.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select religious order"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
 			</div>
 		</div>
-		<div class="form-group col-md-6 mb-2">
+		<div class="form-group col-md-6 mb-2" id="location">
 			<%= form.label :genesis_location_id, "Location", style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: manuscript.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
@@ -215,7 +215,7 @@
 	<%= render 'contents/list', parent: manuscript %>
 </template>
 
-<h2>Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
+<h2 id="modern-source-references">Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
 <div class="row">
 	<div class="form-group col-md-12 mb-2">
 		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>
@@ -230,7 +230,7 @@
 
 <h2>Credits</h2>
 <div class="row">
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-12 mb-2" id="correspondent">
 		<%= fields_for :correspondent_reference, @correspondent_reference do |r| %>
 			<div class="form-group col-md-12 mb-2">
 				<%= r.label :id, "Correspondent", style: "display: block" %>
@@ -249,7 +249,7 @@
 			</div>
 		<% end %>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-12 mb-2" id="transcriber">
 		<%= fields_for :transcriber_reference, @transcriber_reference do |r| %>
 			<div class="form-group col-md-12 mb-2">
 				<%= r.label :id, "Transcriptions by", style: "display: block" %>
@@ -268,7 +268,7 @@
 			</div>
 		<% end %>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-12 mb-2" id="compiler">
 		<%= fields_for :compiler_reference, @compiler_reference do |r| %>
 			<div class="form-group col-md-12 mb-2">
 				<%= r.label :id, "Compiled by", style: "display: block" %>

@@ -21,10 +21,10 @@
     <%= render 'layouts/filetree', tree: @booklet.manuscript.present? ? manuscript_family_tree(@booklet.manuscript) : booklet_family_tree(@booklet) %>
   </div>
   <div>
-    <h1>
+    <h1 id="page-title" class="d-none">
       <%= @booklet.display_name %>
       <% if @booklet.manuscript && current_page?(edit_manuscript_booklet_path(@booklet.manuscript, @booklet)) %>
-        <%= link_to "Close", edit_manuscript_path(@booklet.manuscript), class: "btn btn-action", style: "margin-top: 5px" %>
+        <%= link_to "Close", edit_manuscript_path(@booklet.manuscript), class: "btn btn-action d-none", style: "margin-top: 5px" %>
       <% end %>
     </h1>
     <%= render "form", booklet: @booklet %>

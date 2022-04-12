@@ -182,7 +182,7 @@
 		<%= form.label :notes, style: "display: block" %>
 		<%= form.text_area :notes, class: "form-control" %>
 	</div>
-	<div class="form-group col-md-12 mb-2">
+	<div class="form-group col-md-12 mb-2" id="modern-source-references">
 		<label>Inventoried by</label>
 		<div class="d-flex w-100 justify-content-end align-items-start">
 			<%= render 'modern_source_references/list', modern_source_references: text.inventoried %>
@@ -256,7 +256,7 @@
 				},
 			},
 			mounted(){
-				$('#text-form').removeClass('d-none');
+				$('#text-form, #page-title').removeClass('d-none');
 				runTomSelects();
 				this.date_to_select = new TomSelect("#text_date_to", {
 				  maxItems: 1,

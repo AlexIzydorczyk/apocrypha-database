@@ -76,7 +76,7 @@
 		<div class="col-md-6" v-show="source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'handwritten_document'">
 			<div class="row">
 				<%= fields_for :editor_reference, @editor_reference do |er| %>
-					<div class="form-group col-md-12 mb-2">
+					<div class="form-group col-md-12 mb-2" id="editor">
 						<%= er.label :id, "Editor(s)", style: "display: block" %>
 						<div class="d-flex">
 							<select class="form-control" multiple="multiple" name="editor_reference[id][]" id="editor_reference_id" placeholder="Select editor(s)">
@@ -93,7 +93,7 @@
 					</div>
 				<% end %>
 				<%= fields_for :translator_reference, @translator_reference do |tr| %>
-					<div class="form-group col-md-12 mb-2">
+					<div class="form-group col-md-12 mb-2" id="translator">
 						<%= tr.label :id, "Translator(s)", style: "display: block" %>
 						<div class="d-flex">
 							<select class="form-control" multiple="multiple" name="translator_reference[id][]" id="translator_reference_id" placeholder="Select translator(s)">
@@ -181,7 +181,7 @@
 					<label style="display: block;">Originally published</label>
 					<%= form.text_field :original_publication_creation_date, class: "form-control", placeholder: "Year (for reprints only)" %>
 				</div>
-				<div class="form-group col-md-4 mb-2" v-show="source_type != 'journal_article' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'web_page'">
+				<div class="form-group col-md-4 mb-2" v-show="source_type != 'journal_article' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'web_page'" id="institution">
 					<label style="display: block;">{{ source_type == "handwritten_document" ? "Location" : "Place of publication" }}</label>
 					<div class="d-flex">
 						<%= form.collection_select :publication_location_id, Location.all, :id, :city_region_country, {selected: modern_source.publication_location_id, include_blank: true}, {class: "form-control", placeholder: "Place of publication"} %>
@@ -228,9 +228,9 @@
 										<label style="display: block;">URL</label>
 										<input type="text" name="source_urls[urls][][url]" class="form-control me-2" v-model="source.url" placeholder="URL">	
 									</div>
-									<div class="col-1">
+									<div class="col-2">
 										<label class="w-100"></label>
-										<button type="button" v-show="index == sources.length-1" class="btn btn-outline-action" @click="addUrl();">Add URL</button>	
+										<button type="button" v-show="index == sources.length-1" class="btn btn-outline-action w-100" @click="addUrl();">Add URL</button>	
 									</div>
 								</div>
 							</div>

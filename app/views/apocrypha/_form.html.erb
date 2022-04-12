@@ -219,6 +219,7 @@
 			my_data.apocryphon = {};
 			my_data.apocryphon[field] = t_id;
 	    my_data.authenticity_token = "<%= form_authenticity_token %>";
+	    $("#page-title").removeClass("d-none");
 	    console.log('my_data', my_data)
 	    $.ajax({
 	      url: "<%= apocryphon_path(@apocryphon) %>",

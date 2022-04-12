@@ -3,7 +3,7 @@
 
 	<h2>Books' owner</h2>
 	<div class="row">
-		<div class="form-group col-md-4 mb-2">
+		<div class="form-group col-md-4 mb-2" id="owner">
 			<%= form.label :library_owner_id, "Person", style: "display: block" %>
 			<div class="d-flex">
 				<select class="form-control" name="booklist[library_owner_id]" id="booklist_library_owner_id" placeholder="Select person">
@@ -19,21 +19,21 @@
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-owner">New</button>
 			</div>
 		</div>
-		<div class="form-group col-md-4 mb-2">
+		<div class="form-group col-md-4 mb-2" id="institution">
 			<%= form.label :institution_id, style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :institution_id, Institution.all, :id, :long_display_name, {selected: booklist.institution_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select institution"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 			</div>
 		</div>
-		<div class="form-group col-md-4 mb-2">
+		<div class="form-group col-md-4 mb-2" id="religious-order">
 			<%= form.label :religious_order_id, style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: booklist.religious_order_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select religious order"} %>
 				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
 			</div>
 		</div>
-		<div class="form-group col-md-8 mb-2">
+		<div class="form-group col-md-8 mb-2" id="location">
 			<%= form.label :location_id, style: "display: block" %>
 			<div class="d-flex">
 				<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: booklist.location_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select location"} %>
@@ -64,7 +64,7 @@
 		<div class="col text-start">
 			<label style="line-height: 35px;">Preserved in Manuscript</label>	
 		</div>
-		<div class="col text-end">
+		<div class="col text-end" id="modern-source-references">
 			<button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button>
 		</div>
 		

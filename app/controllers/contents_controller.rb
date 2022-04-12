@@ -61,7 +61,7 @@ class ContentsController < ApplicationController
         end 
       end
     end
-    redirect_to edit_manuscript_path(content.booklet.manuscript)
+    redirect_to edit_manuscript_path(content.booklet.manuscript, anchor: 'contents')
   end
 
   def destroy
