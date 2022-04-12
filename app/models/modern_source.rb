@@ -88,14 +88,14 @@ class ModernSource < ApplicationRecord
       s += [
         [
           title(self.series_title_language, self.series_title_orig, self.series_title_transliteration, self.series_title_translation),
-          self.series_no + (source_type == 'unpublished_document' && self.publication_creation_date.present? ? (" (" + self.publication_creation_date + ")") : "")
+          self.series_no + ((source_type == 'unpublished_document' || source_type == 'journal_article') && self.publication_creation_date.present? ? (" (" + self.publication_creation_date + ")") : "")
         ].select{ |v| v.present? }.join(" "),
         ['book_chapter', 'journal_article'].include?(self.source_type) && self.pages_in_publication.present? ? ("pp. " + self.pages_in_publication) : ""
       ].select{ |b| b.present? }.join(", ") + ". "
     end
 
     #publication
-    unless self.source_type == "unpublished_document"
+    if self.source_type != "unpublished_document" && source_type != 'journal_article'
       pub = [
         self.document_type,
         self.original_publication_creation_date.present? ? (self.original_publication_creation_date + ". Reprint") : "",
@@ -108,7 +108,7 @@ class ModernSource < ApplicationRecord
         self.shelfmark.present? ? ("MS " + self.shelfmark) : "",
       ].select{ |b| b.present? }.join(", ") + ". "
       s += pub + ". " if pub.present?
-    else
+    elsif self.source_type != 'journal_article'
       pub = [
         self.document_type,
         self.publication_creation_date
