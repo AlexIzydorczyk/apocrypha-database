@@ -19,6 +19,7 @@ class TextsController < ApplicationController
     @language_references = @text.language_references.build
     @section_names = Section.all.pluck(:section_name).uniq.select{ |n| n.present? }
     @modern_sources = ModernSource.left_outer_joins([:authors, :institution]).order("people.last_name_vernacular", "institutions.name_orig", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all
+    @scribe_reference = @text.scribe_references.build
   end
 
   def create
@@ -44,6 +45,14 @@ class TextsController < ApplicationController
     new_set = params[:language_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
     LanguageReference.where(record: @text, language_id: @text.languages.ids - new_set).destroy_all
     build_language_references_for new_set - @text.languages.ids
+
+    if params[:person_reference].present?
+      new_set = params[:person_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @text, person_id: @text.scribes.ids - new_set, reference_type: "scribe").destroy_all
+      build_scribe_references_for((new_set - @text.scribes.ids), "scribe")
+    elsif params[:in_grid].blank?
+      @text.scribe_references.destroy_all
+    end
 
     params[:sections].each do |id, prms|
       section = Section.find(id)
@@ -80,7 +89,7 @@ class TextsController < ApplicationController
   end
 
   def text_params
-    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :specific_date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to, :colophon_language_id, :writing_system_id)
+    params.require(:text).permit(:content_id, :text_pages_folios_to, :text_pages_folios_from, :decoration, :title_pages_folios_to, :manuscript_title_orig, :manuscript_title_orig_transliteration, :manuscript_title_translation, :pages_folios_colophon, :colophon_orig, :colophon_transliteration, :colophon_translation, :notes, :transcriber_id, :version, :extent, :date_to, :date_from, :date_exact, :specific_date, :no_columns, :script, :manuscript_title_language_id, :colophon_pages_folios_to, :colophon_language_id, :writing_system_id, :notes_on_scribe)
   end
 
   def section_params(prms)
@@ -91,6 +100,14 @@ class TextsController < ApplicationController
     ids.each do |id|
       if id.present?
         @text.language_references.build(language_id: id)
+      end
+    end
+  end
+
+  def build_scribe_references_for ids, reference_type=""
+    ids.each do |id|
+      if id.present?
+        @text.person_references.build(person_id: id, reference_type: reference_type)
       end
     end
   end

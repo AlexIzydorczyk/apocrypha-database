@@ -13,6 +13,9 @@ class Text < ApplicationRecord
   has_many :inventoried, -> { where(reference_type: "inventoried") }, as: :record, class_name: "ModernSourceReference"
   has_many :edition_by, -> { where(reference_type: "edition_by") }, as: :record, class_name: "ModernSourceReference"
   belongs_to :writing_system, optional: true
+  has_many :person_references, as: :record, dependent: :destroy
+  has_many :scribe_references, -> { scribe }, class_name: "PersonReference", as: :record, dependent: :destroy
+  has_many :scribes, through: :scribe_references, source: :person
 
   before_create :set_default_writing_system
 

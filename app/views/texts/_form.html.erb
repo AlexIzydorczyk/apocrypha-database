@@ -55,17 +55,39 @@
 		</label>
 		<%= form.text_field :specific_date, class: "form-control" %>
 	</div>
-	<div class="col-md-5">
+	<div class="col-md-6">
 		<div class="row">
-			<div class="form-group col-md-6 mb-2">
+			<div class="form-group col-md mb-2">
 				<%= form.label :no_columns, "No. of columns per page" %>
 				<%= form.text_field :no_columns, class: "form-control" %>
 			</div>
 		</div>
 	</div>
-	<div class="form-group col-md-7 mb-2">
+	<%= fields_for(@scribe_reference) do |sr| %>
+		<div class="form-group col-md-6 mb-2">
+			<%= sr.label :id, "Scribe(s)", style: "display: block" %>
+			<div class="d-flex">
+				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
+					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+					<option></option>
+					<optgroup label="<%= group.to_s.humanize %>">
+							<% people.each do |person| %>
+								<option value="<%= person.id %>" <%= 'selected' if text.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+							<% end %>
+						</optgroup>
+					<% end %>
+				</select>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-scribe">New</button>
+			</div>
+		</div>
+	<% end %>
+	<div class="form-group col-md-6 mb-2">
 		<%= form.label :script, style: "display: block;" %>
 		<%= form.text_field :script, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :notes_on_scribe, style: "display: block;" %>
+		<%= form.text_area :notes_on_scribe, class: "form-control" %>
 	</div>
 	<div class="form-group col-12 mb-2">
 		<%= form.label :decoration, style: "display: block" %>
@@ -210,6 +232,7 @@
 	<%= render 'modern_source_references/modals/form', parent: text, msr: msr %>
 <% end %>
 <%= render 'modern_source_references/modals/form', parent: text, msr: text.modern_source_references.new %>
+<%= render 'people/modals/form', person: Person.new, parent: text, reference_type: 'scribe', pid: '', depth: 0 %>
 
 <script type="text/javascript">
 	let textVue;
@@ -276,6 +299,7 @@
 			new TomSelect("#sections_<%= section.id %>_section_name", ts_sort_text_asc_max_1_create);
 		<% end %>
 		new TomSelect("#text_writing_system_id",ts_sort_text_asc_max_1);
+		new TomSelect("#person_reference_id", ts_max_null);
 	};
 
 	function deleteModernSourceReference(msr_id){
