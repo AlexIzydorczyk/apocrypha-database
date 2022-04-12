@@ -87,7 +87,7 @@ class ModernSource < ApplicationRecord
       
       s += [
         [
-          title(self.series_title_language, self.series_title_orig, self.series_title_transliteration, self.series_title_translation),
+          title(self.series_title_language, self.series_title_orig, self.series_title_transliteration, self.series_title_translation).strip,
           self.series_no + ((source_type == 'unpublished_document' || source_type == 'journal_article') && self.publication_creation_date.present? ? (" (" + self.publication_creation_date + ")") : "")
         ].select{ |v| v.present? }.join(", "),
         ['book_chapter', 'journal_article'].include?(self.source_type) && self.pages_in_publication.present? ? ("pp. " + self.pages_in_publication) : ""
