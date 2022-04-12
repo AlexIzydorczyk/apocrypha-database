@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_08_145419) do
+ActiveRecord::Schema.define(version: 2022_04_12_125010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -452,6 +452,7 @@ ActiveRecord::Schema.define(version: 2022_04_08_145419) do
     t.bigint "manuscript_title_language_id"
     t.bigint "colophon_language_id"
     t.bigint "writing_system_id"
+    t.text "notes_on_scribe", default: "", null: false
     t.index ["colophon_language_id"], name: "index_texts_on_colophon_language_id"
     t.index ["content_id"], name: "index_texts_on_content_id"
     t.index ["manuscript_title_language_id"], name: "index_texts_on_manuscript_title_language_id"
@@ -501,7 +502,7 @@ ActiveRecord::Schema.define(version: 2022_04_08_145419) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration"
+    t.boolean "requires_transliteration", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
