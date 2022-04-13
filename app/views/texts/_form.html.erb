@@ -139,12 +139,12 @@
 					<div class="col">
 						<label>Incipit</label>
 						<%= f.hidden_field :incipit_orig, value: section.incipit_orig %>
-						<component is="trix-editor" input="sections_<%= section.id %>_incipit_orig" placeholder="Incipit"></component>
+						<component is="trix-editor" spellcheck="false" input="sections_<%= section.id %>_incipit_orig" placeholder="Incipit"></component>
 						<div v-show="not_latin">
 							<%= f.hidden_field :incipit_orig_transliteration, value: section.incipit_orig_transliteration %>
-							<component is="trix-editor" input="sections_<%= section.id %>_incipit_orig_transliteration" placeholder="Transliteration"></component>
+							<component is="trix-editor" input="sections_<%= section.id %>_incipit_orig_transliteration" placeholder="Transliteration" spellcheck="false"></component>
 							<%= f.hidden_field :incipit_translation, value: section.incipit_translation %>
-							<component is="trix-editor" input="sections_<%= section.id %>_incipit_translation" placeholder="Translation"></component>
+							<component is="trix-editor" input="sections_<%= section.id %>_incipit_translation" placeholder="Translation" spellcheck="false"></component>
 						</div>
 					</div>
 				</div>
@@ -159,12 +159,12 @@
 					<div class="col">
 						<label>Explicit</label>
 						<%= f.hidden_field :explicit_orig, value: section.explicit_orig %>
-						<component is="trix-editor" input="sections_<%= section.id %>_explicit_orig" placeholder="Explicit"></component>
+						<component is="trix-editor" input="sections_<%= section.id %>_explicit_orig" placeholder="Explicit" spellcheck="false"></component>
 						<div v-show="not_latin">
 							<%= f.hidden_field :explicitorig_transliteration, value: section.explicitorig_transliteration %>
-							<component is="trix-editor" input="sections_<%= section.id %>_explicitorig_transliteration" placeholder="Transliteration"></component>
+							<component is="trix-editor" input="sections_<%= section.id %>_explicitorig_transliteration" placeholder="Transliteration" spellcheck="false"></component>
 							<%= f.hidden_field :explicit_translation, value: section.explicit_translation %>
-							<component is="trix-editor" input="sections_<%= section.id %>_explicit_translation" placeholder="Translation"></component>
+							<component is="trix-editor" input="sections_<%= section.id %>_explicit_translation" placeholder="Translation" spellcheck="false"></component>
 						</div>
 					</div>
 				</div>
