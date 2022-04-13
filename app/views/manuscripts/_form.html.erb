@@ -145,7 +145,7 @@
 					  	<i class="far fa-ellipsis-h"></i>
 					  </button>
 					  <ul class="dropdown-menu" aria-labelledby="booklet-options-<%= booklet.id %>">
-					    <li><%= link_to "Delete booklet", '', class: "dropdown-item", onclick: "deleteBooklet('"+booklet.id.to_s+"')" %></li>
+					    <li><button type="button" class="dropdown-item" onclick="deleteBooklet(<%= booklet.id.to_s %>)">Delete booklet</button></li>
 					  </ul>
 				</div>
 			</div>
