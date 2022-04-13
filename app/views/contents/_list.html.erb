@@ -20,7 +20,7 @@
 				    <% end %>
 				    <li><%= link_to "Edit Author/Title", '#contents', class: "dropdown-item", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"+c.id.to_s} %></li>
 				    <% if c.text.present? %><li><button type="button" class="dropdown-item" onclick="removeDetails(<%= c.text.id.to_s %>)">Remove details</button></li><% end %>
-				    <li><button type="button" class="dropdown-item" onclick="deleteContent(<%= c.text.id.to_s %>)">Delete content</button></li>
+				    <li><button type="button" class="dropdown-item" onclick="deleteContent(<%= c.id.to_s %>)">Delete content</button></li>
 				  </ul>
 				</div>
 			</div>
