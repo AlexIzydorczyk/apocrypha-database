@@ -89,7 +89,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-action" onclick="saveModal()">Save & Close</button>
+				<button type="button" class="btn btn-action" onclick="saveModal('location')">Save & Close</button>
 			</div>
 		</div>
 	</div>
@@ -117,59 +117,7 @@
 				new TomSelect("#location-modal #location_diocese_orig_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#location-modal #location_region_orig_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#location-modal #location_country",ts_sort_text_asc_max_1_create);
-				createModalListeners("#location-modal");
 			},
 		});
 	});
-	var cached_action;
-	function openLocationModal(action){
-		cached_action = action;
-		$.ajax({
-      url: action,
-      type: 'GET',
-      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
-      contentType: 'application/json',
-      success: function(data) {
-      	$('#location-modal #location-form').attr('action', action);
-      	let key = Object.keys(data)[0];
-      	let obj = data[key];
-      	console.log('obj', obj)
-      	for(i in obj){
-      		$('#location-modal #location_'+i).each(function(){
-      			if($(this).is('select')){
-      				this.tomselect.clear();
-      				this.tomselect.addItem(obj[i]);
-      			}else{
-      				$(this).val(obj[i]);
-      			}
-      		})
-      	}
-      }
-    });
-    
-    //$('#location-modal #location_city_orig').val();
-    $('#location-modal').modal('show');
-	};
-
-	function saveModal(){
-		var my_data = {location: {}}
-		seria = $('#location-modal #location-form').serializeArray();
-		for(i in seria){
-			if(i > 1){
-				my_data.location[seria[i].name.split('location[')[1].slice(0, -1)] = seria[i].value;
-			}
-		}
-		my_data["authenticity_token"] = "<%= form_authenticity_token %>"
-		console.log(my_data);
-		$.ajax({
-      url: cached_action,
-      type: 'PATCH',
-      data: JSON.stringify(my_data),
-      contentType: 'application/json',
-      success: function(data) {
-      	console.log('updated')
-      }
-    });
-		
-	}
 </script>

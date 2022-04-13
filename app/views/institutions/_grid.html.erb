@@ -8,6 +8,8 @@
 <% end %>
 
 <%= render 'locations/modals/form_from_grid', location: Location.first %>
+<%= render 'institutions/modals/change_location', institution: institutions.first %>
+<%= render 'layouts/grid_modal_js' %>
 
 <script type="text/javascript" charset="utf-8">
 
@@ -17,13 +19,16 @@
         { headerName: "Name", field: "name_orig"},
         { headerName: "Name translation", hide: true, field: "name_english"},
         { headerName: "Name transliteration", hide: true, field: "name_orig_transliteration"},
-        { headerName: "Location id", field: "location_id", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(params) {
-          return `${params.value} <a href='#' class='btn btn-outline-secondary btn-sm float-end' onclick='openLocationModal("locations/${params.value}")'><i class='fa-solid fa-pencil'></i></a><a href='#' class='btn btn-outline-secondary btn-sm float-end'><i class='fa-solid fa-arrows-repeat'></i></a>`
-          } },
-        { headerName: "Diocese", field: "diocese", editable: false},
-        { headerName: "City", field: "city", editable: false},
-        { headerName: "Region", field: "region", editable: false},
-        { headerName: "Country", field: "country", editable: false},
+        { headerName: "location", children: [
+          { headerName: "Location id", field: "location_id", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(params) {
+            console.log('value', params.value ? "true" : "false");
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('institutions/${params.data.id}', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          { headerName: "Diocese", field: "diocese", editable: false},
+          { headerName: "City", field: "city", editable: false},
+          { headerName: "Region", field: "region", editable: false},
+          { headerName: "Country", field: "country", editable: false},
+        ] },
         { headerName: "Links", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
           return "<!-- <a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a> --><a href='#' onclick='if(confirm(\"Are you sure you want to delete this object? Note: the object will be unlinked from all parent records.\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
           } 

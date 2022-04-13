@@ -8,6 +8,9 @@ class InstitutionsController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {institution: @institution}
+    end
   end
 
   def new
