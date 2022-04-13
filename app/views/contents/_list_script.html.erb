@@ -32,7 +32,7 @@ function deleteContent(content_id){
 
 function removeDetails(text_id){
 	if(confirm("Are you sure you want to remove this text details?")){
-		saveBeforeModalForms();
+		//saveBeforeModalForms();
     $.ajax({
       url: "/texts/"+text_id,
       type: 'DELETE',
