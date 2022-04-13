@@ -35,9 +35,9 @@
 			<% end %>
 			<div class="modal-footer">
 				<% unless parent.class == Content %>
-					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(null, 0);})">Save & Close</button>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(null, 0);})">Save & Close</button>
 				<% else %>
-					<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= (parent.class.to_s == "Content" ? "'#addContentModal' + $('##{pid}title-modal .content-field').val()" : "null") %>, 0);})">Save & Close</button>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= (parent.class.to_s == "Content" ? "'#addContentModal' + $('##{pid}title-modal .content-field').val()" : "null") %>, 0);})">Save & Close</button>
 				<% end %>
 			</div>
 		</div>
@@ -48,7 +48,6 @@
 <script type="text/javascript">
 	new TomSelect("#<%= pid %>title-modal #title_language_id",{ sortField: {field: "text", direction: "asc"}, maxItems: 1, maxOptions: null,});
 	$(function() {
-		console.log("CREATING THAT LISTENER")
 		createModalListeners("#<%= pid %>title-modal");
 	})
 </script>

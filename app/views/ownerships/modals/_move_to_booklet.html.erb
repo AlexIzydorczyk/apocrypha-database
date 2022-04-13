@@ -10,7 +10,7 @@
 					<div class="card grey mb-3">
 						<div class="card-body d-flex justify-content-between">
 							<%= booklet.display_name %>
-							<%= button_to "Move here", ownership_path(ownership), class: "btn btn-action", params: { ownership: { booklet_id: booklet.id, manuscript_id: '' }, moved_to_booklet: true }, method: :put %>
+							<%= button_to "Move here", ownership_path(ownership), class: "btn btn-action disable-on-click", params: { ownership: { booklet_id: booklet.id, manuscript_id: '' }, moved_to_booklet: true }, method: :put %>
 						</div>
 					</div>
 				<% end %>

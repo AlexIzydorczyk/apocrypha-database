@@ -86,6 +86,10 @@ function createModalListeners(selector) {
 $(function() {
   setTimeout(function() {
 
+    $("button.disable-on-click").on("click", function() {
+      $(this).prop("disabled", true).prepend("<i class='fas fa-spinner fa-pulse me-2'></i>");
+    });
+
     $('form.autosave').each(function(index) {
       if(!$(this).hasClass('block-submit')){
         let form = $(this);

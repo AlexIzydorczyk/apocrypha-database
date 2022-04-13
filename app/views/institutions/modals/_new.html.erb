@@ -67,7 +67,7 @@
 				<%= hidden_field_tag :booklist_id, parent.id %>
 			<% end %>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}#{depth.to_s}-new-institution-modal .ownership-field').val()" : local_assigns[:genesis].present? && genesis ? "'genesis'" : "'institution'" %>, 0);})">Save & Close</button>
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}#{depth.to_s}-new-institution-modal .ownership-field').val()" : local_assigns[:genesis].present? && genesis ? "'genesis'" : "'institution'" %>, 0);})">Save & Close</button>
 			</div>
 		</div>
 	</div>
