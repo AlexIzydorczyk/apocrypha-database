@@ -8,6 +8,9 @@ class LocationsController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {location: @location}
+    end
   end
 
   def new
