@@ -43,7 +43,7 @@
           }},
         ] },
           
-        { headerName: "Links", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
+        { headerName: "Actions", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
           return "<a href='#' onclick='if(confirm(\"Are you sure you want to delete this Title?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
         } }
   ];

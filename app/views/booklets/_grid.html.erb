@@ -21,7 +21,7 @@
         { headerName: "Genesis institution", field: "genesis_institution_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: institutionGetter, valueSetter: institutionSetter  },
         { headerName: "Genesis religious order", field: "genesis_religious_order_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
         { headerName: "Scribes", field: "scribes", hide: true, editable: false },
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+        { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
           if(links.value) return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this booklet and all contents including ownerships and contents?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
         } }
   ];
