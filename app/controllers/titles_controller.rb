@@ -8,6 +8,9 @@ class TitlesController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {title: @title}
+    end
   end
 
   def new

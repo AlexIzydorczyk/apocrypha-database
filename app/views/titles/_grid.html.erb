@@ -7,6 +7,9 @@
   <%= button_to "Delete", title_path(title), method: :delete, class: "d-none", id: 'delete_'+title.id.to_s %>
 <% end %>
 
+<%= render 'titles/modals/change_apocryphon', title: titles.first %>
+<%= render 'layouts/grid_modal_js' %>
+
 <script type="text/javascript" charset="utf-8">
 
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
@@ -31,9 +34,15 @@
 
         { headerName: "Language", field: "language_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
 
-        { headerName: "Apocryphon", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
-          return `<a target="_blank" href="/apocrypha/${apocryphon.value.id}/edit">${apocryphon.value.display_name}</a>`
-        }},
+        { headerName: "Apocryphon", children: [
+          { headerName: "Apocryphon id", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(params) {
+            return `${params.value.id} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('titles/${params.data.id}', 'title')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          }},
+          { headerName: "Name", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
+            return `<a target="_blank" href="/apocrypha/${apocryphon.value.id}/edit">${apocryphon.value.display_name}</a>`
+          }},
+        ] },
+          
         { headerName: "Links", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
           return "<a href='#' onclick='if(confirm(\"Are you sure you want to delete this Title?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
         } }
@@ -102,5 +111,6 @@
 
   const eGridDiv = document.querySelector('#titles_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
+  gridOptions.columnApi.autoSizeColumns(['apocryphon']);
 
 </script>

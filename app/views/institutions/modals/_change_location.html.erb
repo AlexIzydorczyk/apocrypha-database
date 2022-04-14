@@ -8,13 +8,7 @@
 			</div>
 			<div class="modal-body">
 				<label class="mt-3 fw-bolder">Location</label>
-				<div class="row">
-					<div class="form-group col-md-12 mb-2">
-						<div class="d-flex">
-							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
-						</div>
-					</div>
-				</div>
+				<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-action disable-on-click" onclick="saveModal('institution')">Save & Close</button>
@@ -25,7 +19,6 @@
 </div>
 
 <script type="text/javascript">
-	var institutution_modal_vue;
 	$(function() {
 		new TomSelect("#institution-modal #institution_location_id", ts_sort_text_asc_max_1);;
 	})

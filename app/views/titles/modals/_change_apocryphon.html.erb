@@ -1,0 +1,25 @@
+<div class="modal" id="title-modal" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: title, url: title_path(title)) do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Change title apocryphon</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label class="mt-3 fw-bolder">Apocryphon</label>
+				<%= form.collection_select :apocryphon_id, Apocryphon.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Select apocryphon"} %>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveModal('title')">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		new TomSelect("#title-modal #title_apocryphon_id", ts_sort_text_asc_max_1);;
+	})
+</script>
