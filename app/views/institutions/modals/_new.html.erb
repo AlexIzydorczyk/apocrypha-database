@@ -11,7 +11,7 @@
 				<div class="row">
 					<div class="col-md-6 offset-3">
 						<label>Institution name</label>
-						<%= form.text_field :name_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
+						<%= form.text_field :name, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
 					</div>
 					<div class="col-md-3">
 						<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
@@ -23,10 +23,10 @@
 					</div>
 					<div class="col-md-6" v-show="alternative_name">
 						<label>Name of institution: alternative or local name of institution</label>
-						<%= form.text_field :name_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Публичная библиотека" %>
+						<%= form.text_field :name_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Публичная библиотека" %>
 					</div>
 					<div class="col-md-6 offset-3" v-show="alternative_name && writing_system_id != '<%= latin_writing_system_id %>'">
-						<%= form.text_field :name_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
+						<%= form.text_field :name_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
 					</div>
 				</div>
 				<label class="mt-3 fw-bolder">Location</label>
@@ -87,7 +87,7 @@
 				return {
 					sub_modal_open: false,
 					record_id: <%= institution.try(:id) || "null" %>,
-					alternative_name: <%= institution.name_english.present? || institution.name_orig_transliteration.present? ? "true" : "false" %>,
+					alternative_name: <%= institution.name_alt.present? || institution.name_transliteration.present? ? "true" : "false" %>,
 					writing_system_id: '<%= institution.writing_system_id %>',
 				}
 			},

@@ -28,9 +28,9 @@ class Institution < ApplicationRecord
 
   def display_name
     s = ""
-    title = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin") ? self.name_orig_transliteration : self.name_orig
+    title = self.writing_system.present? && self.writing_system != WritingSystem.find_by(name: "Latin") ? self.name_transliteration : self.name
     s += title + " " if title.present?
-    s += "[" + self.name_english + "]" unless self.name_english.blank?
+    s += "[" + self.name_alt + "]" unless self.name_alt.blank?
     s
   end
 
@@ -43,6 +43,6 @@ class Institution < ApplicationRecord
   end
 
   def long_display_name
-    self.name_orig
+    self.name
   end
 end

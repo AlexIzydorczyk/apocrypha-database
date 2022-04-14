@@ -15,9 +15,9 @@
         { headerName: "Type", field: "source_type", editable: false},
         
         { headerName: "Author type", field: "author_type", editable: false, hide: true},
-        { headerName: "Corporate author", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter},
+        { headerName: "Corporate author", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter},
 
-        { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
+        { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
 
         { headerName: "All regular author", field: "authors", hide: true, editable: false },
         { headerName: "First author", children: [
@@ -79,17 +79,17 @@
   };
 
   function insitutionGetter(params) {
-      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]
+      return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.institution_id]
     }
   function insitutionSetter(params) {
-      params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+      params.data.institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
     }
 
     function respositoryGetter(params) {
-      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.repository_id]
+      return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.repository_id]
     }
   function respositorySetter(params) {
-      params.data.repository_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+      params.data.repository_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
     }
 
   function locationGetter(params) {

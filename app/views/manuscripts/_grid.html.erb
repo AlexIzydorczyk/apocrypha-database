@@ -17,7 +17,7 @@
     { headerName: "City", field: "city", editable: false },
     { headerName: "Region", field: "region", hide: true, editable: false},
     { headerName: "Country", field: "country", editable: false},
-    { headerName: "Repository", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', flex: 2, cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
+    { headerName: "Repository", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', flex: 2, cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
     { headerName: "Shelfmark", field: "shelfmark"},
     { headerName: "Old shelfmarks", field: "old_shelfmark"},
     { headerName: "Material", field: "material", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ["paper", "parchment", "parchment and paper"] } },
@@ -34,10 +34,10 @@
     ];
 
     function insitutionGetter(params) {
-      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]
+      return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.institution_id]
     }
     function insitutionSetter(params) {
-      params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+      params.data.institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
     }
 
     const rowData = [
@@ -45,8 +45,8 @@
     { id:<%= manuscript.id %>,
       identifier: "<%= manuscript.identifier %>",census_no: "<%= manuscript.census_no %>",status: "<%= manuscript.status %>",
       institution_id: "<%= manuscript.institution_id %>",
-      city: "<%= manuscript.institution.try(:location).try(:city_orig) %>",
-      region: "<%= manuscript.institution.try(:location).try(:region_orig) %>",
+      city: "<%= manuscript.institution.try(:location).try(:city) %>",
+      region: "<%= manuscript.institution.try(:location).try(:region) %>",
       country: "<%= manuscript.institution.try(:location).try(:country) %>",
       shelfmark: "<%= manuscript.shelfmark.html_safe %>",
       old_shelfmark: "<%= manuscript.old_shelfmark.html_safe  %>",

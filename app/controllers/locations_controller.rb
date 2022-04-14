@@ -76,6 +76,6 @@ class LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:country, :city_english, :city_orig, :city_translilteration, :region_english, :region_orig, :region_transliteration, :diocese_english, :diocese_orig, :diocese_transliteration, :longitude, :latitude, :city_orig_writing_system_id, :region_orig_writing_system_id, :diocese_orig_writing_system_id)
+      params.require(:location).permit(:country, :city_alt, :city, :city_translilteration, :region_alt, :region, :region_transliteration, :diocese_alt, :diocese, :diocese_transliteration, :longitude, :latitude, :city_writing_system_id, :region_writing_system_id, :diocese_writing_system_id)
     end
 end
