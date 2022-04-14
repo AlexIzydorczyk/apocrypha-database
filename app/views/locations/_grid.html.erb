@@ -13,16 +13,16 @@
 
   const columnDefs = [
 
-    { headerName: "City", field: "city_orig" },
-    { headerName: "City translation", hide: true, field: "city_english"},
+    { headerName: "City", field: "city" },
+    { headerName: "City translation", hide: true, field: "city_alt"},
     { headerName: "City translilteration", hide: true, field: "city_translilteration"},
 
-    { headerName: "Diocese", field: "diocese_orig" },
-    { headerName: "Diocese translation", field: "diocese_english", hide: true},
+    { headerName: "Diocese", field: "diocese" },
+    { headerName: "Diocese translation", field: "diocese_alt", hide: true},
     { headerName: "Diocese transliteration", field: "diocese_transliteration", hide: true},
       
-    { headerName: "Region", field: "region_orig"},
-    { headerName: "Region translation", field: "region_english", hide: true},
+    { headerName: "Region", field: "region"},
+    { headerName: "Region translation", field: "region_alt", hide: true},
     { headerName: "Region transliteration", field: "region_transliteration", hide: true},
     
     { headerName: "Country", field: "country"},
@@ -39,7 +39,7 @@
   const rowData = [
   <% locations.each do |location| %>
   { id:<%= location.id %>,
-    country: "<%= location.country %>",city_english: "<%= location.city_english %>",city_orig: "<%= location.city_orig %>",city_translilteration: "<%= location.city_translilteration %>",region_english: "<%= location.region_english %>",region_orig: "<%= location.region_orig %>",region_transliteration: "<%= location.region_transliteration %>",diocese_english: "<%= location.diocese_english %>",diocese_orig: "<%= location.diocese_orig %>",diocese_transliteration: "<%= location.diocese_transliteration %>",longitude: "<%= location.longitude %>",latitude: "<%= location.latitude %>",
+    country: "<%= location.country %>",city_alt: "<%= location.city_alt %>",city: "<%= location.city %>",city_translilteration: "<%= location.city_translilteration %>",region_alt: "<%= location.region_alt %>",region: "<%= location.region %>",region_transliteration: "<%= location.region_transliteration %>",diocese_alt: "<%= location.diocese_alt %>",diocese: "<%= location.diocese %>",diocese_transliteration: "<%= location.diocese_transliteration %>",longitude: "<%= location.longitude %>",latitude: "<%= location.latitude %>",
     links: { show: "<%= location_path(location) %>", edit: "<%= edit_location_path(location) %>", delete_btn: 'delete_<%= location.id %>'}
   },
   <% end %>

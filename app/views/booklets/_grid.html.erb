@@ -18,7 +18,7 @@
         { headerName: "Content type", field: "content_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklet.pluck(:content_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         { headerName: "Specific date", field: "specific_date", hide: true },
         { headerName: "Genesis location", field: "genesis_location_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
-        { headerName: "Genesis institution", field: "genesis_institution_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: institutionGetter, valueSetter: institutionSetter  },
+        { headerName: "Genesis institution", field: "genesis_institution_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: institutionGetter, valueSetter: institutionSetter  },
         { headerName: "Genesis religious order", field: "genesis_religious_order_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
         { headerName: "Scribes", field: "scribes", hide: true, editable: false },
         { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
@@ -33,10 +33,10 @@
     params.data.genesis_location_id = <%= Location.all.map{ |l| [l.city_region_country, l.id] }.to_h.to_json.html_safe %>[params.newValue]
   }
   function institutionGetter(params) {
-    return params.data ? <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.genesis_institution_id] : ''
+    return params.data ? <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.genesis_institution_id] : ''
   }
   function institutionSetter(params) {
-    params.data.genesis_institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+    params.data.genesis_institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
   }
   function religiousOrderGetter(params) {
     return params.data ? <%= ReligiousOrder.pluck(:id, :order_name).to_h.to_json.html_safe %>[params.data.genesis_religious_order_id] : ''

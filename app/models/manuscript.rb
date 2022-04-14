@@ -22,19 +22,19 @@ class Manuscript < ApplicationRecord
   has_many :booklist_sections, dependent: :destroy
 
   def display_name
-    d_name = [self.institution.try(:location).present? ? self.institution.location.try(:city_orig) : self.genesis_location.try(:city_orig), self.institution.try(:name_orig), self.shelfmark].select{ |d| d.present? }.join(", ")
+    d_name = [self.institution.try(:location).present? ? self.institution.location.try(:city) : self.genesis_location.try(:city), self.institution.try(:name), self.shelfmark].select{ |d| d.present? }.join(", ")
     d_name.present? ? d_name : "Untitled manuscript"
   end
 
   def long_display_name
     text = ""
     text = self.census_no + '. ' if self.census_no.present?
-    text += [self.try(:institution).try(:location).try(:city_orig), self.try(:institution).try(:name_orig), self.shelfmark].join(', ')
+    text += [self.try(:institution).try(:location).try(:city), self.try(:institution).try(:name), self.shelfmark].join(', ')
     text
   end
 
   def city
-    self.try(:institution).try(:location).try(:city_orig)
+    self.try(:institution).try(:location).try(:city)
   end
 
   def census_no_display
