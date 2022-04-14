@@ -2,8 +2,9 @@
 	
 
 var cached_action;
-function openModal(action, record_name){
+function openModal(action, record_name, modifier=''){
 	cached_action = action;
+	let modifier_string = modifier == '' ? '' : '-' + modifier;
 	$.ajax({
     	url: action,
       	type: 'GET',
@@ -11,12 +12,12 @@ function openModal(action, record_name){
       	contentType: 'application/json',
       	success: function(data) {
       		console.log('data', data);
-	      	$('#' + record_name + '-modal form').first().attr('action', action);
+	      	$('#' + record_name + '-modal' + modifier_string + ' form').first().attr('action', action);
 	      	let key = Object.keys(data)[0];
 	      	let obj = data[key];
 	      	console.log('obj', obj)
 	      	for(i in obj){
-	      		$('#' + record_name + '-modal #' + record_name + '_' + i).each(function(){
+	      		$('#' + record_name + '-modal' + modifier_string +' #' + record_name + '_' + i).each(function(){
 	      			if($(this).is('select')){
 	      				this.tomselect.clear();
 	      				this.tomselect.addItem(obj[i]);
@@ -27,12 +28,13 @@ function openModal(action, record_name){
 	      	}
 	    }
 	});
-	$('#' + record_name + '-modal').modal('show');
+	$('#' + record_name + '-modal' + modifier_string).modal('show');
 };
 
-function saveModal(record_name){
+function saveModal(record_name, modifier=''){
+	let modifier_string = modifier == '' ? '' : '-' + modifier;
 	var my_data = {[record_name]: {}}
-	seria = $('#' + record_name + '-modal form').first().serializeArray();
+	seria = $('#' + record_name + '-modal' + modifier_string + ' form').first().serializeArray();
 	for(i in seria){
 		if(i > 1){
 			my_data[record_name][seria[i].name.split('[')[1].slice(0, -1)] = seria[i].value;
