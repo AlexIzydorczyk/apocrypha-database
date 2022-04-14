@@ -71,6 +71,6 @@ class ReligiousOrdersController < ApplicationController
     end
 
     def religious_order_params
-      params.require(:religious_order).permit(:order_name)
+      params.require(:religious_order).permit(:order_name, :abbreviation)
     end
 end
