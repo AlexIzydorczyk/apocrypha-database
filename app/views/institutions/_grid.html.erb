@@ -24,8 +24,8 @@
             return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('institutions/${params.data.id}', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
             } 
           },
-          { headerName: "City", field: "city", editable: false},
-          { headerName: "City in English", field: "city_english", hide: true, editable: false},
+          { headerName: "City", field: "city_english", editable: false},
+          { headerName: "City (alternative)", field: "city", editable: false},
           { headerName: "Diocese", field: "diocese", editable: false},
           { headerName: "Region", field: "region", editable: false},
           { headerName: "Country", field: "country", editable: false},
