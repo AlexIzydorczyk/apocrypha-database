@@ -7,6 +7,12 @@
   <%= button_to "Delete", modern_source_path(modern_source), method: :delete, class: "d-none", id: 'delete_'+modern_source.id.to_s %>
 <% end %>
 
+<%= render 'locations/modals/form_from_grid', location: Location.first %>
+<%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
+<%= render 'modern_sources/modals/change_location', modern_source: modern_sources.first %>
+<%= render 'modern_sources/modals/change_institution', modern_source: modern_sources.first %>
+<%= render 'layouts/grid_modal_js' %>
+
 <script type="text/javascript" charset="utf-8">
 
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
@@ -15,7 +21,18 @@
         { headerName: "Type", field: "source_type", editable: false},
         
         { headerName: "Author type", field: "author_type", editable: false, hide: true},
-        { headerName: "Corporate author", field: "institution_id", hide: false, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter},
+
+        { headerName: "Corporate author", children: [
+          { headerName: "Institution id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Name orig", field: "institution_name_orig", hide: true, editable: false },
+          { headerName: "Name english", field: "institution_name_english", hide: true, editable: false },
+          { headerName: "Name transliteration", field: "institution_name_orig_transliteration", hide: true, editable: false },
+          { headerName: "Location", field: "institution_location", hide: true, editable: false },
+          { headerName: "Religious order", field: "institution_religious_order", hide: true, editable: false },
+        ]},
+
 
         { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
 
@@ -60,11 +77,21 @@
         { headerName: "ISBN", field: "ISBN", hide: true},
         { headerName: "DOI", field: "DOI", hide: true},
 
-        { headerName: "Original publication year", field: "original_publication_creation_date", hide: true, comparator: numberSort},
-        { headerName: "Publication year", field: "publication_creation_date", hide: true, comparator: numberSort},
-        { headerName: "Pages in publication", field: "pages_in_publication", hide: true, comparator: numberSort},
-        { headerName: "Publication location", field: "publication_location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
-        { headerName: "Publisher", field: "publisher", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ModernSource.all.pluck(:publisher).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
+        { headerName: "Publication", children: [
+          { headerName: "Original publication year", field: "original_publication_creation_date", hide: true, comparator: numberSort},
+          { headerName: "Publication year", field: "publication_creation_date", hide: true, comparator: numberSort},
+          { headerName: "Pages in publication", field: "pages_in_publication", hide: true, comparator: numberSort},
+          { headerName: "Publisher", field: "publisher", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ModernSource.all.pluck(:publisher).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
+        ]},
+        { headerName: "Publication location", children: [
+          { headerName: "Location id", field: "publication_location_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          { headerName: "City orig", field: "publication_location_city_orig", hide: true, editable: false },
+          { headerName: "Diocese orig", field: "publication_location_diocese_orig", hide: true, editable: false },
+          { headerName: "Region orig", field: "publication_location_region_orig", hide: true, editable: false },
+          { headerName: "Country", field: "publication_location_country", hide: true, editable: false },
+        ] },
 
         { headerName: "URLs", field: "urls", editable: false, hide: true},
         { headerName: "Dates accessed", field: "dates_accessed", editable: false, hide: true},
@@ -110,6 +137,13 @@
         editors: <%= modern_source.editors.map(&:full_name).to_json.html_safe %>,
         translators: <%= modern_source.translators.map(&:full_name).to_json.html_safe %>,
         institution_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id %>",
+
+        institution_name_alt: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_alt) %>",
+        institution_name: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name) %>",
+        institution_name_transliteration: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_transliteration) %>",
+        institution_location: "<%= modern_source.institution.try(:location).try(:city_region_country) %>",
+        institution_religious_order: "<%= modern_source.institution.try(:religious_order).try(:display_name) %>",
+
         repository_id: "<%= modern_source.source_type != 'handwritten_document' ? '' : modern_source.institution_id %>",
         publication_title_orig: "<%= modern_source.publication_title_orig %>",
         publication_title_transliteration: "<%= modern_source.publication_title_transliteration %>",
@@ -132,10 +166,16 @@
         series_title_transliteration: "<%= modern_source.series_title_transliteration %>",
         series_title_translation: "<%= modern_source.series_title_translation %>",
         edition: "<%= modern_source.edition %>",
+
         publication_location_id: "<%= modern_source.publication_location_id %>",
+        publication_location_city_orig: "<%= modern_source.publication_location.try(:city_orig) %>",
+        publication_location_diocese_orig: "<%= modern_source.publication_location.try(:diocese_orig) %>",
+        publication_location_region_orig: "<%= modern_source.publication_location.try(:region_orig) %>",
+        publication_location_country: "<%= modern_source.publication_location.try(:country) %>",
         publisher: "<%= modern_source.publisher %>",
         publication_creation_date: "<%= modern_source.publication_creation_date %>",
         original_publication_creation_date: "<%= modern_source.original_publication_creation_date %>",
+
         dates_accessed: <%= modern_source.source_urls.pluck(:date_accessed).push(modern_source.date_accessed).select{ |d| d.present? }.to_json.html_safe %>, urls: <%= modern_source.source_urls.pluck(:url).select{ |u| u.present? }.to_json.html_safe %>,
         pages_in_publication: "<%= modern_source.pages_in_publication %>",
         shelfmark: "<%= modern_source.shelfmark %>",ISBN: "<%= modern_source.ISBN %>",DOI: "<%= modern_source.DOI %>", links: { show: "<%= modern_source_path(modern_source) %>", edit: "<%= edit_modern_source_path(modern_source) %>", delete_btn: 'delete_<%= modern_source.id %>' }
@@ -182,5 +222,6 @@
 
   const eGridDiv = document.querySelector('#modern_sources_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
+  gridOptions.columnApi.autoSizeColumns(['publication_location_id']);
 
 </script>

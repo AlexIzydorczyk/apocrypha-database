@@ -1,0 +1,25 @@
+<div class="modal" id="modern_source-modal" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: modern_source, url: modern_source_path(modern_source)) do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Change bibliography publication location</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label class="mt-3 fw-bolder">Location</label>
+				<%= form.collection_select :publication_location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveModal('modern_source')">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		new TomSelect("#modern_source-modal #modern_source_publication_location_id", ts_sort_text_asc_max_1);;
+	})
+</script>

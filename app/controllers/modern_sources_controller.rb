@@ -8,6 +8,9 @@ class ModernSourcesController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {modern_source: @modern_source}
+    end
   end
 
   def new
