@@ -23,4 +23,13 @@ class Apocryphon < ApplicationRecord
 		self.titles.destroy_all
 	end
 
+	def languages_list
+		titles = Title.where(apocryphon_id: self.id).map(&:id)
+    contents = Content.where(title_id: titles).map(&:id)
+    texts = Text.where(content_id: contents).map(&:id)
+    langRef = LanguageReference.where(record_type: 'Text').where(record_id: texts).map(&:language_id)
+    list_of_languages = Language.where(id: langRef).map(&:language_name).join(', ')
+    list_of_languages
+	end
+
 end

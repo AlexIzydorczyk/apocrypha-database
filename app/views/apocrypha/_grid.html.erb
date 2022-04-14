@@ -17,6 +17,7 @@
     { headerName: "Standard Latin Title", field: "main_latin_title", editable: false, flex: 2,},
     { headerName: "Other English Titles", field: "other_english_titles", editable: false, flex: 2,},
     { headerName: "Other Latin Titles", field: "other_latin_titles", editable: false, flex: 2,},
+    { headerName: "Languages in Apocrypharius", field: "languages_list", editable: false,},
     { headerName: "CANT no.", field: "cant_no", comparator: numberSort },
     { headerName: "BHL no.", field: "bhl_no", hide: true},
     { headerName: "BHG no.", field: "bhg_no", hide: true},
@@ -43,6 +44,7 @@
         bho_no: "<%= apocryphon.bho_no %>",
         e_clavis_no: "<%= apocryphon.e_clavis_no %>",
         e_clavis_link: "<%= apocryphon.e_clavis_link %>",
+        languages_list: "<%= apocryphon.languages_list %>",
         links: { edit: "<%= edit_apocryphon_path(apocryphon) %>", eclavis: "<%= apocryphon.e_clavis_link %>", delete_btn: 'delete_<%= apocryphon.id %>' },
       },
     <% end %>
