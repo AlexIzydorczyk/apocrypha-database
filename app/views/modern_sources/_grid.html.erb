@@ -96,7 +96,7 @@
         { headerName: "URLs", field: "urls", editable: false, hide: true},
         { headerName: "Dates accessed", field: "dates_accessed", editable: false, hide: true},
 
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+        { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
       return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm' target='_blank'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this bibliography?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
     } }
   ];

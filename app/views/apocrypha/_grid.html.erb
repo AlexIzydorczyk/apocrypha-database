@@ -13,17 +13,17 @@
 
   const columnDefs = [
     { headerName: "Apocryphon no", field: "apocryphon_no", comparator: numberSort },
-    { headerName: "Main English Title", field: "main_english_title", editable: false},
-    { headerName: "Main Latin Title", field: "main_latin_title", editable: false},
-    { headerName: "Other English Titles", field: "other_english_titles", editable: false},
-    { headerName: "Other Latin Titles", field: "other_latin_titles", editable: false},
-    { headerName: "Cant no", field: "cant_no", comparator: numberSort },
-    { headerName: "Bhl no", field: "bhl_no", hide: true},
-    { headerName: "Bhg no", field: "bhg_no", hide: true},
-    { headerName: "Bho no", field: "bho_no", hide: true},
-    { headerName: "E clavis no", field: "e_clavis_no", comparator: numberSort },
-    { headerName: "E clavis link", field: "e_clavis_link", hide: true},
-    { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+    { headerName: "Standard English Title", field: "main_english_title", editable: false, flex: 2,},
+    { headerName: "Standard Latin Title", field: "main_latin_title", editable: false, flex: 2,},
+    { headerName: "Other English Titles", field: "other_english_titles", editable: false, flex: 2,},
+    { headerName: "Other Latin Titles", field: "other_latin_titles", editable: false, flex: 2,},
+    { headerName: "Languages in Apocrypharius", field: "languages_list", editable: false,},
+    { headerName: "CANT no.", field: "cant_no", comparator: numberSort },
+    { headerName: "BHL no.", field: "bhl_no", hide: true},
+    { headerName: "BHG no.", field: "bhg_no", hide: true},
+    { headerName: "e-Clavis no.", field: "e_clavis_no", comparator: numberSort },
+    { headerName: "Link to e-Clavis", field: "e_clavis_link", hide: true},
+    { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
         var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
         return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm' target='_blank'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
       } 
@@ -44,6 +44,7 @@
         bho_no: "<%= apocryphon.bho_no %>",
         e_clavis_no: "<%= apocryphon.e_clavis_no %>",
         e_clavis_link: "<%= apocryphon.e_clavis_link %>",
+        languages_list: "<%= apocryphon.languages_list %>",
         links: { edit: "<%= edit_apocryphon_path(apocryphon) %>", eclavis: "<%= apocryphon.e_clavis_link %>", delete_btn: 'delete_<%= apocryphon.id %>' },
       },
     <% end %>
@@ -92,5 +93,6 @@
 
   const eGridDiv = document.querySelector('#apocrypha_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
+  gridOptions.columnApi.autoSizeColumns(['apocryphon_no','cant_no','bhl_no','bhg_no','bho_no','e_clavis_no'], true);
 
 </script>

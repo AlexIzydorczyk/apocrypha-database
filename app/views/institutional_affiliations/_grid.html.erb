@@ -10,7 +10,7 @@
         { headerName: "Religious order", field: "religious_order_id"},
         { headerName: "Start date", field: "start_date"},
         { headerName: "End date", field: "end_date"},
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
+        { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
       return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
     } }
   ];
