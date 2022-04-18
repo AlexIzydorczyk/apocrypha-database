@@ -7,9 +7,9 @@
       <thead>
         <tr class="filters">
           <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
-                      <% unless hide_columns.include? 'name_english' %><th class="col"><input type="text" class="form-control" placeholder="Name english" disabled></th><% end %>
-                      <% unless hide_columns.include? 'name_orig' %><th class="col"><input type="text" class="form-control" placeholder="Name orig" disabled></th><% end %>
-                      <% unless hide_columns.include? 'name_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Name orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'name_alt' %><th class="col"><input type="text" class="form-control" placeholder="Name english" disabled></th><% end %>
+                      <% unless hide_columns.include? 'name' %><th class="col"><input type="text" class="form-control" placeholder="Name orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'name_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Name orig transliteration" disabled></th><% end %>
                       <% unless hide_columns.include? 'location_id' %><th class="col"><input type="text" class="form-control" placeholder="Location" disabled></th><% end %>
                     <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
         </tr>
@@ -18,9 +18,9 @@
         <% institutions.each do |institution| %>
       	<tr>
           <% unless hide_columns.include? 'id' %><td class="col"><%= institution.id %></td><% end -%>
-                      <% unless hide_columns.include? 'name_english' %><td class="col"><%= institution.name_english %></td><% end %>
-                      <% unless hide_columns.include? 'name_orig' %><td class="col"><%= institution.name_orig %></td><% end %>
-                      <% unless hide_columns.include? 'name_orig_transliteration' %><td class="col"><%= institution.name_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'name_alt' %><td class="col"><%= institution.name_alt %></td><% end %>
+                      <% unless hide_columns.include? 'name' %><td class="col"><%= institution.name %></td><% end %>
+                      <% unless hide_columns.include? 'name_transliteration' %><td class="col"><%= institution.name_transliteration %></td><% end %>
                       <% unless hide_columns.include? 'location_id' %><td class="col"><%= institution.location_id %></td><% end %>
                   	<td class="col-3">
         		<% unless hide_buttons.include? 'open' %><%= link_to "Open", institution, class: "btn btn-outline-primary me-2" %><% end %>

@@ -26,6 +26,7 @@ author" %>
         { headerName: "Type", field: "source_type", editable: false},
         
         { headerName: "Author type", field: "author_type", editable: false, hide: true},
+
         { headerName: "Corporate author", children: [
           { headerName: "Institution id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
             return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
@@ -37,7 +38,7 @@ author" %>
           { headerName: "Religious order", field: "institution_religious_order", hide: true, editable: false },
         ]},
 
-        { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
+        { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
 
         { headerName: "First author", children: [
           { headerName: "First name", field: "first_author_first_name", hide: false, editable: false },
@@ -129,17 +130,17 @@ author" %>
   };
 
   function insitutionGetter(params) {
-      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]
+      return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.institution_id]
     }
   function insitutionSetter(params) {
-      params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+      params.data.institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
     }
 
     function respositoryGetter(params) {
-      return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.repository_id]
+      return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.repository_id]
     }
   function respositorySetter(params) {
-      params.data.repository_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+      params.data.repository_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
     }
 
   function locationGetter(params) {
@@ -166,9 +167,9 @@ author" %>
 
         institution_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id %>",
 
-        institution_name_english: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_english) %>",
-        institution_name_orig: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_orig) %>",
-        institution_name_orig_transliteration: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_orig_transliteration) %>",
+        institution_name_alt: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_alt) %>",
+        institution_name: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name) %>",
+        institution_name_transliteration: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_transliteration) %>",
         institution_location: "<%= modern_source.institution.try(:location).try(:city_region_country) %>",
         institution_religious_order: "<%= modern_source.institution.try(:religious_order).try(:display_name) %>",
 

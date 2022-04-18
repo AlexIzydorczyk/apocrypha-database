@@ -8,14 +8,14 @@
         <tr class="filters">
           <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
                       <% unless hide_columns.include? 'country' %><th class="col"><input type="text" class="form-control" placeholder="Country" disabled></th><% end %>
-                      <% unless hide_columns.include? 'city_english' %><th class="col"><input type="text" class="form-control" placeholder="City english" disabled></th><% end %>
-                      <% unless hide_columns.include? 'city_orig' %><th class="col"><input type="text" class="form-control" placeholder="City orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'city_alt' %><th class="col"><input type="text" class="form-control" placeholder="City english" disabled></th><% end %>
+                      <% unless hide_columns.include? 'city' %><th class="col"><input type="text" class="form-control" placeholder="City orig" disabled></th><% end %>
                       <% unless hide_columns.include? 'city_translilteration' %><th class="col"><input type="text" class="form-control" placeholder="City translilteration" disabled></th><% end %>
-                      <% unless hide_columns.include? 'region_english' %><th class="col"><input type="text" class="form-control" placeholder="Region english" disabled></th><% end %>
-                      <% unless hide_columns.include? 'region_orig' %><th class="col"><input type="text" class="form-control" placeholder="Region orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'region_alt' %><th class="col"><input type="text" class="form-control" placeholder="Region english" disabled></th><% end %>
+                      <% unless hide_columns.include? 'region' %><th class="col"><input type="text" class="form-control" placeholder="Region orig" disabled></th><% end %>
                       <% unless hide_columns.include? 'region_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Region transliteration" disabled></th><% end %>
-                      <% unless hide_columns.include? 'diocese_english' %><th class="col"><input type="text" class="form-control" placeholder="Diocese english" disabled></th><% end %>
-                      <% unless hide_columns.include? 'diocese_orig' %><th class="col"><input type="text" class="form-control" placeholder="Diocese orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'diocese_alt' %><th class="col"><input type="text" class="form-control" placeholder="Diocese english" disabled></th><% end %>
+                      <% unless hide_columns.include? 'diocese' %><th class="col"><input type="text" class="form-control" placeholder="Diocese orig" disabled></th><% end %>
                       <% unless hide_columns.include? 'diocese_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Diocese transliteration" disabled></th><% end %>
                       <% unless hide_columns.include? 'longitude' %><th class="col"><input type="text" class="form-control" placeholder="Longitude" disabled></th><% end %>
                       <% unless hide_columns.include? 'latitude' %><th class="col"><input type="text" class="form-control" placeholder="Latitude" disabled></th><% end %>
@@ -27,14 +27,14 @@
       	<tr>
           <% unless hide_columns.include? 'id' %><td class="col"><%= location.id %></td><% end -%>
                       <% unless hide_columns.include? 'country' %><td class="col"><%= location.country %></td><% end %>
-                      <% unless hide_columns.include? 'city_english' %><td class="col"><%= location.city_english %></td><% end %>
-                      <% unless hide_columns.include? 'city_orig' %><td class="col"><%= location.city_orig %></td><% end %>
+                      <% unless hide_columns.include? 'city_alt' %><td class="col"><%= location.city_alt %></td><% end %>
+                      <% unless hide_columns.include? 'city' %><td class="col"><%= location.city %></td><% end %>
                       <% unless hide_columns.include? 'city_translilteration' %><td class="col"><%= location.city_translilteration %></td><% end %>
-                      <% unless hide_columns.include? 'region_english' %><td class="col"><%= location.region_english %></td><% end %>
-                      <% unless hide_columns.include? 'region_orig' %><td class="col"><%= location.region_orig %></td><% end %>
+                      <% unless hide_columns.include? 'region_alt' %><td class="col"><%= location.region_alt %></td><% end %>
+                      <% unless hide_columns.include? 'region' %><td class="col"><%= location.region %></td><% end %>
                       <% unless hide_columns.include? 'region_transliteration' %><td class="col"><%= location.region_transliteration %></td><% end %>
-                      <% unless hide_columns.include? 'diocese_english' %><td class="col"><%= location.diocese_english %></td><% end %>
-                      <% unless hide_columns.include? 'diocese_orig' %><td class="col"><%= location.diocese_orig %></td><% end %>
+                      <% unless hide_columns.include? 'diocese_alt' %><td class="col"><%= location.diocese_alt %></td><% end %>
+                      <% unless hide_columns.include? 'diocese' %><td class="col"><%= location.diocese %></td><% end %>
                       <% unless hide_columns.include? 'diocese_transliteration' %><td class="col"><%= location.diocese_transliteration %></td><% end %>
                       <% unless hide_columns.include? 'longitude' %><td class="col"><%= location.longitude %></td><% end %>
                       <% unless hide_columns.include? 'latitude' %><td class="col"><%= location.latitude %></td><% end %>

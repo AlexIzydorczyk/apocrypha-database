@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_12_125010) do
+ActiveRecord::Schema.define(version: 2022_04_14_191827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,9 +162,9 @@ ActiveRecord::Schema.define(version: 2022_04_12_125010) do
   end
 
   create_table "institutions", force: :cascade do |t|
-    t.string "name_english", default: "", null: false
-    t.string "name_orig", default: "", null: false
-    t.string "name_orig_transliteration", default: "", null: false
+    t.string "name_alt", default: "", null: false
+    t.string "name", default: "", null: false
+    t.string "name_transliteration", default: "", null: false
     t.bigint "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -195,25 +195,25 @@ ActiveRecord::Schema.define(version: 2022_04_12_125010) do
 
   create_table "locations", force: :cascade do |t|
     t.string "country", default: "", null: false
-    t.string "city_english", default: "", null: false
-    t.string "city_orig", default: "", null: false
+    t.string "city_alt", default: "", null: false
+    t.string "city", default: "", null: false
     t.string "city_translilteration", default: "", null: false
-    t.string "region_english", default: "", null: false
-    t.string "region_orig", default: "", null: false
+    t.string "region_alt", default: "", null: false
+    t.string "region", default: "", null: false
     t.string "region_transliteration", default: "", null: false
-    t.string "diocese_english", default: "", null: false
-    t.string "diocese_orig", default: "", null: false
+    t.string "diocese_alt", default: "", null: false
+    t.string "diocese", default: "", null: false
     t.string "diocese_transliteration", default: "", null: false
     t.integer "longitude"
     t.integer "latitude"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "city_orig_writing_system_id"
-    t.bigint "region_orig_writing_system_id"
-    t.bigint "diocese_orig_writing_system_id"
-    t.index ["city_orig_writing_system_id"], name: "index_locations_on_city_orig_writing_system_id"
-    t.index ["diocese_orig_writing_system_id"], name: "index_locations_on_diocese_orig_writing_system_id"
-    t.index ["region_orig_writing_system_id"], name: "index_locations_on_region_orig_writing_system_id"
+    t.bigint "city_writing_system_id"
+    t.bigint "region_writing_system_id"
+    t.bigint "diocese_writing_system_id"
+    t.index ["city_writing_system_id"], name: "index_locations_on_city_writing_system_id"
+    t.index ["diocese_writing_system_id"], name: "index_locations_on_diocese_writing_system_id"
+    t.index ["region_writing_system_id"], name: "index_locations_on_region_writing_system_id"
   end
 
   create_table "manuscripts", force: :cascade do |t|
@@ -502,7 +502,7 @@ ActiveRecord::Schema.define(version: 2022_04_12_125010) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration"
+    t.boolean "requires_transliteration", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -537,9 +537,9 @@ ActiveRecord::Schema.define(version: 2022_04_12_125010) do
   add_foreign_key "institutions", "locations"
   add_foreign_key "institutions", "religious_orders"
   add_foreign_key "language_references", "languages"
-  add_foreign_key "locations", "writing_systems", column: "city_orig_writing_system_id"
-  add_foreign_key "locations", "writing_systems", column: "diocese_orig_writing_system_id"
-  add_foreign_key "locations", "writing_systems", column: "region_orig_writing_system_id"
+  add_foreign_key "locations", "writing_systems", column: "city_writing_system_id"
+  add_foreign_key "locations", "writing_systems", column: "diocese_writing_system_id"
+  add_foreign_key "locations", "writing_systems", column: "region_writing_system_id"
   add_foreign_key "manuscripts", "institutions"
   add_foreign_key "manuscripts", "institutions", column: "genesis_institution_id"
   add_foreign_key "manuscripts", "locations", column: "genesis_location_id"

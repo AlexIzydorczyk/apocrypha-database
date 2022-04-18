@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-md-6 offset-3">
 						<label class="fw-bolder">City, town, village, settlement</label>
-						<%= form.text_field :city_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Warsaw" %>
+						<%= form.text_field :city, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Warsaw" %>
 					</div>
 					<div class="col-md-3">
 						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
@@ -18,11 +18,11 @@
 					</div>
 					<div class="col-md-3" v-show="alternative_location">
 						<label>Writing system</label>
-						<%= form.collection_select :city_orig_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "city_writing_system_id"} %>
+						<%= form.collection_select :city_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "city_writing_system_id"} %>
 					</div>
 					<div class="col-md-6" v-show="alternative_location">
 						<label>City, town, village, settlement: alternative or local name</label>
-						<%= form.text_field :city_english, class: "form-control mb-2", placeholder: "Alternative location name, e.g., Москва" %>
+						<%= form.text_field :city_alt, class: "form-control mb-2", placeholder: "Alternative location name, e.g., Москва" %>
 					</div>
 					<div class="col-md-6 offset-3" v-show="alternative_location && city_writing_system_id != '<%= latin_writing_system_id %>'">
 						<%= form.text_field :city_translilteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
@@ -31,7 +31,7 @@
 				<div class="row">
 					<div class="col-md-6 offset-3">
 						<label class="fw-bolder">Diocese</label>
-						<%= form.text_field :diocese_orig, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
+						<%= form.text_field :diocese, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
 					</div>
 					<div class="col-md-3">
 						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
@@ -39,11 +39,11 @@
 					</div>
 					<div class="col-md-3" v-show="alternative_diocese">
 						<label>Writing system</label>
-						<%= form.collection_select :diocese_orig_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "diocese_writing_system_id"} %>
+						<%= form.collection_select :diocese_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "diocese_writing_system_id"} %>
 					</div>
 					<div class="col-md-6" v-show="alternative_diocese">
 						<label>Diocese: alternative or local name</label>
-						<%= form.text_field :diocese_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
+						<%= form.text_field :diocese_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
 					</div>
 					<div class="col-md-6 offset-3" v-show="alternative_diocese && diocese_writing_system_id != '<%= latin_writing_system_id %>'">
 						<%= form.text_field :diocese_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
@@ -52,7 +52,7 @@
 				<div class="row">
 					<div class="col-md-6 offset-3">
 						<label class="fw-bolder">Region</label>
-						<%= form.text_field :region_orig, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
+						<%= form.text_field :region, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
 					</div>
 					<div class="col-md-3">
 						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
@@ -60,11 +60,11 @@
 					</div>
 					<div class="col-md-3" v-show="alternative_region">
 						<label>Writing system</label>
-						<%= form.collection_select :region_orig_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "region_writing_system_id"} %>
+						<%= form.collection_select :region_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "region_writing_system_id"} %>
 					</div>
 					<div class="col-md-6" v-show="alternative_region">
 						<label>Region: alternative or local name</label>
-						<%= form.text_field :region_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
+						<%= form.text_field :region_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
 					</div>
 					<div class="col-md-6 offset-3" v-show="alternative_region && region_writing_system_id != '<%= latin_writing_system_id %>'">
 						<%= form.text_field :region_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
@@ -104,18 +104,18 @@
 			name: "LocationModal",
 			data: function() {
 				return {
-					alternative_location: <%= location.city_english.present? || location.city_translilteration.present? ? "true" : "false" %>,
-					city_writing_system_id: '<%= location.city_orig_writing_system_id %>',
-					alternative_diocese: <%= location.diocese_english.present? || location.diocese_transliteration.present? ? "true" : "false" %>,
-					diocese_writing_system_id: '<%= location.diocese_orig_writing_system_id %>',
-					alternative_region: <%= location.region_english.present? || location.region_transliteration.present? ? "true" : "false" %>,
-					region_writing_system_id: '<%= location.region_orig_writing_system_id %>',
+					alternative_location: <%= location.city_alt.present? || location.city_translilteration.present? ? "true" : "false" %>,
+					city_writing_system_id: '<%= location.city_writing_system_id %>',
+					alternative_diocese: <%= location.diocese_alt.present? || location.diocese_transliteration.present? ? "true" : "false" %>,
+					diocese_writing_system_id: '<%= location.diocese_writing_system_id %>',
+					alternative_region: <%= location.region_alt.present? || location.region_transliteration.present? ? "true" : "false" %>,
+					region_writing_system_id: '<%= location.region_writing_system_id %>',
 				}
 			},
 			mounted(){
-				new TomSelect("#location-modal #location_city_orig_writing_system_id",ts_sort_text_asc_max_1);
-				new TomSelect("#location-modal #location_diocese_orig_writing_system_id",ts_sort_text_asc_max_1);
-				new TomSelect("#location-modal #location_region_orig_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#location-modal #location_city_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#location-modal #location_diocese_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#location-modal #location_region_writing_system_id",ts_sort_text_asc_max_1);
 				new TomSelect("#location-modal #location_country",ts_sort_text_asc_max_1_create);
 			},
 		});

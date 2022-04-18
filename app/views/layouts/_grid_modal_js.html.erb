@@ -63,7 +63,7 @@ function saveModal(record_name, modifier=''){
 		contentType: 'application/json',
 		success: function(data) {
 			console.log('updated');
-			if(confirm("Propery was saved. Do you want to refresh the page?")){
+			if(confirm("Property was saved. Do you want to refresh the page?")){
 				timeoutReload(null, 0)
 			} else {
 				$('.modal').modal('hide');

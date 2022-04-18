@@ -27,7 +27,8 @@
           { headerName: "Names", field: "library_owner_name", hide: true, editable: false },
         ] },
 
-        { headerName: "Institution", field: "institution_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
+        { headerName: "Institution", field: "institution_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
+
         { headerName: "Religious order", field: "religious_order_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.all.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
         { headerName: "Location", field: "location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
         { headerName: "Scribe", children: [
@@ -90,10 +91,10 @@
     params.data.library_owner_id = <%= Person.all.map{ |p| [p.full_name, p.id] }.to_h.to_json.html_safe %>[params.newValue]
   }
   function insitutionGetter(params) {
-    return <%= Institution.pluck(:id, :name_orig).to_h.to_json.html_safe %>[params.data.institution_id]
+    return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.institution_id]
   }
   function insitutionSetter(params) {
-    params.data.institution_id = <%= Institution.pluck(:name_orig, :id).to_h.to_json.html_safe %>[params.newValue]
+    params.data.institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
   }
   function languageGetter(params) {
     return <%= Language.pluck(:id, :language_name).to_h.to_json.html_safe %>[params.data.language_id]

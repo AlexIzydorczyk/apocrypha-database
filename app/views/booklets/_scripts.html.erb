@@ -59,6 +59,10 @@ function runTomSelects() {
 		maxItems: 1,
 		valueField: 'id',
 		searchField: ['institution','location_name'],
+		sortField: {
+	    field: "institution",
+	    direction: "asc"
+	  },
 		options: [
 			<% Institution.includes(:location).all.each do |i| %>
 			{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>", religious_order_id: "<%= i.religious_order_id %>"},
