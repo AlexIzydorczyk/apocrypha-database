@@ -18,8 +18,8 @@
 						</div>
 						<div class="col-sm">
 							<span class=""><%= p.display_name %></span>
-							<% if p.location.try(:city_region_country).present? %>; <%= p.location.try(:city_region_country) %><% end %>
-							<% if p.provenance_notes.present? %>; <%= p.provenance_notes %><% end %>
+							<% if p.location.try(:city_region_country).present? %><%= p.display_name.present? ? ";" : "" %><%= p.location.try(:city_region_country) %><% end %>
+							<% if p.provenance_notes.present? %><%= p.display_name.present? || p.location.try(:city_region_country).present? ? ". " : "" %><%= p.provenance_notes %><% end %>
 						</div>
 						<div class="col-4 d-flex align-items-center justify-content-end">
 							<%= link_to "Edit", '#manuscripts', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+p.id.to_s} %>

@@ -42,9 +42,9 @@
     <% institutions.each do |institution| %>
       {
         id:<%= institution.id %>,
-        name_alt: "<%= institution.name_alt %>",
-        name: "<%= institution.name %>",
-        name_transliteration: "<%= institution.name_transliteration %>",
+        name_alt: "<%= institution.name_alt.html_safe %>",
+        name: "<%= institution.name.html_safe %>",
+        name_transliteration: "<%= institution.name_transliteration.html_safe %>",
         location_id: "<%= institution.location.try(:id) %>",
         city: "<%= institution.location.try(:city) %>",
         city_alt: "<%= institution.location.try(:city_alt) %>",

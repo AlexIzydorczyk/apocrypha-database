@@ -55,7 +55,7 @@
 		</label>
 		<%= form.text_field :specific_date, class: "form-control" %>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<div class="row">
 			<div class="form-group col-md mb-2">
 				<%= form.label :no_columns, "No. of columns per page" %>
@@ -64,7 +64,7 @@
 		</div>
 	</div>
 	<%= fields_for(@scribe_reference) do |sr| %>
-		<div class="form-group col-md-6 mb-2">
+		<div class="form-group col-md-8 mb-2">
 			<%= sr.label :id, "Scribe(s)", style: "display: block" %>
 			<div class="d-flex">
 				<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
