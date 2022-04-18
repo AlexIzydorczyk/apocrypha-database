@@ -2,7 +2,7 @@ class Institution < ApplicationRecord
   belongs_to :location, optional: true
   has_many :manuscripts, dependent: :nullify
   has_many :institutional_affiliations, dependent: :nullify
-  has_many :religious_orders, through: :institutional_affiliations
+  belongs_to :religious_order, optional: true
   has_many :booklets, foreign_key: "genesis_institution_id", dependent: :nullify
   has_many :ownerships, dependent: :nullify
   has_many :booklists, dependent: :nullify
