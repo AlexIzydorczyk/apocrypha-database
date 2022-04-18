@@ -7,6 +7,10 @@
   <%= button_to "Delete", booklist_path(booklist), method: :delete, class: "d-none", id: 'delete_'+booklist.id.to_s %>
 <% end %>
 
+<%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "library_owner" %>
+<%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "scribe" %>
+<%= render 'layouts/grid_modal_js' %>
+
 <script type="text/javascript" charset="utf-8">
 
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
@@ -15,18 +19,29 @@
         { headerName: "Booklist no.", field: "booklist_no", comparator: numberSort },
         { headerName: "Type of booklist", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         { headerName: "Language", field: "language_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
-        { headerName: "Library owner", field: "library_owner_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Person.all.map(&:full_name).to_json.html_safe %> }, valueGetter: personGetter, valueSetter: personSetter},
+
+        { headerName: "Library owner", children: [
+          { headerName: "Id", field: "library_owner_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Names", field: "library_owner_name", hide: true, editable: false },
+        ] },
+
         { headerName: "Institution", field: "institution_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
         { headerName: "Religious order", field: "religious_order_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.all.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
         { headerName: "Location", field: "location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
-        { headerName: "Author", field: "scribe_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Person.all.map(&:full_name).to_json.html_safe %> }, valueGetter: authorGetter, valueSetter: authorSetter },
+        { headerName: "Scribe", children: [
+          { headerName: "Id", field: "scribe_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Names", field: "scribe_name", hide: true, editable: false },
+        ] },
         { headerName: "Date from", field: "date_from", hide: true, comparator: numberSort },
         { headerName: "Date to", field: "date_to", hide: true, comparator: numberSort },
         { headerName: "Specific date", field: "specific_date", hide: true, comparator: numberSort },
         { headerName: "Title orig", field: "title_orig"},
         { headerName: "Title orig transliteration", field: "title_orig_transliteration", hide: true},
         { headerName: "Title orig translation", field: "title_orig_translation", hide: true},
-        { headerName: "Notes", field: "notes", hide: true},
         { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
       return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm' target='_blank'>edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this booklist?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
     } }
@@ -38,10 +53,12 @@
         id: <%= bl.id %>,
         booklist_type: "<%= bl.booklist_type %>",
         booklist_no: "<%= bl.booklist_no.present? ? bl.booklist_no : bl.id %>",
+        library_owner_name: "<%= bl.library_owner.try(:full_name) %>",
         library_owner_id: "<%= bl.library_owner_id %>",
         institution_id: "<%= bl.institution_id %>",
         location_id: "<%= bl.location_id %>",
         scribe_id: "<%= bl.scribe_id %>",
+        scribe_name: "<%= bl.scribe.try(:full_name) %>",
         language_id: "<%= bl.language_id %>",
         religious_order_id: "<%= bl.religious_order_id %>",
         title_orig: "<%= bl.title_orig %>",
@@ -50,7 +67,7 @@
         date_from: "<%= bl.date_from %>",
         date_to: "<%= bl.date_to %>",
         specific_date: "<%= bl.specific_date %>",
-        notes: "<%= bl.notes %>",
+        notes: `<%= bl.notes %>`,
         links: { edit: "<%= edit_booklist_path(bl) %>", delete_btn: 'delete_<%= bl.id %>' }
       },
     <% end %>

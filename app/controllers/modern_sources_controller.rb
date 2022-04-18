@@ -9,7 +9,7 @@ class ModernSourcesController < ApplicationController
 
   def show
     if request.xhr?
-      render json: {modern_source: @modern_source}
+      render json: {modern_source: @modern_source.attributes.merge({editor_id: @modern_source.editors.map(&:id)})}
     end
   end
 
@@ -89,6 +89,33 @@ class ModernSourcesController < ApplicationController
       @modern_source.editor_references.destroy_all
     end
 
+    if (params[:modern_source].present? && params[:modern_source][:editor_id].present?) || params[:modern_source][:editor_present].present?
+      array = params[:modern_source][:editor_id].class == Array ? params[:modern_source][:editor_id] : [params[:modern_source][:editor_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @modern_source, person_id: @modern_source.editors.ids - new_set).destroy_all
+      build_person_references_for new_set - @modern_source.editors.ids, 'editor'
+    elsif params[:in_grid].blank?
+      @modern_source.editor_references.destroy_all
+    end
+
+    if (params[:modern_source].present? && params[:modern_source][:translator_id].present?) || params[:modern_source][:translator_present].present?
+      array = params[:modern_source][:translator_id].class == Array ? params[:modern_source][:translator_id] : [params[:modern_source][:translator_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
+      build_person_references_for new_set - @modern_source.translators.ids, 'translator'
+    elsif params[:in_grid].blank?
+      @modern_source.translator_references.destroy_all
+    end
+
+    if (params[:modern_source].present? && params[:modern_source][:author_id].present?) || params[:modern_source][:author_present].present?
+      array = params[:modern_source][:author_id].class == Array ? params[:modern_source][:author_id] : [params[:modern_source][:author_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @modern_source, person_id: @modern_source.authors.ids - new_set).destroy_all
+      build_person_references_for new_set - @modern_source.authors.ids, 'author'
+    elsif params[:in_grid].blank?
+      @modern_source.author_references.destroy_all
+    end
+
     if params[:translator_reference].present?
       new_set = params[:translator_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
@@ -139,10 +166,14 @@ class ModernSourcesController < ApplicationController
     end
 
     def build_person_references_for ids, reference_type
-      ids.each do |id|
-        if id.present?
-          @modern_source.person_references.build(person_id: id, reference_type: reference_type)
+      if ids.class == Array
+        ids.each do |id|
+          if id.present?
+            @modern_source.person_references.build(person_id: id, reference_type: reference_type)
+          end
         end
+      else
+        @modern_source.person_references.build(person_id: ids, reference_type: reference_type)
       end
     end
 end

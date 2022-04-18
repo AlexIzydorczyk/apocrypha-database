@@ -8,6 +8,9 @@ class BooklistsController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {booklist: @booklist}
+    end
   end
 
   def new

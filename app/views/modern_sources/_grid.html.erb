@@ -11,6 +11,11 @@
 <%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
 <%= render 'modern_sources/modals/change_location', modern_source: modern_sources.first %>
 <%= render 'modern_sources/modals/change_institution', modern_source: modern_sources.first %>
+<%= render 'modern_sources/modals/change_person', modern_source: modern_sources.first, reference_type: "editor" %>
+<%= render 'modern_sources/modals/change_person', modern_source: modern_sources.first, reference_type: "
+translator" %>
+<%= render 'modern_sources/modals/change_person', modern_source: modern_sources.first, reference_type: "
+author" %>
 <%= render 'layouts/grid_modal_js' %>
 
 <script type="text/javascript" charset="utf-8">
@@ -32,26 +37,44 @@
           { headerName: "Religious order", field: "institution_religious_order", hide: true, editable: false },
         ]},
 
-
-
         { headerName: "Repository", field: "repository_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name_orig).to_json.html_safe %> }, valueGetter: respositoryGetter, valueSetter: respositorySetter},
 
-        { headerName: "All regular author", field: "authors", hide: true, editable: false },
         { headerName: "First author", children: [
           { headerName: "First name", field: "first_author_first_name", hide: false, editable: false },
           { headerName: "Last name", field: "first_author_last_name", hide: false, editable: false },
         ] },
         
-        { headerName: "Publication title", field: "publication_title_orig"},
-        { headerName: "Publication title transliteration", field: "publication_title_transliteration", hide: true},
-        { headerName: "Publication title translation", field: "publication_title_translation", hide: true},
 
-        { headerName: "Title", field: "title_orig"},
-        { headerName: "Title transliteration", field: "title_transliteration", hide: true},
-        { headerName: "Title translation", field: "title_translation", hide: true},
-        
-        { headerName: "Editors", field: "editors", hide: false, editable: false },
-        { headerName: "Translators", field: "translators", hide: false, editable: false },
+        { headerName: "Titles", children: [
+          { headerName: "Publication title", field: "publication_title_orig"},
+          { headerName: "Publication title transliteration", field: "publication_title_transliteration", hide: true},
+          { headerName: "Publication title translation", field: "publication_title_translation", hide: true},
+
+          { headerName: "Title", field: "title_orig"},
+          { headerName: "Title transliteration", field: "title_transliteration", hide: true},
+          { headerName: "Title translation", field: "title_translation", hide: true},
+        ] },
+
+        { headerName: "All author(s)", children: [
+          { headerName: "Ids", field: "author_ids", hide: false, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'author')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Names", field: "author_names", hide: false, editable: false },
+        ] },
+
+        { headerName: "Editor(s)", children: [
+          { headerName: "Ids", field: "editor_ids", hide: false, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'editor')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Names", field: "editor_names", hide: false, editable: false },
+        ] },
+
+        { headerName: "Translator(s)", children: [
+          { headerName: "Ids", field: "translator_ids", hide: false, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'translator')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Names", field: "translator_names", hide: false, editable: false },
+        ] },
         
         { headerName: "Edition", field: "edition", hide: true, comparator: numberSort},
 
@@ -130,12 +153,17 @@
     <% modern_sources.each do |modern_source| %>
       { id:<%= modern_source.id %>,
         source_type: "<%= modern_source.source_type.humanize %>",
+        
         author_type: "<%= modern_source.author_type %>",
-        authors: <%= modern_source.authors.map(&:full_name).to_json.html_safe %>,
         first_author_first_name: "<%= modern_source.authors.first.try(:first_name_vernacular) %>",
         first_author_last_name: "<%= modern_source.authors.first.try(:last_name_vernacular) %>",
-        editors: <%= modern_source.editors.map(&:full_name).to_json.html_safe %>,
-        translators: <%= modern_source.translators.map(&:full_name).to_json.html_safe %>,
+        editor_names: <%= modern_source.editors.map(&:full_name).to_json.html_safe %>,
+        editor_ids: <%= modern_source.editors.map(&:id).to_json.html_safe %>,
+        translator_names: <%= modern_source.translators.map(&:full_name).to_json.html_safe %>,
+        translator_ids: <%= modern_source.translators.map(&:id).to_json.html_safe %>,
+        author_names: <%= modern_source.authors.map(&:full_name).to_json.html_safe %>,
+        author_ids: <%= modern_source.authors.map(&:id).to_json.html_safe %>,
+
         institution_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id %>",
 
         institution_name_english: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_english) %>",

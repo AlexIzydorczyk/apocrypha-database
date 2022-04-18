@@ -17,10 +17,15 @@ function openModal(action, record_name, modifier=''){
 	      	let obj = data[key];
 	      	console.log('obj', obj)
 	      	for(i in obj){
+	      		console.log("query will be", '#' + record_name + '-modal' + modifier_string +' #' + record_name + '_' + i);
 	      		$('#' + record_name + '-modal' + modifier_string +' #' + record_name + '_' + i).each(function(){
 	      			if($(this).is('select')){
 	      				this.tomselect.clear();
-	      				this.tomselect.addItem(obj[i]);
+	      				if(Array.isArray(obj[i])){
+	      					obj[i].forEach( s => this.tomselect.addItem(s) );
+	      				} else {
+	      					this.tomselect.addItem(obj[i]);
+	      				}
 	      			}else{
 	      				$(this).val(obj[i]);
 	      			}
@@ -33,11 +38,20 @@ function openModal(action, record_name, modifier=''){
 
 function saveModal(record_name, modifier=''){
 	let modifier_string = modifier == '' ? '' : '-' + modifier;
-	var my_data = {[record_name]: {}}
+	var my_data = {[record_name]: {}, in_grid: '1'}
 	seria = $('#' + record_name + '-modal' + modifier_string + ' form').first().serializeArray();
+	console.log('seria', seria);
 	for(i in seria){
 		if(i > 1){
-			my_data[record_name][seria[i].name.split('[')[1].slice(0, -1)] = seria[i].value;
+			let data_key = seria[i].name.split('[')[seria[i].name.split('[').length == 1 ? 0 : 1].split('[')[0]
+			if(data_key[data_key.length - 1] == ']') data_key = data_key.slice(0, -1);
+			if(my_data[record_name][data_key] == undefined){
+				my_data[record_name][data_key] = seria[i].value;
+			} else if(Array.isArray(my_data[record_name][data_key])) {
+				my_data[record_name][data_key].push(seria[i].value);
+			} else {
+				my_data[record_name][data_key] = [my_data[record_name][data_key], seria[i].value];
+			}
 		}
 	}
 	my_data["authenticity_token"] = "<%= form_authenticity_token %>"
