@@ -84,18 +84,7 @@
 
   function onCellValueChanged(event){
     console.log('cell value changed ', event);
-    if (event.column.colId = 'full_location') {
-      console.log('location changed');
-      var id = event.newValue.split('(').pop().slice(0, -1);
-      var data = event.data;
-      data.location_id = parseInt(id);
-      saveChange(event.data.id, data);
-      if(confirm('Institution was updated with new location, would you like to refresh the grid?')){
-        timeoutReload();
-      }
-    }else{
-      saveChange(event.data.id, event.data);
-    }
+    saveChange(event.data.id, event.data);
   }
 
   function onFilterTextBoxChanged() {
