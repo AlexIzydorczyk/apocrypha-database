@@ -4,9 +4,10 @@
   Locations
 </div>
 
-<h1>Locations</h1>
-<!-- <p><%= link_to "New location", new_location_path, class: "btn btn-outline-success" %></p> -->
+<h1>Locations<button type="button" class="btn btn-action mt-0" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New location</button></h1>
 
 <div id="locations">
-    <%= render 'grid', locations: @locations %>
+  <%= render 'grid', locations: @locations %>
 </div>
+
+<%= render 'locations/modals/form', location: Location.new, parent: nil, pid: '', depth: 0 %>

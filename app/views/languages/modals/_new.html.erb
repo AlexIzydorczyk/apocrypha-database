@@ -30,7 +30,7 @@
 				<input type="hidden" name="record_class" :value="record_class">
 				<input type="hidden" name="record_id" :value="real_record_id">
 				<input type="hidden" name="record_field_name" :value="language_column">
-			<% else %>
+			<% elsif parent.present? %>
 				<input type="hidden" name="record_class" value="<%= parent.class %>">
 				<input type="hidden" name="record_id" id="record-id" value="<%= parent.id %>">
 			<% end %>

@@ -4,9 +4,10 @@
   Institutions
 </div>
 
-<h1>Institutions</h1>
-<!-- <p><%= link_to "New institution", new_institution_path, class: "btn btn-outline-success" %></p> -->
+<h1>Institutions<button type="button" class="btn btn-action" style="margin-top: 0" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New institution</button></h1>
 
 <div id="institutions">
     <%= render 'grid', institutions: @institutions %>
 </div>
+
+<%= render 'institutions/modals/new', institution: Institution.new, parent: nil, pid: '', depth: 0 %>

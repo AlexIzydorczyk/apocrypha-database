@@ -4,9 +4,10 @@
   Languages
 </div>
 
-<h1>Languages</h1>
-<!-- <p><%= link_to "New language", new_language_path, class: "btn btn-outline-success" %></p> -->
+<h1>Languages<button type="button" class="btn btn-action mt-0" data-bs-toggle="modal" data-bs-target="#new-language">New language</button></h1>
 
 <div id="languages">
     <%= render 'grid', languages: @languages %>
 </div>
+
+<%= render 'languages/modals/new', language: Language.new, parent: nil, pid: '', depth: 0, in_vue: false %>
