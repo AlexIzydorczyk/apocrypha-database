@@ -18,4 +18,12 @@ class Ownership < ApplicationRecord
     [self.person.try(:full_name), self.institution.try(:display_name), self.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ')
   end
 
+  def full_display_name
+    text = self.display_name
+    text += "; " if self.display_name.present? && self.location.try(:city_region_country).present?
+    text += self.location.try(:city_region_country) if self.location.try(:city_region_country).present?
+    text += ". " if self.display_name.present? || self.location.try(:city_region_country).present?
+    text += self.provenance_notes
+    text
+  end
 end
