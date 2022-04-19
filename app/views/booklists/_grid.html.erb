@@ -9,6 +9,14 @@
 
 <%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "library_owner" %>
 <%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "scribe" %>
+<%= render 'booklists/modals/change_institution', booklist: booklists.first %>
+<%= render 'booklists/modals/change_location', booklist: booklists.first %>
+<%= render 'booklists/modals/change_religious_order', booklist: booklists.first %>
+<%= render 'locations/modals/form_from_grid', location: Location.first %>
+<%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
+<%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
+<%= render 'people/modals/form_from_grid', person: Person.first, reference_type: "library_owner" %>
+<%= render 'people/modals/form_from_grid', person: Person.first, reference_type: "scribe" %>
 <%= render 'layouts/grid_modal_js' %>
 
 <script type="text/javascript" charset="utf-8">
@@ -18,24 +26,50 @@
   const columnDefs = [
         { headerName: "Booklist no.", field: "booklist_no", comparator: numberSort },
         { headerName: "Type of booklist", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
-        { headerName: "Language", field: "language_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
+        { headerName: "Language", field: "language_id", hide: true },
 
         { headerName: "Library owner", children: [
           { headerName: "Id", field: "library_owner_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "library_owner")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
           } },
-          { headerName: "Names", field: "library_owner_name", hide: true, editable: false },
+          { headerName: "First name", field: "library_owner_first_name", hide: true, editable: false },
+          { headerName: "Last name", field: "library_owner_last_name", hide: true, editable: false },
         ] },
 
-        { headerName: "Institution", field: "institution_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Institution.pluck(:name).to_json.html_safe %> }, valueGetter: insitutionGetter, valueSetter: insitutionSetter },
+        { headerName: "Institution", children: [
+          { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Names", field: "institution_name", hide: true, editable: false },
+        ] },
 
-        { headerName: "Religious order", field: "religious_order_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ReligiousOrder.all.pluck(:order_name).to_json.html_safe %> }, valueGetter: religiousOrderGetter, valueSetter: religiousOrderSetter  },
-        { headerName: "Location", field: "location_id", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Location.all.map(&:city_region_country).to_json.html_safe %> }, valueGetter: locationGetter, valueSetter: locationSetter },
+        { headerName: "Religious order", children: [
+          { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "Name", field: "religious_order_name", hide: true, editable: false },
+          { headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },
+        ] },
+        
+        { headerName: "Location", children: [
+          { headerName: "Id", field: "location_id", hide: true, editable: false, cellRenderer: function(params) {
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'location')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } },
+          { headerName: "City", field: "city", editable: false, hide: true},
+          { headerName: "City (alternative)", field: "city_alt", editable: false, hide: true},
+          { headerName: "Diocese", field: "diocese", editable: false, hide: true},
+          { headerName: "Diocese (alternative)", hide: true, field: "diocese_alt", editable: false},
+          { headerName: "Region", field: "region", editable: false, hide: true},
+          { headerName: "Region (alternative)", hide: true, field: "region_alt", editable: false},
+          { headerName: "Country", field: "country", editable: false, hide: true},
+        ] },
+
         { headerName: "Scribe", children: [
           { headerName: "Id", field: "scribe_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "scribe")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
           } },
-          { headerName: "Names", field: "scribe_name", hide: true, editable: false },
+          { headerName: "First name", field: "scribe_first_name", hide: true, editable: false },
+          { headerName: "Last name", field: "scribe_last_name", hide: true, editable: false },
         ] },
         { headerName: "Date from", field: "date_from", hide: true, comparator: numberSort },
         { headerName: "Date to", field: "date_to", hide: true, comparator: numberSort },
@@ -54,14 +88,26 @@
         id: <%= bl.id %>,
         booklist_type: "<%= bl.booklist_type %>",
         booklist_no: "<%= bl.booklist_no.present? ? bl.booklist_no : bl.id %>",
-        library_owner_name: "<%= bl.library_owner.try(:full_name) %>",
+        library_owner_first_name: "<%= bl.library_owner.try(:first_name_vernacular) %>",
+        library_owner_last_name: "<%= bl.library_owner.try(:last_name_vernacular) %>",
         library_owner_id: "<%= bl.library_owner_id %>",
         institution_id: "<%= bl.institution_id %>",
+        institution_name: "<%= bl.institution.try(:display_name) %>",
         location_id: "<%= bl.location_id %>",
+        city: "<%= bl.location.try(:city) %>",
+        city_alt: "<%= bl.location.try(:city_alt) %>",
+        region: "<%= bl.location.try(:region) %>",
+        region_alt: "<%= bl.location.try(:region_alt) %>",
+        country: "<%= bl.location.try(:country) %>",
+        diocese: "<%= bl.location.try(:diocese) %>",
+        diocese_alt: "<%= bl.location.try(:diocese_alt) %>",
         scribe_id: "<%= bl.scribe_id %>",
-        scribe_name: "<%= bl.scribe.try(:full_name) %>",
+        scribe_first_name: "<%= bl.scribe.try(:first_name_vernacular) %>",
+        scribe_last_name: "<%= bl.scribe.try(:last_name_vernacular) %>",
         language_id: "<%= bl.language_id %>",
         religious_order_id: "<%= bl.religious_order_id %>",
+        religious_order_name: "<%= bl.religious_order.try(:order_name) %>",
+        religious_order_abbreviation: "<%= bl.religious_order.try(:abbreviation) %>",
         title_orig: "<%= bl.title_orig %>",
         title_orig_transliteration: "<%= bl.title_orig_transliteration %>",
         title_orig_translation: "<%= bl.title_orig_translation %>",
@@ -82,43 +128,6 @@
     gridOptions.api.setQuickFilter(
       document.getElementById('filter-text-box').value
     );
-  }
-
-  function personGetter(params) {
-    return params.data ? <%= Person.all.map{ |p| [p.id, p.full_name] }.to_h.to_json.html_safe %>[params.data.library_owner_id] : ''
-  }
-  function personSetter(params) {
-    params.data.library_owner_id = <%= Person.all.map{ |p| [p.full_name, p.id] }.to_h.to_json.html_safe %>[params.newValue]
-  }
-  function insitutionGetter(params) {
-    return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.institution_id]
-  }
-  function insitutionSetter(params) {
-    params.data.institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
-  }
-  function languageGetter(params) {
-    return <%= Language.pluck(:id, :language_name).to_h.to_json.html_safe %>[params.data.language_id]
-  }
-  function languageSetter(params) {
-    params.data.language_id = <%= Language.pluck(:language_name, :id).to_h.to_json.html_safe %>[params.newValue]
-  }
-  function religiousOrderGetter(params) {
-    return params.data ? <%= ReligiousOrder.pluck(:id, :order_name).to_h.to_json.html_safe %>[params.data.religious_order_id] : ''
-  }
-  function religiousOrderSetter(params) {
-    params.data.religious_order_id = <%= ReligiousOrder.pluck(:order_name, :id).to_h.to_json.html_safe %>[params.newValue]
-  }
-  function locationGetter(params) {
-    return params.data ? <%= Location.all.map{ |l| [l.id, l.city_region_country] }.to_h.to_json.html_safe %>[params.data.location_id] : ''
-  }
-  function locationSetter(params) {
-    params.data.location_id = <%= Location.all.map{ |l| [l.city_region_country, l.id] }.to_h.to_json.html_safe %>[params.newValue]
-  }
-  function authorGetter(params) {
-    return params.data ? <%= Person.all.map{ |l| [l.id, l.full_name] }.to_h.to_json.html_safe %>[params.data.scribe_id] : ''
-  }
-  function authorSetter(params) {
-    params.data.scribe_id = <%= Person.all.map{ |l| [l.full_name, l.id] }.to_h.to_json.html_safe %>[params.newValue]
   }
 
   const gridOptions = {

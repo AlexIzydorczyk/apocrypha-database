@@ -8,6 +8,9 @@ class ReligiousOrdersController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {religious_order: @religious_order}
+    end
   end
 
   def new

@@ -8,6 +8,9 @@ class PeopleController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {person: @person}
+    end
   end
 
   def new

@@ -1,0 +1,111 @@
+<div class="modal" id="person-modal-<%= reference_type %>" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: person, id:"person-form") do |form| %>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Person</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-8 offset-md-2">
+						<%= form.label "Standard form used in English", "Standard form used in English", class: "fw-bolder" %>		
+						<div class="row">
+							<div class="col-md"><label>First name</label></div>
+							<div class="col-md"><label>Middle name</label></div>
+						</div>
+						<div class="row">
+							<div class="col-md"><%= form.text_field :first_name_vernacular, class: "form-control", placeholder: "First name" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_vernacular, class: "form-control", placeholder: "Middle name" %></div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-md-3"><label>Prefix</label></div>
+							<div class="col-md-6"><label>Last name</label></div>
+							<div class="col-md-3"><label>Suffix</label></div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-md-3"><%= form.text_field :prefix_vernacular, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_vernacular, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_vernacular, class: "form-control", placeholder: "Suffix" %></div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-outline-action" @click="alternative = true">Add alternative</button>
+					</div>
+					<div class="col-md-2" v-show="alternative">
+						<label>Writing system</label>
+						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2"} %>
+					</div>
+					<div class="col-md-8" v-show="alternative">
+						<label>Alternative or local form</label>
+						<div class="row mt-2">
+							<div class="col-md"><%= form.text_field :first_name_english, class: "form-control", placeholder: "First name" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_english, class: "form-control", placeholder: "Middle name" %></div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-md-3"><%= form.text_field :prefix_english, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_english, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_english, class: "form-control", placeholder: "Suffix" %></div>
+						</div>
+					</div>
+					<div class="col-md-8 offset-md-2" v-show="alternative && writing_system_id != '<%= latin_writing_system_id %>'">
+						<div class="row mt-2">
+							<div class="col-md"><%= form.text_field :first_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-md-3"><%= form.text_field :prefix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-9">
+						<%= form.label :birth_date, "Dates", class: "fw-bolder mt-4" %>
+						<div class="row">
+							<div class="col-md-6">
+								<%= form.number_field :birth_date, class: "form-control", max: Date.today.year %>
+							</div>
+							<div class="col-md-6">
+								<%= form.number_field :death_date, class: "form-control", max: Date.today.year %>
+							</div>
+						</div>
+
+						<div class="d-flex mt-4 justify-content-between">
+							<%= form.label :viaf, "VIAF: Virtual International Authority File", class: "fw-bolder" %>
+							<a href="https://viaf.org/" target="_blank" class="text-decoration-none text-dark">https://viaf.org</a>
+						</div>
+						<%= form.text_field :viaf, class: "form-control" %>
+
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action" onclick="saveModal('person', 'library_owner')">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	var person_modal_vue;
+	$( document ).ready(function() {
+		person_modal_vue = new Vue({
+			el: "#person-modal-<%= reference_type %>",
+			name: "PersonModal",
+			data: function() {
+				return {
+					languages: <%= Language.all.to_json.html_safe %>,
+					language: '',
+					alternative: false,
+				}
+			},
+			mounted(){
+				new TomSelect('#person-modal-<%= reference_type %> #person_writing_system_id',ts_sort_text_asc_max_1);
+			},
+		});
+	});
+</script>

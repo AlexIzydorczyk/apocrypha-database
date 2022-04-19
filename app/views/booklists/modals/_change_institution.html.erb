@@ -1,0 +1,26 @@
+<div class="modal" id="booklist-modal-institution" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: booklist, url: booklist_path(booklist)) do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Change bibliography publication location</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<label class="mt-3 fw-bolder">Institution</label>
+				<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action" onclick="saveModal('booklist', 'institution')">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		new TomSelect("#booklist-modal-institution #booklist_institution_id", ts_sort_text_asc_max_1);;
+	})
+</script>
+

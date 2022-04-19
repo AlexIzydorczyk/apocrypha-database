@@ -17,9 +17,9 @@ function openModal(action, record_name, modifier=''){
 	      	let obj = data[key];
 	      	console.log('obj', obj)
 	      	for(i in obj){
-	      		console.log("query will be", '#' + record_name + '-modal' + modifier_string +' #' + record_name + '_' + i);
 	      		$('#' + record_name + '-modal' + modifier_string +' #' + record_name + '_' + i).each(function(){
 	      			if($(this).is('select')){
+	      				console.log("in select", this);
 	      				this.tomselect.clear();
 	      				if(Array.isArray(obj[i])){
 	      					obj[i].forEach( s => this.tomselect.addItem(s) );

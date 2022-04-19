@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-md-6 offset-3">
 						<label>Institution name</label>
-						<%= form.text_field :name_orig, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
+						<%= form.text_field :name, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
 					</div>
 					<div class="col-md-3">
 						<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
@@ -72,6 +72,7 @@
 			mounted(){
 				new TomSelect("#institution-modal #institution_religious_order_id",ts_sort_text_asc_max_1);
 				new TomSelect("#institution-modal #institution_location_id",ts_sort_text_asc_max_1);
+				new TomSelect("#institution-modal #institution_writing_system_id",ts_sort_text_asc_max_1);
 			},
 		});
 	});
