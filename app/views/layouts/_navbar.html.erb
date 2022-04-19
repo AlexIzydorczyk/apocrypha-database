@@ -21,6 +21,17 @@
           <li><%= link_to "Sign out", destroy_user_session_path, class: "dropdown-item" %></li>
         </ul>
       </div>
+    <% else %>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="navbar-nav nav-pills ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <%= link_to "Home", root_path, class: "nav-link #{ 'active' if current_page? root_path }" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign in", new_user_session_path, class: "nav-link #{ 'active' if current_page? new_user_session_path }" %>
+          </li>
+        </ul>
+      </div>
     <% end %>
   </div>
 </nav>

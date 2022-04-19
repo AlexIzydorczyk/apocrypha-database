@@ -3,18 +3,20 @@
 </div>
 <div id="manuscripts_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
-<%= render 'locations/modals/form_from_grid', location: Location.first %>
-<%= render 'manuscripts/modals/change_location', manuscript: manuscripts.first %>
-<%= render 'manuscripts/modals/change_institution', manuscript: manuscripts.first, column: "genesis_institution_id" %>
-<%= render 'manuscripts/modals/change_institution', manuscript: manuscripts.first, column: "institution_id" %>
-<%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
-<%= render 'manuscripts/modals/change_religious_order', manuscript: manuscripts.first %>
-<%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
-<%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "scribe" %>
-<%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "correspondent" %>
-<%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "transcriber" %>
-<%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "compiler" %>
-<%= render 'layouts/grid_modal_js' %>
+<% if user_signed_in? && current_user.adm_editor? %>
+  <%= render 'locations/modals/form_from_grid', location: Location.first %>
+  <%= render 'manuscripts/modals/change_location', manuscript: manuscripts.first %>
+  <%= render 'manuscripts/modals/change_institution', manuscript: manuscripts.first, column: "genesis_institution_id" %>
+  <%= render 'manuscripts/modals/change_institution', manuscript: manuscripts.first, column: "institution_id" %>
+  <%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
+  <%= render 'manuscripts/modals/change_religious_order', manuscript: manuscripts.first %>
+  <%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
+  <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "scribe" %>
+  <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "correspondent" %>
+  <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "transcriber" %>
+  <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "compiler" %>
+  <%= render 'layouts/grid_modal_js' %>
+<% end %>
 
 
 <% manuscripts.each do |manuscript| %>
@@ -44,52 +46,66 @@
     ] },
 
     { headerName: "Genesis institution", children: [
-      { headerName: "Id", field: "genesis_institution_id", hide: true, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'genesis_institution_id')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Id", field: "genesis_institution_id", hide: true, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'genesis_institution_id')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Names", field: "genesis_institution_name", hide: true, editable: false },
     ] },
 
     { headerName: "Genesis religious order", children: [
-      { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Name", field: "religious_order_name", hide: true, editable: false },
       { headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },
     ] },
 
     { headerName: "Repository", children: [
-      { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'institution_id')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'institution_id')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Names", field: "institution_name", hide: true, editable: false },
     ] },
 
     { headerName: "Scribe(s)", children: [
-      { headerName: "Ids", field: "scribe_ids", hide: false, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Ids", field: "scribe_ids", hide: false, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Names", field: "scribe_names", hide: false, editable: false },
     ] },
 
     { headerName: "Correspondent(s)", children: [
-      { headerName: "Ids", field: "correspondent_ids", hide: true, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'correspondent')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Ids", field: "correspondent_ids", hide: true, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'correspondent')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Names", field: "correspondent_names", hide: true, editable: false },
     ] },
 
     { headerName: "Transcriber(s)", children: [
-      { headerName: "Ids", field: "transcriber_ids", hide: true, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'transcriber')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Ids", field: "transcriber_ids", hide: true, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'transcriber')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Names", field: "transcriber_names", hide: true, editable: false },
     ] },
 
     { headerName: "Compiler(s)", children: [
-      { headerName: "Ids", field: "compiler_ids", hide: true, editable: false, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'compiler')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-      } },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Ids", field: "compiler_ids", hide: true, editable: false, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'compiler')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } },
+      <% end %>
       { headerName: "Names", field: "compiler_names", hide: true, editable: false },
     ] },
 

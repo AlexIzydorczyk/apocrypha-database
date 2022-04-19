@@ -28,9 +28,11 @@ author" %>
         { headerName: "Author type", field: "author_type", editable: false, hide: true},
 
         { headerName: "Corporate author", children: [
-          { headerName: "Institution id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Institution id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "Name orig", field: "institution_name_orig", hide: true, editable: false },
           { headerName: "Name english", field: "institution_name_english", hide: true, editable: false },
           { headerName: "Name transliteration", field: "institution_name_orig_transliteration", hide: true, editable: false },
@@ -57,23 +59,29 @@ author" %>
         ] },
 
         { headerName: "All author(s)", children: [
-          { headerName: "Ids", field: "author_ids", hide: false, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'author')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Ids", field: "author_ids", hide: false, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'author')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "Names", field: "author_names", hide: false, editable: false },
         ] },
 
         { headerName: "Editor(s)", children: [
-          { headerName: "Ids", field: "editor_ids", hide: false, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'editor')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Ids", field: "editor_ids", hide: false, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'editor')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "Names", field: "editor_names", hide: false, editable: false },
         ] },
 
         { headerName: "Translator(s)", children: [
-          { headerName: "Ids", field: "translator_ids", hide: false, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'translator')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Ids", field: "translator_ids", hide: false, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'translator')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "Names", field: "translator_names", hide: false, editable: false },
         ] },
         
@@ -108,9 +116,11 @@ author" %>
           { headerName: "Publisher", field: "publisher", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= ModernSource.all.pluck(:publisher).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         ]},
         { headerName: "Publication location", children: [
-          { headerName: "Location id", field: "publication_location_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Location id", field: "publication_location_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source')"><i class='fa-solid fa-arrows-repeat'></i></button>`
             } },
+          <% end %>
           { headerName: "City orig", field: "publication_location_city_orig", hide: true, editable: false },
           { headerName: "Diocese orig", field: "publication_location_diocese_orig", hide: true, editable: false },
           { headerName: "Region orig", field: "publication_location_region_orig", hide: true, editable: false },

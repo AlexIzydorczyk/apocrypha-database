@@ -29,32 +29,40 @@
         { headerName: "Language", field: "language_id", hide: true },
 
         { headerName: "Library owner", children: [
-          { headerName: "Id", field: "library_owner_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "library_owner")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "library_owner_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "library_owner")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "First name", field: "library_owner_first_name", hide: true, editable: false },
           { headerName: "Last name", field: "library_owner_last_name", hide: true, editable: false },
         ] },
 
         { headerName: "Institution", children: [
-          { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "Names", field: "institution_name", hide: true, editable: false },
         ] },
 
         { headerName: "Religious order", children: [
-          { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "Name", field: "religious_order_name", hide: true, editable: false },
           { headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },
         ] },
         
         { headerName: "Location", children: [
-          { headerName: "Id", field: "location_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'location')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "location_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'location')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "City", field: "city", editable: false, hide: true},
           { headerName: "City (alternative)", field: "city_alt", editable: false, hide: true},
           { headerName: "Diocese", field: "diocese", editable: false, hide: true},
@@ -65,9 +73,11 @@
         ] },
 
         { headerName: "Scribe", children: [
-          { headerName: "Id", field: "scribe_id", hide: true, editable: false, cellRenderer: function(params) {
-            return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "scribe")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          } },
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "scribe_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "scribe")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
           { headerName: "First name", field: "scribe_first_name", hide: true, editable: false },
           { headerName: "Last name", field: "scribe_last_name", hide: true, editable: false },
         ] },
