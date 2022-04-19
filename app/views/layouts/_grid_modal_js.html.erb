@@ -31,9 +31,9 @@ function openModal(action, record_name, modifier=''){
 	      			}
 	      		});
 	      	}
+	      	$('#' + record_name + '-modal' + modifier_string).modal('show');
 	    }
 	});
-	$('#' + record_name + '-modal' + modifier_string).modal('show');
 };
 
 function saveModal(record_name, modifier=''){

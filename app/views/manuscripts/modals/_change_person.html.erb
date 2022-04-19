@@ -1,15 +1,15 @@
-<div class="modal" id="modern_source-modal-<%= reference_type %>" tabindex="-1" aria-hidden="true">
-	<%= form_with(model: modern_source, url: modern_source_path(modern_source)) do |form| %>
+<div class="modal" id="manuscript-modal-<%= reference_type %>" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: manuscript, url: manuscript_path(manuscript)) do |form| %>
 	<input type="hidden" name="<%= reference_type %>_present" value="1">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Change bibliographic item person</h5>
+				<h5 class="modal-title">Change manuscript person</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<label class="mt-3 fw-bolder"><%= reference_type.pluralize.humanize %></label>
-				<select class="form-control" multiple="multiple" name="<%= reference_type %>_reference[<%= reference_type %>_id][]" id="modern_source_<%= reference_type %>_id" placeholder="Select <%= reference_type %>(s)">
+				<select class="form-control" multiple="multiple" name="<%= reference_type %>_reference[<%= reference_type %>_id][]" id="manuscript_<%= reference_type %>_id" placeholder="Select <%= reference_type %>(s)">
 					<% sort_hash_keys(@grouped_people, [reference_type, 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
 						<optgroup label="<%= group.to_s.humanize %>">
 							<% people.each do |person| %>
@@ -20,7 +20,7 @@
 				</select>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-action" onclick="saveModal('modern_source', '<%= reference_type %>')">Save & Close</button>
+				<button type="button" class="btn btn-action" onclick="saveModal('manuscript', '<%= reference_type %>')">Save & Close</button>
 			</div>
 		</div>
 	</div>
@@ -29,6 +29,6 @@
 
 <script type="text/javascript">
 	$(function() {
-		new TomSelect("#modern_source-modal-<%= reference_type %> form select", ts_max_null);;
+		new TomSelect("#manuscript-modal-<%= reference_type %> form select", ts_max_null);;
 	})
 </script>

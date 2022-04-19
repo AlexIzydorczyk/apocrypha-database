@@ -8,6 +8,14 @@ class ManuscriptsController < ApplicationController
   end
 
   def show
+    if request.xhr?
+      render json: {manuscript: @manuscript.attributes.merge({
+        scribe_id: @manuscript.scribes.map(&:id),
+        correspondent_id: @manuscript.correspondents.map(&:id),
+        transcriber_id: @manuscript.transcribers.map(&:id),
+        compiler_id: @manuscript.compilers.map(&:id),
+      })}
+    end
   end
 
   def new
@@ -89,6 +97,42 @@ class ManuscriptsController < ApplicationController
       build_scribe_references_for((new_set - @manuscript.scribes.ids), "scribe")
     elsif params[:in_grid].blank?
       @manuscript.scribe_references.destroy_all
+    end
+
+    if (params[:manuscript].present? && params[:manuscript][:scribe_id].present?) || params[:manuscript][:scribe_present].present?
+      array = params[:manuscript][:scribe_id].class == Array ? params[:manuscript][:scribe_id] : [params[:manuscript][:scribe_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.scribes.ids - new_set).destroy_all
+      build_scribe_references_for new_set - @manuscript.scribes.ids, 'scribe'
+    elsif params[:in_grid].blank?
+      @manuscript.scribe_references.destroy_all
+    end
+
+    if (params[:manuscript].present? && params[:manuscript][:correspondent_id].present?) || params[:manuscript][:correspondent_present].present?
+      array = params[:manuscript][:correspondent_id].class == Array ? params[:manuscript][:correspondent_id] : [params[:manuscript][:correspondent_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.correspondents.ids - new_set).destroy_all
+      build_scribe_references_for new_set - @manuscript.correspondents.ids, 'correspondent'
+    elsif params[:in_grid].blank?
+      @manuscript.correspondent_references.destroy_all
+    end
+
+    if (params[:manuscript].present? && params[:manuscript][:transcriber_id].present?) || params[:manuscript][:transcriber_present].present?
+      array = params[:manuscript][:transcriber_id].class == Array ? params[:manuscript][:transcriber_id] : [params[:manuscript][:transcriber_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.transcribers.ids - new_set).destroy_all
+      build_scribe_references_for new_set - @manuscript.transcribers.ids, 'transcriber'
+    elsif params[:in_grid].blank?
+      @manuscript.transcriber_references.destroy_all
+    end
+
+    if (params[:manuscript].present? && params[:manuscript][:compiler_id].present?) || params[:manuscript][:compiler_present].present?
+      array = params[:manuscript][:compiler_id].class == Array ? params[:manuscript][:compiler_id] : [params[:manuscript][:compiler_id]]
+      new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @manuscript, person_id: @manuscript.compilers.ids - new_set).destroy_all
+      build_scribe_references_for new_set - @manuscript.compilers.ids, 'compiler'
+    elsif params[:in_grid].blank?
+      @manuscript.compiler_references.destroy_all
     end
     
     if @manuscript.update(manuscript_params)
