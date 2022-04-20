@@ -20,7 +20,7 @@ class Location < ApplicationRecord
 
 
 	def city_region_country
-		[(self.diocese.present? ? 'dioc. ' + self.diocese : nil), self.city, self.region, self.country].select{ |s| s.present? }.join(", ")
+		[self.city, (self.diocese.present? ? 'dioc. ' + self.diocese : nil), self.region, self.country].select{ |s| s.present? }.join(", ")
 	end
 
 	def city_country
