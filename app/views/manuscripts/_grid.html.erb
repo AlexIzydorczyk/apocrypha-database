@@ -44,7 +44,7 @@
       { headerName: "Region", field: "institution_country", editable: false, hide: true },
       { headerName: "Region (alternative)", hide: true, field: "institution_diocese", editable: false},
       { headerName: "Country", field: "institution_diocese_alt", editable: false, hide: false },
-      { headerName: "Name", field: "institution_name", hide: false, editable: false },
+      { headerName: "Name", field: "institution_name", flex: 2, hide: false, editable: false },
     ] },
 
     { headerName: "Shelfmark", field: "shelfmark"},
@@ -242,5 +242,6 @@
     new agGrid.Grid(eGridDiv, gridOptions);
     var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
     columnToolPanel.collapseColumnGroups();
+    gridOptions.columnApi.autoSizeColumns(['census_no', 'status']);
 
   </script>
