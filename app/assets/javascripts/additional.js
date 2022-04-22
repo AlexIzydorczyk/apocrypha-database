@@ -198,3 +198,14 @@ var ts_sort_text_asc_max_1_create = {
   maxOptions: null,
   hidePlaceholder: true,
 };
+
+
+// ----   AG Grid functions -------
+function autoSizeAll(gridOpt, skipHeader) {
+  const allColumnIds = [];
+  gridOpt.columnApi.getAllColumns().forEach((column) => {
+    allColumnIds.push(column.getId());
+  });
+
+  gridOpt.columnApi.autoSizeColumns(allColumnIds, skipHeader);
+}

@@ -13,4 +13,14 @@ class Booklist < ApplicationRecord
   def display_name
     "Booklist " + self.id.to_s
   end
+
+  def apocrypha_mentioned
+    rec = BooklistReference.where(booklist_section_id: BooklistSection.where(booklist_id: self.id).pluck(:id)).map{ |br| br.record.display_name }
+    rec.present? ? rec.reject(&:blank?).join(', ') : ""
+  end
+
+  def extant_as_ms
+     rec = BooklistSection.where(booklist_id: self.id).map{|bs| bs.try(:manuscript).try(:display_name) }
+     rec.present? ? rec.reject(&:blank?).join('; ') : ""
+  end
 end

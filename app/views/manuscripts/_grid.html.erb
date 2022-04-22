@@ -246,6 +246,6 @@
     new agGrid.Grid(eGridDiv, gridOptions);
     var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
     columnToolPanel.collapseColumnGroups();
-    gridOptions.columnApi.autoSizeColumns(['census_no', 'status']);
-
+    //gridOptions.columnApi.autoSizeColumns(['census_no', 'status']);
+    autoSizeAll(gridOptions, false)
   </script>
