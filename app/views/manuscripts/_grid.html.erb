@@ -29,7 +29,7 @@
 
   const columnDefs = [
     { headerName: "Census no.", field: "census_no", comparator: numberSort },
-    { headerName: "Status", field: "status", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ['extant', 'lost', 'destroyed'] }},
+    { headerName: "Status", field: "status", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ['extant', 'lost', 'destroyed'] }},
 
     { headerName: "Repository", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
@@ -39,92 +39,95 @@
       <% end %>
       { headerName: "City", field: "institution_city", editable: false, hide: false },
       { headerName: "City (alternative)", field: "institution_city_alt", editable: false, hide: true },     
-      { headerName: "Region", field: "institution_region", editable: false, hide: true },
-      { headerName: "Region (alternative)", hide: true, field: "institution_region_alt", editable: false},
+      // { headerName: "Region", field: "institution_region", editable: false, hide: true },
+      // { headerName: "Region (alternative)", hide: true, field: "institution_region_alt", editable: false},
       { headerName: "Country", field: "institution_country", editable: false, hide: false },
-      { headerName: "Repository", field: "institution_name", flex: 2, hide: false, editable: false },
-      { headerName: "Repository (alternative)", field: "institution_name_alternative", flex: 2, hide: true, editable: false },
+      // { headerName: "Repository", field: "institution_name", flex: 2, hide: false, editable: false },
+      // { headerName: "Repository (alternative)", field: "institution_name_alternative", flex: 2, hide: true, editable: false },
     ] },
 
-    { headerName: "Shelfmark", field: "shelfmark"},
-    { headerName: "Old shelfmarks", field: "old_shelfmark"},
-    { headerName: "Material", field: "material", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ["paper", "parchment", "parchment and paper"] } },
-    { headerName: "Dimensions", field: "dimensions", hide: true },
-    { headerName: "Number of pages/folios", field: "leaf_page_no", hide: true, comparator: numberSort },
-    { headerName: "Date from", field: "date_from", hide: true, comparator: numberSort },
-    { headerName: "Date to", field: "date_to", hide: true, comparator: numberSort },
-    { headerName: "Specific date", field: "specific_date", hide: true, comparator: numberSort },
-    { headerName: "Content type", field: "content_type", flex: 2, cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: <%= Manuscript.all.pluck(:content_type).uniq.to_json.html_safe %> } },
-    { headerName: "Notes on ms.", field: "notes", hide: true, cellEditor: 'agLargeTextCellEditor' },
-    { headerName: "Languages in ms.", field: "languages", hide: true, editable: false },
+    { headerName: "Manuscript", children: [
+      { headerName: "Shelfmark", field: "shelfmark"},
+      { headerName: "Old shelfmarks", field: "old_shelfmark", hide: true },
+      { headerName: "Material", field: "material", hide: true, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: ["paper", "parchment", "parchment and paper"] } },
+      { headerName: "Dimensions", field: "dimensions", hide: true },
+      { headerName: "Number of pages/folios", field: "leaf_page_no", hide: true, comparator: numberSort },
+      { headerName: "Date from", field: "date_from", hide: true, comparator: numberSort },
+      { headerName: "Date to", field: "date_to", hide: true, comparator: numberSort },
+      { headerName: "Specific date", field: "specific_date", hide: true, comparator: numberSort },
+      { headerName: "Content type", field: "content_type", flex: 2, cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: <%= Manuscript.all.pluck(:content_type).uniq.to_json.html_safe %> } },
+      { headerName: "Notes on ms.", field: "notes", hide: true, cellEditor: 'agLargeTextCellEditor' },
+      { headerName: "Languages in ms.", field: "languages", hide: true, editable: false },
+    ]},      
 
-    { headerName: "Origin scribe(s)", children: [
-      <% if user_signed_in? && current_user.adm_editor? %>
-        { headerName: "Ids", field: "scribe_ids", hide: true, editable: false, cellRenderer: function(params) {
-          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-        } },
-      <% end %>
-      { headerName: "Names", field: "scribe_names", hide: true, editable: false },
-    ] },
-
-    { headerName: "Origin location", children: [
-      { headerName: "Id", field: "genesis_location_id", editable: false, hide: true, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-        } 
-      },
-      { headerName: "City", field: "city", editable: false, hide: true },
-      { headerName: "City (alternative)", field: "city_alt", editable: false, hide: true },
-      { headerName: "Diocese", field: "diocese", editable: false, hide: true },
-      { headerName: "Diocese (alternative)", hide: true, field: "diocese_alt", editable: false},
-      { headerName: "Region", field: "region", editable: false, hide: true },
-      { headerName: "Region (alternative)", hide: true, field: "region_alt", editable: false},
-      { headerName: "Country", field: "country", editable: false, hide: true },
-    ] },
-
-    { headerName: "Origin institution", children: [
+    { headerName: "Origin: institution", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Id", field: "genesis_institution_id", hide: true, editable: false, cellRenderer: function(params) {
           return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'genesis_institution_id')"><i class='fa-solid fa-arrows-repeat'></i></button>`
         } },
       <% end %>
-      { headerName: "Names", field: "genesis_institution_name", hide: true, editable: false },
+      { headerName: "Name", field: "genesis_institution_name", hide: false, editable: false },
+      { headerName: "Name (alternative)", field: "genesis_institution_name_alternative", hide: true, editable: false },
     ] },
 
-    { headerName: "Origin religious order", children: [
+    { headerName: "Origin: location", children: [
+      { headerName: "Id", field: "genesis_location_id", editable: false, hide: true, cellRenderer: function(params) {
+        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+        } 
+      },
+      { headerName: "City", field: "city", editable: false, hide: false },
+      { headerName: "City (alternative)", field: "city_alt", editable: false, hide: true },
+      { headerName: "Diocese", field: "diocese", editable: false, hide: false },
+      { headerName: "Diocese (alternative)", hide: true, field: "diocese_alt", editable: false},
+      { headerName: "Region", field: "region", editable: false, hide: false },
+      { headerName: "Region (alternative)", hide: true, field: "region_alt", editable: false},
+      { headerName: "Country", field: "country", editable: false, hide: false },
+    ] },
+
+    { headerName: "Origin: religious order", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
           return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
         } },
       <% end %>
-      { headerName: "Name", field: "religious_order_name", hide: true, editable: false },
-      { headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },
+      { headerName: "Name", field: "religious_order_name", hide: false, editable: false },
+      // { headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },
     ] },
 
-    { headerName: "Correspondent(s)", children: [
+    // { headerName: "Origin: scribe(s)", children: [
+    //   <% if user_signed_in? && current_user.adm_editor? %>
+    //     { headerName: "Ids", field: "scribe_ids", hide: true, editable: false, cellRenderer: function(params) {
+    //       return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+    //     } },
+    //   <% end %>
+    //   { headerName: "Names", field: "scribe_names", hide: true, editable: false },
+    // ] },
+
+    { headerName: "Correspondent", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Ids", field: "correspondent_ids", hide: true, editable: false, cellRenderer: function(params) {
           return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'correspondent')"><i class='fa-solid fa-arrows-repeat'></i></button>`
         } },
       <% end %>
-      { headerName: "Names", field: "correspondent_names", hide: true, editable: false },
+      { headerName: "Name(s)", field: "correspondent_names", hide: false, editable: false },
     ] },
 
-    { headerName: "Transcriber(s)", children: [
+    { headerName: "Transcribed by", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Ids", field: "transcriber_ids", hide: true, editable: false, cellRenderer: function(params) {
           return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'transcriber')"><i class='fa-solid fa-arrows-repeat'></i></button>`
         } },
       <% end %>
-      { headerName: "Names", field: "transcriber_names", hide: true, editable: false },
+      { headerName: "Name(s)", field: "transcriber_names", hide: false, editable: false },
     ] },
 
-    { headerName: "Compiler(s)", children: [
+    { headerName: "Compiles by", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Ids", field: "compiler_ids", hide: true, editable: false, cellRenderer: function(params) {
           return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'compiler')"><i class='fa-solid fa-arrows-repeat'></i></button>`
         } },
       <% end %>
-      { headerName: "Names", field: "compiler_names", hide: true, editable: false },
+      { headerName: "Name(s)", field: "compiler_names", hide: false, editable: false },
     ] },
 
     { headerName: "Actions", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
@@ -156,7 +159,8 @@
       institution_diocese_alt: "<%= manuscript.institution.try(:location).try(:diocese_alt) %>",
 
       genesis_institution_id: "<%= manuscript.genesis_institution_id %>",
-      genesis_institution_name: "<%= manuscript.genesis_institution.try(:display_name) %>",
+      genesis_institution_name: "<%= manuscript.genesis_institution.try(:name) %>",
+      genesis_institution_name_alternative: "<%= manuscript.genesis_institution.try(:name_alt) %>",
 
       genesis_location_id: "<%= manuscript.genesis_location_id %>",
       city: "<%= manuscript.genesis_location.try(:city) %>",

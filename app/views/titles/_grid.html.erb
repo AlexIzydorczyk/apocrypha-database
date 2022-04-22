@@ -16,29 +16,28 @@
 
   const columnDefs = [
         
-        { headerName: "Title", field: "title_orig", cellStyle: function(params) {
+        { headerName: "Language", field: "language_id", flex: 2, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
+
+        { headerName: "Title", field: "title_orig", flex: 4, cellStyle: function(params) {
           if(params.data.italicized == "true") return {fontStyle: "italic"}
           return null
         }},
-        { headerName: "Title translation", field: "title_translation", hide: true, cellStyle: function(params) {
+        { headerName: "Title (alternative)", flex: 4, field: "title_translation", hide: true, cellStyle: function(params) {
           if(params.data.italicized == "true") return {fontStyle: "italic"}
           return null
         }},
-        { headerName: "Title transliteration", field: "title_orig_transliteration", hide: true, cellStyle: function(params) {
+        { headerName: "Title (alt. translit.)", flex: 4, field: "title_orig_transliteration", hide: true, cellStyle: function(params) {
           if(params.data.italicized == "true") return {fontStyle: "italic"}
           return null
         }},
         
         { headerName: "Italicized?", field: "italicized", cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: ["true", "false"]}},
-        
-
-        { headerName: "Language", field: "language_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
 
         { headerName: "Apocryphon", children: [
-          { headerName: "Apocryphon id", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(params) {
+          { headerName: "Id", field: "apocryphon", editable: false, hide: true, suppressColumnsToolPanel: true, cellRenderer: function(params) {
             return `${params.value.id} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('titles/${params.data.id}', 'title')"><i class='fa-solid fa-arrows-repeat'></i></button>`
           }},
-          { headerName: "Name", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
+          { headerName: "Title of apocryphon", flex: 2, field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
             return `<a target="_blank" href="/apocrypha/${apocryphon.value.id}/edit">${apocryphon.value.display_name}</a>`
           }},
         ] },

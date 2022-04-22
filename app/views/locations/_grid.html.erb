@@ -13,20 +13,16 @@
 
   const columnDefs = [
 
-    { headerName: "City", field: "city" },
-    { headerName: "City translation", hide: true, field: "city_alt"},
-    { headerName: "City translilteration", hide: true, field: "city_translilteration"},
-
-    { headerName: "Diocese", field: "diocese" },
-    { headerName: "Diocese translation", field: "diocese_alt", hide: true},
-    { headerName: "Diocese transliteration", field: "diocese_transliteration", hide: true},
-      
-    { headerName: "Region", field: "region"},
-    { headerName: "Region translation", field: "region_alt", hide: true},
-    { headerName: "Region transliteration", field: "region_transliteration", hide: true},
-    
-    { headerName: "Country", field: "country"},
-
+    { headerName: "City", field: "city" , flex: 2},
+    { headerName: "City (alternative)", hide: true, field: "city_alt", flex: 2},
+    { headerName: "City (alt. translit.)", hide: true, field: "city_translilteration", flex: 2},
+    { headerName: "Diocese", field: "diocese" , flex: 2},
+    { headerName: "Diocese (alternative)", field: "diocese_alt", hide: true, flex: 2},
+    { headerName: "Diocese (alt. translit.)", field: "diocese_transliteration", hide: true, flex: 2},
+    { headerName: "Region", field: "region", flex: 2},
+    { headerName: "Region (alternative)", field: "region_alt", hide: true, flex: 2},
+    { headerName: "Region (alt. translit.)", field: "region_transliteration", hide: true, flex: 2},
+    { headerName: "Country", field: "country", flex: 2},
     { headerName: "Longitude", field: "longitude", hide: true},
     { headerName: "Latitude", field: "latitude", hide: true},
 

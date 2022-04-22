@@ -12,17 +12,20 @@
   const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
 
   const columnDefs = [
-    { headerName: "Apocryphon no", field: "apocryphon_no", comparator: numberSort },
-    { headerName: "Standard English Title", field: "main_english_title", editable: false, flex: 2,},
-    { headerName: "Standard Latin Title", field: "main_latin_title", editable: false, flex: 2,},
-    { headerName: "Other English Titles", field: "other_english_titles", editable: false, flex: 2,},
-    { headerName: "Other Latin Titles", field: "other_latin_titles", editable: false, flex: 2,},
-    { headerName: "Languages in Apocrypharius", field: "languages_list", editable: false,},
-    { headerName: "CANT no.", field: "cant_no", comparator: numberSort },
-    { headerName: "BHL no.", field: "bhl_no", hide: true},
-    { headerName: "BHG no.", field: "bhg_no", hide: true},
-    { headerName: "e-Clavis no.", field: "e_clavis_no", comparator: numberSort },
+    { headerName: "No.", field: "apocryphon_no", comparator: numberSort },
+    { headerName: "Standard English title", field: "main_english_title", editable: false, flex: 2,},
+    { headerName: "English abbrev.", field: "english_abbreviation" },
+    { headerName: "Other English titles", field: "other_english_titles", editable: false, flex: 2,},
+    { headerName: "Standard Latin title", field: "main_latin_title", editable: false, flex: 2,},
+    { headerName: "Latin abbrev.", field: "latin_abbreviation" },
+    { headerName: "Other Latin titles", field: "other_latin_titles", editable: false, flex: 2,},
+    { headerName: "Lgs in Apocrypharius", field: "languages_list", editable: false, hide: true },
+    { headerName: "CANT", field: "cant_no", comparator: numberSort },
+    { headerName: "BHL", field: "bhl_no" },
+    { headerName: "BHG", field: "bhg_no" },
+    { headerName: "e-Clavis", field: "e_clavis_no", comparator: numberSort },
     { headerName: "Link to e-Clavis", field: "e_clavis_link", hide: true},
+    { headerName: "Notes", hide: true, editable: false, field: "notes" },
     { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
         var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
         return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm' target='_blank'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
@@ -36,6 +39,8 @@
         apocryphon_no: "<%= apocryphon.apocryphon_no %>",
         main_english_title: "<%= apocryphon.main_eng_title %>",
         main_latin_title: "<%= apocryphon.main_lat_title %>",
+        english_abbreviation: "<%= apocryphon.english_abbreviation %>",
+        latin_abbreviation: "<%= apocryphon.latin_abbreviation %>",
         other_english_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig }.join(', ') %>",
         other_latin_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig }.join(', ') %>",
         cant_no: "<%= apocryphon.cant_no %>",
@@ -45,6 +50,7 @@
         e_clavis_no: "<%= apocryphon.e_clavis_no %>",
         e_clavis_link: "<%= apocryphon.e_clavis_link %>",
         languages_list: "<%= apocryphon.languages_list %>",
+        notes: `<%= apocryphon.notes %>`,
         links: { edit: "<%= edit_apocryphon_path(apocryphon) %>", eclavis: "<%= apocryphon.e_clavis_link %>", delete_btn: 'delete_<%= apocryphon.id %>' },
       },
     <% end %>
