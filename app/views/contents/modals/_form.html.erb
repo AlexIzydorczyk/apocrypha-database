@@ -88,12 +88,15 @@
 			},
 			mounted(){
 				new TomSelect("#addContentModal<%= content.id %> #content_author_id",{
-					sortField: { field: "text", direction: "asc" },maxOptions: null,
+					sortField: { field: "text", direction: "asc" },
+					maxOptions: null,
+					hidePlaceholder: true,
 				});
 
 				new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
 					//sortField: { field: "text", direction: "asc" },
 					maxOptions: null,
+					hidePlaceholder: true,
 				});
 				$('#addContentModal<%= content.try(:id) %> #content_content_id').change(function(){
 					console.log('running on change');

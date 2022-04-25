@@ -195,10 +195,12 @@
 				this.date_to_select = new TomSelect("#addProvenanceModal<%= ownership.try(:id) %>-to", {
 				  maxItems: 1,
 				  maxOptions: null,
+				  hidePlaceholder: true,
 				});
 				this.date_from_select = new TomSelect("#addProvenanceModal<%= ownership.try(:id) %>-from", {
 				  maxItems: 1,
 				  maxOptions: null,
+				  hidePlaceholder: true,
 				});
 			}
 		});
