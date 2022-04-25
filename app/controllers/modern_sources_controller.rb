@@ -94,8 +94,6 @@ class ModernSourcesController < ApplicationController
       new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.editors.ids - new_set).destroy_all
       build_person_references_for new_set - @modern_source.editors.ids, 'editor'
-    elsif params[:in_grid].blank?
-      @modern_source.editor_references.destroy_all
     end
 
     if (params[:modern_source].present? && params[:modern_source][:translator_id].present?) || params[:modern_source][:translator_present].present?
@@ -103,8 +101,6 @@ class ModernSourcesController < ApplicationController
       new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
       build_person_references_for new_set - @modern_source.translators.ids, 'translator'
-    elsif params[:in_grid].blank?
-      @modern_source.translator_references.destroy_all
     end
 
     if (params[:modern_source].present? && params[:modern_source][:author_id].present?) || params[:modern_source][:author_present].present?
@@ -112,16 +108,12 @@ class ModernSourcesController < ApplicationController
       new_set = array.filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.authors.ids - new_set).destroy_all
       build_person_references_for new_set - @modern_source.authors.ids, 'author'
-    elsif params[:in_grid].blank?
-      @modern_source.author_references.destroy_all
     end
 
     if params[:translator_reference].present?
       new_set = params[:translator_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
       PersonReference.where(record: @modern_source, person_id: @modern_source.translators.ids - new_set).destroy_all
       build_person_references_for new_set - @modern_source.translators.ids, 'translator'
-    elsif params[:in_grid].blank?
-      @modern_source.translator_references.destroy_all
     end
 
     if params[:source_urls].present?
