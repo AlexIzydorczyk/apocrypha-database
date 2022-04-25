@@ -47,7 +47,7 @@ class ModernSource < ApplicationRecord
     end
 
     # title
-    (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true, true) + ". ") if ['book_chapter', 'journal_article', 'handwritten_document', 'unpublished_document', 'web_page'].include?(self.source_type)
+    (s += title(self.title_language, self.title_orig, self.title_transliteration, self.title_transliteration, true, self.source_type != 'web_page') + ". ") if ['book_chapter', 'journal_article', 'handwritten_document', 'unpublished_document', 'web_page'].include?(self.source_type)
 
     # publication title
     s += title(self.publication_title_language, self.publication_title_orig, self.publication_title_transliteration, self.publication_title_transliteration, false, true) + ". "
