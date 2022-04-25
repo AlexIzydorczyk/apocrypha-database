@@ -1,17 +1,24 @@
-<div class="form-group mb-2">
-  <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+<div class="d-flex mb-2 align-items-end">
+  <div class="form-group mb-2">
+    <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  </div>
+  <button class="btn btn-sm btn-outline-action ms-auto" onclick="resetState()">Reset State</button>
 </div>
 <div id="institutions_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% institutions.each do |institution| %>
   <%= button_to "Delete", institution_path(institution), method: :delete, class: "d-none", id: 'delete_'+institution.id.to_s %>
 <% end %>
-
-<%= render 'locations/modals/form_from_grid', location: Location.first %>
-<%= render 'institutions/modals/change_location', institution: institutions.first %>
-<%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
-<%= render 'institutions/modals/change_religious_order', institution: institutions.first %>
-<%= render 'layouts/grid_modal_js' %>
+<% if user_signed_in? && current_user.adm_editor? %>
+  <%= render 'locations/modals/form_from_grid', location: Location.first %>
+  <%= render 'institutions/modals/change_location', institution: institutions.first %>
+  <%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
+  <%= render 'institutions/modals/change_religious_order', institution: institutions.first %>
+  <%= render 'layouts/grid_modal_js' %>
+<% end %>
+<% if user_signed_in? %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Institution" %>
+<% end %>
 
 <script type="text/javascript" charset="utf-8">
 

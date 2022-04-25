@@ -82,5 +82,11 @@ Rails.application.routes.draw do
   resources :writing_systems
   resources :change_logs
   resources :booklist_sections
+  resources :user_grid_states, only: [] do
+    collection do
+      put :save  
+      get :get
+    end
+  end
 
 end

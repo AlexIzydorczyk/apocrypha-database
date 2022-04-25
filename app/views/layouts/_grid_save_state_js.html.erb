@@ -1,0 +1,68 @@
+<script type="text/javascript">
+
+var changeSaving, savePending, loaded = false;
+
+function gridChanged(argument) {
+	savePending = true;
+	if(!changeSaving && loaded){
+		changeSaving = true;
+		saveState();
+	}
+}
+
+$(function() {
+	gridOptions.columnApi.applyColumnState({
+		state: <%= current_user.user_grid_states.where(record_type: record_type).first.state.to_json.html_safe %>,
+		applyOrder: true,
+	});
+
+	["onSortChanged", "onColumnResized", "onColumnVisible", "onColumnPivotChanged", "onColumnRowGroupChanged", "onColumnValueChanged", "onColumnMoved", "onColumnPinned"].forEach(function(listener) {
+		gridOptions[listener] = gridChanged;
+	});
+
+	setTimeout(function() {
+		loaded = true;
+	}, 200);
+});
+
+function saveState() {
+	$.ajax({
+		url: "<%= save_user_grid_states_path %>",
+		method: "PUT",
+		data: {
+			state: JSON.stringify(gridOptions.columnApi.getColumnState()),
+			record_type: "<%= record_type %>",
+			authenticity_token: "<%= form_authenticity_token %>",
+		},
+		success: function() {
+			if(savePending){
+				saveState();
+				savePending = false;
+			} else {
+				changeSaving = false;
+			}
+		}
+	})
+}
+
+function restoreState() {
+	$.ajax({
+		url: "<%= get_user_grid_states_path %>",
+		method: "GET",
+		data: {
+			record_type: "<%= record_type %>",
+		},
+		success: function(data) {
+			gridOptions.columnApi.applyColumnState({
+				state: data.state,
+				applyOrder: true,
+			});
+		}
+	})
+}
+
+function resetState() {
+	gridOptions.columnApi.resetColumnState();
+}
+
+</script>

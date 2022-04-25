@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_14_191827) do
+ActiveRecord::Schema.define(version: 2022_04_25_211030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -473,6 +473,15 @@ ActiveRecord::Schema.define(version: 2022_04_14_191827) do
     t.index ["language_id"], name: "index_titles_on_language_id"
   end
 
+  create_table "user_grid_states", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "record_type"
+    t.json "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_grid_states_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -572,4 +581,5 @@ ActiveRecord::Schema.define(version: 2022_04_14_191827) do
   add_foreign_key "texts", "writing_systems"
   add_foreign_key "titles", "apocrypha"
   add_foreign_key "titles", "languages"
+  add_foreign_key "user_grid_states", "users"
 end
