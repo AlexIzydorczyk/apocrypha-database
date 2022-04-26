@@ -69,6 +69,11 @@ function runTomSelects(){
 		hidePlaceholder: true,
 		lockOptgroupOrder: true,
 		maxOptions: null,
+		closeAfterSelect: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
 	});
 	new TomSelect("#modern_source_institution_id",ts_sort_text_asc_max_1);
 	new TomSelect("#editor_reference_id",{
@@ -80,6 +85,11 @@ function runTomSelects(){
 		lockOptgroupOrder: true,
 		hidePlaceholder: true,
 		maxOptions: null,
+		closeAfterSelect: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
 	});
 	new TomSelect("#translator_reference_id",{
 		sortField: {
@@ -90,6 +100,11 @@ function runTomSelects(){
 		lockOptgroupOrder: true,
 		hidePlaceholder: true,
 		maxOptions: null,
+	  closeAfterSelect: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
 	});
 	new TomSelect("#modern_source_publication_location_id",ts_sort_text_asc_max_1);
 	new TomSelect("#modern_source_document_type",ts_sort_text_asc_max_1_create);
