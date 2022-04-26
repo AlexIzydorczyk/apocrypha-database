@@ -1,5 +1,8 @@
-<div class="form-group mb-2">
-  <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+<div class="d-flex mb-2 align-items-end">
+  <div class="form-group mb-2">
+    <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  </div>
+  <button class="btn btn-sm btn-outline-action ms-auto" onclick="resetState()">Reset grid</button>
 </div>
 <div id="titles_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
@@ -7,8 +10,13 @@
   <%= button_to "Delete", title_path(title), method: :delete, class: "d-none", id: 'delete_'+title.id.to_s %>
 <% end %>
 
-<%= render 'titles/modals/change_apocryphon', title: titles.first %>
-<%= render 'layouts/grid_modal_js' %>
+<% if user_signed_in? && current_user.adm_editor? %>
+  <%= render 'titles/modals/change_apocryphon', title: titles.first %>
+  <%= render 'layouts/grid_modal_js' %>
+<% end %>
+<% if user_signed_in? %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Title" %>
+<% end %>
 
 <script type="text/javascript" charset="utf-8">
 
@@ -16,17 +24,17 @@
 
   const columnDefs = [
         
-        { headerName: "Language", field: "language_id", flex: 2, cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
+        { headerName: "Language", field: "language_id", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Language.all.map(&:language_name).to_json.html_safe %> }, valueGetter: languageGetter, valueSetter: languageSetter },
 
-        { headerName: "Title", field: "title_orig", flex: 4, cellStyle: function(params) {
+        { headerName: "Title", field: "title_orig", cellStyle: function(params) {
           if(params.data.italicized == "true") return {fontStyle: "italic"}
           return null
         }},
-        { headerName: "Title (alternative)", flex: 4, field: "title_translation", hide: true, cellStyle: function(params) {
+        { headerName: "Title (alternative)", field: "title_translation", hide: true, cellStyle: function(params) {
           if(params.data.italicized == "true") return {fontStyle: "italic"}
           return null
         }},
-        { headerName: "Title (alt. translit.)", flex: 4, field: "title_orig_transliteration", hide: true, cellStyle: function(params) {
+        { headerName: "Title (alt. translit.)", field: "title_orig_transliteration", hide: true, cellStyle: function(params) {
           if(params.data.italicized == "true") return {fontStyle: "italic"}
           return null
         }},
@@ -37,8 +45,8 @@
           { headerName: "Id", field: "apocryphon", editable: false, hide: true, suppressColumnsToolPanel: true, cellRenderer: function(params) {
             return `${params.value.id} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('titles/${params.data.id}', 'title')"><i class='fa-solid fa-arrows-repeat'></i></button>`
           }},
-          { headerName: "Title of apocryphon", flex: 2, field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
-            return `<a target="_blank" href="/apocrypha/${apocryphon.value.id}/edit">${apocryphon.value.display_name}</a>`
+          { headerName: "Title of apocryphon", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
+            return `<a href="/apocrypha/${apocryphon.value.id}/edit">${apocryphon.value.display_name}</a>`
           }},
         ] },
           

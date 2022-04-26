@@ -1,10 +1,16 @@
-<div class="form-group mb-2">
-  <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+<div class="d-flex mb-2 align-items-end">
+  <div class="form-group mb-2">
+    <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  </div>
+  <button class="btn btn-sm btn-outline-action ms-auto" onclick="resetState()">Reset grid</button>
 </div>
 <div id="people_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% people.each do |person| %>
   <%= button_to "Delete", person_path(person), method: :delete, class: "d-none", id: 'delete_'+person.id.to_s %>
+<% end %>
+<% if user_signed_in? %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Person" %>
 <% end %>
 
 <script type="text/javascript" charset="utf-8">
@@ -13,22 +19,22 @@
 
   const columnDefs = [
         { headerName: "Standard form", children: [
-          { headerName: "First name", field: "first_name_vernacular", flex: 2 },
-          { headerName: "Middle name", field: "middle_name_vernacular", flex: 2 },
+          { headerName: "First name", field: "first_name_vernacular" },
+          { headerName: "Middle name", field: "middle_name_vernacular" },
           { headerName: "Prefix", field: "prefix_vernacular" },
-          { headerName: "Last name", field: "last_name_vernacular", flex: 2 },
+          { headerName: "Last name", field: "last_name_vernacular" },
           { headerName: "Suffix", hide: true, field: "suffix_vernacular" },
         ] },
 
         { headerName: "Alternative form", children: [
-          { headerName: "First name", field: "first_name_english", hide: true, flex: 2 },
-          { headerName: "First name translit.", field: "first_name_transliteration", hide: true, flex: 2},
-          { headerName: "Middle name", field: "middle_name_english", hide: true, flex: 2},
-          { headerName: "Middle name translit.", field: "middle_name_transliteration", hide: true, flex: 2},
+          { headerName: "First name", field: "first_name_english", hide: true },
+          { headerName: "First name translit.", field: "first_name_transliteration", hide: true},
+          { headerName: "Middle name", field: "middle_name_english", hide: true},
+          { headerName: "Middle name translit.", field: "middle_name_transliteration", hide: true},
           { headerName: "Prefix", field: "prefix_english", hide: true},
           { headerName: "Prefix translit.", field: "prefix_transliteration", hide: true },
-          { headerName: "Last name", field: "last_name_english", hide: true, flex: 2},
-          { headerName: "Last name translit.", field: "last_name_transliteration", hide: true, flex: 2},
+          { headerName: "Last name", field: "last_name_english", hide: true},
+          { headerName: "Last name translit.", field: "last_name_transliteration", hide: true},
           { headerName: "Suffix", field: "suffix_english", hide: true},
           { headerName: "Suffix translit.", field: "suffix_transliteration", hide: true},  
         ] },

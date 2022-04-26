@@ -26,8 +26,8 @@
 
   const columnDefs = [
         { headerName: "Institution name", children: [
-          { headerName: "Name", field: "name", flex: 2},
-          { headerName: "Name (alternative)", hide: true, field: "name_alt", flex: 2},
+          { headerName: "Name", field: "name" },
+          { headerName: "Name (alternative)", hide: true, field: "name_alt" },
         ]},
         { headerName: "Location", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
@@ -36,13 +36,13 @@
               } 
             },
           <% end %>
-          { headerName: "City", field: "city", editable: false, flex: 2},
-          { headerName: "City (alternative)", field: "city_alt", editable: false, flex: 2, hide: true},
-          { headerName: "Diocese", field: "diocese", editable: false, flex: 2},
-          { headerName: "Diocese (alternative)", hide: true, field: "diocese_alt", editable: false, flex: 2},
-          { headerName: "Region", field: "region", editable: false, flex: 2},
-          { headerName: "Region (alternative)", hide: true, field: "region_alt", editable: false, flex: 2},
-          { headerName: "Country", field: "country", editable: false, flex: 2},
+          { headerName: "City", field: "city", editable: false },
+          { headerName: "City (alternative)", field: "city_alt", editable: false , hide: true},
+          { headerName: "Diocese", field: "diocese", editable: false },
+          { headerName: "Diocese (alternative)", hide: true, field: "diocese_alt", editable: false },
+          { headerName: "Region", field: "region", editable: false },
+          { headerName: "Region (alternative)", hide: true, field: "region_alt", editable: false },
+          { headerName: "Country", field: "country", editable: false },
         ] },
         { headerName: "Religious order", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
@@ -51,7 +51,7 @@
               } 
             },
           <% end %>
-          { headerName: "Name", field: "religious_order_name", editable: false, flex: 2},
+          { headerName: "Name", field: "religious_order_name", editable: false },
           { headerName: "Abbreviation", field: "religious_order_abbr", editable: false, hide: true },
         ]},
         { headerName: "Actions", field: "links", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
