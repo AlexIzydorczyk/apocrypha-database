@@ -206,7 +206,7 @@
         publication_location_diocese_orig: "<%= modern_source.publication_location.try(:diocese_orig) %>",
         publication_location_region_orig: "<%= modern_source.publication_location.try(:region_orig) %>",
         publication_location_country: "<%= modern_source.publication_location.try(:country) %>",
-        publisher: "<%= modern_source.publisher %>",
+        publisher: `<%= modern_source.publisher.html_safe %>`,
         publication_creation_date: "<%= modern_source.publication_creation_date %>",
         original_publication_creation_date: "<%= modern_source.original_publication_creation_date %>",
 
