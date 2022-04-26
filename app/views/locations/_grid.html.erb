@@ -35,7 +35,18 @@
   const rowData = [
   <% locations.each do |location| %>
   { id:<%= location.id %>,
-    country: "<%= location.country %>",city_alt: "<%= location.city_alt %>",city: "<%= location.city %>",city_translilteration: "<%= location.city_translilteration %>",region_alt: "<%= location.region_alt %>",region: "<%= location.region %>",region_transliteration: "<%= location.region_transliteration %>",diocese_alt: "<%= location.diocese_alt %>",diocese: "<%= location.diocese %>",diocese_transliteration: "<%= location.diocese_transliteration %>",longitude: "<%= location.longitude %>",latitude: "<%= location.latitude %>",
+    country: "<%= location.country.html_safe %>",
+    city_alt: "<%= location.city_alt %>",
+    city: "<%= location.city %>",
+    city_translilteration: "<%= location.city_translilteration %>",
+    region_alt: "<%= location.region_alt %>",
+    region: "<%= location.region %>",
+    region_transliteration: "<%= location.region_transliteration %>",
+    diocese_alt: "<%= location.diocese_alt %>",
+    diocese: "<%= location.diocese %>",
+    diocese_transliteration: "<%= location.diocese_transliteration %>",
+    longitude: "<%= location.longitude %>",
+    latitude: "<%= location.latitude %>",
     links: { show: "<%= location_path(location) %>", edit: "<%= edit_location_path(location) %>", delete_btn: 'delete_<%= location.id %>'}
   },
   <% end %>

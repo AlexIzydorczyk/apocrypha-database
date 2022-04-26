@@ -72,7 +72,7 @@
         city_alt: "<%= institution.location.try(:city_alt) %>",
         region: "<%= institution.location.try(:region) %>",
         region_alt: "<%= institution.location.try(:region_alt) %>",
-        country: "<%= institution.location.try(:country) %>",
+        country: "<%= institution.location.try(:country).try(:html_safe) %>",
         diocese: "<%= institution.location.try(:diocese) %>",
         diocese_alt: "<%= institution.location.try(:diocese_alt) %>",
         religious_order_id: "<%= institution.religious_order_id %>",
