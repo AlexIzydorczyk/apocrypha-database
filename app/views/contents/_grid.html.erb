@@ -17,8 +17,12 @@
 
   const rowData = [
     <% contents.each do |content| %>
-      { id:<%= content.id %>,
-        booklet_id: "<%= content.booklet_id %>",sequence_no: "<%= content.sequence_no %>",title_id: "<%= content.title_id %>",author_id: "<%= content.author_id %>",
+      { 
+        id:<%= content.id %>,
+        booklet_id: "<%= content.booklet_id %>",
+        sequence_no: "<%= content.sequence_no %>",
+        title_id: "<%= content.title_id %>",
+        author_id: "<%= content.author_id %>",
         links: { show: "<%= content_path(content) %>", edit: "<%= edit_content_path(content) %>" }
       },
     <% end %>

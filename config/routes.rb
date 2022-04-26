@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       post :create_from_manuscript
     end
   end
-  resources :sections
+  resources :sections, path: "master"
   resources :booklist_references
   resources :booklists
   resources :text_urls

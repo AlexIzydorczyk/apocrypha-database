@@ -47,9 +47,24 @@
 
   const rowData = [
     <% booklets.each do |booklet| %>
-      { id:<%= booklet.id %>,
-        manuscript_census_no: "<%= booklet.manuscript.try(:census_no_display) || 'Not assigned' %>",booklet_no: "<%= booklet.booklet_no %>",date_from: "<%= booklet.date_from %>",date_to: "<%= booklet.date_to %>",specific_date: "<%= booklet.specific_date %>",genesis_location_id: "<%= booklet.genesis_location_id %>", scribes: <%= booklet.scribes.map(&:full_name).to_json.html_safe %>,genesis_institution_id: "<%= booklet.genesis_institution_id %>",genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",content_type: "<%= booklet.content_type %>",
-        links: {edit: "<%= edit_booklet_path(booklet) %>", pages_folios_from: "<%= booklet.pages_folios_from %>", pages_folios_to: "<%= booklet.pages_folios_to %>", delete_btn: 'delete_<%= booklet.id %>' }
+      {
+        id:<%= booklet.id %>,
+        manuscript_census_no: "<%= booklet.manuscript.try(:census_no_display) || 'Not assigned' %>",
+        booklet_no: "<%= booklet.booklet_no %>",
+        date_from: "<%= booklet.date_from %>",
+        date_to: "<%= booklet.date_to %>",
+        specific_date: "<%= booklet.specific_date %>",
+        genesis_location_id: "<%= booklet.genesis_location_id %>",
+        scribes: <%= booklet.scribes.map(&:full_name).to_json.html_safe %>,
+        genesis_institution_id: "<%= booklet.genesis_institution_id %>",
+        genesis_religious_order_id: "<%= booklet.genesis_religious_order_id %>",
+        content_type: "<%= booklet.content_type %>",
+        links: {
+          edit: "<%= edit_booklet_path(booklet) %>",
+          pages_folios_from: "<%= booklet.pages_folios_from %>",
+          pages_folios_to: "<%= booklet.pages_folios_to %>",
+          delete_btn: 'delete_<%= booklet.id %>'
+        }
       },
     <% end %>
   ];

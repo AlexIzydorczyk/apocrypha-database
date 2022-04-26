@@ -29,7 +29,21 @@
   const rowData = [
     <% texts.each do |text| %>
       { id:<%= text.id %>,
-        content_id: "<%= text.content_id %>",text_pages_folios: "<%= text.text_pages_folios_from %> - <%= text.text_pages_folios_to %>",decoration: "<%= text.decoration %>",title_folios_pages: "<%= text.title_pages_folios_from %> - <%= text.title_pages_folios_to %>",manuscript_title_orig: "<%= text.manuscript_title_orig %>",manuscript_title_orig_transliteration: "<%= text.manuscript_title_orig_transliteration %>",manuscript_title_translation: "<%= text.manuscript_title_translation %>",pages_folios_colophon: "<%= text.colophon_pages_folios_from %> - <%= text.colophon_pages_folios_to %>",colophon_orig: "<%= text.colophon_orig %>",colophon_transliteration: "<%= text.colophon_transliteration %>",colophon_translation: "<%= text.colophon_translation %>",notes: "<%= text.notes %>",transcriber_id: "<%= text.transcriber_id %>",version: "<%= text.version %>",extent: "<%= text.extent %>",
+        content_id: "<%= text.content_id %>",
+        text_pages_folios: "<%= text.text_pages_folios_from %> - <%= text.text_pages_folios_to %>",
+        decoration: "<%= text.decoration %>",
+        title_folios_pages: "<%= text.title_pages_folios_from %> - <%= text.title_pages_folios_to %>",
+        manuscript_title_orig: "<%= text.manuscript_title_orig %>",
+        manuscript_title_orig_transliteration: "<%= text.manuscript_title_orig_transliteration %>",
+        manuscript_title_translation: "<%= text.manuscript_title_translation %>",
+        pages_folios_colophon: "<%= text.colophon_pages_folios_from %> - <%= text.colophon_pages_folios_to %>",
+        colophon_orig: "<%= text.colophon_orig %>",
+        colophon_transliteration: "<%= text.colophon_transliteration %>",
+        colophon_translation: "<%= text.colophon_translation %>",
+        notes: "<%= text.notes %>",
+        transcriber_id: "<%= text.transcriber_id %>",
+        version: "<%= text.version %>",
+        extent: "<%= text.extent %>",
         links: { show: "<%= text_path(text) %>", edit: "<%= edit_text_path(text) %>" }
       },
     <% end %>

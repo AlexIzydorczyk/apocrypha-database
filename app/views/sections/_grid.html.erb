@@ -1,31 +1,119 @@
+<div class="d-flex mb-2 align-items-end">
+  <div class="form-group mb-2">
+    <input type="text" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  </div>
+  <!-- <button class="btn btn-sm btn-outline-action ms-auto" onclick="resetState()">Reset grid</button> -->
+</div>
+
 <div id="sections_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true};
+  const defaultColDef = {editable: false , sortable: true, filter: true,  resizable: true};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Text", field: "text_id"},
-        { headerName: "Section name", field: "section_name"},
-        { headerName: "Pages folios incipit", field: "pages_folios_incipit"},
-        { headerName: "Incipit orig", field: "incipit_orig"},
-        { headerName: "Incipit orig transliteration", field: "incipit_orig_transliteration"},
-        { headerName: "Incipit translation", field: "incipit_translation"},
-        { headerName: "Pages folios explicit", field: "pages_folios_explicit"},
-        { headerName: "Explicit orig", field: "explicit_orig"},
-        { headerName: "Explicitorig transliteration", field: "explicitorig_transliteration"},
-        { headerName: "Explicit translation", field: "explicit_translation"},
-        { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "?old_path=" + window.location.pathname + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
-    } }
+    { headerName: "Booklet", children: [
+      { headerName: "Id", field: "booklet.id" },
+      { headerName: "Booklet no", field: "booklet_no" },
+      { headerName: "Location of booklet (from)", field: "pages_folios_from" },
+      { headerName: "Location of booklet (to)", field: "pages_folios_to" },
+      { headerName: "Date from", field: "date_from" },
+      { headerName: "Date to", field: "date_to" },
+      { headerName: "Content type", field: "content_type" },
+      { headerName: "Specific date", field: "specific_date" },
+      { headerName: "Genesis location", field: "genesis_location_id" },
+      { headerName: "Genesis institution", field: "genesis_institution_id" },
+      { headerName: "Genesis religious order", field: "genesis_religious_order_id" },
+      { headerName: "Scribes", field: "scribes" },  
+    ]},
+    { headerName: "Content", children: [
+      { headerName: "Id", field: "content.id" },
+      { headerName: "Sequence no", field: "content.sequence_no"},
+      { headerName: "Title", field: "content.title_id"},
+      { headerName: "Author", field: "content.author_id"},
+    ]},
+    { headerName: "Text", children: [
+      { headerName: "Id", field: "text.id" },
+      { headerName: "Text pages folios", field: "text.text_pages_folios"},
+      { headerName: "Decoration", field: "text.decoration"},
+      { headerName: "Title folios pages", field: "text.title_folios_pages"},
+      { headerName: "Manuscript title", field: "text.manuscript_title_orig"},
+      { headerName: "Manuscript title translit.", field: "text.manuscript_title_orig_transliteration", hide: true },
+      { headerName: "Manuscript title transla.", field: "text.manuscript_title_translation", hide: true },
+      { headerName: "Pages folios colophon", field: "text.pages_folios_colophon"},
+      { headerName: "Colophon orig", field: "text.colophon_orig"},
+      { headerName: "Colophon translit.", field: "text.colophon_transliteration", hide: true },
+      { headerName: "Colophon transla.", field: "text.colophon_translation", hide: true },
+      { headerName: "Notes", field: "text.notes", hide: true },
+      { headerName: "Transcriber", field: "text.transcriber_id"}, 
+      { headerName: "Version", field: "text.version"},
+      { headerName: "Extent", field: "text.extent"},
+    ]},
+    { headerName: "Text section", children: [
+      { headerName: "Section name", field: "section.section_name"},
+      { headerName: "Pages folios incipit", field: "section.pages_folios_incipit"},
+      { headerName: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender },
+      { headerName: "Incipit translit.", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender, hide: true },
+      { headerName: "Incipit transla.", field: "section.incipit_translation", cellRenderer: richTextRender, hide: true },
+      { headerName: "Pages folios explicit", field: "section.pages_folios_explicit"},
+      { headerName: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender },
+      { headerName: "Explicitorig translit.", field: "section.explicitorig_transliteration", cellRenderer: richTextRender, hide: true },
+      { headerName: "Explicit transla.", field: "section.explicit_translation", cellRenderer: richTextRender, hide: true },
+    ]},
   ];
 
   const rowData = [
     <% sections.each do |section| %>
-      { id:<%= section.id %>,
-        text_id: "<%= section.text_id %>",section_name: "<%= section.section_name %>",pages_folios_incipit: "<%= section.pages_folios_incipit %>",incipit_orig: "<%= section.incipit_orig %>",incipit_orig_transliteration: "<%= section.incipit_orig_transliteration %>",incipit_translation: "<%= section.incipit_translation %>",pages_folios_explicit: "<%= section.pages_folios_explicit %>",explicit_orig: "<%= section.explicit_orig %>",explicitorig_transliteration: "<%= section.explicitorig_transliteration %>",explicit_translation: "<%= section.explicit_translation %>",
-        links: { show: "<%= section_path(section) %>", edit: "<%= edit_section_path(section) %>" }
+      { 
+        section:{
+          section_name: "<%= section.section_name %>",
+          pages_folios_incipit: "<%= section.pages_folios_incipit %>",
+          incipit_orig: `<%= section.incipit_orig.html_safe %>`,
+          incipit_orig_transliteration: `<%= section.incipit_orig_transliteration %>`,
+          incipit_translation: `<%= section.incipit_translation %>`,
+          pages_folios_explicit: "<%= section.pages_folios_explicit %>",
+          explicit_orig: `<%= section.explicit_orig %>`,
+          explicitorig_transliteration: `<%= section.explicitorig_transliteration %>`,
+          explicit_translation: `<%= section.explicit_translation %>`,
+        },
+        text: {
+          <% text = section.text %>
+          id: "<%= text.id %>",
+          text_pages_folios: "<%= text.text_pages_folios_from %> - <%= text.text_pages_folios_to %>",
+          decoration: "<%= text.decoration %>",
+          title_folios_pages: "<%= text.title_pages_folios_from %> - <%= text.title_pages_folios_to %>",
+          manuscript_title_orig: "<%= text.manuscript_title_orig %>",
+          manuscript_title_orig_transliteration: "<%= text.manuscript_title_orig_transliteration %>",
+          manuscript_title_translation: "<%= text.manuscript_title_translation %>",
+          pages_folios_colophon: "<%= text.colophon_pages_folios_from %> - <%= text.colophon_pages_folios_to %>",
+          colophon_orig: "<%= text.colophon_orig %>",
+          colophon_transliteration: "<%= text.colophon_transliteration %>",
+          colophon_translation: "<%= text.colophon_translation %>",
+          notes: "<%= text.notes %>",
+          transcriber_id: "<%= text.transcriber_id %>",// COME BACK TO ME
+          version: "<%= text.version %>",
+          extent: "<%= text.extent %>",
+        },
+        content: {
+          <% content = text.content %>
+          id: "<%= content.id %>",
+          sequence_no: "<%= content.sequence_no %>",
+          title_id: "<%= content.title_id %>",// COME BACK TO ME
+          author_id: "<%= content.author_id %>",// COME BACK TO ME
+        },
+        booklet: {
+          <% booklet = content.booklet %>
+          id: "<%= booklet.try(:id) %>",
+          booklet_no: "<%= booklet.try(:booklet_no) %>",
+          date_from: "<%= booklet.try(:date_from) %>",
+          date_to: "<%= booklet.try(:date_to) %>",
+          specific_date: "<%= booklet.try(:specific_date) %>",
+          genesis_location_id: "<%= booklet.try(:genesis_location_id) %>",
+          scribes: <%= (booklet.try(:scribes) || []).map(&:full_name).to_json.html_safe %>,
+          genesis_institution_id: "<%= booklet.try(:genesis_institution_id) %>",
+          genesis_religious_order_id: "<%= booklet.try(:genesis_religious_order_id) %>",
+          content_type: "<%= booklet.try(:content_type) %>",
+        },
       },
     <% end %>
   ];
@@ -34,32 +122,23 @@
     columnDefs: columnDefs,
     defaultColDef: defaultColDef,
     rowData: rowData,
-    onCellValueChanged: onCellValueChanged,
+    sideBar: 'columns',
   };
 
-  function onCellValueChanged(event){
-    console.log('cell value changed ', event);
-    saveChange(event.data.id, event.data);
+  function richTextRender(p) {
+    return p.value;
   }
 
-  function saveChange(id, data){
-    var my_data = {};
-    my_data.authenticity_token = "<%= form_authenticity_token %>";
-    my_data.section = data;
-    console.log('my_data', my_data);
-    $.ajax({
-      url: "/sections/"+id,
-      type: 'PUT',
-      data: JSON.stringify(my_data),
-      contentType: 'application/json',
-      success: function(data) {
-        console.log('result received:');
-        console.log(data);
-      }
-    });
-  };
+  function onFilterTextBoxChanged() {
+      gridOptions.api.setQuickFilter(
+        document.getElementById('filter-text-box').value
+      );
+  }
 
   const eGridDiv = document.querySelector('#sections_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
+  // var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  // columnToolPanel.collapseColumnGroups();
+  autoSizeAll(gridOptions, false)
 
 </script>
