@@ -46,7 +46,7 @@
             return `${params.value.id} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('titles/${params.data.id}', 'title')"><i class='fa-solid fa-arrows-repeat'></i></button>`
           }},
           { headerName: "Title of apocryphon", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
-            return `<a href="/apocrypha/${apocryphon.value.id}/edit">${apocryphon.value.display_name}</a>`
+            return `<a href="/apocrypha/${apocryphon.value.id}/edit" target="_blank">${apocryphon.value.display_name}</a>`
           }},
         ] },
           
