@@ -42,18 +42,22 @@
 		</div>
 	</div>
 	<div class="form-group col-md-4 mb-2">
-		<%= form.hidden_field :date_exact, "v-model": "exact" %>
+		<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
 		<label>
-			Date (<span @click="exact = true" class="pointer">exact
-				<i class="far" style="color: var(--orange)" :class="exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+			Date (<span @click="date_exact = true" class="pointer">exact
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
 			</span>
-			or<span @click="exact = false" class="pointer">
+			or<span @click="date_exact = false" class="pointer">
 				approximate
-				<i class="far" style="color: var(--orange)" :class="exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
 			</span>
 			)
 		</label>
-		<%= form.text_field :specific_date, class: "form-control" %>
+		<div class="input-group">
+			<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
+			<%= form.number_field :specific_date, class: "form-control", max: Date.today.year, ":class": "{ 'border-start-0' : !date_exact }" %>
+		</div>
+		
 	</div>
 	<div class="col-md-4">
 		<div class="row">
@@ -243,7 +247,7 @@
 			data: {
 				add_title: <%= %w(title_pages_folios_to manuscript_title_language_id manuscript_title_orig manuscript_title_orig_transliteration manuscript_title_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				add_colophon: <%= %w(colophon_pages_folios_to colophon_language_id colophon_orig colophon_transliteration colophon_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
-				exact: <%= text.date_exact ? "true" : "false" %>,
+				date_exact: <%= text.date_exact ? "true" : "false" %>,
 				writing_system_id: "<%= text.writing_system_id %>",
 				date_to: '<%= text.date_to.present? ? text.date_to : text.content.parent.date_to %>', date_from: '<%= text.date_from.present? ? text.date_from : text.content.parent.date_from %>',
 				date_to_select: null, date_from_select: null,
