@@ -34,7 +34,7 @@
     { headerName: "Notes", hide: true, editable: false, field: "notes" },
     { headerName: "Actions", field: "links", editable: false, cellRenderer: function(links) {
         var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
-        return "<a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
+        return "<a href='" + links.value.edit + "?old_path=" + window.location.pathname + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
       } 
     }
   ];
