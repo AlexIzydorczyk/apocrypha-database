@@ -1,17 +1,13 @@
 <script type="text/javascript">
 
 $(function() {
-
 	gridOptions.columnApi.applyColumnState({
 		state: <%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>,
 		applyOrder: true,
 	});
-
-	addEventListener('beforeunload', event => { saveState(); });
-
 });
 
-function saveState() {
+function saveState(show_saved=true) {
 	$.ajax({
 		url: "<%= save_user_grid_states_path %>",
 		method: "PUT",
@@ -19,6 +15,9 @@ function saveState() {
 			state: JSON.stringify(gridOptions.columnApi.getColumnState()),
 			record_type: "<%= record_type %>",
 			authenticity_token: "<%= form_authenticity_token %>",
+		},
+		success: function() {
+			if(show_saved) window.SnackBar({message: "<i class='far fa-save'></i> Configuration saved", position: "tr", dismissible: false, timeout: 2000});
 		}
 	})
 }
@@ -41,7 +40,8 @@ function restoreState() {
 
 function resetState() {
 	gridOptions.columnApi.resetColumnState();
-	saveState();
+	saveState(false);
+	window.SnackBar({message: "<i class='fa-solid fa-rotate-left'></i> Configuration reset", position: "tr", dismissible: false, timeout: 2000});
 }
 
 </script>
