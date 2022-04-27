@@ -12,19 +12,69 @@
   const defaultColDef = {editable: false , sortable: true, filter: true,  resizable: true};
 
   const columnDefs = [
+    { headerName: "Manuscript", children:[
+      { headerName: "Id", field: "manuscript.id" },
+      { headerName: "Census no.", field: "manuscript.census_no", comparator: numberSort },
+      { headerName: "Status", field: "manuscript.status" },
+      { headerName: "Repository", children: [
+        { headerName: "City", field: "manuscript.institution_city" },
+        { headerName: "City (alternative)", field: "manuscript.institution_city_alt", hide: true },
+        { headerName: "Name", field: "manuscript.institution_name" },
+        { headerName: "Name (alternative)", field: "manuscript.institution_name_alternative", hide: true },
+        { headerName: "Country", field: "manuscript.institution_country" },
+      ] },
+      { headerName: "Manuscript", children: [
+        { headerName: "Shelfmark", field: "manuscript.shelfmark"},
+        { headerName: "Old shelfmarks", field: "manuscript.old_shelfmark" },
+        { headerName: "Material", field: "manuscript.material" },
+        { headerName: "Dimensions", field: "manuscript.dimensions" },
+        { headerName: "Number of pages/folios", field: "manuscript.leaf_page_no", comparator: numberSort },
+        { headerName: "Date from", field: "manuscript.date_from", comparator: numberSort },
+        { headerName: "Date to", field: "manuscript.date_to", comparator: numberSort },
+        { headerName: "Specific date", field: "manuscript.specific_date", comparator: numberSort },
+        { headerName: "Content type", field: "manuscript.content_type" },
+        { headerName: "Notes on ms.", field: "manuscript.notes", cellEditor: 'agLargeTextCellEditor' },
+        { headerName: "Languages in ms.", field: "manuscript.languages" },
+      ]},      
+      { headerName: "Origin: institution", children: [
+        { headerName: "Name", field: "manuscript.genesis_institution_name" },
+        { headerName: "Name (alternative)", field: "manuscript.genesis_institution_name_alternative", hide: true },
+      ] },
+      { headerName: "Origin: location", children: [
+        { headerName: "City", field: "manuscript.city" },
+        { headerName: "City (alternative)", field: "manuscript.city_alt", hide: true },
+        { headerName: "Diocese", field: "manuscript.diocese" },
+        { headerName: "Diocese (alternative)", field: "manuscript.diocese_alt", hide: true },
+        { headerName: "Region", field: "manuscript.region" },
+        { headerName: "Region (alternative)", field: "manuscript.region_alt", hide: true },
+        { headerName: "Country", field: "manuscript.country" },
+      ] },
+      { headerName: "Origin: religious order", children: [
+        { headerName: "Name", field: "manuscript.religious_order_name" },
+      ] },
+      { headerName: "Correspondent", children: [
+        { headerName: "Name(s)", field: "manuscript.correspondent_names" },
+      ] },
+      { headerName: "Transcribed by", children: [
+        { headerName: "Name(s)", field: "manuscript.transcriber_names" },
+      ] },
+      { headerName: "Compiles by", children: [
+        { headerName: "Name(s)", field: "manuscript.compiler_names" },
+      ] },
+    ]},
     { headerName: "Booklet", children: [
-      { headerName: "Id", field: "booklet.id" },
-      { headerName: "Booklet no", field: "booklet_no" },
-      { headerName: "Location of booklet (from)", field: "pages_folios_from" },
-      { headerName: "Location of booklet (to)", field: "pages_folios_to" },
-      { headerName: "Date from", field: "date_from" },
-      { headerName: "Date to", field: "date_to" },
-      { headerName: "Content type", field: "content_type" },
-      { headerName: "Specific date", field: "specific_date" },
-      { headerName: "Genesis location", field: "genesis_location_id" },
-      { headerName: "Genesis institution", field: "genesis_institution_id" },
-      { headerName: "Genesis religious order", field: "genesis_religious_order_id" },
-      { headerName: "Scribes", field: "scribes" },  
+      { headerName: "Id", field: "booklet.id", rowGroup: true },
+      { headerName: "Booklet no", field: "booklet.booklet_no", aggFunc: 'last'  },
+      { headerName: "Location of booklet (from)", field: "booklet.pages_folios_from", aggFunc: 'last' },
+      { headerName: "Location of booklet (to)", field: "booklet.pages_folios_to", aggFunc: 'last' },
+      { headerName: "Date from", field: "booklet.date_from", aggFunc: 'last' },
+      { headerName: "Date to", field: "booklet.date_to", aggFunc: 'last' },
+      { headerName: "Content type", field: "booklet.content_type", aggFunc: 'last' },
+      { headerName: "Specific date", field: "booklet.specific_date", aggFunc: 'last' },
+      { headerName: "Genesis location", field: "booklet.genesis_location_id", aggFunc: 'last' },
+      { headerName: "Genesis institution", field: "booklet.genesis_institution_id", aggFunc: 'last' },
+      { headerName: "Genesis religious order", field: "booklet.genesis_religious_order_id", aggFunc: 'last' },
+      { headerName: "Scribes", field: "booklet.scribes", aggFunc: 'last' },  
     ]},
     { headerName: "Content", children: [
       { headerName: "Id", field: "content.id" },
@@ -105,6 +155,8 @@
           <% booklet = content.booklet %>
           id: "<%= booklet.try(:id) %>",
           booklet_no: "<%= booklet.try(:booklet_no) %>",
+          pages_folios_from: "<%= booklet.try(:pages_folios_from) %>",
+          pages_folios_to: "<%= booklet.try(:pages_folios_to) %>",
           date_from: "<%= booklet.try(:date_from) %>",
           date_to: "<%= booklet.try(:date_to) %>",
           specific_date: "<%= booklet.try(:specific_date) %>",
@@ -114,6 +166,56 @@
           genesis_religious_order_id: "<%= booklet.try(:genesis_religious_order_id) %>",
           content_type: "<%= booklet.try(:content_type) %>",
         },
+        manuscript: {
+          <% manuscript = booklet.manuscript %>
+          id: "<%= manuscript.id %>",
+          identifier: "<%= manuscript.identifier %>",
+          census_no: "<%= manuscript.census_no %>",
+          status: "<%= manuscript.status %>",
+          institution_id: "<%= manuscript.institution_id %>",
+          institution_name: `<%= manuscript.institution.try(:display_name).try(:html_safe) %>`,
+          institution_name_alternative: "<%= manuscript.institution.try(:name_alt) %>",
+          institution_city: "<%= manuscript.institution.try(:location).try(:city) %>",
+          institution_city_alt: "<%= manuscript.institution.try(:location).try(:city_alt) %>",
+          institution_region: "<%= manuscript.institution.try(:location).try(:region) %>",
+          institution_region_alt: "<%= manuscript.institution.try(:location).try(:region_alt) %>",
+          institution_country: `<%= manuscript.institution.try(:location).try(:country).try(:html_safe) %>`,
+          institution_diocese: "<%= manuscript.institution.try(:location).try(:diocese) %>",
+          institution_diocese_alt: "<%= manuscript.institution.try(:location).try(:diocese_alt) %>",
+          genesis_institution_id: "<%= manuscript.genesis_institution_id %>",
+          genesis_institution_name: "<%= manuscript.genesis_institution.try(:name) %>",
+          genesis_institution_name_alternative: "<%= manuscript.genesis_institution.try(:name_alt) %>",
+          genesis_location_id: "<%= manuscript.genesis_location_id %>",
+          city: "<%= manuscript.genesis_location.try(:city) %>",
+          city_alt: "<%= manuscript.genesis_location.try(:city_alt) %>",
+          region: "<%= manuscript.genesis_location.try(:region) %>",
+          region_alt: "<%= manuscript.genesis_location.try(:region_alt) %>",
+          country: "<%= manuscript.genesis_location.try(:country) %>",
+          diocese: "<%= manuscript.genesis_location.try(:diocese) %>",
+          diocese_alt: "<%= manuscript.genesis_location.try(:diocese_alt) %>",
+          religious_order_id: "<%= manuscript.genesis_religious_order_id %>",
+          religious_order_name: "<%= manuscript.genesis_religious_order.try(:order_name) %>",
+          religious_order_abbreviation: "<%= manuscript.genesis_religious_order.try(:abbreviation) %>",
+          scribe_names: <%= manuscript.scribes.map(&:full_name).to_json.html_safe %>,
+          scribe_ids: <%= manuscript.scribes.map(&:id).to_json.html_safe %>,
+          correspondent_names: <%= manuscript.correspondents.map(&:full_name).to_json.html_safe %>,
+          correspondent_ids: <%= manuscript.correspondents.map(&:id).to_json.html_safe %>,
+          transcriber_names: <%= manuscript.transcribers.map(&:full_name).to_json.html_safe %>,
+          transcriber_ids: <%= manuscript.transcribers.map(&:id).to_json.html_safe %>,
+          compiler_names: <%= manuscript.compilers.map(&:full_name).to_json.html_safe %>,
+          compiler_ids: <%= manuscript.compilers.map(&:id).to_json.html_safe %>,
+          shelfmark: "<%= manuscript.shelfmark.html_safe %>",
+          old_shelfmark: "<%= manuscript.old_shelfmark.html_safe  %>",
+          material: "<%= manuscript.material.html_safe  %>",
+          dimensions: "<%= manuscript.dimensions.html_safe %>",
+          leaf_page_no: "<%= manuscript.leaf_page_no %>",
+          date_from: "<%= manuscript.date_from.html_safe  %>",
+          date_to: "<%= manuscript.date_to.html_safe  %>",
+          specific_date: "<%= manuscript.specific_date.html_safe %>",
+          content_type: `<%= manuscript.content_type.html_safe %>`,
+          notes: `<%= manuscript.notes.html_safe  %>`,
+          languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
+        }
       },
     <% end %>
   ];
@@ -124,6 +226,10 @@
     rowData: rowData,
     sideBar: 'columns',
   };
+
+  function numberSort(num1, num2){
+      return num1 - num2;
+    };
 
   function richTextRender(p) {
     return p.value;
@@ -137,8 +243,8 @@
 
   const eGridDiv = document.querySelector('#sections_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
-  // var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
-  // columnToolPanel.collapseColumnGroups();
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.collapseColumnGroups();
   autoSizeAll(gridOptions, false)
 
 </script>

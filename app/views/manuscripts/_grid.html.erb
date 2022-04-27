@@ -77,10 +77,12 @@
     ] },
 
     { headerName: "Origin: location", children: [
-      { headerName: "Id", field: "genesis_location_id", editable: false, hide: true, cellRenderer: function(params) {
-        return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-        } 
-      },
+      <% if user_signed_in? && current_user.adm_editor? %>
+        { headerName: "Id", field: "genesis_location_id", editable: false, hide: true, cellRenderer: function(params) {
+          return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+          } 
+        },
+      <% end %>
       { headerName: "City", field: "city", editable: false, hide: false },
       { headerName: "City (alternative)", field: "city_alt", editable: false, hide: true },
       { headerName: "Diocese", field: "diocese", editable: false, hide: false },
@@ -151,7 +153,9 @@
     const rowData = [
     <% manuscripts.each do |manuscript| %>
     { id:<%= manuscript.id %>,
-      identifier: "<%= manuscript.identifier %>",census_no: "<%= manuscript.census_no %>",status: "<%= manuscript.status %>",
+      identifier: "<%= manuscript.identifier %>",
+      census_no: "<%= manuscript.census_no %>",
+      status: "<%= manuscript.status %>",
 
       institution_id: "<%= manuscript.institution_id %>",
       institution_name: `<%= manuscript.institution.try(:display_name).try(:html_safe) %>`,
