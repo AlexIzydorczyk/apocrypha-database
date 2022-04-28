@@ -148,19 +148,34 @@ function runTomSelects(){
 		maxItems: null,
 		lockOptgroupOrder: true,
 		maxOptions: null,
-		hidePlaceholder: true,
+		closeAfterSelect: true,
+	  hidePlaceholder: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
 	});
 	new TomSelect("#transcriber_reference_id",{
 		maxItems: null,
 		lockOptgroupOrder: true,
 		maxOptions: null,
-		hidePlaceholder: true,
+		closeAfterSelect: true,
+	  hidePlaceholder: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
 	});
 	new TomSelect("#compiler_reference_id",{
 		maxItems: null,
 		lockOptgroupOrder: true,
 		maxOptions: null,
-		hidePlaceholder: true,
+		closeAfterSelect: true,
+	  hidePlaceholder: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
 	});
 };
 
