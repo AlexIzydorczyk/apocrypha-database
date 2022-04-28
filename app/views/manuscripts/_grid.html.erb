@@ -143,10 +143,10 @@
     } }
     ];
 
-    function insitutionGetter(params) {
+    function instiutionGetter(params) {
       return <%= Institution.pluck(:id, :name).to_h.to_json.html_safe %>[params.data.institution_id]
     }
-    function insitutionSetter(params) {
+    function instiutionSetter(params) {
       params.data.institution_id = <%= Institution.pluck(:name, :id).to_h.to_json.html_safe %>[params.newValue]
     }
 
