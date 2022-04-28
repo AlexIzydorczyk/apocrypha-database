@@ -83,10 +83,15 @@
       { headerName: "Title", field: "content.title_id"},
       { headerName: "Author", field: "content.author_id"},
     ]},
+    { headerName: "Apocryphon", children: [
+      { headerName: "Id", field: "apocryphon.id" },
+      { headerName: "Main English title", field: "apocryphon.main_english_title" },
+      { headerName: "Main Latin title", field: "apocryphon.main_latin_title" },
+    ]},
     { headerName: "Text", children: [
       { headerName: "Id", field: "text.id" },
       { headerName: "Text pages folios", field: "text.text_pages_folios"},
-      { headerName: "Language", field: "text.languages" }
+      { headerName: "Language", field: "text.languages" },
       { headerName: "Date from", field: "text.date_from", comparator: numberSort },
       { headerName: "Date to", field: "text.date_to", comparator: numberSort },
       { headerName: "Specific date", field: "text.specific_date", comparator: numberSort },
@@ -159,8 +164,8 @@
             specific_date: "<%= text.try(:specific_date) %>",
             no_columns: "<%= text.no_columns %>",
             scribes: <%= (text.try(:scribes) || []).map(&:full_name).to_json.html_safe %>,
-            script: "<%= text.script %>"
-            notes_on_scribe: "<%= text.notes_on_scribe %>"
+            script: "<%= text.script %>",
+            notes_on_scribe: "<%= text.notes_on_scribe %>",
           },
           content: {
             <% content = key == :contents ? rec : ([:texts, :sections].include?(key) ? text.content : @new_content) %>
@@ -168,6 +173,12 @@
             sequence_no: "<%= content.sequence_no %>",
             title_id: "<%= content.title_id %>",// COME BACK TO ME
             author_id: "<%= content.author_id %>",// COME BACK TO ME
+          },
+          apocryphon: {
+            <% apocryphon = (content.title_id.present? && content.title.apocryphon_id.present? ? content.title.apocryphon : @new_apocryphon) %>
+            id: "<%= apocryphon.id %>",
+            main_english_title: "<%= apocryphon.main_eng_title %>",
+            main_latin_title: "<%= apocryphon.main_lat_title %>",
           },
           booklet: {
             <% booklet = key == :booklets ? rec : ([:texts, :sections, :contents].include?(key) && content.booklet_id.present? ? content.booklet : @new_content) %>
@@ -192,15 +203,17 @@
             census_no: "<%= manuscript.census_no %>",
             status: "<%= manuscript.status %>",
             institution_id: "<%= manuscript.institution_id %>",
-            institution_name: `<%= manuscript.institution.try(:display_name).try(:html_safe) %>`,
-            institution_name_alternative: "<%= manuscript.institution.try(:name_alt) %>",
-            institution_city: "<%= manuscript.institution.try(:location).try(:city) %>",
-            institution_city_alt: "<%= manuscript.institution.try(:location).try(:city_alt) %>",
-            institution_region: "<%= manuscript.institution.try(:location).try(:region) %>",
-            institution_region_alt: "<%= manuscript.institution.try(:location).try(:region_alt) %>",
-            institution_country: `<%= manuscript.institution.try(:location).try(:country).try(:html_safe) %>`,
-            institution_diocese: "<%= manuscript.institution.try(:location).try(:diocese) %>",
-            institution_diocese_alt: "<%= manuscript.institution.try(:location).try(:diocese_alt) %>",
+            <% m_institution = manuscript.institution %>
+            institution_name: `<%= m_institution.try(:display_name).try(:html_safe) %>`,
+            institution_name_alternative: "<%= m_institution.try(:name_alt) %>",
+            <% m_institution_loc = manuscript.institution.try(:location) %>
+            institution_city: "<%= m_institution_loc.try(:city) %>",
+            institution_city_alt: "<%= m_institution_loc.try(:city_alt) %>",
+            institution_region: "<%= m_institution_loc.try(:region) %>",
+            institution_region_alt: "<%= m_institution_loc.try(:region_alt) %>",
+            institution_country: `<%= m_institution_loc.try(:country).try(:html_safe) %>`,
+            institution_diocese: "<%= m_institution_loc.try(:diocese) %>",
+            institution_diocese_alt: "<%= m_institution_loc.try(:diocese_alt) %>",
             genesis_institution_id: "<%= manuscript.genesis_institution_id %>",
             genesis_institution_name: "<%= manuscript.genesis_institution.try(:name) %>",
             genesis_institution_name_alternative: "<%= manuscript.genesis_institution.try(:name_alt) %>",

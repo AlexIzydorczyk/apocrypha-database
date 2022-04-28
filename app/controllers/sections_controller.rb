@@ -3,18 +3,19 @@ class SectionsController < ApplicationController
   # skip_before_action :authenticate_user!, only: %i[ index ]
   before_action :allow_for_editor, only: %i[ index edit update destroy create ]
 
-  def index
-    @sections = Section.all.includes(text: [content: [booklet: :manuscript]])
-    @texts = Text.all.where.not(id: @sections.map(&:text_id)).includes(content: [booklet: :manuscript])
-    @contents = Content.all.where.not(id: @texts.map(&:content_id)).includes(booklet: :manuscript)
-    @booklets = Booklet.all.where.not(id: @contents.map(&:booklet_id)).includes(:manuscript)
-    @manuscripts = Manuscript.where.not(id: @contents.map(&:manuscript_id)+@booklets.map(&:manuscript_id))
+ def index
+    @sections = Section.all.includes(text: [:languages, :transcriber, :scribes, content: [:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location]]]])
+    @texts = Text.all.where.not(id: @sections.map(&:text_id)).includes(:languages, :transcriber, :scribes, content: [:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location]]])
+    @contents = Content.all.where.not(id: @texts.map(&:content_id)).includes(:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location]])
+    @booklets = Booklet.all.where.not(id: @contents.map(&:booklet_id)).includes(:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location])
+    @manuscripts = Manuscript.where.not(id: @contents.map(&:manuscript_id)+@booklets.map(&:manuscript_id)).all.includes(:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location)
 
     @queries = {sections: @sections, texts: @texts, contents: @contents, booklets: @booklets, manuscripts: @manuscripts} 
     @new_text = Text.new
     @new_section = Section.new
     @new_content = Content.new
     @new_booklet = Booklet.new
+    @new_apocryphon = Apocryphon.new
   end
 
   def show
