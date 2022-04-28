@@ -4,7 +4,7 @@ class InstitutionsController < ApplicationController
   before_action :allow_for_editor, only: %i[ index edit update destroy create ]
 
   def index
-    @institutions = Institution.all
+    @institutions = Institution.all.includes(:location, :manuscripts, :institutional_affiliations, :religious_order, :booklets, :ownerships, :booklists, :modern_sources, :writing_system)
   end
 
   def show

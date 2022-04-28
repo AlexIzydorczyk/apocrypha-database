@@ -4,7 +4,7 @@ class BooklistsController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
-    @booklists = Booklist.all
+    @booklists = Booklist.all.includes(:library_owner, :institution, :location, :modern_source_references, :modern_sources, :booklist_sections)
   end
 
   def show

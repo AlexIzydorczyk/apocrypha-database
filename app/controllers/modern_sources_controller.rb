@@ -4,7 +4,7 @@ class ModernSourcesController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
-    @modern_sources = ModernSource.all
+    @modern_sources = ModernSource.all.includes(:publication_location, :language, :institution, :publication_title_language, :volume_title_language, :part_title_language, :series_title_language, :title_language, :source_urls, :modern_source_references, :person_references, :author_references, :authors, :editor_references, :editors, :translator_references, :translators, :booklist_sections, :writing_system)
   end
 
   def show

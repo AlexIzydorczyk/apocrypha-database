@@ -4,7 +4,7 @@ class ApocryphaController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create create_from_booklist ]
 
   def index
-    @apocrypha = Apocryphon.all
+    @apocrypha = Apocryphon.all.includes(:languages, :titles, :language_references)
   end
 
   def show
