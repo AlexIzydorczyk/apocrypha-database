@@ -4,7 +4,7 @@ class ManuscriptsController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
-    @manuscripts = Manuscript.all
+    @manuscripts = Manuscript.all.includes(:institution, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections)
   end
 
   def show
