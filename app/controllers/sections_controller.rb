@@ -4,7 +4,17 @@ class SectionsController < ApplicationController
   before_action :allow_for_editor, only: %i[ index edit update destroy create ]
 
   def index
-    @sections = Section.all
+    @sections = Section.all.includes(text: [content: [booklet: :manuscript]])
+    @texts = Text.all.where.not(id: @sections.map(&:text_id)).includes(content: [booklet: :manuscript])
+    @contents = Content.all.where.not(id: @texts.map(&:content_id)).includes(booklet: :manuscript)
+    @booklets = Booklet.all.where.not(id: @contents.map(&:booklet_id)).includes(:manuscript)
+    @manuscripts = Manuscript.where.not(id: @contents.map(&:manuscript_id)+@booklets.map(&:manuscript_id))
+
+    @queries = {sections: @sections, texts: @texts, contents: @contents, booklets: @booklets, manuscripts: @manuscripts} 
+    @new_text = Text.new
+    @new_section = Section.new
+    @new_content = Content.new
+    @new_booklet = Booklet.new
   end
 
   def show
