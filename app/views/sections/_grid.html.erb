@@ -64,17 +64,18 @@
     ] },
     { headerName: "Booklet", children: [
       { headerName: "Id", field: "booklet.id" },
-      { headerName: "Booklet no", field: "booklet.booklet_no", aggFunc: 'last'  },
-      { headerName: "Location of booklet (from)", field: "booklet.pages_folios_from", aggFunc: 'last' },
-      { headerName: "Location of booklet (to)", field: "booklet.pages_folios_to", aggFunc: 'last' },
-      { headerName: "Date from", field: "booklet.date_from", aggFunc: 'last' },
-      { headerName: "Date to", field: "booklet.date_to", aggFunc: 'last' },
-      { headerName: "Content type", field: "booklet.content_type", aggFunc: 'last' },
-      { headerName: "Specific date", field: "booklet.specific_date", aggFunc: 'last' },
-      { headerName: "Genesis location", field: "booklet.genesis_location_id", aggFunc: 'last' },
-      { headerName: "Genesis institution", field: "booklet.genesis_institution_id", aggFunc: 'last' },
-      { headerName: "Genesis religious order", field: "booklet.genesis_religious_order_id", aggFunc: 'last' },
-      { headerName: "Scribes", field: "booklet.scribes", aggFunc: 'last' },  
+      { headerName: "Booklet no", field: "booklet.booklet_no"  },
+      { headerName: "Location of booklet (from)", field: "booklet.pages_folios_from" },
+      // { headerName: "Location of booklet (to)", field: "booklet.pages_folios_to" },
+      { headerName: "Content type", field: "booklet.content_type" },
+      { headerName: "Date from", field: "booklet.date_from", comparator: numberSort },
+      { headerName: "Date to", field: "booklet.date_to", comparator: numberSort },
+      { headerName: "Specific date", field: "booklet.specific_date", comparator: numberSort },
+      { headerName: "Scribes", field: "booklet.scribes" },
+      { headerName: "Origin: institution", field: "booklet.genesis_institution_id" },
+      { headerName: "Origin: religious order", field: "booklet.genesis_religious_order_id" },
+      { headerName: "Origin: location", field: "booklet.genesis_location_id" },
+      { headerName: "Origin: notes", field: "booklet.origin_notes" }
     ]},
     { headerName: "Content", children: [
       { headerName: "Id", field: "content.id" },
@@ -85,19 +86,26 @@
     { headerName: "Text", children: [
       { headerName: "Id", field: "text.id" },
       { headerName: "Text pages folios", field: "text.text_pages_folios"},
+      { headerName: "Language", field: "text.languages" }
+      { headerName: "Date from", field: "text.date_from", comparator: numberSort },
+      { headerName: "Date to", field: "text.date_to", comparator: numberSort },
+      { headerName: "Specific date", field: "text.specific_date", comparator: numberSort },
+      { headerName: "No. columns", field: "text.no_columns"},
+      { headerName: "Scribes", field: "text.scribes" },
+      { headerName: "Script", field: "text.script" },
+      { headerName: "Scribe notes", field: "text.notes_on_scribe" },
       { headerName: "Decoration", field: "text.decoration"},
-      { headerName: "Title folios pages", field: "text.title_folios_pages"},
+      { headerName: "Title folios", field: "text.title_folios_pages"},
       { headerName: "Manuscript title", field: "text.manuscript_title_orig"},
       { headerName: "Manuscript title translit.", field: "text.manuscript_title_orig_transliteration", hide: true },
       { headerName: "Manuscript title transla.", field: "text.manuscript_title_translation", hide: true },
-      { headerName: "Pages folios colophon", field: "text.pages_folios_colophon"},
-      { headerName: "Colophon orig", field: "text.colophon_orig"},
+      { headerName: "Colophon folios ", field: "text.pages_folios_colophon"},
+      { headerName: "Colophon", field: "text.colophon_orig"},
       { headerName: "Colophon translit.", field: "text.colophon_transliteration", hide: true },
       { headerName: "Colophon transla.", field: "text.colophon_translation", hide: true },
-      { headerName: "Notes", field: "text.notes", hide: true },
-      { headerName: "Transcriber", field: "text.transcriber_id"}, 
       { headerName: "Version", field: "text.version"},
       { headerName: "Extent", field: "text.extent"},
+      { headerName: "Notes", field: "text.notes", hide: true },      
     ]},
     { headerName: "Text section", children: [
       { headerName: "Section name", field: "section.section_name"},
@@ -145,6 +153,14 @@
             transcriber_id: "<%= text.transcriber_id %>",// COME BACK TO ME
             version: "<%= text.version %>",
             extent: "<%= text.extent %>",
+            languages: <%= text.languages.map(&:language_name).to_json.html_safe %>,
+            date_from: "<%= text.try(:date_from) %>",
+            date_to: "<%= text.try(:date_to) %>",
+            specific_date: "<%= text.try(:specific_date) %>",
+            no_columns: "<%= text.no_columns %>",
+            scribes: <%= (text.try(:scribes) || []).map(&:full_name).to_json.html_safe %>,
+            script: "<%= text.script %>"
+            notes_on_scribe: "<%= text.notes_on_scribe %>"
           },
           content: {
             <% content = key == :contents ? rec : ([:texts, :sections].include?(key) ? text.content : @new_content) %>
@@ -167,6 +183,7 @@
             genesis_institution_id: "<%= booklet.try(:genesis_institution_id) %>",
             genesis_religious_order_id: "<%= booklet.try(:genesis_religious_order_id) %>",
             content_type: "<%= booklet.try(:content_type) %>",
+            origin_notes: `<%= booklet.try(:origin_notes).try(:html_safe) %>`,
           },
           manuscript: {
             <% manuscript = key == :manuscripts ? rec : ([:booklets].include?(key) || content.booklet_id.present? ? booklet.manuscript : content.manuscript) %>
