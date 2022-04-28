@@ -77,7 +77,10 @@
 									</span>
 									)
 								</label>
-								<%= form.number_field :birth_date, class: "form-control", max: Date.today.year %>
+								<div class="input-group">
+									<span class="input-group-text bg-white" v-if="!birth_date_exact">ca.</span>
+									<%= form.number_field :birth_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !birth_date_exact }" %>
+								</div>
 							</div>
 							<div class="col-md-6">
 								<%= form.hidden_field :death_date_exact, "v-model": "death_date_exact" %>
@@ -91,7 +94,10 @@
 									</span>
 									)
 								</label>
-								<%= form.number_field :death_date, class: "form-control", max: Date.today.year %>
+								<div class="input-group">
+									<span class="input-group-text bg-white" v-if="!death_date_exact">ca.</span>
+									<%= form.number_field :death_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !death_date_exact }" %>
+								</div>
 							</div>
 						</div>
 

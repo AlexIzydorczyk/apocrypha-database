@@ -129,7 +129,7 @@
       { headerName: "Name(s)", field: "transcriber_names", hide: false, editable: false },
     ] },
 
-    { headerName: "Compiles by", children: [
+    { headerName: "Compiled by", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Ids", field: "compiler_ids", hide: true, editable: false, cellRenderer: function(params) {
           return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'compiler')"><i class='fa-solid fa-arrows-repeat'></i></button>`

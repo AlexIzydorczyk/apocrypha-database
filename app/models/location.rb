@@ -2,6 +2,7 @@ class Location < ApplicationRecord
 	has_many :ownerships, dependent: :nullify
 	has_many :booklets, foreign_key: "genesis_location_id", dependent: :nullify
 	has_many :booklists, dependent: :nullify
+	has_many :institutions, dependent: :nullify
 	has_many :modern_sources, foreign_key: "publication_location_id", dependent: :nullify
 	belongs_to :city_writing_system, class_name: "WritingSystem", optional: true
 	belongs_to :region_writing_system, class_name: "WritingSystem", optional: true
