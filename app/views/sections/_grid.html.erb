@@ -248,7 +248,7 @@
     <% end %>
   ];
 
-  var gridOptions = { //switch back to const
+  const gridOptions = {
     columnDefs: columnDefs,
     defaultColDef: defaultColDef,
     rowData: rowData,
@@ -300,7 +300,10 @@
   var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
   columnToolPanel.collapseColumnGroups();
   autoSizeAll(gridOptions, false);
-  gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-text.id", 54);
-  gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-content.id", 47);
-  gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-booklet.id", 34);
+  setTimeout(function() {
+    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-text.id", 54);
+    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-content.id", 47);
+    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-booklet.id", 34);
+  }, 200);
+  
 </script>
