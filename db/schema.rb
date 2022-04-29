@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_25_211030) do
+ActiveRecord::Schema.define(version: 2022_04_29_141546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_211030) do
   create_table "manuscripts", force: :cascade do |t|
     t.string "identifier", default: "", null: false
     t.string "census_no", default: "", null: false
-    t.string "status", default: "", null: false
+    t.string "status", default: "extant", null: false
     t.bigint "institution_id"
     t.string "shelfmark", default: "", null: false
     t.string "old_shelfmark", default: "", null: false
