@@ -17,15 +17,15 @@ class ApplicationController < ActionController::Base
 		@owners = (Person.joins(:ownerships).all + Person.joins("INNER JOIN booklists ON booklists.library_owner_id = people.id").all).uniq
 		@no_role = Person.where.not(id: @scribes.map(&:id) + @authors.map(&:id) + @editors.map(&:id) + @translators.map(&:id) + @correspondents.map(&:id) + @transcribers.map(&:id) + @compilers.map(&:id) + @owners.map(&:id))
 		@grouped_people = { 
-			scribe: @scribes,
-			author: @authors,
-			editor: @editors,
-			translator: @translators,
-			correspondent: @correspondents,
-			transcriber: @transcribers,
-			compiler: @compilers,
-			owner: @owners,
-			no_role: @no_role,
+			scribe: @scribes.uniq,
+			author: @authors.uniq,
+			editor: @editors.uniq,
+			translator: @translators.uniq,
+			correspondent: @correspondents.uniq,
+			transcriber: @transcribers.uniq,
+			compiler: @compilers.uniq,
+			owner: @owners.uniq,
+			no_role: @no_role.uniq,
 		 }
 	end
 

@@ -1,5 +1,5 @@
 <div id="modern-source-references-list" class="w-100">
-	<% modern_source_references.joins(modern_source: :authors).order("people.last_name_vernacular").each do |msr| %>
+	<% modern_source_references.joins(modern_source: :authors).order("people.last_name_vernacular").uniq.each do |msr| %>
 		<div class="card grey mb-2 w-100">
 			<div class="card-body d-flex align-items-center">
 				<div class="w-100 d-flex flex-column">
