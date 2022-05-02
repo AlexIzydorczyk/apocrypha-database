@@ -39,9 +39,8 @@
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
             } },
           <% end %>
-          { headerName: "Name", field: "institution_name_orig", hide: true, editable: false },
-          { headerName: "Name (alternative)", field: "institution_name_english", hide: true, editable: false },
-          { headerName: "Name (translit)", field: "institution_name_orig_transliteration", hide: true, editable: false },
+          { headerName: "Name", field: "institution_name", hide: true, editable: false },
+          { headerName: "Name (alternative)", field: "institution_name_alt", hide: true, editable: false },
           // { headerName: "Location", field: "institution_location", hide: true, editable: false },
           // { headerName: "Religious order", field: "institution_religious_order", hide: true, editable: false },
         ]},
@@ -172,11 +171,10 @@
         author_ids: <%= modern_source.authors.map(&:id).to_json.html_safe %>,
 
         institution_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id %>",
-        institution_name_alt: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_alt) %>",
-        institution_name: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name) %>",
-        institution_name_transliteration: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_transliteration) %>",
-        institution_location: "<%= modern_source.institution.try(:location).try(:city_region_country) %>",
-        institution_religious_order: "<%= modern_source.institution.try(:religious_order).try(:display_name) %>",
+        institution_name_alt: `<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_alt).try(:html_safe) %>`,
+        institution_name: `<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name).try(:html_safe) %>`,
+        institution_location: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:location).try(:city_region_country) %>",
+        institution_religious_order: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:religious_order).try(:display_name) %>",
 
         repository_id: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution_id if modern_source.document_type == 'handwritten_document' %>",
         respository_name_alt: "<%= modern_source.source_type == 'handwritten_document' ? '' : modern_source.institution.try(:name_alt) if modern_source.document_type == 'handwritten_document' %>",
