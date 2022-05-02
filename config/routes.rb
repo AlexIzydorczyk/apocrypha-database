@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
   resources :sections, path: "master"
+  resources :sections
   resources :booklist_references
   resources :booklists
   resources :text_urls

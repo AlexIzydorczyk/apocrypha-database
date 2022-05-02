@@ -13,18 +13,18 @@ class SectionsController < ApplicationController
     
     @texts = Text.all.where.not(id: @sections.map(&:text_id)).includes(:languages, :transcriber, :scribes, content: [:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location]]])
 
-    @contents_accounted.push( @texts.map{ |t| t.content_id } )
-    @booklets_accounted.push( @texts.map{ |t| t.content.booklet_id } )
-    @manuscripts_accounted.push( @texts.map{ |t| t.content.booklet.try(:manuscript_id) } + @texts.map{ |t| t.content.manuscript_id } )
+    @contents_accounted.push( @texts.map{ |t| t.content_id } ).flatten!
+    @booklets_accounted.push( @texts.map{ |t| t.content.booklet_id } ).flatten!
+    @manuscripts_accounted.push( @texts.map{ |t| t.content.booklet.try(:manuscript_id) } + @texts.map{ |t| t.content.manuscript_id } ).flatten!
 
     @contents = Content.all.where.not(id: @contents_accounted).includes(:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location]])
 
-    @booklets_accounted.push( @contents.map{ |c| c.booklet_id } )
-    @manuscripts_accounted.push( @contents.map{ |c| c.booklet.try(:manuscript_id) } + @contents.map{ |c| c.manuscript_id } )
+    @booklets_accounted.push( @contents.map{ |c| c.booklet_id } ).flatten!
+    @manuscripts_accounted.push( @contents.map{ |c| c.booklet.try(:manuscript_id) } + @contents.map{ |c| c.manuscript_id } ).flatten!
 
     @booklets = Booklet.all.where.not(id: @booklets_accounted).includes(:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, manuscript: [:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location])
 
-    @manuscripts_accounted.push( @booklets.map{ |b| b.manuscript_id } )
+    @manuscripts_accounted.push( @booklets.map{ |b| b.manuscript_id } ).flatten!
 
     @manuscripts = Manuscript.where.not(id: @manuscripts_accounted).all.includes(:genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, institution: :location)
 

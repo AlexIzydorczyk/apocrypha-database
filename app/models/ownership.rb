@@ -15,7 +15,7 @@ class Ownership < ApplicationRecord
   end
 
   def display_name
-    [self.person.try(:full_name), self.institution.try(:display_name), self.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ')
+    [(self.person.try(:full_name) + " " + self.person.try(:years)), self.institution.try(:display_name), self.religious_order.try(:order_name)].select{ |s| s.present? }.join(', ')
   end
 
   def full_display_name

@@ -26,7 +26,11 @@ class Person < ApplicationRecord
   end
 
 	def full_name
-		[self.prefix_vernacular, self.first_name_vernacular, self.middle_name_vernacular, self.last_name_vernacular, self.suffix_vernacular].select{ |s| s.present? }.join(" ")
+		[self.first_name_vernacular, self.middle_name_vernacular, self.prefix_vernacular, self.last_name_vernacular, self.suffix_vernacular].select{ |s| s.present? }.join(" ")
+	end
+
+	def years
+		self.birth_date.present? && self.death_date.present? ? "(#{self.birth_date} - #{self.death_date})" : ""
 	end
 
 	def modern_source_display in_list=true

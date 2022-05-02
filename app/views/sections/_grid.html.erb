@@ -14,110 +14,110 @@
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, columnGroupShow: 'open' };
+  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true };
 
   const columnDefs = [
-    { headerName: "Repository", children: [
-      { headerName: "City", field: "manuscript.institution_city" },
-      { headerName: "City (alternative)", field: "manuscript.institution_city_alt", hide: true },
-      { headerName: "Name", field: "manuscript.institution_name", columnGroupShow: null },
-      { headerName: "Name (alternative)", field: "manuscript.institution_name_alternative", hide: true },
-      { headerName: "Country", field: "manuscript.institution_country" },
-    ] },
-    { headerName: "Manuscript", children: [
-      { headerName: "Manuscript id", field: "manuscript.id", enableRowGroup: true, rowGroup: true, hide: true },
-      { headerName: "Census no.", field: "manuscript.census_no", comparator: numberSort, columnGroupShow: null },
-      { headerName: "Status", field: "manuscript.status" },
-      { headerName: "Shelfmark", field: "manuscript.shelfmark", columnGroupShow: null},
-      { headerName: "Old shelfmarks", field: "manuscript.old_shelfmark" },
-      { headerName: "Material", field: "manuscript.material" },
-      { headerName: "Dimensions", field: "manuscript.dimensions" },
-      { headerName: "Number of pages/folios", field: "manuscript.leaf_page_no", comparator: numberSort },
-      { headerName: "Date from", field: "manuscript.date_from", comparator: numberSort },
-      { headerName: "Date to", field: "manuscript.date_to", comparator: numberSort },
-      { headerName: "Specific date", field: "manuscript.specific_date", comparator: numberSort },
-      { headerName: "Content type", field: "manuscript.content_type" },
-      { headerName: "Notes on ms.", field: "manuscript.notes", cellEditor: 'agLargeTextCellEditor' },
-      { headerName: "Languages in ms.", field: "manuscript.languages" },
-    ]},      
-    { headerName: "Origin", children: [
-      { headerName: "Institution: name", field: "manuscript.genesis_institution_name", columnGroupShow: null },
-      { headerName: "Institution: name (alternative)", field: "manuscript.genesis_institution_name_alternative", hide: true },
-      { headerName: "Locaiton: city", field: "manuscript.city" },
-      { headerName: "Locaiton: city (alternative)", field: "manuscript.city_alt", hide: true },
-      { headerName: "Locaiton: diocese", field: "manuscript.diocese" },
-      { headerName: "Locaiton: diocese (alternative)", field: "manuscript.diocese_alt", hide: true },
-      { headerName: "Locaiton: region", field: "manuscript.region" },
-      { headerName: "Locaiton: region (alternative)", field: "manuscript.region_alt", hide: true },
-      { headerName: "Locaiton: country", field: "manuscript.country" },
-      { headerName: "Religious order: name", field: "manuscript.religious_order_name" },
-    ] },
-    { headerName: "Credits", children: [
-      { headerName: "Correspondent(s)", field: "manuscript.correspondent_names", hide: true },
-      { headerName: "Transcriber(s)", field: "manuscript.transcriber_names", hide: true },
-      { headerName: "Compiler(s)", field: "manuscript.compiler_names", hide: true },
-    ] },
-    { headerName: "Booklet", children: [
-      { headerName: "Booklet id", field: "booklet.id", enableRowGroup: true, rowGroup: true, hide: true },
-      { headerName: "Booklet no", field: "booklet.booklet_no", columnGroupShow: null  },
-      { headerName: "Location of booklet (from)", field: "booklet.pages_folios_from" },
-      // { headerName: "Location of booklet (to)", field: "booklet.pages_folios_to" },
-      { headerName: "Content type", field: "booklet.content_type" },
-      { headerName: "Date from", field: "booklet.date_from", comparator: numberSort },
-      { headerName: "Date to", field: "booklet.date_to", comparator: numberSort },
-      { headerName: "Specific date", field: "booklet.specific_date", comparator: numberSort },
-      { headerName: "Scribes", field: "booklet.scribes" },
-      { headerName: "Origin: institution", field: "booklet.genesis_institution_id" },
-      { headerName: "Origin: religious order", field: "booklet.genesis_religious_order_id" },
-      { headerName: "Origin: location", field: "booklet.genesis_location_id" },
-      { headerName: "Origin: notes", field: "booklet.origin_notes" }
-    ]},
-    { headerName: "Content", children: [
-      { headerName: "Content id", field: "content.id", enableRowGroup: true, rowGroup: true, hide: true },
-      { headerName: "Sequence no", field: "content.sequence_no"},
-      { headerName: "Title", field: "content.title_id", columnGroupShow: null},
-      { headerName: "Author", field: "content.author_id"},
-    ]},
     { headerName: "Apocryphon", children: [
-      { headerName: "Apocryphon id", field: "apocryphon.id", enableRowGroup: true, hide: true },
-      { headerName: "Main English title", field: "apocryphon.main_english_title", columnGroupShow: null },
-      { headerName: "Main Latin title", field: "apocryphon.main_latin_title" },
+      { headerName: "Apocryphon id", field: "apocryphon.id", enableRowGroup: true },
+      { headerName: "Main English title", field: "apocryphon.main_english_title" },
+      { headerName: "Main Latin title", field: "apocryphon.main_latin_title", hide: false },
     ]},
-    { headerName: "Text", children: [
-      { headerName: "Text id", field: "text.id", enableRowGroup: true, rowGroup: true, hide: true },
-      { headerName: "Text pages folios", field: "text.text_pages_folios"},
-      { headerName: "Language", field: "text.languages" },
-      { headerName: "Date from", field: "text.date_from", comparator: numberSort },
-      { headerName: "Date to", field: "text.date_to", comparator: numberSort },
-      { headerName: "Specific date", field: "text.specific_date", comparator: numberSort },
-      { headerName: "No. columns", field: "text.no_columns"},
-      { headerName: "Scribes", field: "text.scribes" },
-      { headerName: "Script", field: "text.script", columnGroupShow: null },
-      { headerName: "Scribe notes", field: "text.notes_on_scribe" },
-      { headerName: "Decoration", field: "text.decoration"},
-      { headerName: "Title folios", field: "text.title_folios_pages"},
-      { headerName: "Manuscript title", field: "text.manuscript_title_orig"},
-      { headerName: "Manuscript title translit.", field: "text.manuscript_title_orig_transliteration", hide: true },
-      { headerName: "Manuscript title transla.", field: "text.manuscript_title_translation", hide: true },
-      { headerName: "Colophon folios ", field: "text.pages_folios_colophon"},
-      { headerName: "Colophon", field: "text.colophon_orig"},
-      { headerName: "Colophon translit.", field: "text.colophon_transliteration", hide: true },
-      { headerName: "Colophon transla.", field: "text.colophon_translation", hide: true },
-      { headerName: "Version", field: "text.version"},
-      { headerName: "Extent", field: "text.extent", columnGroupShow: null},
-      { headerName: "Notes", field: "text.notes", hide: true },      
+    { headerName: "Identification of manuscript", children: [
+      { headerName: "No.", field: "manuscript.census_no", comparator: numberSort, hide: false },
+      { headerName: "City", field: "manuscript.institution_city", hide: false },
+      { headerName: "City (alternative)", field: "manuscript.institution_city_alt" },
+      { headerName: "Country", field: "manuscript.institution_country", hide: false },
+      { headerName: "Name", field: "manuscript.institution_name", hide: false },
+      { headerName: "Name (alternative)", field: "manuscript.institution_name_alternative" },
+      { headerName: "Shelfmark", field: "manuscript.shelfmark", hide: false },
+      { headerName: "Old shelfmarks", field: "manuscript.old_shelfmark", hide: false },
+      { headerName: "Status", field: "manuscript.status", hide: false },
+    ] },
+    { headerName: "Manuscript: general features", children: [
+      { headerName: "Manuscript id", field: "manuscript.id", enableRowGroup: true, rowGroup: true, hide: true },
+      { headerName: "Material", field: "manuscript.material", hide: false},
+      { headerName: "Dimensions", field: "manuscript.dimensions", hide: false },
+      { headerName: "No. of pp./ff.", field: "manuscript.leaf_page_no", hide: false },
+      { headerName: "Date from", field: "manuscript.date_from", comparator: numberSort, hide: false },
+      { headerName: "Date to", field: "manuscript.date_to", comparator: numberSort, hide: false },
+      { headerName: "Specific date", field: "manuscript.specific_date", comparator: numberSort, hide: false },
+      { headerName: "Content type", field: "manuscript.content_type" , hide: false },
+      { headerName: "Languages in ms.", field: "manuscript.languages", hide: false  },
+      { headerName: "Notes on ms.", field: "manuscript.notes", cellEditor: 'agLargeTextCellEditor', hide: false  },
     ]},
-    { headerName: "Text section", children: [
-      { headerName: "Section name", field: "section.section_name", columnGroupShow: null},
-      { headerName: "Pages folios incipit", field: "section.pages_folios_incipit"},
-      { headerName: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender },
+    { headerName: "Booklet (if identified): general features", children: [
+      { headerName: "Booklet id", field: "booklet.id", enableRowGroup: true, rowGroup: true, hide: true },
+      { headerName: "Booklet no.", field: "booklet.booklet_no", hide: false },
+      { headerName: "Ff./pp. in ms.", field: "booklet.pages_folios_from", hide: false },
+      // { headerName: "Location of booklet (to)", field: "booklet.pages_folios_to" },
+      { headerName: "Content type", field: "booklet.content_type", hide: false },
+      { headerName: "Date from", field: "booklet.date_from", comparator: numberSort, hide: false },
+      { headerName: "Date to", field: "booklet.date_to", comparator: numberSort, hide: false },
+      { headerName: "Specific date", field: "booklet.specific_date", comparator: numberSort, hide: false },
+      // { headerName: "Scribes", field: "booklet.scribes" },
+    ]},
+    { headerName: "Origin of booklet (if identified) or manuscript", children: [
+      { headerName: "Institution", field: "genesis.institution_name", hide: false },
+      { headerName: "Institution (alternative)", field: "genesis.institution_name_alt", hide: true },
+      { headerName: "Religious order", field: "genesis.religious_order_name", hide: false },
+      { headerName: "Religious order (abbrev.)", field: "genesis.religious_order_abbrev", hide: true },
+      { headerName: "City", field: "genesis.city", hide: false },
+      { headerName: "City (alternative)", field: "genesis.city_alt", hide: true },
+      { headerName: "Diocese", field: "genesis.diocese", hide: false },
+      { headerName: "Diocese (alternative)", field: "genesis.diocese_alt", hide: true },
+      { headerName: "Region", field: "genesis.region", hide: false },
+      { headerName: "Region (alternative)", field: "genesis.region_alt", hide: true },
+      { headerName: "Country", field: "genesis.country", hide: false },
+      { headerName: "Notes on origin", field: "genesis.origin_notes", hide: false },
+    ] },
+    { headerName: "Contents", children: [
+      { headerName: "Content id", field: "content.id", enableRowGroup: true, rowGroup: true, hide: true },
+      { headerName: "Sequence no", field: "content.sequence_no", hide: false },
+      { headerName: "Title", field: "content.title", hide: false },
+      { headerName: "Author", field: "content.author", hide: false },
+    ]},
+
+    { headerName: "Apocryphon in manuscript: general features", children: [
+      // { headerName: "Text id", field: "text.id", enableRowGroup: true, rowGroup: true, hide: true },
+      { headerName: "Language", field: "text.languages", hide: false },
+      { headerName: "Ff./pp. in ms.", field: "text.text_pages_folios", hide: false },
+      { headerName: "Date from", field: "text.date_from", comparator: numberSort, hide: false },
+      { headerName: "Date to", field: "text.date_to", comparator: numberSort, hide: false },
+      { headerName: "Specific date", field: "text.specific_date", comparator: numberSort, hide: false },
+      { headerName: "Columns", field: "text.no_columns", hide: false },
+      { headerName: "Scribe(s)", field: "text.scribes", hide: false },
+      { headerName: "Notes on scribe(s)", field: "text.notes_on_scribe", hide: false },
+      { headerName: "Script", field: "text.script", hide: false },
+      { headerName: "Decoration", field: "text.decoration", hide: false },
+    ]},
+    { headerName: "Apocryphon in manuscript: textual features", children: [
+      { headerName: "Title pp./ff.", field: "text.title_folios_pages"},
+      { headerName: "Title in manuscript", field: "text.manuscript_title_orig", hide: false},
+      { headerName: "Title in manuscript translit.", field: "text.manuscript_title_orig_transliteration", hide: true },
+      { headerName: "Title in manuscript transla.", field: "text.manuscript_title_translation", hide: true },
+      { headerName: "Section name", field: "section.section_name"},
+      { headerName: "Incipit pp./ff.", field: "section.pages_folios_incipit", hide: false},
+      { headerName: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender, hide: false },
       { headerName: "Incipit translit.", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender, hide: true },
       { headerName: "Incipit transla.", field: "section.incipit_translation", cellRenderer: richTextRender, hide: true },
-      { headerName: "Pages folios explicit", field: "section.pages_folios_explicit"},
-      { headerName: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender },
-      { headerName: "Explicitorig translit.", field: "section.explicitorig_transliteration", cellRenderer: richTextRender, hide: true },
+      { headerName: "Explicit pp./ff.", field: "section.pages_folios_explicit", hide: false},
+      { headerName: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender, hide: false },
+      { headerName: "Explicit translit.", field: "section.explicitorig_transliteration", cellRenderer: richTextRender, hide: true },
       { headerName: "Explicit transla.", field: "section.explicit_translation", cellRenderer: richTextRender, hide: true },
+      { headerName: "Colophon pp./ff.", field: "text.pages_folios_colophon", hide: false},
+      { headerName: "Extent", field: "text.extent", hide: false},
+      { headerName: "Version", field: "text.version", hide: false},
+      // { headerName: "Colophon", field: "text.colophon_orig"},
+      // { headerName: "Colophon translit.", field: "text.colophon_transliteration", hide: true },
+      // { headerName: "Colophon transla.", field: "text.colophon_translation", hide: true },
+      // { headerName: "Notes", field: "text.notes", hide: true },      
     ]},
+
+    // { headerName: "Credits", children: [
+    //   { headerName: "Correspondent(s)", field: "manuscript.correspondent_names", hide: true },
+    //   { headerName: "Transcriber(s)", field: "manuscript.transcriber_names", hide: true },
+    //   { headerName: "Compiler(s)", field: "manuscript.compiler_names", hide: true },
+    // ] },
   ];
 
   const rowData = [
@@ -139,13 +139,13 @@
           text: {
             <% text = key == :texts ? rec : ([:sections].include?(key) ? section.text : @new_text) %>
             id: <%= text.id || "undefined" %>,
-            text_pages_folios: "<%= text.text_pages_folios_from %> - <%= text.text_pages_folios_to %>",
+            text_pages_folios: "<%= text.text_pages_folios_to %>",
             decoration: "<%= text.decoration %>",
-            title_folios_pages: "<%= text.title_pages_folios_from %> - <%= text.title_pages_folios_to %>",
+            title_folios_pages: "<%= text.title_pages_folios_to %>",
             manuscript_title_orig: "<%= text.manuscript_title_orig %>",
             manuscript_title_orig_transliteration: "<%= text.manuscript_title_orig_transliteration %>",
             manuscript_title_translation: "<%= text.manuscript_title_translation %>",
-            pages_folios_colophon: "<%= text.colophon_pages_folios_from %> - <%= text.colophon_pages_folios_to %>",
+            pages_folios_colophon: "<%= text.colophon_pages_folios_to %>",
             colophon_orig: "<%= text.colophon_orig %>",
             colophon_transliteration: "<%= text.colophon_transliteration %>",
             colophon_translation: "<%= text.colophon_translation %>",
@@ -166,8 +166,8 @@
             <% content = key == :contents ? rec : ([:texts, :sections].include?(key) ? text.content : @new_content) %>
             id: <%= content.id || "undefined" %>,
             sequence_no: "<%= content.sequence_no %>",
-            title_id: "<%= content.title_id %>",// COME BACK TO ME
-            author_id: "<%= content.author_id %>",// COME BACK TO ME
+            title: "<%= content.try(:title).try(:title_orig) %>",
+            author: "<%= content.author.try(:full_name) %>",
           },
           apocryphon: {
             <% apocryphon = (content.title_id.present? && content.title.apocryphon_id.present? ? content.title.apocryphon : @new_apocryphon) %>
@@ -176,7 +176,7 @@
             main_latin_title: "<%= apocryphon.main_lat_title %>",
           },
           booklet: {
-            <% booklet = key == :booklets ? rec : ([:texts, :sections, :contents].include?(key) && content.booklet_id.present? ? content.booklet : @new_content) %>
+            <% booklet = key == :booklets ? rec : ([:texts, :sections, :contents].include?(key) && content.booklet_id.present? ? content.booklet : @new_booklet) %>
             id: <%= booklet.id || "undefined" %>,
             booklet_no: "<%= booklet.try(:booklet_no) %>",
             pages_folios_from: "<%= booklet.try(:pages_folios_from) %>",
@@ -184,12 +184,8 @@
             date_from: "<%= booklet.try(:date_from) %>",
             date_to: "<%= booklet.try(:date_to) %>",
             specific_date: "<%= booklet.try(:specific_date) %>",
-            genesis_location_id: "<%= booklet.try(:genesis_location_id) %>",
             scribes: <%= (booklet.try(:scribes) || []).map(&:full_name).to_json.html_safe %>,
-            genesis_institution_id: "<%= booklet.try(:genesis_institution_id) %>",
-            genesis_religious_order_id: "<%= booklet.try(:genesis_religious_order_id) %>",
             content_type: "<%= booklet.try(:content_type) %>",
-            origin_notes: `<%= booklet.try(:origin_notes).try(:html_safe) %>`,
           },
           manuscript: {
             <% manuscript = key == :manuscripts ? rec : ([:booklets].include?(key) || content.booklet_id.present? ? booklet.manuscript : content.manuscript) %>
@@ -209,20 +205,7 @@
             institution_country: `<%= m_institution_loc.try(:country).try(:html_safe) %>`,
             institution_diocese: "<%= m_institution_loc.try(:diocese) %>",
             institution_diocese_alt: "<%= m_institution_loc.try(:diocese_alt) %>",
-            genesis_institution_id: "<%= manuscript.genesis_institution_id %>",
-            genesis_institution_name: "<%= manuscript.genesis_institution.try(:name) %>",
-            genesis_institution_name_alternative: "<%= manuscript.genesis_institution.try(:name_alt) %>",
-            genesis_location_id: "<%= manuscript.genesis_location_id %>",
-            city: "<%= manuscript.genesis_location.try(:city) %>",
-            city_alt: "<%= manuscript.genesis_location.try(:city_alt) %>",
-            region: "<%= manuscript.genesis_location.try(:region) %>",
-            region_alt: "<%= manuscript.genesis_location.try(:region_alt) %>",
-            country: "<%= manuscript.genesis_location.try(:country) %>",
-            diocese: "<%= manuscript.genesis_location.try(:diocese) %>",
-            diocese_alt: "<%= manuscript.genesis_location.try(:diocese_alt) %>",
-            religious_order_id: "<%= manuscript.genesis_religious_order_id %>",
-            religious_order_name: "<%= manuscript.genesis_religious_order.try(:order_name) %>",
-            religious_order_abbreviation: "<%= manuscript.genesis_religious_order.try(:abbreviation) %>",
+            
             scribe_names: <%= manuscript.scribes.map(&:full_name).to_json.html_safe %>,
             scribe_ids: <%= manuscript.scribes.map(&:id).to_json.html_safe %>,
             correspondent_names: <%= manuscript.correspondents.map(&:full_name).to_json.html_safe %>,
@@ -235,13 +218,30 @@
             old_shelfmark: "<%= manuscript.old_shelfmark.html_safe  %>",
             material: "<%= manuscript.material.html_safe  %>",
             dimensions: "<%= manuscript.dimensions.html_safe %>",
-            leaf_page_no: "<%= manuscript.leaf_page_no %>",
+            leaf_page_no: "<%= manuscript.leaf_page_no + (manuscript.is_folios ? "ff." : "pp.") %>",
             date_from: "<%= manuscript.date_from.html_safe  %>",
             date_to: "<%= manuscript.date_to.html_safe  %>",
             specific_date: "<%= manuscript.specific_date.html_safe %>",
             content_type: `<%= manuscript.content_type.html_safe %>`,
             notes: `<%= manuscript.notes.html_safe  %>`,
             languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
+          },
+          genesis: {
+            <% genesis_source = manuscript.booklets.present? ? booklet : manuscript %>
+            institution_name: "<%= genesis_source.genesis_institution.try(:name) %>",
+            institution_name_alt: "<%= genesis_source.genesis_institution.try(:name_alt) %>",
+            religious_order_name: "<%= genesis_source.genesis_religious_order.try(:order_name) %>",
+            religious_order_abbrev: "<%= genesis_source.genesis_religious_order.try(:abbreviation)%>",
+            city: "<%= genesis_source.genesis_location.try(:city) %>",
+            city_alt: "<%= genesis_source.genesis_location.try(:city_alt) %>",
+            region: "<%= genesis_source.genesis_location.try(:region) %>",
+            region_alt: "<%= genesis_source.genesis_location.try(:region_alt) %>",
+            country: "<%= genesis_source.genesis_location.try(:country) %>",
+            diocese: "<%= genesis_source.genesis_location.try(:diocese) %>",
+            diocese_alt: "<%= genesis_source.genesis_location.try(:diocese_alt) %>",
+            origin_notes: `<%= genesis_source.try(:origin_notes).try(:html_safe) %>`,
+
+
           }
         },
       <% end %>
@@ -301,9 +301,8 @@
   columnToolPanel.collapseColumnGroups();
   autoSizeAll(gridOptions, false);
   setTimeout(function() {
-    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-text.id", 54);
-    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-content.id", 47);
-    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-booklet.id", 34);
+    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-content.id", 44);
+    gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-booklet.id", 24);
   }, 200);
   
 </script>
