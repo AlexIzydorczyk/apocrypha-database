@@ -1,39 +1,52 @@
 <script type="text/javascript">
 
 $(function() {
-	gridOptions.columnApi.applyColumnState({
-		state: <%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>,
-		applyOrder: true,
-	});
+	setState(<%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>)
 });
 
-function saveState(show_saved=true) {
+function getState(parameters) {
+	$.ajax({
+		url: "<%= get_user_grid_states_path %>",
+		method: "GET",
+		data: parameters,
+		success: function(data) {
+			setState(data.state);
+		}
+	})
+}
+
+function restoreState() {
+	getState({record_type: "<%= record_type %>"});
+}
+
+function deleteState(button_id) {
+	if(confirm('Are you sure you want to delete this configuration option?')){
+		$('#' + button_id).click();
+		timeoutReload('', 0);
+	}
+}
+
+function setState(state){
+	console.log('setting state', state);
+	gridOptions.columnApi.applyColumnState({
+		state: state,
+		applyOrder: true,
+	});
+}
+
+function saveState(show_saved=true, state_name=null, callback=null) {
 	$.ajax({
 		url: "<%= save_user_grid_states_path %>",
 		method: "PUT",
 		data: {
+			state_name: state_name,
 			state: JSON.stringify(gridOptions.columnApi.getColumnState()),
 			record_type: "<%= record_type %>",
 			authenticity_token: "<%= form_authenticity_token %>",
 		},
 		success: function() {
 			if(show_saved) window.SnackBar({message: "<i class='far fa-save'></i> Configuration saved", position: "tr", dismissible: false, timeout: 2000});
-		}
-	})
-}
-
-function restoreState() {
-	$.ajax({
-		url: "<%= get_user_grid_states_path %>",
-		method: "GET",
-		data: {
-			record_type: "<%= record_type %>",
-		},
-		success: function(data) {
-			gridOptions.columnApi.applyColumnState({
-				state: data.state,
-				applyOrder: true,
-			});
+			if(callback != null) callback();
 		}
 	})
 }

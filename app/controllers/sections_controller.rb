@@ -34,6 +34,8 @@ class SectionsController < ApplicationController
     @new_content = Content.new
     @new_booklet = Booklet.new
     @new_apocryphon = Apocryphon.new
+
+    @grid_states = UserGridState.where(user_id: nil, record_type: "Section")
   end
 
   def show

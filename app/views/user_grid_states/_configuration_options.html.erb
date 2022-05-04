@@ -1,0 +1,38 @@
+<div class="d-flex mb-2 align-items-center">
+  Configuration options:
+  <% if user_signed_in? && current_user.admin? %>
+    <button class="btn btn-sm btn-outline-action mx-2" data-bs-toggle="modal" data-bs-target="#create-configuration"><i class="far fa-floppy-disk"></i> Create option</button>
+  <% end %>
+  <% @grid_states.each do |state| %>
+    <div class="btn-group mx-2" role="group">
+      <button type="button" class="btn btn-sm btn-outline-action" onclick="getState({id: <%= state.id %>})"><%= state.state_name %></button>
+      <% if user_signed_in? && current_user.admin? %>
+        <button type="button" class="btn btn-sm btn-outline-action" onclick="deleteState('delete-state-<%= state.id %>')"><i class='far fa-trash-alt'></i></button>
+      <% end %>
+    </div>
+    <%= button_to "hidden", user_grid_state_path(state), method: :delete, class: "d-none", id: "delete-state-#{state.id}" %>
+  <% end %>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="create-configuration" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create configuration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Creating configuration based on current grid state.</p>
+          <p>Note: state option will be avaliable to all users.</p>
+          <div class="form-group">
+            <label>Configuration name</label>
+            <input type="text" name="state_name" id="new-grid-state-name" placeholder="Configuration name" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action disable-on-click" onclick="saveState(false, $('#new-grid-state-name').val(), function(){timeoutReload('', 0);})">Save & Close</button>
+        </div>
+      </div>
+    </div>
+</div>

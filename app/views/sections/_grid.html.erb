@@ -1,3 +1,5 @@
+<%= render "user_grid_states/configuration_options" %>
+
 <div class="d-flex mb-2 align-items-end">
   <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
   <% if user_signed_in? %>
@@ -9,7 +11,7 @@
 <div id="sections_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <% if user_signed_in? %>
-  <%= render 'layouts/grid_save_state_js', record_type: "ModernSource" %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Section" %>
 <% end %>
 
 <script type="text/javascript" charset="utf-8">
