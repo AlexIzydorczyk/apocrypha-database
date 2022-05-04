@@ -209,3 +209,7 @@ function autoSizeAll(gridOpt, skipHeader) {
 
   gridOpt.columnApi.autoSizeColumns(allColumnIds, skipHeader);
 }
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) == index;
+}

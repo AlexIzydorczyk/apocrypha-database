@@ -16,7 +16,7 @@
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true };
+  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: customAgg };
 
   const columnDefs = [
     { headerName: "Apocryphon", children: [
@@ -288,7 +288,10 @@
   }
 
   function customAgg(params) {
-    return params.values.every( (val, i, arr) => val === arr[0] && val != '' ) ? params.values[0] : "";
+    let arr = params.values.filter(onlyUnique).map(function(val) {
+      return val == "" || val == [] || val == {} ? '(blank)' : val;
+    })
+    return arr.join('; ');
   };
 
   function numberSort(num1, num2){
