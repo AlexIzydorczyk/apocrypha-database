@@ -102,6 +102,7 @@
       { headerName: "Title in manuscript translit.", field: "text.manuscript_title_orig_transliteration", hide: true },
       { headerName: "Title in manuscript transla.", field: "text.manuscript_title_translation", hide: true },
       { headerName: "Section name", field: "section.section_name"},
+      { headerName: "Section number", field: "section.section_number", hide: false, comparator: numberSort },
       { headerName: "Incipit pp./ff.", field: "section.pages_folios_incipit", hide: false},
       { headerName: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender, hide: false },
       { headerName: "Incipit translit.", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender, hide: true },
@@ -133,6 +134,7 @@
           section:{
             <% section = key == :sections ? rec : @new_section %>
             section_name: "<%= section.section_name %>",
+            section_number: "<%= (section.text.sections.find_index(section) + 1)if section.text.present? %>",
             pages_folios_incipit: "<%= section.pages_folios_incipit %>",
             incipit_orig: `<%= section.incipit_orig.html_safe %>`,
             incipit_orig_transliteration: `<%= section.incipit_orig_transliteration %>`,
