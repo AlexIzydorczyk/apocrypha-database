@@ -30,7 +30,7 @@
     ]},
     { headerName: "Identification of manuscript", children: [
       { headerName: "No.", field: "manuscript.census_no", comparator: numberSort, hide: false },
-      { headerName: "City", field: "manuscript.institution_city", hide: false },
+      { headerName: "City", field: "manuscript.institution_city", hide: false, sortingOrder: ['asc'] },
       { headerName: "City (alternative)", field: "manuscript.institution_city_alt" },
       { headerName: "Country", field: "manuscript.institution_country", hide: false },
       { headerName: "Name", field: "manuscript.institution_name", hide: false },
@@ -40,7 +40,7 @@
       { headerName: "Status", field: "manuscript.status", hide: false },
     ] },
     { headerName: "Manuscript: general features", children: [
-      { headerName: "Manuscript id", field: "manuscript.id", enableRowGroup: true, rowGroup: true, hide: true },
+      { headerName: "Identification of manuscript", field: "manuscript.id", enableRowGroup: true, rowGroup: true, hide: true },
       { headerName: "Material", field: "manuscript.material", hide: false},
       { headerName: "Dimensions", field: "manuscript.dimensions", hide: false },
       { headerName: "No. of pp./ff.", field: "manuscript.leaf_page_no", hide: false },
@@ -78,7 +78,7 @@
     ] },
     { headerName: "Contents", children: [
       { headerName: "Content id", field: "content.id", enableRowGroup: true, rowGroup: true, hide: true },
-      { headerName: "Sequence no", field: "content.sequence_no", hide: false },
+      { headerName: "Sequence no", field: "content.sequence_no", hide: false, comparator: numberSort },
       { headerName: "Title", field: "content.title", hide: false },
       { headerName: "Author", field: "content.author", hide: false },
     ]},
@@ -265,6 +265,24 @@
     sideBar: 'columns',
     suppressAggFuncInHeader: true,
     groupDisplayType: 'multipleColumns',
+    initialGroupOrderComparator: function (params) {
+      if(params.nodeA.field == "manuscript.id" && params.nodeB.field == "manuscript.id"){
+        a1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_city;
+        a2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_city;
+        b1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_name;
+        b2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_name;
+        c1 = params.nodeA.allLeafChildren[0].data.manuscript.shelfmark;
+        c2 = params.nodeB.allLeafChildren[0].data.manuscript.shelfmark;
+        if(a1 == a2){
+          if(b1 == b2) return b1 < b2 ? -1 : b1 > b2 ? 1 : 0;
+          else return c1 < c2 ? -1 : c1 > c2 ? 1 : 0;
+        } else return a1 < a2 ? -1 : a1 > a2 ? 1 : 0;
+      } else {
+        const a = params.nodeA.key || '';
+        const b = params.nodeB.key || '';
+        return a < b ? -1 : a > b ? 1 : 0;
+      }
+    },
     autoGroupColumnDef: {
         // headerName: 'Group',
         cellRendererParams: {
@@ -284,7 +302,16 @@
   };
 
   function groupCellRenderer(params) {
-    return params.node.rowGroupColumn.colDef.headerName.split(" ")[0] + " " + params.value;
+    if (params.node.rowGroupColumn.colDef.headerName == "Identification of manuscript"){
+      return [
+        params.node.allLeafChildren[0].data.manuscript.institution_city,
+        params.node.allLeafChildren[0].data.manuscript.institution_country,
+        params.node.allLeafChildren[0].data.manuscript.institution_name,
+        params.node.allLeafChildren[0].data.manuscript.shelfmark
+      ].filter( s => s != "" ).join(", ");
+    } else {
+      return params.node.rowGroupColumn.colDef.headerName.split(" ")[0] + " " + params.value;  
+    }
   }
 
   function customAgg(params) {
@@ -313,10 +340,11 @@
   var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
   columnToolPanel.collapseColumnGroups();
   autoSizeAll(gridOptions, false);
-  setTimeout(function() {
+
+  function additionalReset() {
     gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-content.id", 44);
     gridOptions.columnApi.moveColumn("ag-Grid-AutoColumn-booklet.id", 24);
-  }, 200);
+  }    
 
   // var model = {content.apocryphal: {values: ["Apocryphal"], filterType: "set"}};
   // gridOptions.api.setFilterModel(model);

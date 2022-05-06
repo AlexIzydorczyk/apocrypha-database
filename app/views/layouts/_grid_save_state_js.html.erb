@@ -53,6 +53,7 @@ function saveState(show_saved=true, state_name=null, callback=null) {
 
 function resetState() {
 	gridOptions.columnApi.resetColumnState();
+	if(typeof additionalReset === 'function') additionalReset();
 	saveState(false);
 	window.SnackBar({message: "<i class='fa-solid fa-rotate-left'></i> Configuration reset", position: "tr", dismissible: false, timeout: 2000});
 }
