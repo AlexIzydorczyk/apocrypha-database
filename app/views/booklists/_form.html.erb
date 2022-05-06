@@ -74,22 +74,6 @@
 
 	</div>
 	<div class="row">
-		<div class="form-group col-12 col-lg-5 mb-2">
-			<%= form.label :scribe_id, "Author", style: "display: block" %>
-			<div class="d-flex">
-				<select class="form-control" name="booklist[scribe_id]" id="booklist_scribe_id" placeholder="Select scribe">
-					<option></option>
-					<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-						<optgroup label="<%= group.to_s.humanize %>">
-							<% people.each do |person| %>
-								<option value="<%= person.id %>" <%= 'selected' if booklist.scribe_id == person.id %>><%= person.full_name %></option>
-							<% end %>
-						</optgroup>
-					<% end %>
-				</select>
-				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
-			</div>
-		</div>
 		<div class="col-12 col-lg-7">
 			<div class="row">
 				<div class="form-group col-md-6 mb-2">

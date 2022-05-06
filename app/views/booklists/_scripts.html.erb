@@ -96,7 +96,6 @@ function runTomSelects(){
 			$('#new-language').modal('show');
 		}
 	});
-	new TomSelect("#booklist_scribe_id", ts_sort_text_asc_max_1);
 	<% booklist.booklist_sections.each do |bs| %>
 		new TomSelect("#apocrypha-mentioned-section-<%= bs.id %>",{
 			options: [

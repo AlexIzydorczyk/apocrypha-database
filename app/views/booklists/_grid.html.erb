@@ -13,7 +13,6 @@
 
 <% if user_signed_in? && current_user.adm_editor? %>
   <%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "library_owner" %>
-  <%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "scribe" %>
   <%= render 'booklists/modals/change_institution', booklist: booklists.first %>
   <%= render 'booklists/modals/change_location', booklist: booklists.first %>
   <%= render 'booklists/modals/change_religious_order', booklist: booklists.first %>
@@ -21,7 +20,6 @@
   <%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
   <%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
   <%= render 'people/modals/form_from_grid', person: Person.first, reference_type: "library_owner" %>
-  <%= render 'people/modals/form_from_grid', person: Person.first, reference_type: "scribe" %>
   <%= render 'layouts/grid_modal_js' %>
 <% end %>
 <% if user_signed_in? %>
@@ -82,16 +80,6 @@
 
         { headerName: "Booklist type", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         { headerName: "Language", field: "language_id" },
-
-        { headerName: "Scribe/Author", children: [
-          <% if user_signed_in? && current_user.adm_editor? %>
-            { headerName: "Id", field: "scribe_id", hide: true, editable: false, cellRenderer: function(params) {
-              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "scribe")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-            } },
-          <% end %>
-          { headerName: "First name", field: "scribe_first_name", hide: true, editable: false },
-          { headerName: "Last name", field: "scribe_last_name", hide: false, editable: false },
-        ] },
         { headerName: "Date", children: [
           { headerName: "Date from", field: "date_from", hide: false, comparator: numberSort },
           { headerName: "Date to", field: "date_to", hide: false, comparator: numberSort },
@@ -127,9 +115,6 @@
         country: "<%= bl.location.try(:country) %>",
         diocese: "<%= bl.location.try(:diocese) %>",
         diocese_alt: "<%= bl.location.try(:diocese_alt) %>",
-        scribe_id: "<%= bl.scribe_id %>",
-        scribe_first_name: "<%= bl.scribe.try(:first_name_vernacular) %>",
-        scribe_last_name: "<%= bl.scribe.try(:last_name_vernacular) %>",
         language_id: "<%= bl.language_id %>",
         religious_order_id: "<%= bl.religious_order_id %>",
         religious_order_name: "<%= bl.religious_order.try(:order_name) %>",

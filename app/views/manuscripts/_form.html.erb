@@ -156,24 +156,6 @@
 <div id="origin" v-show="!known_booklet_composition">
 	<h2>Origin</h2>
 	<div class="row">
-		<%= fields_for(@scribe_reference) do |sr| %>
-			<div class="form-group col-md-6 mb-2" id="scribe">
-				<%= sr.label :id, "Scribe(s)", style: "display: block" %>
-				<div class="d-flex">
-					<select class="form-control" multiple="multiple" name="person_reference[id][]" id="person_reference_id" placeholder="Select scribe">
-						<% sort_hash_keys(@grouped_people, ['scribe', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
-						<option></option>
-						<optgroup label="<%= group.to_s.humanize %>">
-								<% people.each do |person| %>
-									<option value="<%= person.id %>" <%= 'selected' if manuscript.scribes.map(&:id).include?(person.id) %>><%= person.full_name %></option>
-								<% end %>
-							</optgroup>
-						<% end %>
-					</select>
-					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-scribe">New</button>
-				</div>
-			</div>
-		<% end %>
 		<div class="form-group col-md-6 mb-2">
 			<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
 			<div class="d-flex">
@@ -331,7 +313,6 @@
 <%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'correspondent', pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'transcriber', pid: '', depth: 0 %>
 <%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'compiler', pid: '', depth: 0 %>
-<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'scribe', pid: '', depth: 0 %>
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: manuscript, pid: '', depth: 0 %>
 <%= render 'locations/modals/form', location: Location.new, parent: manuscript, pid: '', depth: 0 %>
 

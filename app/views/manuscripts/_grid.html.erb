@@ -15,7 +15,6 @@
   <%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
   <%= render 'manuscripts/modals/change_religious_order', manuscript: manuscripts.first %>
   <%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
-  <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "scribe" %>
   <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "correspondent" %>
   <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "transcriber" %>
   <%= render 'manuscripts/modals/change_person', manuscript: manuscripts.first, reference_type: "compiler" %>
@@ -101,16 +100,6 @@
       { headerName: "Name", field: "religious_order_name", hide: false, editable: false },
       // { headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },
     ] },
-
-    // { headerName: "Origin: scribe(s)", children: [
-    //   <% if user_signed_in? && current_user.adm_editor? %>
-    //     { headerName: "Ids", field: "scribe_ids", hide: true, editable: false, cellRenderer: function(params) {
-    //       return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('manuscripts/${params.data.id}', 'manuscript', 'scribe')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-    //     } },
-    //   <% end %>
-    //   { headerName: "Names", field: "scribe_names", hide: true, editable: false },
-    // ] },
-
     { headerName: "Correspondent", children: [
       <% if user_signed_in? && current_user.adm_editor? %>
         { headerName: "Ids", field: "correspondent_ids", hide: true, editable: false, cellRenderer: function(params) {
@@ -184,9 +173,6 @@
       religious_order_id: "<%= manuscript.genesis_religious_order_id %>",
       religious_order_name: "<%= manuscript.genesis_religious_order.try(:order_name) %>",
       religious_order_abbreviation: "<%= manuscript.genesis_religious_order.try(:abbreviation) %>",
-
-      scribe_names: <%= manuscript.scribes.map(&:full_name).to_json.html_safe %>,
-      scribe_ids: <%= manuscript.scribes.map(&:id).to_json.html_safe %>,
 
       correspondent_names: <%= manuscript.correspondents.map(&:full_name).to_json.html_safe %>,
       correspondent_ids: <%= manuscript.correspondents.map(&:id).to_json.html_safe %>,
