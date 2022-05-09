@@ -63,7 +63,7 @@ class TitlesController < ApplicationController
         Content.find(params[:content_id]).update(title_id: @title.id)
       elsif params[:parent_type].present? && params[:parent_id].present?
         parent = params[:parent_type].constantize.find(params[:parent_id])
-        parent.contents.create(title_id: @title.id)
+        parent.contents.create(title_id: @title.id, sequence_no: parent.contents.count+1)
       end
       redirect_path = @title.apocryphon_id.present? ? edit_apocryphon_path(@title.apocryphon_id, old_path: params[:from]) : edit_title_path(@title, old_path: params[:from])
       redirect_to redirect_path, notice: "Title was successfully created."
