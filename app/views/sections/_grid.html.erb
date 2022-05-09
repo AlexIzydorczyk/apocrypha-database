@@ -35,7 +35,7 @@
       { headerName: "Country", field: "manuscript.institution_country", hide: false },
       { headerName: "Name", field: "manuscript.institution_name", hide: false },
       { headerName: "Name (alternative)", field: "manuscript.institution_name_alternative" },
-      { headerName: "Shelfmark", field: "manuscript.shelfmark", hide: false, comparator: numberSort },
+      { headerName: "Shelfmark", field: "manuscript.shelfmark", hide: false },
       { headerName: "Old shelfmarks", field: "manuscript.old_shelfmark", hide: false },
       { headerName: "Status", field: "manuscript.status", hide: false },
     ] },
@@ -273,8 +273,8 @@
         b2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_city;
         c1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_name;
         c2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_name;
-        a1 = parseInt(params.nodeA.allLeafChildren[0].data.manuscript.shelfmark);
-        a2 = parseInt(params.nodeB.allLeafChildren[0].data.manuscript.shelfmark);
+        a1 = params.nodeA.allLeafChildren[0].data.manuscript.shelfmark;
+        a2 = params.nodeB.allLeafChildren[0].data.manuscript.shelfmark;
         if(a1 == a2){
           if(b1 == b2) return b1 < b2 ? -1 : b1 > b2 ? 1 : 0;
           else return c1 < c2 ? -1 : c1 > c2 ? 1 : 0;
