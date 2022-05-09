@@ -6,6 +6,7 @@ class UserGridStatesController < ApplicationController
 			state_name: params[:state_name],
 		)
 		ugs.state = JSON.parse(params[:state])
+		ugs.filters = JSON.parse(params[:filters])
 		ugs.save!
 	end
 
@@ -16,7 +17,7 @@ class UserGridStatesController < ApplicationController
 	def get
 		ugs_params = params[:id].present? ? {id: params[:id]} : {record_type: params[:record_type], user: current_user}
 		ugs = UserGridState.where(ugs_params)
-		render json: {state: ugs.first.state}
+		render json: {state: ugs.first.state, filters: ugs.first.filters}
 	end
 
 	private

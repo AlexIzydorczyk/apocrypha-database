@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
 $(function() {
-	setState(<%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>)
+	setState(<%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>, <%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:filters).to_json.html_safe %>)
 });
 
 function getState(parameters) {
@@ -10,7 +10,7 @@ function getState(parameters) {
 		method: "GET",
 		data: parameters,
 		success: function(data) {
-			setState(data.state);
+			setState(data.state, data.filters);
 		}
 	})
 }
@@ -26,12 +26,14 @@ function deleteState(button_id) {
 	}
 }
 
-function setState(state){
+function setState(state, filters){
 	console.log('setting state', state);
 	gridOptions.columnApi.applyColumnState({
 		state: state,
 		applyOrder: true,
 	});
+	console.log('setting filters', filters);
+	if(filters) gridOptions.api.setFilterModel(filters);
 }
 
 function saveState(show_saved=true, state_name=null, callback=null) {
@@ -41,6 +43,7 @@ function saveState(show_saved=true, state_name=null, callback=null) {
 		data: {
 			state_name: state_name,
 			state: JSON.stringify(gridOptions.columnApi.getColumnState()),
+			filters: JSON.stringify(gridOptions.api.getFilterModel()),
 			record_type: "<%= record_type %>",
 			authenticity_token: "<%= form_authenticity_token %>",
 		},

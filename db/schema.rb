@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_04_142118) do
+ActiveRecord::Schema.define(version: 2022_05_09_213357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -480,6 +480,7 @@ ActiveRecord::Schema.define(version: 2022_05_04_142118) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "state_name", default: "", null: false
+    t.json "filters"
     t.index ["user_id"], name: "index_user_grid_states_on_user_id"
   end
 
@@ -512,7 +513,7 @@ ActiveRecord::Schema.define(version: 2022_05_04_142118) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration", default: false, null: false
+    t.boolean "requires_transliteration"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
