@@ -101,7 +101,7 @@ function runTomSelects(){
 			field: "text",
 			direction: "asc",
 		},
-		maxItems: 1,
+		maxItems: null,
 		create: function(l){
 			saveForm($(`#manuscript-form form`), $(`#new-language #record-id`));
 			$("#new-language #language_language_name").val(l);

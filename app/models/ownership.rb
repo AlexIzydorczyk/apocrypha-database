@@ -12,6 +12,7 @@ class Ownership < ApplicationRecord
       text += 'circa ' unless self.date_exact?
       text += self.date_from + ' to ' + self.date_to
     end
+    text
   end
 
   def display_name
@@ -31,6 +32,16 @@ class Ownership < ApplicationRecord
     text += self.location.try(:city_region_country) if self.location.try(:city_region_country).present?
     text += ". " if self.display_name.present? || self.location.try(:city_region_country).present?
     text += self.provenance_notes
+    text
+  end
+
+  def full_display_name_with_date
+    text = self.written_date_range
+    text += "|" if self.written_date_range.present? && self.specific_date.present?
+    text += "ca." unless self.date_exact
+    text += self.specific_date 
+    text += " - " if self.written_date_range.present? || self.specific_date.present?
+    text += self.full_display_name
     text
   end
 end

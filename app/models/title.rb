@@ -10,6 +10,14 @@ class Title < ApplicationRecord
     self.title_translation.present? ? self.title_translation : self.title_orig
   end
 
+  def title_english_italic
+    if self.italicized?
+      "<i>" + self.title_english + "</i>"
+    else
+      self.title_english
+    end
+  end
+
   def unlink_title
     Apocryphon.where(main_english_title_id: self.id).update_all(main_english_title_id: nil)
     Apocryphon.where(main_latin_title_id: self.id).update_all(main_latin_title_id: nil)

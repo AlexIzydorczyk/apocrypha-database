@@ -513,7 +513,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_213357) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration"
+    t.boolean "requires_transliteration", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
