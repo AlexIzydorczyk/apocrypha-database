@@ -269,12 +269,12 @@
     groupDisplayType: 'multipleColumns',
     initialGroupOrderComparator: function (params) {
       if(params.nodeA.field == "manuscript.id" && params.nodeB.field == "manuscript.id"){
-        a1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_city;
-        a2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_city;
-        b1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_name;
-        b2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_name;
-        c1 = parseInt(params.nodeA.allLeafChildren[0].data.manuscript.shelfmark);
-        c2 = parseInt(params.nodeB.allLeafChildren[0].data.manuscript.shelfmark);
+        b1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_city;
+        b2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_city;
+        c1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_name;
+        c2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_name;
+        a1 = parseInt(params.nodeA.allLeafChildren[0].data.manuscript.shelfmark);
+        a2 = parseInt(params.nodeB.allLeafChildren[0].data.manuscript.shelfmark);
         if(a1 == a2){
           if(b1 == b2) return b1 < b2 ? -1 : b1 > b2 ? 1 : 0;
           else return c1 < c2 ? -1 : c1 > c2 ? 1 : 0;
