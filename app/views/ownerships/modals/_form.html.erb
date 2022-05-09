@@ -44,7 +44,7 @@
 						</label>
 						<div class="input-group">
 							<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
-							<%= form.number_field :specific_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
+							<%= form.text_field :specific_date, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
 						</div>
 					</div>
 				</div>
