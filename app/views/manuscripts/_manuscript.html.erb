@@ -50,7 +50,7 @@
         <% if booklet.genesis_institution.present? %><dt class="col-sm-3 text-end">Institution</dt>
         <dd class="col-sm-9"><%= booklet.genesis_institution.display_name_with_city_country %></dd><% end %>
         <% unless booklet.genesis_institution.present? %><dt class="col-sm-3 text-end">Location</dt>
-        <dd class="col-sm-9"><%= booklet.genesis_location.city_region_country %></dd><% end %>
+        <dd class="col-sm-9"><%= booklet.genesis_location.try(:city_region_country) %></dd><% end %>
         <% if booklet.genesis_religious_order.present? %><dt class="col-sm-3 text-end">Religious Order</dt>
         <dd class="col-sm-9"><%= booklet.genesis_religious_order.display_name %></dd><% end %>
         <% if booklet.origin_notes.present? %><dt class="col-sm-3 text-end">Notes on origin</dt>
@@ -164,7 +164,7 @@
     <% if manuscript.genesis_institution.present? %><dt class="col-sm-3 text-end">Institution</dt>
     <dd class="col-sm-9"><%= manuscript.genesis_institution.display_name_with_city_country %></dd><% end %>
     <% unless manuscript.genesis_institution.present? %><dt class="col-sm-3 text-end">Location</dt>
-    <dd class="col-sm-9"><%= manuscript.genesis_location.city_region_country %></dd><% end %>
+    <dd class="col-sm-9"><%= manuscript.genesis_location.try(:city_region_country) %></dd><% end %>
     <% if manuscript.genesis_religious_order.present? %><dt class="col-sm-3 text-end">Religious Order</dt>
     <dd class="col-sm-9"><%= manuscript.genesis_religious_order.display_name %></dd><% end %>
     <% if manuscript.origin_notes.present? %><dt class="col-sm-3 text-end">Notes on origin</dt>
