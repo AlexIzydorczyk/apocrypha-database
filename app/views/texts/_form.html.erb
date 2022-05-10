@@ -117,16 +117,21 @@
 </div>
 
 <h2>Incipits and explicits <button type="button" class="btn btn-action" onclick="$('#add-section').click();">Add incipits and explicits</button></h2>
-<% text.sections.each do |section| %>
-	<%= fields_for("sections[#{section.id}]") do |f| %>
+<transition-group name="animate">
+	<div v-for="(section, index) in sorted_sections" :key="'section-' + section.id">
+		<input type="hidden" :name="'sections[' + section.id + '][index]'" v-model="section.index">
 		<div class="row">
 			<div class="col-md-12 mb-2">
 				<div class="d-flex">
 					<div class="form-group">
-						<%= f.label :section_name %>
-						<%= f.select :section_name, options_for_select(@section_names, section.section_name), {include_blank: true}, {class: "form-control", placeholder: "Select or add"} %>	
+						<label>Section name</label>
+						<%= select_tag :section_name, options_for_select(@section_names), include_blank: true, class: "form-control", placeholder: "Select or add", "v-model": "section.section_name", ":id": "'sections_' + section.id + '_section_name'", ":name": "'sections[' + section.id + '][section_name]'" %>	
 					</div>
-					<button type="button" class="btn btn-outline-action ms-auto px-4" onclick="deleteSection('<%= section.id %>')">
+					<div class="d-flex flex-column ms-auto me-2">
+						<button class="btn btn-sm btn-outline-action mb-2" type="button" @click="up(index)"><i class="fas fa-angle-up"></i> Move up</button>
+						<button class="btn btn-sm btn-outline-action" type="button" @click="down(index)"><i class="fas fa-angle-down"></i> Move down</button>
+					</div>
+					<button type="button" class="btn btn-outline-action px-4" :onclick="'deleteSection(' + section.id + ')'">
 						<i class="far fa-trash-alt"></i>
 					</button>
 				</div>
@@ -136,19 +141,19 @@
 					<div class="col-2">
 						<label class="w-100"></label>
 						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= f.text_field :pages_folios_incipit, class: "form-control border-start-0", value: section.pages_folios_incipit %>
+							<span class="input-group-text bg-white">{{ is_folios ? 'f' : 'p' }}.</span>
+							<input type="text" :name="'sections[' + section.id + '][pages_folios_incipit]'" class="form-control border-start-0" v-model="section.pages_folios_incipit">
 						</div>
 					</div>
 					<div class="col">
 						<label>Incipit</label>
-						<%= f.hidden_field :incipit_orig, value: section.incipit_orig %>
-						<component is="trix-editor" spellcheck="false" input="sections_<%= section.id %>_incipit_orig" placeholder="Incipit"></component>
+						<input type="hidden" :name="'sections[' + section.id + '][incipit_orig]'" v-model="section.incipit_orig" :id="'sections_' + section.id + '_incipit_orig'">
+						<component is="trix-editor" spellcheck="false" :input="'sections_' + section.id + '_incipit_orig'" placeholder="Incipit"></component>
 						<div v-show="not_latin">
-							<%= f.hidden_field :incipit_orig_transliteration, value: section.incipit_orig_transliteration %>
-							<component is="trix-editor" input="sections_<%= section.id %>_incipit_orig_transliteration" placeholder="Transliteration" spellcheck="false"></component>
-							<%= f.hidden_field :incipit_translation, value: section.incipit_translation %>
-							<component is="trix-editor" input="sections_<%= section.id %>_incipit_translation" placeholder="Translation" spellcheck="false"></component>
+							<input type="hidden" :name="'sections[' + section.id + '][incipit_orig_transliteration]'" v-model="section.incipit_orig_transliteration" :id="'sections_' + section.id + '_incipit_orig_transliteration'">
+							<component is="trix-editor" :input="'sections_' + section.id + '_incipit_orig_transliteration'" placeholder="Transliteration" spellcheck="false"></component>
+							<input type="hidden" :name="'sections[' + section.id + '][incipit_translation]'" v-model="section.incipit_translation" :id="'sections_' + section.id + '_incipit_translation'">
+							<component is="trix-editor" :input="'sections_' + section.id + '_incipit_translation'" placeholder="Translation" spellcheck="false"></component>
 						</div>
 					</div>
 				</div>
@@ -156,26 +161,26 @@
 					<div class="col-2">
 						<label class="w-100"></label>
 						<div class="input-group">
-							<span class="input-group-text bg-white"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>.</span>
-							<%= f.text_field :pages_folios_explicit, class: "form-control border-start-0", value: section.pages_folios_explicit %>
+							<span class="input-group-text bg-white">{{ is_folios ? 'f' : 'p' }}.</span>
+							<input type="text" :name="'sections[' + section.id + '][pages_folios_explicit]'" class="form-control border-start-0" v-model="section.pages_folios_explicit">
 						</div>
 					</div>
 					<div class="col">
 						<label>Explicit</label>
-						<%= f.hidden_field :explicit_orig, value: section.explicit_orig %>
-						<component is="trix-editor" input="sections_<%= section.id %>_explicit_orig" placeholder="Explicit" spellcheck="false"></component>
+						<input type="hidden" :name="'sections[' + section.id + '][explicit_orig]'" v-model="section.explicit_orig" :id="'sections_' + section.id + '_explicit_orig'">
+						<component is="trix-editor" :input="'sections_' + section.id + '_explicit_orig'" placeholder="Explicit" spellcheck="false"></component>
 						<div v-show="not_latin">
-							<%= f.hidden_field :explicitorig_transliteration, value: section.explicitorig_transliteration %>
-							<component is="trix-editor" input="sections_<%= section.id %>_explicitorig_transliteration" placeholder="Transliteration" spellcheck="false"></component>
-							<%= f.hidden_field :explicit_translation, value: section.explicit_translation %>
-							<component is="trix-editor" input="sections_<%= section.id %>_explicit_translation" placeholder="Translation" spellcheck="false"></component>
+							<input type="hidden" :name="'sections[' + section.id + '][explicitorig_transliteration]'" v-model="section.explicitorig_transliteration" :id="'sections_' + section.id + '_explicitorig_transliteration'">
+							<component is="trix-editor" :input="'sections_' + section.id + '_explicitorig_transliteration'" placeholder="Transliteration" spellcheck="false"></component>
+							<input type="hidden" :name="'sections[' + section.id + '][explicit_translation]'" v-model="section.explicit_translation" :id="'sections_' + section.id + '_explicit_translation'">
+							<component is="trix-editor" :input="'sections_' + section.id + '_explicit_translation'" placeholder="Translation" spellcheck="false"></component>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	<% end %>
-<% end %>
+	</div>
+</transition-group>
 
 <h2>Colophon <button type="button" class="btn btn-action" @click="add_colophon = true" v-show="!add_colophon">Add colophon</button></h2>
 <div class="row" v-show="add_colophon">
@@ -251,6 +256,8 @@
 				writing_system_id: "<%= text.writing_system_id %>",
 				date_to: '<%= text.date_to.present? ? text.date_to : text.content.parent.date_to %>', date_from: '<%= text.date_from.present? ? text.date_from : text.content.parent.date_from %>',
 				date_to_select: null, date_from_select: null,
+				sections: <%= text.sections.map(&:attributes).to_json.html_safe %>,
+				is_folios: <%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? "true" : "false" %>,
 			},
 			watch: {
 				date_from(){
@@ -261,6 +268,9 @@
 				not_latin(){
 					return this.writing_system_id !== "<%= latin_writing_system_id %>";
 				},
+				sorted_sections(){
+					return this.sections.sort( (a, b) => a.index - b.index )
+				}
 			},
 			methods: {
 				setFrom: function(){
@@ -280,6 +290,27 @@
 					this.date_to_select.clearOptions(true);
 					this.date_to_select.addOptions(new_options.map( o => ({value: o, text: o})));
 					if(this.date_to_select.items.length < 1) this.date_to_select.refreshOptions(true);
+				},
+				up(index){
+					if(index > 0){
+						temp = this.sections[index-1]
+						this.$set(this.sections, index-1, this.sections[index]);
+						this.$set(this.sections, index, temp);
+					}
+					this.resetIndexes();
+				},
+				down(index){
+					if(index < this.sections.length-1){
+						temp = this.sections[index+1]
+						this.$set(this.sections, index+1, this.sections[index]);
+						this.$set(this.sections, index, temp);
+					}
+					this.resetIndexes();
+				},
+				resetIndexes(){
+					this.sections.forEach(function(section, index) {
+						this.$set(section, 'index', index);
+					}.bind(this));
 				},
 			},
 			mounted(){

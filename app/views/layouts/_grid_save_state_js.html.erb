@@ -26,7 +26,7 @@ function deleteState(button_id) {
 	}
 }
 
-function setState(state, filters){
+function setState(state, filters=null){
 	console.log('setting state', state);
 	gridOptions.columnApi.applyColumnState({
 		state: state,

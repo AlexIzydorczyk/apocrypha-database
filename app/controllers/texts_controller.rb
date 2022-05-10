@@ -93,7 +93,7 @@ class TextsController < ApplicationController
   end
 
   def section_params(prms)
-    prms.permit(:section_name, :incipit_language_id, :incipit_orig, :incipit_orig_transliteration, :incipit_translation, :explicit_language_id, :explicit_orig, :explicitorig_transliteration, :explicit_translation, :pages_folios_incipit, :pages_folios_explicit)
+    prms.permit(:section_name, :incipit_language_id, :incipit_orig, :incipit_orig_transliteration, :incipit_translation, :explicit_language_id, :explicit_orig, :explicitorig_transliteration, :explicit_translation, :pages_folios_incipit, :pages_folios_explicit, :index)
   end
 
   def build_language_references_for ids
