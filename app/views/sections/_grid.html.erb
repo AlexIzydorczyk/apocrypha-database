@@ -16,7 +16,7 @@
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: customAgg, filter: 'agTextColumnFilter', autoHeight: true, wrapText: true };
+  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: 'customAgg', filter: 'agTextColumnFilter', autoHeight: true, wrapText: true };
 
   const columnDefs = [
     { headerName: "Apocryphon", children: [
@@ -165,7 +165,7 @@
             languages: <%= text.languages.map(&:language_name).to_json.html_safe %>,
             date_from: "<%= text.try(:date_from) %>",
             date_to: "<%= text.try(:date_to) %>",
-            specific_date: "<%= text.try(:specific_date) %>",
+            specific_date: "<%= 'ca .' if !text.date_exact && text.specific_date.present? %><%= text.try(:specific_date) %>",
             no_columns: "<%= text.no_columns %>",
             scribes: <%= (text.try(:scribes) || []).map(&:full_name).to_json.html_safe %>,
             script: "<%= text.script %>",
@@ -196,7 +196,7 @@
             pages_folios_to: "<%= booklet.try(:pages_folios_to) %>",
             date_from: "<%= booklet.try(:date_from) %>",
             date_to: "<%= booklet.try(:date_to) %>",
-            specific_date: "<%= booklet.try(:specific_date) %>",
+            specific_date: "<%= 'ca .' if !booklet.date_exact && booklet.specific_date.present? %><%= booklet.try(:specific_date) %>",
             scribes: <%= (booklet.try(:scribes) || []).map(&:full_name).to_json.html_safe %>,
             content_type: "<%= booklet.try(:content_type) %>",
           },
@@ -233,11 +233,11 @@
             leaf_page_no: "<%= manuscript.leaf_page_no + (manuscript.is_folios ? "ff." : "pp.") %>",
             date_from: "<%= manuscript.date_from.html_safe  %>",
             date_to: "<%= manuscript.date_to.html_safe  %>",
-            specific_date: "<%= manuscript.specific_date.html_safe %>",
+            specific_date: "<%= 'ca .' if !manuscript.date_exact && manuscript.specific_date.present? %><%= manuscript.specific_date.html_safe %>",
             content_type: `<%= manuscript.content_type.html_safe %>`,
             notes: `<%= manuscript.notes.html_safe  %>`,
             languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
-            identification: `<%= [m_institution.try(:display_name).try(:html_safe), m_institution_loc.try(:city) , m_institution_loc.try(:country).try(:html_safe), manuscript.shelfmark.html_safe].select{ |s| s.present? }.join(', ') %>`,
+            identification: `<%= [m_institution.try(:display_name).try(:html_safe), [['lost', 'destroyed'].include?(manuscript.status) ? '*' : '', m_institution_loc.try(:city)].select{ |t| t.present? }.join(""), m_institution_loc.try(:country).try(:html_safe), manuscript.shelfmark.html_safe].select{ |s| s.present? }.join(', ') %>`,
           },
           genesis: {
             <% genesis_source = manuscript.booklets.present? ? booklet : manuscript %>
@@ -265,9 +265,18 @@
     defaultColDef: defaultColDef,
     rowData: rowData,
     sideBar: 'columns',
+    rowHeight: 28,
     suppressAggFuncInHeader: true,
     groupDisplayType: 'multipleColumns',
     enableBrowserTooltips: true,
+    aggFuncs: {
+      customAgg: (params) => {
+        let arr = params.values.filter(onlyUnique).map(function(val) {
+          return val == "" || val == [] || val == {} ? '(blank)' : val;
+        })
+        return arr.join('; ');
+      }
+    },
     initialGroupOrderComparator: function (params) {
       if(params.nodeA.field == "manuscript.identification" && params.nodeB.field == "manuscript.identification"){
         b1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_city;
@@ -286,14 +295,6 @@
         return a < b ? -1 : a > b ? 1 : 0;
       }
     },
-    autoGroupColumnDef: {
-        // headerName: 'Group',
-        pinned: 'left',
-        cellRendererParams: {
-            // suppressCount: true,
-            innerRenderer: groupCellRenderer,
-        },
-    },
     rowGroupPanelShow: "onlyWhenGrouping",
     statusBar: {
       statusPanels: [
@@ -303,21 +304,6 @@
         { statusPanel: 'agSelectedRowCountComponent' },
       ],
     },
-  };
-
-  function groupCellRenderer(params) {
-    if (params.node.rowGroupColumn.colDef.headerName == "Identification of manuscript"){
-      return params.value
-    } else {
-      return params.node.rowGroupColumn.colDef.headerName.split(" ")[0] + " " + params.value;
-    }
-  }
-
-  function customAgg(params) {
-    let arr = params.values.filter(onlyUnique).map(function(val) {
-      return val == "" || val == [] || val == {} ? '(blank)' : val;
-    })
-    return arr.join('; ');
   };
 
   function numberSort(num1, num2){
