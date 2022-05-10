@@ -67,8 +67,8 @@
           <dt class="col-sm-3 mb-4"></dt><dt class="col-sm-9">Booklet Contents:</dt>
             <% booklet.contents.includes(:title).order("sequence_no ASC").each_with_index do |content, i| %>
               <% text = content.text %>
-              <dt class="col-sm-3 text-end">Content sequence no.</dt>
-              <dd class="col-sm-9"><%= i+1 %></dd>
+              <dt class="col-sm-3 text-end mt-3">Content sequence no.</dt>
+              <dt class="col-sm-9 mt-3"><%= i+1 %></dt>
               <% if content.author.present? %><dt class="col-sm-3 text-end">Content author</dt>
               <dd class="col-sm-9"><%= content.author.full_name %></dd><% end %>
               <% if content.title.present? %><dt class="col-sm-3 text-end">Content title</dt>
@@ -180,8 +180,8 @@
       <dt class="col-sm-3 mb-4"></dt><dt class="col-sm-9">Manuscript Contents:</dt>
         <% manuscript.contents.includes(:title).order("sequence_no ASC").each_with_index do |content, i| %>
           <% text = content.text %>
-          <dt class="col-sm-3 text-end">Content sequence no.</dt>
-          <dd class="col-sm-9"><%= i+1 %></dd>
+          <dt class="col-sm-3 text-end mt-3">Content sequence no.</dt>
+          <dt class="col-sm-9 mt-3"><%= i+1 %></dt>
           <% if content.author.present? %><dt class="col-sm-3 text-end">Content author</dt>
           <dd class="col-sm-9"><%= content.author.full_name %></dd><% end %>
           <% if content.title.present? %><dt class="col-sm-3 text-end">Content title</dt>

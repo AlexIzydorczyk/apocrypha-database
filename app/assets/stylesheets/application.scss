@@ -325,7 +325,8 @@ trix-editor {
 }
 
 dt, dd, dl {
-  line-height: 12px;
+  line-height: 1;
+  margin-bottom: 5px;
   p{
     margin-bottom:0px;
     line-height: 19px;
