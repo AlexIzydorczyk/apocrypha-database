@@ -49,7 +49,7 @@
         <dd class="col-sm-9"><%= "ca." unless booklet.date_exact %> <%= booklet.specific_date %></dd><% end %>
         <% if booklet.genesis_institution.present? %><dt class="col-sm-3 text-end">Institution</dt>
         <dd class="col-sm-9"><%= booklet.genesis_institution.display_name_with_city_country %></dd><% end %>
-        <% unless booklet.genesis_institution.present? %><dt class="col-sm-3 text-end">Location</dt>
+        <% if booklet.genesis_institution.present? && booklet.genesis_institution.blank? %><dt class="col-sm-3 text-end">Location</dt>
         <dd class="col-sm-9"><%= booklet.genesis_location.try(:city_region_country) %></dd><% end %>
         <% if booklet.genesis_religious_order.present? %><dt class="col-sm-3 text-end">Religious Order</dt>
         <dd class="col-sm-9"><%= booklet.genesis_religious_order.display_name %></dd><% end %>
@@ -163,7 +163,7 @@
   <dl class="row">
     <% if manuscript.genesis_institution.present? %><dt class="col-sm-3 text-end">Institution</dt>
     <dd class="col-sm-9"><%= manuscript.genesis_institution.display_name_with_city_country %></dd><% end %>
-    <% unless manuscript.genesis_institution.present? %><dt class="col-sm-3 text-end">Location</dt>
+    <% if manuscript.genesis_institution.present? && manuscript.genesis_institution.blank? %><dt class="col-sm-3 text-end">Location</dt>
     <dd class="col-sm-9"><%= manuscript.genesis_location.try(:city_region_country) %></dd><% end %>
     <% if manuscript.genesis_religious_order.present? %><dt class="col-sm-3 text-end">Religious Order</dt>
     <dd class="col-sm-9"><%= manuscript.genesis_religious_order.display_name %></dd><% end %>
