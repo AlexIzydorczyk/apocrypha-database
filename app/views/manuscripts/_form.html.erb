@@ -122,7 +122,7 @@
 <div>
 	<p>Booklet compositon is: 
 		<%= form.hidden_field :known_booklet_composition, "v-model": "known_booklet_composition" %>		
-		<span @click="known_booklet_composition = true" class="pointer ms-3">
+		<span @click="clickKnown" class="pointer ms-3">
 			<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-dot-circle' : 'fa-circle'"></i>
 			<label>Known</label>
 		</span>

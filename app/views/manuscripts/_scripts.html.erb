@@ -56,6 +56,23 @@ $(document).ready(function(){
 				}else{
 					this.known_booklet_composition = false
 				}
+			},
+			clickKnown: function(){
+				if(<%= manuscript.genesis_institution_id.present? || manuscript.genesis_religious_order_id.present? || manuscript.genesis_location_id.present? || manuscript.origin_notes.present? || manuscript.ownerships.count > 0 || manuscript.contents.count > 0 ? "true" : "false" %>){
+					if(confirm('Are you sure you want to change booklet composition to known? Origin details, provenance, and contents will be transfered to a new booklet.')){
+						$.ajax({
+				      url: "/manuscripts/"+<%= manuscript.id %>+"/set_known_composition",
+				      type: 'POST',
+				      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+				      contentType: 'application/json',
+				      success: function(data) {
+				        timeoutReload(null, 0);
+				      }
+				    });
+					}
+				}else{
+					this.known_booklet_composition = true;
+				}
 			}
 		},
 		mounted(){

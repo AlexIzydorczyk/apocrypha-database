@@ -234,7 +234,7 @@
 </div>
 <% end %>
 
-<%= button_to 'Add incipits and explicits', sections_path, class: "btn btn-action d-none", id: "add-section", params: { section: { text_id: text.id } } %>
+<%= button_to 'Add incipits and explicits', sections_path, class: "btn btn-action d-none", id: "add-section", params: { section: { text_id: text.id, index: text.sections.length } } %>
 <%= render "layouts/vue_language_form_group" %>
 
 <% text.modern_source_references.each do |msr| %>

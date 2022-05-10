@@ -156,12 +156,24 @@ class ManuscriptsController < ApplicationController
         o.update(booklet_id: nil, manuscript_id: manuscript.id)
       end
       b.contents.each do |c|
-
         c.update(booklet_id: nil, manuscript_id: manuscript.id)
       end
-      b.delete
+      b.destroy
     end
     manuscript.update(known_booklet_composition: false)
+    if request.xhr?
+      render :json => { id: manuscript.id }
+    end
+  end
+
+  def set_known_composition
+    manuscript = Manuscript.find(params[:manuscript_id])
+    booklet = manuscript.booklets.create
+    booklet_id = booklet.id
+    manuscript.ownerships.update_all(booklet_id: booklet_id, manuscript_id: nil)
+    manuscript.contents.update_all(booklet_id: booklet_id, manuscript_id: nil)
+    booklet.update(genesis_institution_id: manuscript.genesis_institution_id, genesis_religious_order_id: manuscript.genesis_religious_order_id, genesis_location_id: manuscript.genesis_location_id, origin_notes: manuscript.origin_notes)
+    manuscript.update(known_booklet_composition: true, genesis_institution_id: nil, genesis_religious_order_id: nil, genesis_location_id: nil, origin_notes: '')
     if request.xhr?
       render :json => { id: manuscript.id }
     end
