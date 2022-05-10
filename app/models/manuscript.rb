@@ -17,7 +17,7 @@ class Manuscript < ApplicationRecord
   has_many :transcribers, through: :transcriber_references, class_name: "Person"
   has_many :compiler_references, -> { compiler }, as: :record, class_name: "PersonReference", dependent: :destroy
   has_many :compilers, through: :compiler_references, class_name: "Person"
-  has_many :ownerships, dependent: :destroy
+  has_many :ownerships, -> { order("index ASC") }, dependent: :destroy
   has_many :contents, -> { order("sequence_no ASC") }, dependent: :destroy
   has_many :booklist_sections, dependent: :destroy
 

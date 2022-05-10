@@ -5,7 +5,7 @@ class Booklet < ApplicationRecord
   belongs_to :genesis_religious_order, class_name: "ReligiousOrder", optional: true
   has_many :scribe_references, class_name: "PersonReference", as: :record, dependent: :destroy
   has_many :scribes, through: :scribe_references, source: :person
-  has_many :ownerships, dependent: :destroy
+  has_many :ownerships, -> { order("index ASC") }, dependent: :destroy
   has_many :contents, -> { order("sequence_no ASC") }, dependent: :destroy
 
   def display_name
