@@ -28,4 +28,17 @@ class Content < ApplicationRecord
     self.manuscript_id.present? ? self.manuscript : self.booklet.presence
   end
 
+  def show_display_name
+    s = []
+    s.push(self.author.full_name.strip) if self.author.present?
+    if self.title.present?
+      if self.title.apocryphon_id.present?
+        self.title.italicized? ? s.push("<span class='highlight'><i>" + self.title.title_english + "</i></span>") : s.push("<span class='highlight'>" + self.title.title_english + "</span>")
+      else
+        self.title.italicized? ? s.push("<i>" + self.title.title_english + "</i>") : s.push(self.title.title_english)
+      end
+    end
+    s.join(', ').html_safe
+  end
+
 end

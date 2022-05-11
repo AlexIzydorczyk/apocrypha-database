@@ -309,6 +309,10 @@ trix-editor {
   }
 }
 
+.animate-move {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
 .each-booklet{
   padding-left: 20px;
   border-left: solid 3px #FF8861;
@@ -331,8 +335,13 @@ dt, dd, dl {
     margin-bottom:0px;
     line-height: 19px;
   }
+  span.highlight{
+    color: var(--orange);
+    font-weight: bold;
+  }
 }
 
-.animate-move {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+dt.text-end{
+  color: grey;
+  font-weight: normal
 }
