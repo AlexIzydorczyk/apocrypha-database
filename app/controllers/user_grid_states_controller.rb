@@ -12,6 +12,7 @@ class UserGridStatesController < ApplicationController
 
 	def destroy
 		UserGridState.find_by(id: params[:id]).destroy
+		redirect_to sections_path
 	end
 
 	def get

@@ -2,7 +2,8 @@
 
 <div class="d-flex mb-2 align-items-end">
   <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
-  <button class="btn btn-sm btn-outline-action ms-auto" onclick="gridOptions.api.setFilterModel(null);">Reset filters</button>
+  <button class="btn btn-sm btn-outline-action ms-auto" onclick="gridOptions.api.expandAll();">Expand all rows</button>
+  <button class="btn btn-sm btn-outline-action ms-2" onclick="gridOptions.api.setFilterModel(null);">Reset filters</button>
   <% if user_signed_in? %>
     <button class="btn btn-sm btn-outline-action ms-2" onclick="saveState()">Save grid configuration</button>
     <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset grid configuration</button>
@@ -27,7 +28,7 @@
       { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agNumberColumnFilter'},
       { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title" },
       { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles" },
-      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", hide: false },
+      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", hide: false, enableRowGroup: true },
       { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles" },
     ]},
     { headerName: "Identification of manuscript", headerTooltip: "Identification of manuscript", children: [
@@ -77,7 +78,8 @@
       { headerName: "Region (alternative)", headerTooltip: "Region (alternative)", field: "genesis.region_alt", hide: true },
       { headerName: "Country", headerTooltip: "Country", field: "genesis.country", hide: false },
       { headerName: "Notes on origin", headerTooltip: "Notes on origin", field: "genesis.origin_notes", hide: false },
-      { headerName: "Provenance", headerTooltip: "Provenance", field: "genesis.ownerships", hide: false },
+      { headerName: "Provenance", headerTooltip: "Provenance", field: "genesis.ownerships", hide: false, aggFunc: null },
+      { headerName: "Origin description", headerTooltip: "Origin description", field: "genesis.full_description", hide: false, aggFunc: null },
     ] },
     { headerName: "Contents", children: [
       { headerName: "Content id", headerTooltip: "Content id", field: "content.id", enableRowGroup: true, rowGroup: true, hide: true, filter: 'agNumberColumnFilter' },
@@ -260,7 +262,18 @@
             diocese: "<%= genesis_source.genesis_location.try(:diocese) %>",
             diocese_alt: "<%= genesis_source.genesis_location.try(:diocese_alt) %>",
             origin_notes: `<%= genesis_source.try(:origin_notes).try(:html_safe) %>`,
-            ownerships: `<%= genesis_source.ownerships.map(&:full_display_name).join('; ').html_safe %>`,
+            ownerships: `<%= genesis_source.ownerships.map(&:full_display_name).join(' | ').html_safe %>`,
+            full_description: `<%= [
+              [
+                genesis_source.genesis_institution.try(:name),
+                genesis_source.genesis_religious_order.try(:order_name),
+                genesis_source.genesis_location.try(:city),
+                genesis_source.genesis_location.try(:diocese),
+                genesis_source.genesis_location.try(:region),
+                genesis_source.genesis_location.try(:country),
+              ].select{ |s| s.present? }.join(", "),
+              genesis_source.try(:origin_notes).try(:html_safe),
+            ].select{ |s| s.present? }.join(". ") %>`
           }
         },
       <% end %>
@@ -294,7 +307,7 @@
         let arr = params.values.filter(onlyUnique).map(function(val) {
           return val == "" || val == [] || val == {} ? '(blank)' : val;
         })
-        return arr.join(' | ');
+        return arr.join('; ');
       }
     },
     initialGroupOrderComparator: function (params) {

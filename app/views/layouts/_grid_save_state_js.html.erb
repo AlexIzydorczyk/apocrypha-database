@@ -22,7 +22,6 @@ function restoreState() {
 function deleteState(button_id) {
 	if(confirm('Are you sure you want to delete this configuration option?')){
 		$('#' + button_id).click();
-		timeoutReload('', 0);
 	}
 }
 
