@@ -2,7 +2,8 @@
 
 <div class="d-flex mb-2 align-items-end">
   <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
-  <button class="btn btn-sm btn-outline-action ms-auto" onclick="gridOptions.api.expandAll();">Expand all rows</button>
+  <button class="btn btn-sm btn-outline-action ms-auto" id="expand" onclick="expand();">Expand all rows</button>
+  <button class="btn btn-sm btn-outline-action ms-auto" id="collapse" onclick="collapse();" style="display:none;">Close all expanded</button>
   <button class="btn btn-sm btn-outline-action ms-2" onclick="gridOptions.api.setFilterModel(null);">Reset filters</button>
   <% if user_signed_in? %>
     <button class="btn btn-sm btn-outline-action ms-2" onclick="saveState()">Save grid configuration</button>
@@ -18,58 +19,54 @@
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: 'customAgg', filter: 'agTextColumnFilter', autoHeight: true, wrapText: true, cellStyle: {wordBreak: 'normal'}
+  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: 'customAgg', filter: 'agMultiColumnFilter', autoHeight: true, wrapText: true, cellStyle: {wordBreak: 'normal'}
  };
 
   const columnDefs = [
-    { headerName: "Apocryphon", children: [
-      { headerName: "Apocryphal", headerTooltip: "Apocryphal", field: "content.apocryphal" },
-      { headerName: "Apocryphon id", headerTooltip: "Apocryphon id", field: "apocryphon.id", enableRowGroup: true, filter: 'agNumberColumnFilter' },
-      { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agNumberColumnFilter'},
-      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title" },
-      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles" },
-      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", hide: false, enableRowGroup: true },
-      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles" },
-    ]},
     { headerName: "Identification of manuscript", headerTooltip: "Identification of manuscript", children: [
-      { headerName: "No.", headerTooltip: "No.", field: "manuscript.census_no", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Identification of manuscript", headerTooltip: "Identification of manuscript", headerTooltip: "Identification of manuscript", field: "manuscript.identification", enableRowGroup: true, rowGroup: true },
+      { headerName: "Ms. no.", headerTooltip: "Ms. no.", field: "manuscript.census_no", comparator: numberSort, hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Identification of manuscript", headerTooltip: "Identification of manuscript", field: "manuscript.identification", enableRowGroup: true, rowGroup: true },
+      { headerName: "Status", headerTooltip: "Status", field: "manuscript.status", hide: false, filter: 'agTextColumnFilter' },
       { headerName: "City", headerTooltip: "City", field: "manuscript.institution_city", hide: false, sortingOrder: ['asc'] },
       { headerName: "City (alternative)", headerTooltip: "City (alternative)", field: "manuscript.institution_city_alt" },
       { headerName: "Country", headerTooltip: "Country", field: "manuscript.institution_country", hide: false },
-      { headerName: "Name", headerTooltip: "Name", field: "manuscript.institution_name", hide: false },
-      { headerName: "Name (alternative)", headerTooltip: "Name (alternative)", field: "manuscript.institution_name_alternative" },
-      { headerName: "Shelfmark", headerTooltip: "Shelfmark", field: "manuscript.shelfmark", hide: false },
-      { headerName: "Old shelfmarks", headerTooltip: "Old shelfmarks", field: "manuscript.old_shelfmark", hide: false },
-      { headerName: "Status", headerTooltip: "Status", field: "manuscript.status", hide: false },
+      { headerName: "Repository", headerTooltip: "Name", field: "manuscript.institution_name", hide: false },
+      { headerName: "Repository (alternative)", headerTooltip: "Name (alternative)", field: "manuscript.institution_name_alternative" },
+      { headerName: "Shelfmark", headerTooltip: "Shelfmark", field: "manuscript.shelfmark", hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Old shelfmarks", headerTooltip: "Old shelfmarks", field: "manuscript.old_shelfmark", hide: false, filter: 'agTextColumnFilter' },
     ] },
+    { headerName: "Apocrypha", children: [
+      { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agTextColumnFilter' },
+      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", hide: false, enableRowGroup: true },
+      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles" },
+      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title" },
+      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles" },
+    ]},
     { headerName: "Manuscript: general features", children: [
-      { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", hide: false},
-      { headerName: "Dimensions", headerTooltip: "Dimensions", field: "manuscript.dimensions", hide: false },
-      { headerName: "No. of pp./ff.", headerTooltip: "No. of pp./ff.", field: "manuscript.leaf_page_no", hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Date from", headerTooltip: "Date from", field: "manuscript.date_from", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Date to", headerTooltip: "Date to", field: "manuscript.date_to", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Specific date", headerTooltip: "Specific date", field: "manuscript.specific_date", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Content type", headerTooltip: "Content type", field: "manuscript.content_type" , hide: false },
-      { headerName: "Languages in ms.", headerTooltip: "Languages in ms.", field: "manuscript.languages", hide: false  },
-      { headerName: "Notes on ms.", headerTooltip: "Notes on ms.", field: "manuscript.notes", cellEditor: 'agLargeTextCellEditor', hide: false  },
+      { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", hide: false, filter: null },
+      { headerName: "Dimensions", headerTooltip: "Dimensions", field: "manuscript.dimensions", hide: false, filter: null },
+      { headerName: "No. of pp./ff.", headerTooltip: "No. of pp./ff.", field: "manuscript.leaf_page_no", hide: false, filter: null },
+      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Period to", headerTooltip: "Period to", field: "manuscript.date_to", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Year(s)", headerTooltip: "Year(s)", field: "manuscript.specific_date", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Content type", headerTooltip: "Content type", field: "manuscript.content_type" , hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Languages in ms.", headerTooltip: "Languages in ms.", field: "manuscript.languages", hide: false, filter: 'agTextColumnFilter'  },
+      { headerName: "Notes on ms.", headerTooltip: "Notes on ms.", field: "manuscript.notes", hide: false, filter: 'agTextColumnFilter'  },
+      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
     ]},
-    { headerName: "Booklet (if identified): general features", children: [
-      { headerName: "Booklet id", headerTooltip: "Booklet id", field: "booklet.id", enableRowGroup: true, rowGroup: true, hide: true, filter: 'agNumberColumnFilter' },
-      { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Ff./pp. in ms.", headerTooltip: "Ff./pp. in ms.", field: "booklet.pages_folios_from", hide: false, filter: 'agNumberColumnFilter' },
-      // { headerName: "Location of booklet (to)", field: "booklet.pages_folios_to" },
-      { headerName: "Content type", headerTooltip: "Content type", field: "booklet.content_type", hide: false },
-      { headerName: "Date from", headerTooltip: "Date from", field: "booklet.date_from", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Date to", headerTooltip: "Date to", field: "booklet.date_to", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Specific date", headerTooltip: "Specific date", field: "booklet.specific_date", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      // { headerName: "Scribes", field: "booklet.scribes" },
+    { headerName: "Booklet (if identified)", children: [
+      { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", hide: false, filter: null },
+      { headerName: "Pp./ff. in ms.", headerTooltip: "Pp./ff. in ms.", field: "booklet.pages_folios_from", hide: false, filter: null },
+      { headerName: "Content type", headerTooltip: "Content type", field: "booklet.content_type", hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Period from", headerTooltip: "Period from", field: "booklet.date_from", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Period to", headerTooltip: "Period to", field: "booklet.date_to", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Year(s)", headerTooltip: "Specific date", field: "booklet.specific_date", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
     ]},
-    { headerName: "Origin of booklet (if identified) or manuscript", children: [
+    { headerName: "Origin and provenance", children: [
+      { headerName: "Origin of booklet or ms", headerTooltip: "Origin of booklet or ms", field: "genesis.full_description", hide: false, aggFunc: null, filter: 'agTextColumnFilter' },
       { headerName: "Institution", headerTooltip: "Institution", field: "genesis.institution_name", hide: false },
       { headerName: "Institution (alternative)", headerTooltip: "Institution (alternative)", field: "genesis.institution_name_alt", hide: true },
       { headerName: "Religious order", headerTooltip: "Religious order", field: "genesis.religious_order_name", hide: false },
-      { headerName: "Religious order (abbrev.)", headerTooltip: "Religious order (abbrev.)", field: "genesis.religious_order_abbrev", hide: true },
       { headerName: "City", headerTooltip: "City", field: "genesis.city", hide: false },
       { headerName: "City (alternative)", headerTooltip: "City (alternative)", field: "genesis.city_alt", hide: true },
       { headerName: "Diocese", headerTooltip: "Diocese", field: "genesis.diocese", hide: false },
@@ -77,52 +74,49 @@
       { headerName: "Region", headerTooltip: "Region", field: "genesis.region", hide: false },
       { headerName: "Region (alternative)", headerTooltip: "Region (alternative)", field: "genesis.region_alt", hide: true },
       { headerName: "Country", headerTooltip: "Country", field: "genesis.country", hide: false },
-      { headerName: "Notes on origin", headerTooltip: "Notes on origin", field: "genesis.origin_notes", hide: false },
-      { headerName: "Provenance", headerTooltip: "Provenance", field: "genesis.ownerships", hide: false, aggFunc: null },
-      { headerName: "Origin description", headerTooltip: "Origin description", field: "genesis.full_description", hide: false, aggFunc: null },
+      { headerName: "Notes on origin", headerTooltip: "Notes on origin", field: "genesis.origin_notes", hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Provenance of booklet or manuscript", headerTooltip: "Provenance of booklet or manuscript", field: "genesis.ownerships", hide: false, filter: 'agTextColumnFilter' },
     ] },
     { headerName: "Contents", children: [
-      { headerName: "Content id", headerTooltip: "Content id", field: "content.id", enableRowGroup: true, rowGroup: true, hide: true, filter: 'agNumberColumnFilter' },
-      { headerName: "Sequence no", headerTooltip: "Sequence no", field: "content.sequence_no", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter' },
-      { headerName: "Title", headerTooltip: "Title", field: "content.title", hide: false },
-      { headerName: "Author", headerTooltip: "Author", field: "content.author", hide: false },
+      { headerName: "Sequence no", headerTooltip: "Sequence no", field: "content.sequence_no", hide: false, comparator: numberSort, filter: null, sort: "asc", sortIndex: 1 },
+      { headerName: "Apocr./Non-apocr.", headerTooltip: "Apocr./Non-apocr.", field: "content.apocryphal", filter: 'agTextColumnFilter' },
+      { headerName: "Contents item", headerTooltip: "Contents item", field: "content.content_item", hide: false },
     ]},
 
-    { headerName: "Apocryphon in manuscript: general features", children: [
-      // { headerName: "Text id", field: "text.id", enableRowGroup: true, rowGroup: true, hide: true },
+    { headerName: "Apocryphon in ms.: general features", children: [
       { headerName: "Language", headerTooltip: "Language", field: "text.languages", hide: false },
-      { headerName: "Ff./pp. in ms.", headerTooltip: "Ff./pp. in ms.", field: "text.text_pages_folios", hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Date from", headerTooltip: "Date from", field: "text.date_from", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Date to", headerTooltip: "Date to", field: "text.date_to", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Specific date", headerTooltip: "Specific date", field: "text.specific_date", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Columns", headerTooltip: "Columns", field: "text.no_columns", hide: false, filter: 'agNumberColumnFilter' },
-      { headerName: "Scribe(s)", headerTooltip: "Scribe(s)", field: "text.scribes", hide: false },
-      { headerName: "Notes on scribe(s)", headerTooltip: "Notes on scribe(s)", field: "text.notes_on_scribe", hide: false },
+      { headerName: "Pp/ff. in ms.", headerTooltip: "Ff./pp. in ms.", field: "text.text_pages_folios", hide: false, filter: false },
+      { headerName: "Period from", headerTooltip: "Period from", field: "text.date_from", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Period to", headerTooltip: "Period to", field: "text.date_to", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Year(s)", headerTooltip: "Specific date", field: "text.specific_date", comparator: numberSort, hide: false, filter: 'agNumberColumnFilter' },
+      { headerName: "Columns", headerTooltip: "Columns", field: "text.no_columns", hide: false, filter: null },
+      { headerName: "Decoration", headerTooltip: "Decoration", field: "text.decoration", hide: false, filter: 'agTextColumnFilter' },
       { headerName: "Script", headerTooltip: "Script", field: "text.script", hide: false },
-      { headerName: "Decoration", headerTooltip: "Decoration", field: "text.decoration", hide: false },
+      { headerName: "Scribe(s)", headerTooltip: "Scribe(s)", field: "text.scribes", hide: false },
+      { headerName: "Notes on scribe(s)", headerTooltip: "Notes on scribe(s)", field: "text.notes_on_scribe", hide: false, filter: 'agTextColumnFilter' },
     ]},
-    { headerName: "Apocryphon in manuscript: textual features", children: [
-      { headerName: "Title pp./ff.", headerTooltip: "Title pp./ff.", field: "text.title_folios_pages", filter: 'agNumberColumnFilter'},
-      { headerName: "Title in manuscript", headerTooltip: "Title in manuscript", field: "text.manuscript_title_orig", hide: false},
-      { headerName: "Title in manuscript translit.", headerTooltip: "Title in manuscript translit.", field: "text.manuscript_title_orig_transliteration", hide: true },
-      { headerName: "Title in manuscript transla.", headerTooltip: "Title in manuscript transla.", field: "text.manuscript_title_translation", hide: true },
-      { headerName: "Section name", headerTooltip: "Section name", field: "section.section_name"},
-      { headerName: "Section number", headerTooltip: "Section number", field: "section.section_number", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter' },
-      { headerName: "Incipit pp./ff.", headerTooltip: "Incipit pp./ff.", field: "section.pages_folios_incipit", hide: false},
-      { headerName: "Incipit", headerTooltip: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender, hide: false },
-      { headerName: "Incipit translit.", headerTooltip: "Incipit translit.", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender, hide: true },
-      { headerName: "Incipit transla.", headerTooltip: "Incipit transla.", field: "section.incipit_translation", cellRenderer: richTextRender, hide: true },
-      { headerName: "Explicit pp./ff.", headerTooltip: "Explicit pp./ff.", field: "section.pages_folios_explicit", hide: false},
-      { headerName: "Explicit", headerTooltip: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender, hide: false },
-      { headerName: "Explicit translit.", headerTooltip: "Explicit translit.", field: "section.explicitorig_transliteration", cellRenderer: richTextRender, hide: true },
-      { headerName: "Explicit transla.", headerTooltip: "Explicit transla.", field: "section.explicit_translation", cellRenderer: richTextRender, hide: true },
-      { headerName: "Colophon pp./ff.", headerTooltip: "Colophon pp./ff.", field: "text.pages_folios_colophon", hide: false},
-      { headerName: "Extent", headerTooltip: "Extent", field: "text.extent", hide: false},
+    { headerName: "Apocryphon in ms.: textual features", children: [
+      { headerName: "Pp./ff. title", headerTooltip: "Pp./ff. title", field: "text.title_folios_pages", filter: null },
+      { headerName: "Title in ms.", headerTooltip: "Title in ms.", field: "text.manuscript_title_orig", hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Title in ms. (translit.)", headerTooltip: "Title in ms. (translit.)", field: "text.manuscript_title_orig_transliteration", hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Title in ms. (transla.)", headerTooltip: "Title in ms. (transla.)", field: "text.manuscript_title_translation", hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Section number", headerTooltip: "Section number", field: "section.section_number", hide: false, comparator: numberSort, filter: 'agTextColumnFilter', sort: "asc", sortIndex: 2 },
+      { headerName: "Section name", headerTooltip: "Section name", field: "section.section_name" },
+      { headerName: "Pp./ff. incipit", headerTooltip: "Pp./ff. incipit", field: "section.pages_folios_incipit", hide: false, filter: null },
+      { headerName: "Incipit", headerTooltip: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender, hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Incipit (translit.)", headerTooltip: "Incipit (translit.)", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender, hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Incipit (transla.)", headerTooltip: "Incipit (transla.)", field: "section.incipit_translation", cellRenderer: richTextRender, hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Pp./ff. explicit", headerTooltip: "Explicit pp./ff.", field: "section.pages_folios_explicit", hide: false, filter: null },
+      { headerName: "Explicit", headerTooltip: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender, hide: false, filter: 'agTextColumnFilter' },
+      { headerName: "Explicit (translit.)", headerTooltip: "Explicit (translit.)", field: "section.explicitorig_transliteration", cellRenderer: richTextRender, hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Explicit (transla.)", headerTooltip: "Explicit (transla.)", field: "section.explicit_translation", cellRenderer: richTextRender, hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Pp./ff. colophon", headerTooltip: "Pp./ff. colophon", field: "text.pages_folios_colophon", hide: false, filter: null },
+      { headerName: "Colophon", headerTooltip: "Colophon", field: "text.colophon_orig", filter: 'agTextColumnFilter', hide: false },
+      { headerName: "Colophon (translit.)", headerTooltip: "Colophon (translit.)", field: "text.colophon_transliteration", hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Colophon (transla.)", headerTooltip: "Colophon (transla.)", field: "text.colophon_translation", hide: true, filter: 'agTextColumnFilter' },
+      { headerName: "Extent", headerTooltip: "Extent", field: "text.extent", hide: false, filter: 'agTextColumnFilter'},
       { headerName: "Version", headerTooltip: "Version", field: "text.version", hide: false},
-      // { headerName: "Colophon", field: "text.colophon_orig"},
-      // { headerName: "Colophon translit.", field: "text.colophon_transliteration", hide: true },
-      // { headerName: "Colophon transla.", field: "text.colophon_translation", hide: true },
-      // { headerName: "Notes", field: "text.notes", hide: true },      
+      { headerName: "Notes", field: "text.notes", cellRenderer: richTextRender, hide: true },      
     ]},
 
     // { headerName: "Credits", children: [
@@ -179,8 +173,7 @@
             <% content = key == :contents ? rec : ([:texts, :sections].include?(key) ? text.content : @new_content) %>
             id: <%= content.id || "undefined" %>,
             sequence_no: "<%= content.sequence_no %>",
-            title: "<%= content.try(:title).try(:title_orig) %>",
-            author: "<%= content.author.try(:full_name) %>",
+            content_item: "<%= [content.try(:title).try(:title_orig), content.author.try(:full_name)].select{ |s| s.present? }.join(', ') %>",
             apocryphal: "<%= content.try(:title).try(:apocryphon_id).present? ? 'Apocryphal' : 'Non apocryphal' %>",
           },
           apocryphon: {
@@ -208,6 +201,7 @@
             <% manuscript = key == :manuscripts ? rec : ([:booklets].include?(key) || content.booklet_id.present? ? booklet.manuscript : content.manuscript) %>
             id: <%= manuscript.id || "undefined" %>,
             identifier: "<%= manuscript.identifier %>",
+            reproduction_online: "<%= manuscript.reproduction_online %>",
             census_no: "<%= manuscript.census_no %>",
             status: "<%= manuscript.status %>",
             institution_id: "<%= manuscript.institution_id %>",
@@ -234,7 +228,7 @@
             old_shelfmark: "<%= manuscript.old_shelfmark.html_safe  %>",
             material: "<%= manuscript.material.html_safe  %>",
             dimensions: "<%= manuscript.dimensions.html_safe %>",
-            leaf_page_no: "<%= manuscript.leaf_page_no + (manuscript.is_folios ? "ff." : "pp.") %>",
+            leaf_page_no: "<%= manuscript.leaf_page_no + (manuscript.is_folios ? " ff." : " pp.") %>",
             date_from: "<%= manuscript.date_from.html_safe  %>",
             date_to: "<%= manuscript.date_to.html_safe  %>",
             specific_date: "<%= 'ca. ' if !manuscript.date_exact && manuscript.specific_date.present? %><%= manuscript.specific_date.html_safe %>",
@@ -246,7 +240,7 @@
               m_institution_loc.try(:country).try(:html_safe),
               m_institution.try(:display_name).try(:html_safe),
               manuscript.shelfmark.html_safe
-            ].select{ |s| s.present? }.join(', ') %>`,
+            ].select{ |s| s.present? }.join(' | ') %>`,
           },
           genesis: {
             <% genesis_source = manuscript.booklets.present? ? booklet : manuscript %>
@@ -285,7 +279,7 @@
     defaultColDef: defaultColDef,
     autoGroupColumnDef: {
       cellRendererParams: {
-        suppressCount: true,
+        // suppressCount: true,
       },
       filter: 'agTextColumnFilter',
       filterValueGetter: params => {      
@@ -297,7 +291,7 @@
       },           
     },
     rowData: rowData,
-    sideBar: 'columns',
+    sideBar: ['filters', 'columns'],
     rowHeight: 28,
     suppressAggFuncInHeader: true,
     groupDisplayType: 'multipleColumns',
@@ -318,6 +312,10 @@
         b2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_name;
         c1 = params.nodeA.allLeafChildren[0].data.manuscript.shelfmark;
         c2 = params.nodeB.allLeafChildren[0].data.manuscript.shelfmark;
+        // d1 = params.nodeA.allLeafChildren[0].data.contents.sequence_no;
+        // d2 = params.nodeB.allLeafChildren[0].data.contents.sequence_no;
+        // e1 = params.nodeA.allLeafChildren[0].data.section.section_number;
+        // e2 = params.nodeB.allLeafChildren[0].data.section.section_number;
         if(a1 == a2){
           if(b1 == b2) return b1 < b2 ? -1 : b1 > b2 ? 1 : 0;
           else return c1 < c2 ? -1 : c1 > c2 ? 1 : 0;
@@ -347,6 +345,10 @@
     return p.value;
   }
 
+  function linkRenderer(p) {
+    return p.value == "(blank)" ? p.value : "<a href='" + p.value + "' target='blank'>" + p.value + "</a>";
+  }
+
   function onFilterTextBoxChanged() {
       gridOptions.api.setQuickFilter(
         document.getElementById('filter-text-box').value
@@ -355,6 +357,18 @@
 
   function tooltipValueGetter(params) {
     return params.colDef.headerName;
+  }
+
+  function expand(argument) {
+    gridOptions.api.expandAll();
+    $("#expand").hide();
+    $("#collapse").show();
+  }
+
+  function collapse(argument) {
+    gridOptions.api.collapseAll();
+    $("#expand").show();
+    $("#collapse").hide();
   }
 
   const eGridDiv = document.querySelector('#sections_grid');

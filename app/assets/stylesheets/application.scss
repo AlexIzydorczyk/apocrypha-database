@@ -198,7 +198,7 @@ text-decoration: underline;
   background: white;
   font-size: 16px;
   line-height: 21px;
-  &:hover{
+  &:hover, &.active {
     color: white;
     background: var(--orange);
   }

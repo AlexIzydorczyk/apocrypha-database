@@ -1,11 +1,12 @@
-<div class="d-flex flex-wrap mb-2 align-items-center">
+<div class="d-flex flex-wrap mb-2 align-items-center" id="options">
   Configuration options:
   <% if user_signed_in? && current_user.admin? %>
-    <button class="btn btn-sm btn-outline-action mx-2 mb-2" data-bs-toggle="modal" data-bs-target="#create-configuration"><i class="far fa-floppy-disk"></i> Create option</button>
+    <button class="btn btn-sm btn-outline-action mx-2 mb-2 create" data-bs-toggle="modal" data-bs-target="#create-configuration"><i class="far fa-floppy-disk"></i> Create option</button>
   <% end %>
   <% @grid_states.each do |state| %>
     <div class="btn-group mx-2 mb-2" role="group">
       <button type="button" class="btn btn-sm btn-outline-action" onclick="getState({id: <%= state.id %>})"><%= state.state_name %></button>
+      <button type="button" class="btn btn-sm btn-outline-action reset" style="display: none;" onclick="getState({id: <%= state.id %>})"><i class='far fa-undo'></i></button>
       <% if user_signed_in? && current_user.admin? %>
         <button type="button" class="btn btn-sm btn-outline-action" onclick="deleteState('delete-state-<%= state.id %>')"><i class='far fa-trash-alt'></i></button>
       <% end %>
@@ -13,6 +14,14 @@
     <%= button_to "hidden", user_grid_state_path(state), method: :delete, class: "d-none", id: "delete-state-#{state.id}" %>
   <% end %>
 </div>
+
+<script type="text/javascript">
+  $("#options button:not(.create)").click(function() {
+    $("#options button").removeClass("active").closest(".btn-group").find(".reset").hide();
+    $(this).addClass("active");
+    $(this).closest(".btn-group").find(".reset").show();
+  })
+</script>
 
 <!-- Modal -->
 <div class="modal" id="create-configuration" tabindex="-1" aria-hidden="true">

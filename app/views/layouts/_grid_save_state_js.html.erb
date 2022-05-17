@@ -1,7 +1,8 @@
 <script type="text/javascript">
 
 $(function() {
-	setState(<%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>, <%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:filters).to_json.html_safe %>)
+	callBackFunc = typeof defaultSort === "function" ? defaultSort : null;
+	setState(<%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:state).to_json.html_safe %>, <%= current_user.user_grid_states.where(record_type: record_type).try(:first).try(:filters).to_json.html_safe %>, callBackFunc)
 });
 
 function getState(parameters) {
@@ -25,7 +26,7 @@ function deleteState(button_id) {
 	}
 }
 
-function setState(state, filters=null){
+function setState(state, filters=null, callback){
 	console.log('setting state', state);
 	gridOptions.columnApi.applyColumnState({
 		state: state,
@@ -33,6 +34,7 @@ function setState(state, filters=null){
 	});
 	console.log('setting filters', filters);
 	if(filters) gridOptions.api.setFilterModel(filters);
+	if(callback) callback();
 }
 
 function saveState(show_saved=true, state_name=null, callback=null) {
@@ -56,6 +58,7 @@ function saveState(show_saved=true, state_name=null, callback=null) {
 function resetState() {
 	gridOptions.columnApi.resetColumnState();
 	gridOptions.api.setFilterModel(null);
+	if(typeof defaultSort === "function") defaultSort();
 	saveState(false);
 	window.SnackBar({message: "<i class='fa-solid fa-rotate-left'></i> Configuration reset", position: "tr", dismissible: false, timeout: 2000});
 }
