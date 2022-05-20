@@ -53,6 +53,7 @@
       { headerName: "Languages in ms.", headerTooltip: "Languages in ms.", field: "manuscript.languages", hide: false, filter: 'agTextColumnFilter'  },
       { headerName: "Notes on ms.", headerTooltip: "Notes on ms.", field: "manuscript.notes", hide: false, filter: 'agTextColumnFilter'  },
       { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
+      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false },
     ]},
     { headerName: "Booklet (if identified)", children: [
       { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", hide: false, filter: null },
@@ -235,6 +236,7 @@
             content_type: `<%= manuscript.content_type.html_safe %>`,
             notes: `<%= manuscript.notes.html_safe  %>`,
             languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
+            manuscript_urls: <%= manuscript.manuscript_urls.map(&:url).to_json.html_safe %>,
             identification: `<%= [
               [['lost', 'destroyed'].include?(manuscript.status) ? '*' : '', m_institution_loc.try(:city)].select{ |t| t.present? }.join(""),
               m_institution_loc.try(:country).try(:html_safe),
@@ -364,7 +366,6 @@
   }
 
   function updateAllFilterVisiblity(){
-    console.log(gridOptions.api.getColumnDefs());
     gridOptions.api.setColumnDefs(gridOptions.api.getColumnDefs().map(function(column) {
       return setFilterVisibility(column);
     }));
@@ -379,7 +380,6 @@
       new_object.suppressFiltersToolPanel = col.hide == true;
       new_object.hide = col.hide == true;
     }
-    console.log('new object', new_object);
     return new_object
   }
 

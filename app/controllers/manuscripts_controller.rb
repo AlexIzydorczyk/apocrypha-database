@@ -31,6 +31,7 @@ class ManuscriptsController < ApplicationController
     @content_types = Manuscript.where.not(content_type: "").pluck(:content_type)
     @modern_sources = ModernSource.left_outer_joins([:authors, :institution]).order("people.last_name_vernacular", "institutions.name", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all.uniq
     @scribe_reference = @manuscript.scribe_references.build
+    @manuscript.manuscript_urls.build if @manuscript.manuscript_urls.count < 1
   end
 
   def create
@@ -127,6 +128,13 @@ class ManuscriptsController < ApplicationController
       build_scribe_references_for new_set - @manuscript.compilers.ids, 'compiler'
     end
     
+    if params[:manuscript_urls].present?
+      new_set = params[:manuscript_urls].filter{ |url| url.present? }
+      ManuscriptUrl.where(manuscript_id: @manuscript.id).where.not(url: new_set).destroy_all
+      (new_set - @manuscript.manuscript_urls.map(&:url)).each{ |url| @manuscript.manuscript_urls.build(url: url) }
+      @manuscript.save
+    end
+
     if @manuscript.update(manuscript_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Manuscript', record_id: @manuscript.id, controller_name: 'manuscript', action_name: 'update')
       if request.xhr?

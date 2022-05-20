@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_10_191613) do
+ActiveRecord::Schema.define(version: 2022_05_20_184709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,6 +214,15 @@ ActiveRecord::Schema.define(version: 2022_05_10_191613) do
     t.index ["city_writing_system_id"], name: "index_locations_on_city_writing_system_id"
     t.index ["diocese_writing_system_id"], name: "index_locations_on_diocese_writing_system_id"
     t.index ["region_writing_system_id"], name: "index_locations_on_region_writing_system_id"
+  end
+
+  create_table "manuscript_urls", force: :cascade do |t|
+    t.bigint "manuscript_id", null: false
+    t.string "url", default: "", null: false
+    t.integer "index"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manuscript_id"], name: "index_manuscript_urls_on_manuscript_id"
   end
 
   create_table "manuscripts", force: :cascade do |t|
@@ -514,7 +523,7 @@ ActiveRecord::Schema.define(version: 2022_05_10_191613) do
 
   create_table "writing_systems", force: :cascade do |t|
     t.string "name"
-    t.boolean "requires_transliteration", default: false, null: false
+    t.boolean "requires_transliteration"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -552,6 +561,7 @@ ActiveRecord::Schema.define(version: 2022_05_10_191613) do
   add_foreign_key "locations", "writing_systems", column: "city_writing_system_id"
   add_foreign_key "locations", "writing_systems", column: "diocese_writing_system_id"
   add_foreign_key "locations", "writing_systems", column: "region_writing_system_id"
+  add_foreign_key "manuscript_urls", "manuscripts"
   add_foreign_key "manuscripts", "institutions"
   add_foreign_key "manuscripts", "institutions", column: "genesis_institution_id"
   add_foreign_key "manuscripts", "locations", column: "genesis_location_id"

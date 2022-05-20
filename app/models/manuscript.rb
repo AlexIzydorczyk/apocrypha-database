@@ -20,6 +20,7 @@ class Manuscript < ApplicationRecord
   has_many :ownerships, -> { order("index ASC") }, dependent: :destroy
   has_many :contents, -> { order("sequence_no ASC") }, dependent: :destroy
   has_many :booklist_sections, dependent: :destroy
+  has_many :manuscript_urls, -> { order("index ASC") }, dependent: :destroy
 
   def display_name
     d_name = [self.institution.try(:location).present? ? self.institution.location.try(:city) : self.genesis_location.try(:city), self.institution.try(:name), self.shelfmark].select{ |d| d.present? }.join(", ")

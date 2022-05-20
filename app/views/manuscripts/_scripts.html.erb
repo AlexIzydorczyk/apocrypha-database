@@ -13,6 +13,7 @@ $(document).ready(function(){
 			date_exact: <%= manuscript.date_exact ? "true" : "false" %>,
 			date_to: '<%= manuscript.date_to %>', date_from: '<%= manuscript.date_from %>',
 			date_to_select: null, date_from_select: null,
+			manuscript_urls: <%= manuscript.manuscript_urls.map{ |mu| { url: mu.url } }.to_json.html_safe %>,
 		},
 		watch: {
 			date_from(){
@@ -73,6 +74,9 @@ $(document).ready(function(){
 				}else{
 					this.known_booklet_composition = true;
 				}
+			},
+			addUrl(){
+				this.manuscript_urls.push({url: ""});
 			}
 		},
 		mounted(){

@@ -208,6 +208,19 @@
 		<%= form.label :reproduction_online, style: "display: block;" %>
 		<%= form.text_field :reproduction_online, class: "form-control" %>
 	</div>
+	<div class="form-group col-md-12 mb-2">
+		<label>Online databases</label>
+		<div id="urls">
+			<div v-for="(obj, index) in manuscript_urls" class="row mb-2">
+				<div class="col">
+					<input type="text" name="manuscript_urls[]" class="form-control me-2" v-model="obj.url" placeholder="URL">	
+				</div>
+				<div class="col-2">
+					<button type="button" v-show="index == manuscript_urls.length-1" class="btn btn-outline-action w-100" @click="addUrl">Add URL</button>	
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <h2>Credits</h2>
