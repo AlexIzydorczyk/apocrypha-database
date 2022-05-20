@@ -25,7 +25,7 @@
   const columnDefs = [
     { headerName: "Identification of manuscript", headerTooltip: "Identification of manuscript", children: [
       { headerName: "Ms. no.", headerTooltip: "Ms. no.", field: "manuscript.census_no", comparator: numberSort, hide: false, filter: 'agTextColumnFilter' },
-      { headerName: "Identification of manuscript", headerTooltip: "Identification of manuscript", field: "manuscript.identification", enableRowGroup: true, rowGroup: true },
+      { headerName: "Ms. reference name", headerTooltip: "Ms. reference name", field: "manuscript.identification", enableRowGroup: true, rowGroup: true },
       { headerName: "Status", headerTooltip: "Status", field: "manuscript.status", hide: false, filter: 'agTextColumnFilter' },
       { headerName: "City", headerTooltip: "City", field: "manuscript.institution_city", hide: false, sortingOrder: ['asc'] },
       { headerName: "City (alternative)", headerTooltip: "City (alternative)", field: "manuscript.institution_city_alt" },
@@ -276,6 +276,7 @@
 
   const gridOptions = {
     columnDefs: columnDefs,
+    onColumnVisible: onColumnVisible,
     defaultColDef: defaultColDef,
     autoGroupColumnDef: {
       cellRendererParams: {
@@ -337,6 +338,30 @@
     },
   };
 
+  function onColumnVisible(params) {
+    updateAllFilterVisiblity();
+  }
+
+  function updateAllFilterVisiblity(){
+    console.log(gridOptions.api.getColumnDefs());
+    gridOptions.api.setColumnDefs(gridOptions.api.getColumnDefs().map(function(column) {
+      return setFilterVisibility(column);
+    }));
+  }
+
+  function setFilterVisibility(col) {
+    let new_object = col
+    if('children' in col) new_object.children = col.children.map(function(child) {
+      return setFilterVisibility(child);
+    });
+    else{
+      new_object.suppressFiltersToolPanel = col.hide == true;
+      new_object.hide = col.hide == true;
+    }
+    console.log('new object', new_object);
+    return new_object
+  }
+
   function numberSort(num1, num2){
     return parseInt(num1) - parseInt(num2);
   };
@@ -376,6 +401,7 @@
   var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
   columnToolPanel.collapseColumnGroups();
   autoSizeAll(gridOptions, false);
+  updateAllFilterVisiblity();
 
   // var model = {content.apocryphal: {values: ["Apocryphal"], filterType: "set"}};
   // gridOptions.api.setFilterModel(model);
