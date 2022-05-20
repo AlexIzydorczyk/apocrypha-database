@@ -53,7 +53,7 @@
       { headerName: "Languages in ms.", headerTooltip: "Languages in ms.", field: "manuscript.languages", hide: false, filter: 'agTextColumnFilter'  },
       { headerName: "Notes on ms.", headerTooltip: "Notes on ms.", field: "manuscript.notes", hide: false, filter: 'agTextColumnFilter'  },
       { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
-      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false },
+      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false, cellRenderer: linkRenderer },
     ]},
     { headerName: "Booklet (if identified)", children: [
       { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", hide: false, filter: null },
@@ -392,9 +392,25 @@
   }
 
   function linkRenderer(p) {
-    let temp = document.createElement('a');
-    temp.href = p.value;
-    return p.value == "(blank)" ? p.value : "<a href='" + p.value + "' target='blank'>" + temp.hostname + "</a>";
+    let links = [];
+    if(Array.isArray(p.value)){
+      p.value.forEach(function(value) {
+        let temp = document.createElement('a');
+        temp.href = value;
+        links.push({
+          href: value,
+          hostname: temp.hostname,
+        });  
+      })
+    } else {
+      let temp = document.createElement('a');
+      temp.href = p.value;
+      links.push({
+        href: p.value,
+        hostname: temp.hostname,
+      });
+    }
+    return p.value == "(blank)" ? p.value : links.map( o => "<a href='" + o.href + "' target='blank'>" + o.hostname + "</a>").join(", ");
   }
 
   function onFilterTextBoxChanged() {
