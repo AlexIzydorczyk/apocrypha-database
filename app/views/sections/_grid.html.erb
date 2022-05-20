@@ -292,7 +292,28 @@
       },           
     },
     rowData: rowData,
-    sideBar: ['filters', 'columns'],
+    sideBar: {
+      toolPanels: [
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel',
+          toolPanelParams: {
+            suppressSyncLayoutWithGrid: true,
+          },
+        },
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'column',
+          toolPanel: 'agColumnsToolPanel',
+        },
+      ],
+      defaultToolPanel: 'filters',
+    },
     rowHeight: 28,
     suppressAggFuncInHeader: true,
     groupDisplayType: 'multipleColumns',
@@ -371,7 +392,9 @@
   }
 
   function linkRenderer(p) {
-    return p.value == "(blank)" ? p.value : "<a href='" + p.value + "' target='blank'>" + p.value + "</a>";
+    let temp = document.createElement('a');
+    temp.href = p.value;
+    return p.value == "(blank)" ? p.value : "<a href='" + p.value + "' target='blank'>" + temp.hostname + "</a>";
   }
 
   function onFilterTextBoxChanged() {
