@@ -52,8 +52,6 @@
       { headerName: "Content type", headerTooltip: "Content type", field: "manuscript.content_type" , hide: false, filter: 'agTextColumnFilter' },
       { headerName: "Languages in ms.", headerTooltip: "Languages in ms.", field: "manuscript.languages", hide: false, filter: 'agTextColumnFilter'  },
       { headerName: "Notes on ms.", headerTooltip: "Notes on ms.", field: "manuscript.notes", hide: false, filter: 'agTextColumnFilter'  },
-      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
-      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false, cellRenderer: linkRenderer },
     ]},
     { headerName: "Booklet (if identified)", children: [
       { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", hide: false, filter: null },
@@ -119,7 +117,11 @@
       { headerName: "Version", headerTooltip: "Version", field: "text.version", hide: false},
       { headerName: "Notes", field: "text.notes", cellRenderer: richTextRender, hide: true },      
     ]},
-
+    { headerName: "Links", children: [
+      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
+      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false, cellRenderer: linkRenderer },
+      { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", hide: false, cellRenderer: linkRenderer },
+    ]},
     // { headerName: "Credits", children: [
     //   { headerName: "Correspondent(s)", field: "manuscript.correspondent_names", hide: true },
     //   { headerName: "Transcriber(s)", field: "manuscript.transcriber_names", hide: true },
@@ -392,25 +394,27 @@
   }
 
   function linkRenderer(p) {
-    let links = [];
-    if(Array.isArray(p.value)){
-      p.value.forEach(function(value) {
-        let temp = document.createElement('a');
-        temp.href = value;
-        links.push({
-          href: value,
-          hostname: temp.hostname,
-        });  
-      })
-    } else {
-      let temp = document.createElement('a');
-      temp.href = p.value;
-      links.push({
-        href: p.value,
-        hostname: temp.hostname,
+    let to_return = [];
+    if(Array.isArray(p.value) && p.value.length > 0){
+      to_return = p.value.map(function(value) {
+        if(!value || value.length < 1){
+          return "(blank)"
+        }else{
+          let temp = document.createElement('a');
+          temp.href = value;
+          return "<a href='" + value + "' target='blank'>" + temp.hostname + "</a>"
+        }
       });
+    } else {
+      if(!p.value || p.value.length < 1){
+        to_return = ["(blank)"];
+      }else{
+        let temp = document.createElement('a');
+        temp.href = p.value;
+        to_return = ["<a href='" + p.value + "' target='blank'>" + temp.hostname + "</a>"];
+      };
     }
-    return p.value == "(blank)" ? p.value : links.map( o => "<a href='" + o.href + "' target='blank'>" + o.hostname + "</a>").join(", ");
+    return to_return.join(", ");
   }
 
   function onFilterTextBoxChanged() {
