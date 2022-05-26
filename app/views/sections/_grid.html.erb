@@ -118,10 +118,11 @@
       { headerName: "Notes", field: "text.notes", cellRenderer: richTextRender, hide: true },      
     ]},
     { headerName: "Links", children: [
-      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
-      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false, cellRenderer: linkRenderer },
-      { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", hide: false, cellRenderer: linkRenderer },
-      { headerName: "Manuscript show", headerTooltip: "Manuscript show", field: "manuscript.show_link", hide: false, cellRenderer: linkRenderer },
+      { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", hide: false, cellRenderer: linkRenderer, aggFunc: null },
+      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter', aggFunc: null },
+      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false, cellRenderer: linkRenderer, aggFunc: null },
+      { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", hide: false, cellRenderer: linkRenderer, aggFunc: null },
+      { headerName: "Manuscript show", headerTooltip: "Manuscript show", field: "manuscript.show_link", hide: false, cellRenderer: linkRenderer, aggFunc: null },
     ]},
     // { headerName: "Credits", children: [
     //   { headerName: "Correspondent(s)", field: "manuscript.correspondent_names", hide: true },
@@ -206,7 +207,7 @@
             id: <%= manuscript.id || "undefined" %>,
             show_link: "<%= manuscript_path(manuscript) %>",
             identifier: "<%= manuscript.identifier %>",
-            reproduction_online: "<%= manuscript.reproduction_online %>",
+            reproduction_online: <%= manuscript.manuscript_urls.reproduction.map(&:url).to_json.html_safe %>,
             census_no: "<%= manuscript.census_no %>",
             status: "<%= manuscript.status %>",
             institution_id: "<%= manuscript.institution_id %>",
@@ -240,7 +241,7 @@
             content_type: `<%= manuscript.content_type.html_safe %>`,
             notes: `<%= manuscript.notes.html_safe  %>`,
             languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
-            manuscript_urls: <%= manuscript.manuscript_urls.map(&:url).to_json.html_safe %>,
+            manuscript_urls: <%= manuscript.manuscript_urls.database.map(&:url).to_json.html_safe %>,
             identification: `<%= [
               [['lost', 'destroyed'].include?(manuscript.status) ? '*' : '', m_institution_loc.try(:city)].select{ |t| t.present? }.join(""),
               m_institution_loc.try(:country).try(:html_safe),
@@ -315,7 +316,7 @@
           id: 'columns',
           labelDefault: 'Columns',
           labelKey: 'columns',
-          iconKey: 'column',
+          iconKey: 'columns',
           toolPanel: 'agColumnsToolPanel',
         },
       ],
@@ -401,7 +402,7 @@
     if(Array.isArray(p.value) && p.value.length > 0){
       to_return = p.value.map(function(value) {
         if(!value || value.length < 1){
-          return "(blank)"
+          return ""
         }else{
           let temp = document.createElement('a');
           temp.href = value;
@@ -410,7 +411,7 @@
       });
     } else {
       if(!p.value || p.value.length < 1){
-        to_return = ["(blank)"];
+        to_return = [""];
       }else{
         let temp = document.createElement('a');
         temp.href = p.value;
