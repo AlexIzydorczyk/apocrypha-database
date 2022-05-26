@@ -32,8 +32,8 @@ class ManuscriptsController < ApplicationController
     @modern_sources = ModernSource.left_outer_joins([:authors, :institution]).order("people.last_name_vernacular", "institutions.name", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all.uniq
     @scribe_reference = @manuscript.scribe_references.build
     @blank_url = @manuscript.manuscript_urls.build
-    @manuscript_urls = @manuscript.manuscript_urls.database
-    @reproduction_urls = @manuscript.manuscript_urls.reproduction
+    @manuscript_urls = @manuscript.database_urls
+    @reproduction_urls = @manuscript.reproduction_urls
     @manuscript_urls = @manuscript_urls + @blank_url if @manuscript_urls.blank?
     @reproduction_urls = @reproduction_urls + @blank_url if @reproduction_urls.blank?
   end
@@ -135,14 +135,14 @@ class ManuscriptsController < ApplicationController
     if params[:manuscript_urls].present?
       new_set = params[:manuscript_urls].filter{ |url| url.present? }
       ManuscriptUrl.where(manuscript_id: @manuscript.id, url_type: "database").where.not(url: new_set).destroy_all
-      (new_set - @manuscript.manuscript_urls.database.map(&:url)).each{ |url| @manuscript.manuscript_urls.database.build(url: url) }
+      (new_set - @manuscript.database_urls.map(&:url)).each{ |url| @manuscript.database_urls.build(url: url) }
       @manuscript.save
     end
 
     if params[:reproduction_urls].present?
       new_set = params[:reproduction_urls].filter{ |url| url.present? }
       ManuscriptUrl.where(manuscript_id: @manuscript.id, url_type: "reproduction").where.not(url: new_set).destroy_all
-      (new_set - @manuscript.manuscript_urls.reproduction.map(&:url)).each{ |url| @manuscript.manuscript_urls.reproduction.build(url: url) }
+      (new_set - @manuscript.reproduction_urls.map(&:url)).each{ |url| @manuscript.reproduction_urls.build(url: url) }
       @manuscript.save
     end
 
