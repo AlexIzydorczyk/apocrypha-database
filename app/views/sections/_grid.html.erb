@@ -121,6 +121,7 @@
       { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, hide: false, filter: 'agTextColumnFilter'  },
       { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", hide: false, cellRenderer: linkRenderer },
       { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", hide: false, cellRenderer: linkRenderer },
+      { headerName: "Manuscript show", headerTooltip: "Manuscript show", field: "manuscript.show_link", hide: false, cellRenderer: linkRenderer },
     ]},
     // { headerName: "Credits", children: [
     //   { headerName: "Correspondent(s)", field: "manuscript.correspondent_names", hide: true },
@@ -203,6 +204,7 @@
           manuscript: {
             <% manuscript = key == :manuscripts ? rec : ([:booklets].include?(key) || content.booklet_id.present? ? booklet.manuscript : content.manuscript) %>
             id: <%= manuscript.id || "undefined" %>,
+            show_link: "<%= manuscript_path(manuscript) %>",
             identifier: "<%= manuscript.identifier %>",
             reproduction_online: "<%= manuscript.reproduction_online %>",
             census_no: "<%= manuscript.census_no %>",
