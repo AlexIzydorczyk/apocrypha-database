@@ -13,7 +13,8 @@ $(document).ready(function(){
 			date_exact: <%= manuscript.date_exact ? "true" : "false" %>,
 			date_to: '<%= manuscript.date_to %>', date_from: '<%= manuscript.date_from %>',
 			date_to_select: null, date_from_select: null,
-			manuscript_urls: <%= manuscript.manuscript_urls.map{ |mu| { url: mu.url } }.to_json.html_safe %>,
+			manuscript_urls: <%= @manuscript_urls.map{ |mu| { url: mu.url } }.to_json.html_safe %>,
+			reproduction_urls: <%= @reproduction_urls.map{ |mu| { url: mu.url } }.to_json.html_safe %>,
 		},
 		watch: {
 			date_from(){
@@ -77,6 +78,9 @@ $(document).ready(function(){
 			},
 			addUrl(){
 				this.manuscript_urls.push({url: ""});
+			},
+			addReproductionUrl(){
+				this.reproduction_urls.push({url: ""});
 			}
 		},
 		mounted(){
