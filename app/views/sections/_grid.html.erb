@@ -41,6 +41,7 @@
       { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles" },
       { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title" },
       { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles" },
+      { headerName: "All titles", headerTooltip: "Other English titles", field: "apocryphon.all_titles" },
     ]},
     { headerName: "Manuscript: general features", children: [
       { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", hide: false, filter: null },
@@ -185,10 +186,11 @@
             <% apocryphon = (content.title_id.present? && content.title.apocryphon_id.present? ? content.title.apocryphon : @new_apocryphon) %>
             id: <%= apocryphon.id || "undefined" %>,
             apocryphon_no: "<%= apocryphon.apocryphon_no %>",
-            main_english_title: "<%= apocryphon.main_eng_title if apocryphon.id.present?  %>",
+            main_english_title: "<%= apocryphon.main_eng_title if apocryphon.id.present? %>",
             other_english_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }.join(', ') if apocryphon.id.present? %>",
-            main_latin_title: "<%= apocryphon.main_lat_title if apocryphon.id.present?  %>",
+            main_latin_title: "<%= apocryphon.main_lat_title if apocryphon.id.present? %>",
             other_latin_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }.join(', ') if apocryphon.id.present? %>",
+            all_titles: <%= apocryphon.id.present? ? [apocryphon.main_eng_title, apocryphon.main_lat_title, Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }, Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }].flatten.to_json.html_safe : [] %>
           },
           booklet: {
             <% booklet = key == :booklets ? rec : ([:texts, :sections, :contents].include?(key) && content.booklet_id.present? ? content.booklet : @new_booklet) %>
