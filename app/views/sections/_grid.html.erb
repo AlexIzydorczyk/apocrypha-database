@@ -247,7 +247,7 @@
               m_institution_loc.try(:country).try(:html_safe),
               m_institution.try(:display_name).try(:html_safe),
               manuscript.shelfmark.html_safe
-            ].select{ |s| s.present? }.join(' | ') %>`,
+            ].select{ |s| s.present? }.join(', ') %>`,
           },
           genesis: {
             <% genesis_source = manuscript.booklets.present? ? booklet : manuscript %>
@@ -331,7 +331,7 @@
         let arr = params.values.filter(onlyUnique).map(function(val) {
           return val == "" || val == [] || val == {} ? '(blank)' : val;
         })
-        return arr.join('; ');
+        return arr.join('¶ ');
       }
     },
     initialGroupOrderComparator: function (params) {
