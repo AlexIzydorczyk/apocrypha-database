@@ -1,6 +1,7 @@
 <div class="d-flex flex-wrap mb-2 align-items-center" id="options">
   <% if user_signed_in? && current_user.admin? %>
     <button class="btn btn-sm btn-outline-action mx-2 mb-2 create" data-bs-toggle="modal" data-bs-target="#create-configuration"><i class="far fa-floppy-disk"></i> Create option</button>
+    <button class="btn btn-sm btn-outline-action mx-2 mb-2 create" data-bs-toggle="modal" data-bs-target="#update-configuration-order"><i class="far fa-sort"></i> Update order</button>
   <% end %>
   <% @grid_states.each do |state| %>
     <div class="btn-group mx-2 mb-2" role="group">
@@ -22,7 +23,7 @@
   })
 </script>
 
-<!-- Modal -->
+<!-- Modals -->
 <div class="modal" id="create-configuration" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -44,3 +45,79 @@
       </div>
     </div>
 </div>
+<div class="modal" id="update-configuration-order" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content"  id="rearrange">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update configuration order</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <transition-group name="animate" tag="ul" class="list-group">
+            <li class="list-group-item d-flex" v-for="(state, index) in states" :key="'state-' + state.id">
+              <span>{{ state.state_name }}</span>
+              <span class="ms-auto">
+                <button class="btn btn-sm btn-outline-action" type="button" @click="up(index)"><i class="fas fa-angle-up"></i></button>
+                <button class="btn btn-sm btn-outline-action" type="button" @click="down(index)"><i class="fas fa-angle-down"></i></button>
+              </span>
+            </li>
+          </transition-group>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action disable-on-click" @click="save">Save & Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div id="vue-name">
+</div>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    vue = new Vue({
+      el: "#rearrange",
+      data: {
+        states: <%= @grid_states.map(&:attributes).to_json.html_safe %>,
+      },
+      methods: {
+        up(index){
+          if(index > 0){
+            temp = this.states[index-1]
+            this.$set(this.states, index-1, this.states[index]);
+            this.$set(this.states, index, temp);
+          }
+          this.resetIndexes();
+        },
+        down(index){
+          if(index < this.states.length-1){
+            temp = this.states[index+1]
+            this.$set(this.states, index+1, this.states[index]);
+            this.$set(this.states, index, temp);
+          }
+          this.resetIndexes();
+        },
+        resetIndexes(){
+          this.states.forEach(function(state, index) {
+            this.$set(state, 'index', index);
+          }.bind(this));
+        },
+        save(){
+          vue = this;
+          $.ajax({
+            url: "<%= sort_user_grid_states_path %>",
+            method: "PUT",
+            data: {
+              ids: vue.states.map( s => s.id ),
+              authenticity_token: "<%= form_authenticity_token %>",
+            },
+            success: function(data) {
+              timeoutReload('', 0);
+            }
+          })
+        },
+      },
+    });
+  });
+</script>
+

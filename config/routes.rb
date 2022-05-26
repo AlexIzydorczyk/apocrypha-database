@@ -87,6 +87,7 @@ Rails.application.routes.draw do
   resources :user_grid_states, only: :destroy do
     collection do
       put :save  
+      put :sort
       get :get
     end
   end

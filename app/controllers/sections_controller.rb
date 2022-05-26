@@ -35,7 +35,7 @@ class SectionsController < ApplicationController
     @new_booklet = Booklet.new
     @new_apocryphon = Apocryphon.new
 
-    @grid_states = UserGridState.where(user_id: nil, record_type: "Section")
+    @grid_states = UserGridState.where(user_id: nil, record_type: "Section").order(:index)
   end
 
   def show

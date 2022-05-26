@@ -21,6 +21,13 @@ class UserGridStatesController < ApplicationController
 		render json: {state: ugs.first.state, filters: ugs.first.filters}
 	end
 
+	def sort
+		params[:ids].each_with_index do |id, i|
+	      UserGridState.where(id: id).update_all(index: i + 1)
+	    end
+	    render json: {success: true}
+	end
+
 	private
 
 end
