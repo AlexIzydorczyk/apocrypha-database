@@ -253,17 +253,17 @@
           },
           genesis: {
             <% genesis_source = manuscript.booklets.present? ? booklet : manuscript %>
-            institution_name: "<%= genesis_source.genesis_institution.try(:name) %>",
-            institution_name_alt: "<%= genesis_source.genesis_institution.try(:name_alt) %>",
-            religious_order_name: "<%= genesis_source.genesis_religious_order.try(:order_name) %>",
-            religious_order_abbrev: "<%= genesis_source.genesis_religious_order.try(:abbreviation)%>",
-            city: "<%= genesis_source.genesis_location.try(:city) %>",
-            city_alt: "<%= genesis_source.genesis_location.try(:city_alt) %>",
-            region: "<%= genesis_source.genesis_location.try(:region) %>",
-            region_alt: "<%= genesis_source.genesis_location.try(:region_alt) %>",
-            country: "<%= genesis_source.genesis_location.try(:country) %>",
-            diocese: "<%= genesis_source.genesis_location.try(:diocese) %>",
-            diocese_alt: "<%= genesis_source.genesis_location.try(:diocese_alt) %>",
+            institution_name: "<%= genesis_source.genesis_institution.try(:name).try(:html_safe) %>",
+            institution_name_alt: "<%= genesis_source.genesis_institution.try(:name_alt).try(:html_safe) %>",
+            religious_order_name: "<%= genesis_source.genesis_religious_order.try(:order_name).try(:html_safe) %>",
+            religious_order_abbrev: "<%= genesis_source.genesis_religious_order.try(:abbreviation).try(:html_safe)%>",
+            city: "<%= genesis_source.genesis_location.try(:city).try(:html_safe) %>",
+            city_alt: "<%= genesis_source.genesis_location.try(:city_alt).try(:html_safe) %>",
+            region: "<%= genesis_source.genesis_location.try(:region).try(:html_safe) %>",
+            region_alt: "<%= genesis_source.genesis_location.try(:region_alt).try(:html_safe) %>",
+            country: "<%= genesis_source.genesis_location.try(:country).try(:html_safe) %>",
+            diocese: "<%= genesis_source.genesis_location.try(:diocese).try(:html_safe) %>",
+            diocese_alt: "<%= genesis_source.genesis_location.try(:diocese_alt).try(:html_safe) %>",
             origin_notes: `<%= genesis_source.try(:origin_notes).try(:html_safe) %>`,
             ownerships: `<%= genesis_source.ownerships.map(&:full_display_name).join(' | ').html_safe %>`,
             full_description: `<%= [
@@ -274,7 +274,7 @@
                 genesis_source.genesis_location.try(:diocese),
                 genesis_source.genesis_location.try(:region),
                 genesis_source.genesis_location.try(:country),
-              ].select{ |s| s.present? }.join(", "),
+              ].select{ |s| s.present? }.join(", ").html_safe,
               genesis_source.try(:origin_notes).try(:html_safe),
             ].select{ |s| s.present? }.join(". ") %>`
           }
