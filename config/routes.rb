@@ -85,8 +85,9 @@ Rails.application.routes.draw do
   resources :change_logs
   resources :booklist_sections
   resources :user_grid_states, only: :destroy do
+    patch :set_default
     collection do
-      put :save  
+      put :save
       put :sort
       get :get
     end

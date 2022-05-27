@@ -5,9 +5,10 @@
   <% end %>
   <% @grid_states.each do |state| %>
     <div class="btn-group mx-2 mb-2" role="group">
-      <button type="button" class="btn btn-sm btn-outline-action" onclick="getState({id: <%= state.id %>})"><%= state.state_name %></button>
+      <button type="button" class="btn btn-sm btn-outline-action change-state-button" id="change-state-button-<%= state.id %>" data-bs-toggle="modal" data-bs-target="#keep-filters-<%= state.id %>"><%= state.state_name %></button>
       <button type="button" class="btn btn-sm btn-outline-action reset" style="display: none;" onclick="getState({id: <%= state.id %>})"><i class='far fa-undo'></i></button>
       <% if user_signed_in? && current_user.admin? %>
+        <button type="button" class="btn btn-sm btn-outline-action" id="default-state-button-<%= state.id %>" onclick="setDefaultState(<%= state.id %>)"><i class="<%= state.is_default ? 'fas' : 'far' %> fa-star"></i></button>
         <button type="button" class="btn btn-sm btn-outline-action" onclick="deleteState('delete-state-<%= state.id %>')"><i class='far fa-trash-alt'></i></button>
       <% end %>
     </div>
@@ -15,13 +16,20 @@
   <% end %>
 </div>
 
-<script type="text/javascript">
-  $("#options button:not(.create)").click(function() {
-    $("#options button").removeClass("active").closest(".btn-group").find(".reset").hide();
-    $(this).addClass("active");
-    $(this).closest(".btn-group").find(".reset").show();
-  })
-</script>
+<div class="d-flex mb-2">
+  <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  <button class="btn btn-sm btn-outline-action ms-2" id="expand" onclick="expand();"><i class="far fa-expand-alt"></i> Expand all rows</button>
+  <button class="btn btn-sm btn-outline-action ms-2" id="collapse" onclick="collapse();" style="display:none;"><i class="far fa-compress-alt"></i> Close all expanded</button>
+  <button class="btn btn-sm btn-outline-action ms-2" onclick="gridOptions.api.setFilterModel(null);"><i class="far fa-filter"></i> Clear filters</button>
+  <button class="btn btn-sm btn-outline-action ms-auto" id="reset-to-default" style="display: <%= UserGridState.exists?(record_type: "Section", is_default: true) ? "block" : "none" %>;" onclick="getState({id: default_state_id})"><i class="fas fa-star"></i> Reset to default</button>
+  <% if user_signed_in? %>
+    <% if current_user.admin? %>
+      <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset to blank grid</button>
+    <% end %>
+    <button class="btn btn-sm btn-outline-action ms-2" onclick="saveState()"><i class="fas fa-user"></i> Save grid config.</button>
+    <button class="btn btn-sm btn-outline-action ms-2" id="load-grid-config" style="display: <%= current_user.user_grid_states.exists?(record_type: "Section") ? "block" : "none" %>;" onclick="getState({user_id: <%= current_user.id %>, record_type: 'Section'})"><i class="fas fa-user"></i> Load grid config.</button>
+  <% end %>
+</div>
 
 <!-- Modals -->
 <div class="modal" id="create-configuration" tabindex="-1" aria-hidden="true">
@@ -69,9 +77,25 @@
       </div>
     </div>
 </div>
-
-<div id="vue-name">
-</div>
+<% @grid_states.each do |state| %>
+  <div class="modal" id="keep-filters-<%= state.id %>" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Loading configuration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Would you like to keep the current filters on the grid or load the preset filters that come with the configuration you have selected?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action disable-on-click" onclick="getState({id: <%= state.id %>}, false)" data-bs-dismiss="modal">Keep current filters</button>
+          <button type="button" class="btn btn-action disable-on-click" onclick="getState({id: <%= state.id %>}, true)" data-bs-dismiss="modal">Load new filters</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
 
 <script type="text/javascript">
   $( document ).ready(function() {

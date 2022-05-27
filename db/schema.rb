@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_26_195508) do
+ActiveRecord::Schema.define(version: 2022_05_27_153824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -493,6 +493,7 @@ ActiveRecord::Schema.define(version: 2022_05_26_195508) do
     t.string "state_name", default: "", null: false
     t.json "filters"
     t.integer "index"
+    t.boolean "is_default", default: false, null: false
     t.index ["user_id"], name: "index_user_grid_states_on_user_id"
   end
 

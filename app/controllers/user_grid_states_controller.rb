@@ -28,6 +28,10 @@ class UserGridStatesController < ApplicationController
 	    render json: {success: true}
 	end
 
-	private
+	def set_default
+		UserGridState.all.update_all(is_default: false)
+		UserGridState.find(params[:user_grid_state_id]).update(is_default: true)
+		render json: {success: true}
+	end
 
 end

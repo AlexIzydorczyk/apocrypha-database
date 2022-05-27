@@ -1,6 +1,6 @@
 class SectionsController < ApplicationController
   before_action :set_section, only: %i[ show edit update destroy ]
-  # skip_before_action :authenticate_user!, only: %i[ index ]
+  skip_before_action :authenticate_user!, only: %i[ index ]
   before_action :allow_for_editor, only: %i[ index edit update destroy create ]
 
  def index
@@ -36,6 +36,12 @@ class SectionsController < ApplicationController
     @new_apocryphon = Apocryphon.new
 
     @grid_states = UserGridState.where(user_id: nil, record_type: "Section").order(:index)
+
+    ugs = user_signed_in? && current_user.user_grid_states.exists?(record_type: "Section") ? current_user.user_grid_states.where(record_type: "Section").first : (UserGridState.exists?(record_type: "Section", is_default: true) ? UserGridState.where(record_type: "Section", is_default: true).first : nil)
+
+    @initial_state = ugs.try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = ugs.try(:filters).try(:to_json).try(:html_safe)
+
   end
 
   def show

@@ -81,6 +81,11 @@ function createModalListeners(selector) {
   $(selector).on('hidden.bs.modal', setModalPositioning);
 }
 
+function reenableButton(btn){
+  console.log("functin urnning", btn);
+  btn.prop("disabled", false).find("i").remove();
+}
+
 // --------- rdy ---------
 
 $(function() {
