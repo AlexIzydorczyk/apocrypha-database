@@ -1,4 +1,6 @@
 class UserGridStatesController < ApplicationController
+	skip_before_action :authenticate_user!, only: %i[ get ]
+
 	def save
 		ugs = UserGridState.find_or_create_by(
 			user: params[:state_name].present? ? nil : current_user,

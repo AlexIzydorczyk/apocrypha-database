@@ -4,7 +4,7 @@
     <button class="btn btn-sm btn-outline-action mx-2 mb-2 create" data-bs-toggle="modal" data-bs-target="#update-configuration-order"><i class="far fa-sort"></i> Update order</button>
   <% end %>
   <% @grid_states.each do |state| %>
-    <div class="btn-group mx-2 mb-2" role="group">
+    <div class="btn-group mx-2 mb-2 states <%= 'user_signed_in' if user_signed_in? %>" role="group">
       <button type="button" class="btn btn-sm btn-outline-action change-state-button" id="change-state-button-<%= state.id %>" data-bs-toggle="modal" data-bs-target="#keep-filters-<%= state.id %>"><%= state.state_name %></button>
       <button type="button" class="btn btn-sm btn-outline-action reset" style="display: none;" onclick="getState({id: <%= state.id %>})"><i class='far fa-undo'></i></button>
       <% if user_signed_in? && current_user.admin? %>

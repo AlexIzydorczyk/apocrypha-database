@@ -2,9 +2,7 @@
 
 <div id="sections_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
-<% if user_signed_in? %>
-  <%= render 'layouts/grid_save_state_js', record_type: "Section" %>
-<% end %>
+<%= render 'layouts/grid_save_state_js', record_type: "Section" %>
 
 <script type="text/javascript" charset="utf-8">
 
@@ -117,7 +115,7 @@
       { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, filter: 'agTextColumnFilter', aggFunc: null },
       { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", cellRenderer: linkRenderer, aggFunc: null },
       { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", cellRenderer: linkRenderer, aggFunc: null },
-      { headerName: "Manuscript show", headerTooltip: "Manuscript show", field: "manuscript.show_link", cellRenderer: linkRenderer, aggFunc: null },
+      { headerName: "Ms. full desc.", headerTooltip: "Ms. full desc.", field: "manuscript.show_link", cellRenderer: linkRenderer, cellRendererParams: {display_text: "Open"}, aggFunc: null },
     ]},
     // { headerName: "Credits", children: [
     //   { headerName: "Correspondent(s)", field: "manuscript.correspondent_names" },
@@ -411,7 +409,7 @@
         }else{
           let temp = document.createElement('a');
           temp.href = value;
-          return "<a href='" + value + "' target='blank'>" + temp.hostname + "</a>"
+          return "<a href='" + value + "' target='blank'>" + (p.display_text || temp.hostname) + "</a>"
         }
       });
     } else {
@@ -420,7 +418,7 @@
       }else{
         let temp = document.createElement('a');
         temp.href = p.value;
-        to_return = ["<a href='" + p.value + "' target='blank'>" + temp.hostname + "</a>"];
+        to_return = ["<a href='" + p.value + "' target='blank'>" + (p.display_text || temp.hostname) + "</a>"];
       };
     }
     return to_return.join(", ");
