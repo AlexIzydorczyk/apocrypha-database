@@ -26,11 +26,12 @@
     ] },
     { headerName: "Apocrypha", children: [
       { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agSetColumnFilter' },
-      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true },
-      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles" },
-      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title" },
-      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles" },
-      { headerName: "All titles", headerTooltip: "Other English titles", field: "apocryphon.all_titles" },
+      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true,  groupAggFiltering: true },
+      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles",  groupAggFiltering: true },
+      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title",  groupAggFiltering: true },
+      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles",  groupAggFiltering: true },
+      { headerName: "All English titles", headerTooltip: "All English titles", field: "apocryphon.all_english_titles",  groupAggFiltering: true },
+      { headerName: "All Latin titles", headerTooltip: "All Latin titles", field: "apocryphon.all_latin_titles",  groupAggFiltering: true },
     ]},
     { headerName: "Manuscript: general features", children: [
       { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", filter: null },
@@ -72,7 +73,7 @@
     { headerName: "Contents", children: [
       { headerName: "Sequence no", headerTooltip: "Sequence no", field: "content.sequence_no", comparator: numberSort, filter: null, sort: "asc", sortIndex: 1 },
       { headerName: "Apocr./Non-apocr.", headerTooltip: "Apocr./Non-apocr.", field: "content.apocryphal", filter: 'agSetColumnFilter' },
-      { headerName: "Contents item", headerTooltip: "Contents item", field: "content.content_item" },
+      { headerName: "Contents item", headerTooltip: "Contents item", field: "content.content_item",  groupAggFiltering: true },
     ]},
 
     { headerName: "Apocryphon in ms.: general features", children: [
@@ -95,25 +96,25 @@
       { headerName: "Section no.", headerTooltip: "Section no.", field: "section.section_number", comparator: numberSort, filter: 'agTextColumnFilter', sort: "asc", sortIndex: 2 },
       { headerName: "Section name", headerTooltip: "Section name", field: "section.section_name" },
       { headerName: "Pp./ff. incipit", headerTooltip: "Pp./ff. incipit", field: "section.pages_folios_incipit", filter: null },
-      { headerName: "Incipit", headerTooltip: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender },
-      { headerName: "Incipit (translit.)", headerTooltip: "Incipit (translit.)", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender },
-      { headerName: "Incipit (transla.)", headerTooltip: "Incipit (transla.)", field: "section.incipit_translation", cellRenderer: richTextRender },
+      { headerName: "Incipit", headerTooltip: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender,  groupAggFiltering: true },
+      { headerName: "Incipit (translit.)", headerTooltip: "Incipit (translit.)", field: "section.incipit_orig_transliteration", cellRenderer: richTextRender,  groupAggFiltering: true },
+      { headerName: "Incipit (transla.)", headerTooltip: "Incipit (transla.)", field: "section.incipit_translation", cellRenderer: richTextRender,  groupAggFiltering: true },
       { headerName: "Pp./ff. explicit", headerTooltip: "Explicit pp./ff.", field: "section.pages_folios_explicit", filter: null },
-      { headerName: "Explicit", headerTooltip: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender },
-      { headerName: "Explicit (translit.)", headerTooltip: "Explicit (translit.)", field: "section.explicitorig_transliteration", cellRenderer: richTextRender },
-      { headerName: "Explicit (transla.)", headerTooltip: "Explicit (transla.)", field: "section.explicit_translation", cellRenderer: richTextRender },
+      { headerName: "Explicit", headerTooltip: "Explicit", field: "section.explicit_orig", cellRenderer: richTextRender,  groupAggFiltering: true },
+      { headerName: "Explicit (translit.)", headerTooltip: "Explicit (translit.)", field: "section.explicitorig_transliteration", cellRenderer: richTextRender,  groupAggFiltering: true },
+      { headerName: "Explicit (transla.)", headerTooltip: "Explicit (transla.)", field: "section.explicit_translation", cellRenderer: richTextRender,  groupAggFiltering: true },
       { headerName: "Pp./ff. colophon", headerTooltip: "Pp./ff. colophon", field: "text.pages_folios_colophon", filter: null },
-      { headerName: "Colophon", headerTooltip: "Colophon", field: "text.colophon_orig" },
-      { headerName: "Colophon (translit.)", headerTooltip: "Colophon (translit.)", field: "text.colophon_transliteration" },
-      { headerName: "Colophon (transla.)", headerTooltip: "Colophon (transla.)", field: "text.colophon_translation" },
+      { headerName: "Colophon", headerTooltip: "Colophon", field: "text.colophon_orig",  groupAggFiltering: true },
+      { headerName: "Colophon (translit.)", headerTooltip: "Colophon (translit.)", field: "text.colophon_transliteration",  groupAggFiltering: true },
+      { headerName: "Colophon (transla.)", headerTooltip: "Colophon (transla.)", field: "text.colophon_translation",  groupAggFiltering: true },
       { headerName: "Extent", headerTooltip: "Extent", field: "text.extent", filter: 'agSetColumnFilter'},
       { headerName: "Version", headerTooltip: "Version", field: "text.version"},
       { headerName: "Notes", field: "text.notes", cellRenderer: richTextRender },      
     ]},
     { headerName: "Links", children: [
-      { headerName: "Link to e-Clavis", headerTooltip: "Link to e-Clavis", field: "apocryphon.e_clavis_link", cellRenderer: linkRenderer, aggFunc: null, filter: 'agSetColumnFilter' },
-      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: null },
-      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", cellRenderer: linkRenderer, aggFunc: null, filter: 'agSetColumnFilter' },
+      { headerName: "e-Clavis", headerTooltip: "e-Clavis", field: "apocryphon.e_clavis_link", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: "linkAgg" },
+      { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: "linkAgg" },
+      { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: "linkAgg" },
       { headerName: "Ms. full desc.", headerTooltip: "Ms. full desc.", field: "manuscript.show_link", cellRenderer: linkRenderer, cellRendererParams: {display_text: "Open"}, aggFunc: null },
     ]},
     // { headerName: "Credits", children: [
@@ -181,7 +182,9 @@
             other_english_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }.join(', ') if apocryphon.id.present? %>",
             main_latin_title: "<%= apocryphon.main_lat_title if apocryphon.id.present? %>",
             other_latin_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }.join(', ') if apocryphon.id.present? %>",
-            all_titles: <%= apocryphon.id.present? ? [apocryphon.main_eng_title, apocryphon.main_lat_title, Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }, Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }].flatten.to_json.html_safe : [] %>
+            all_english_titles: <%= apocryphon.id.present? ? [apocryphon.main_eng_title, Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }].flatten.to_json.html_safe : "[]" %>,
+            all_latin_titles: <%= apocryphon.id.present? ? [apocryphon.main_lat_title, Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }].flatten.to_json.html_safe : "[]" %>,
+            e_clavis_link: "<%= apocryphon.e_clavis_link %>",
           },
           booklet: {
             <% booklet = key == :booklets ? rec : ([:texts, :sections, :contents].include?(key) && content.booklet_id.present? ? content.booklet : @new_booklet) %>
@@ -242,10 +245,10 @@
             identification: `<%= [
               manuscript.try(:census_no),
               [['lost', 'destroyed'].include?(manuscript.status) ? '*' : '', m_institution_loc.try(:city)].select{ |t| t.present? }.join(""),
-              m_institution_loc.try(:country).try(:html_safe),
-              m_institution.try(:display_name).try(:html_safe),
-              manuscript.shelfmark.html_safe
-            ].select{ |s| s.present? }.join(', ') %>`,
+              m_institution_loc.try(:country),
+              m_institution.try(:display_name),
+              manuscript.shelfmark
+            ].select{ |s| s.present? }.join(', ').html_safe %>`,
           },
           genesis: {
             <% genesis_source = manuscript.booklets.present? ? booklet : manuscript %>
@@ -265,7 +268,7 @@
             diocese_alt: "<%= genesis_source.genesis_location.try(:diocese_alt).try(:html_safe) %>",
             diocese_concat: `<%= [genesis_source.genesis_location.try(:diocese), genesis_source.genesis_location.try(:diocese_alt)].select{ |t| t.present? }.join(", ").html_safe %>`,
             origin_notes: `<%= genesis_source.try(:origin_notes).try(:html_safe) %>`,
-            ownerships: `<%= genesis_source.ownerships.map(&:full_display_name).join(' | ').html_safe %>`,
+            ownerships: `<%= genesis_source.ownerships.map(&:full_display_name).join(' ‖ ').html_safe %>`,
             full_description: `<%= [
               [
                 genesis_source.genesis_institution.try(:name),
@@ -322,7 +325,7 @@
           toolPanel: 'agColumnsToolPanel',
         },
       ],
-      defaultToolPanel: 'filters',
+      defaultToolPanel: null,
     },
     rowHeight: 28,
     suppressAggFuncInHeader: true,
@@ -333,7 +336,10 @@
         let arr = params.values.filter(onlyUnique).map(function(val) {
           return val == "" || val == [] || val == {} ? '(blank)' : val;
         })
-        return arr.join('¶ ');
+        return arr.join(' ‖ ');
+      },
+      linkAgg: (params) => {
+        return params.values.flat().filter(onlyUnique).join(' ‖ ');
       }
     },
     initialGroupOrderComparator: function (params) {
@@ -420,7 +426,7 @@
         to_return = ["<a href='" + p.value + "' target='blank'>" + (p.display_text || temp.hostname) + "</a>"];
       };
     }
-    return to_return.join(", ");
+    return to_return.filter( s => s && s.length > 0 ).join(", ");
   }
 
   function onFilterTextBoxChanged() {

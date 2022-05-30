@@ -255,8 +255,12 @@
   <dl class="row">
     <% if manuscript.modern_source_references.present? %><dt class="col-sm-3 text-end">Bibliographic references</dt>
     <dd class="col-sm-9"><% manuscript.modern_source_references.each do |msr| %>
-      <p><%= msr.modern_source.try(:display_name_html_safe) %> <%= "<strong>Page reference: </strong>#{msr.specific_page}. ".html_safe if msr.specific_page.present? %><%= "<strong>Siglum: </strong>#{msr.siglum}.".html_safe if msr.siglum.present? %></p>
+      <p><%= msr.modern_source.try(:display_name_html_safe) %> <%= "#{msr.specific_page}. ".html_safe if msr.specific_page.present? %><%= "<strong>Siglum: </strong>#{msr.siglum}.".html_safe if msr.siglum.present? %></p>
     <% end %></dd><% end %>
+    <% if manuscript.reproduction_urls.present? %><dt class="col-sm-3 text-end">Reproduction online</dt>
+    <dd class="col-sm-9"><%= manuscript.reproduction_urls.map{ |du| link_to du.url, du.url }.join(', ').html_safe %></dd><% end %>
+    <% if manuscript.database_urls.present? %><dt class="col-sm-3 text-end">Online databases</dt>
+    <dd class="col-sm-9"><%= manuscript.database_urls.map{ |du| link_to du.url, du.url }.join(', ').html_safe %></dd><% end %>
     <% if manuscript.correspondents.present? %><dt class="col-sm-3 text-end">Correspondent</dt>
     <dd class="col-sm-9"><%= manuscript.correspondents.map(&:full_name).join(', ') %></dd><% end %>
     <% if manuscript.transcribers.present? %><dt class="col-sm-3 text-end">Transcriber</dt>
