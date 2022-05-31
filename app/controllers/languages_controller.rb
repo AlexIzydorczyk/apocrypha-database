@@ -5,6 +5,8 @@ class LanguagesController < ApplicationController
 
   def index
     @languages = Language.all
+    @initial_state = current_user.user_grid_states.find_by(record_type: "Language").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "Language").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show

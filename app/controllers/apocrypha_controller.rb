@@ -5,6 +5,8 @@ class ApocryphaController < ApplicationController
 
   def index
     @apocrypha = Apocryphon.all.includes(:languages, :titles, :language_references)
+    @initial_state = current_user.user_grid_states.find_by(record_type: "Apocryphon").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "Apocryphon").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show

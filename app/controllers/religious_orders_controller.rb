@@ -5,6 +5,8 @@ class ReligiousOrdersController < ApplicationController
 
   def index
     @religious_orders = ReligiousOrder.all
+    @initial_state = current_user.user_grid_states.find_by(record_type: "ReligiousOrder").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "ReligiousOrder").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show

@@ -5,6 +5,8 @@ class BooklistsController < ApplicationController
 
   def index
     @booklists = Booklist.all.includes(:library_owner, :institution, :location, :modern_source_references, :modern_sources, :booklist_sections)
+    @initial_state = current_user.user_grid_states.find_by(record_type: "Booklist").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "Booklist").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show

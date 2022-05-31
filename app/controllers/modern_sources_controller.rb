@@ -5,6 +5,8 @@ class ModernSourcesController < ApplicationController
 
   def index
     @modern_sources = ModernSource.all.includes(:publication_location, :language, :institution, :publication_title_language, :volume_title_language, :part_title_language, :series_title_language, :title_language, :source_urls, :modern_source_references, :person_references, :author_references, :authors, :editor_references, :editors, :translator_references, :translators, :booklist_sections, :writing_system)
+    @initial_state = current_user.user_grid_states.find_by(record_type: "ModernSource").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "ModernSource").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show

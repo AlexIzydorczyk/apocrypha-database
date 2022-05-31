@@ -5,6 +5,8 @@ class InstitutionsController < ApplicationController
 
   def index
     @institutions = Institution.all.includes(:location, :manuscripts, :institutional_affiliations, :religious_order, :booklets, :ownerships, :booklists, :modern_sources, :writing_system)
+    @initial_state = current_user.user_grid_states.find_by(record_type: "Institution").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "Institution").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show
