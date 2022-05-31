@@ -177,6 +177,8 @@ class ManuscriptsController < ApplicationController
       b.contents.each do |c|
         c.update(booklet_id: nil, manuscript_id: manuscript.id)
       end
+      b.ownerships.reload
+      b.contents.reload
       b.destroy
     end
     manuscript.update(known_booklet_composition: false)
