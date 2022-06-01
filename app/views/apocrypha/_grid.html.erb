@@ -27,15 +27,17 @@
     { headerName: "Latin abbrev.", field: "latin_abbreviation" },
     { headerName: "Other Latin titles", field: "other_latin_titles", editable: false},
     { headerName: "Lgs in Apocrypharius", field: "languages_list", editable: false, hide: true },
-    { headerName: "CANT", field: "cant_no", comparator: numberSort },
-    { headerName: "BHL", field: "bhl_no" },
-    { headerName: "BHG", field: "bhg_no" },
-    { headerName: "e-Clavis", field: "e_clavis_no", comparator: numberSort },
-    { headerName: "Link to e-Clavis", field: "e_clavis_link", hide: true},
+    { headerName: "Identifiers", children: [
+      { headerName: "CANT", field: "cant_no", comparator: numberSort },
+      { headerName: "BHL", field: "bhl_no" },
+      { headerName: "BHG", field: "bhg_no" },
+      { headerName: "e-Clavis", field: "e_clavis_no", comparator: numberSort },
+      { headerName: "Link to e-Clavis", field: "e_clavis_link", hide: true},
+    ]},
     { headerName: "Notes", hide: true, editable: false, field: "notes" },
-    { headerName: "Actions", field: "links", pinned: "right", editable: false, cellRenderer: function(links) {
+    { headerName: "Actions", field: "links", <% if current_user.present? && current_user.adm_editor? %>pinned: "right",<% end %> editable: false, cellRenderer: function(links) {
         var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
-        return "<a href='" + links.value.edit + "?old_path=" + window.location.pathname + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" + eclavis
+        return <% if current_user.present? && current_user.adm_editor? %>"<a href='" + links.value.edit + "?old_path=" + window.location.pathname + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" +<% end %> eclavis
       } 
     }
   ];
@@ -68,7 +70,29 @@
     defaultColDef: defaultColDef,
     rowData: rowData,
     onCellValueChanged: onCellValueChanged,
-    sideBar: 'columns',
+    sideBar: {
+      toolPanels: [
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel',
+          toolPanelParams: {
+            suppressSyncLayoutWithGrid: true,
+          },
+        },
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+        },
+      ],
+      defaultToolPanel: null,
+    },
+
   };
 
   function onCellValueChanged(event){
@@ -107,5 +131,7 @@
   const eGridDiv = document.querySelector('#apocrypha_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
   gridOptions.columnApi.autoSizeColumns(['apocryphon_no','cant_no','bhl_no','bhg_no','bho_no','e_clavis_no'], true);
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.collapseColumnGroups();
   autoSizeAll(gridOptions, false);
 </script>

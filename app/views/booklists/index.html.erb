@@ -1,10 +1,10 @@
 <div class="breadcrumbs">
   <%= link_to "Home", root_path %>
   <i class="far fa-chevron-right"></i>
-  Booklists
+  Apocrypha in booklists
 </div>
 
-<h1>Booklists <%= button_to 'New booklist', booklists_path, class: "btn btn-action", params: { booklist: { booklist_type: "" } } %></h1>
+<h1>Apocrypha in booklists <%= button_to 'New booklist', booklists_path, class: "btn btn-action", params: { booklist: { booklist_type: "" } } if current_user.present? && current_user.adm_editor? %></h1>
 
 <div id="booklists">
     <%= render 'grid', booklists: @booklists %>

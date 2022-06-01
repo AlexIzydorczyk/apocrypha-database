@@ -1,5 +1,5 @@
 <div id="booklist-form" class="d-none">
-	<%= form_with(model: booklist, class: "autosave save-before-modals base-form") do |form| %>
+	<%= form_with(model: booklist, class: "autosave save-before-modals base-form #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 
 	<h2>Books' owner</h2>
 	<div class="row">

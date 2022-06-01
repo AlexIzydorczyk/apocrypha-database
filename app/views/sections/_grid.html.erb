@@ -113,7 +113,7 @@
       { headerName: "e-Clavis", headerTooltip: "e-Clavis", field: "apocryphon.e_clavis_link", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: "linkAgg" },
       { headerName: "Reproduction online", headerTooltip: "Reproduction online", field: "manuscript.reproduction_online", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: "linkAgg" },
       { headerName: "Online databases", headerTooltip: "Online databases", field: "manuscript.manuscript_urls", cellRenderer: linkRenderer, filter: 'agSetColumnFilter', aggFunc: "linkAgg" },
-      { headerName: "Ms. full desc.", headerTooltip: "Ms. full desc.", field: "manuscript.show_link", cellRenderer: linkRenderer, cellRendererParams: {display_text: "Open"}, aggFunc: null },
+      { headerName: "Ms. full descr.", headerTooltip: "Ms. full descr.", field: "manuscript.show_link", cellRenderer: linkRenderer, cellRendererParams: {display_text: "Open"}, aggFunc: "linkAgg" },
     ]},
     // { headerName: "Credits", children: [
     //   { headerName: "Correspondent(s)", field: "manuscript.correspondent_names" },
@@ -240,9 +240,8 @@
             notes: `<%= manuscript.notes.html_safe  %>`,
             languages: <%= manuscript.languages.pluck(:language_name).to_json.html_safe %>,
             manuscript_urls: <%= manuscript.database_urls.map(&:url).to_json.html_safe %>,
-            identification: `<%= [
-              # change comma after senus number to a period
-              manuscript.try(:census_no),
+            identification: `<%= manuscript.try(:census_no).to_s + '. ' +
+            [
               [['lost', 'destroyed'].include?(manuscript.status) ? '*' : '', m_institution_loc.try(:city)].select{ |t| t.present? }.join(""),
               m_institution_loc.try(:country),
               m_institution.try(:display_name),
@@ -339,7 +338,7 @@
         return arr.join(' ‖ ');
       },
       linkAgg: (params) => {
-        return params.values.flat().filter(onlyUnique).join(' ‖ ');
+        return params.values.flat().filter(onlyUnique);
       }
     },
     initialGroupOrderComparator: function (params) {
