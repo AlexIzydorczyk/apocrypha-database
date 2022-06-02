@@ -4,7 +4,27 @@ class BooklistSectionsController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
-    @booklist_sections = BooklistSection.all
+    @booklist_references = BooklistReference.all
+    @booklist_sections_accounted = @booklist_references.map(&:booklist_section_id).uniq
+    @booklists_accounted = @booklist_references.map{ |br| br.booklist_section.booklist_id}.uniq
+
+    @booklist_sections = BooklistSection.where.not(id: @booklist_sections_accounted).all
+    @booklists_accounted.push(@booklist_sections.map(&:booklist_id)).uniq
+
+    @booklists = Booklist.where.not(id: @booklists_accounted).all
+
+    @queries = {booklist_references: @booklist_references, booklist_sections: @booklist_sections, booklists: @booklists} 
+
+    @new_booklist_reference = BooklistReference.new
+    @new_booklist_section = BooklistSection.new
+    @new_apocryphon = Apocryphon.new
+
+    @grid_states = UserGridState.where(user_id: nil, record_type: "BooklistSection").order(:index)
+
+    ugs = user_signed_in? && current_user.user_grid_states.exists?(record_type: "BooklistSection") ? current_user.user_grid_states.where(record_type: "BooklistSection").first : (UserGridState.exists?(record_type: "BooklistSection", is_default: true) ? UserGridState.where(record_type: "BooklistSection", is_default: true).first : nil)
+
+    @initial_state = ugs.try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = ugs.try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show
