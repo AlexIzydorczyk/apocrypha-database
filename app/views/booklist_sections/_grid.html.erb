@@ -14,38 +14,14 @@
   const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: false, aggFunc: 'concat', filter: 'agMultiColumnFilter', autoHeight: true, enableValue: true, wrapText: true, cellStyle: {wordBreak: 'normal'} };
 
   const columnDefs = [
-    { headerName: "Apocryphon", children: [ //booklist reference to booklist section
+    { headerName: "Apocryphon mentioned", children: [ //booklist reference to booklist section
       { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agSetColumnFilter', hide: true },
       { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true },
-      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles" },
-      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title" },
-      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles" },
-      { headerName: "All English titles", headerTooltip: "All English titles", field: "apocryphon.all_english_titles" },
-      { headerName: "All Latin titles", headerTooltip: "All Latin titles", field: "apocryphon.all_latin_titles" },
-    ]},
-    { headerName: "Excerpts", children: [ //booklist section
-      { headerName: "Id", field: "excerpt.id", hide: true },
-      { headerName: "Sequence no", field: "excerpt.sequence_no"},
-      { headerName: "Heading orig", field: "excerpt.heading_orig"},
-      { headerName: "Heading orig transliteration", field: "excerpt.heading_orig_transliteration", hide: true},
-      { headerName: "Heading translation", field: "excerpt.heading_translation", hide: true},
-      { headerName: "Relevant text orig", field: "excerpt.relevant_text_orig"},
-      { headerName: "Relevant text orig transliteration", field: "excerpt.relevant_text_orig_transliteration", hide: true},
-      { headerName: "Relevant text translation", field: "excerpt.relevant_text_translation", hide: true},
-      { headerName: "Notes on excerpt", field: "excerpt.notes"},
-      { headerName: "Extant as ms.", field: "excerpt.manuscript"}
-    ]},
-    { headerName: "Booklist", children: [ //booklist
-      { headerName: "Booklist no.", field: "booklist.booklist_no", comparator: numberSort , hide: true },
-      { headerName: "Booklist type", field: "booklist.booklist_type"},
-      { headerName: "Language", field: "booklist.language_name" },
-      { headerName: "Period from", field: "booklist.date_from", comparator: numberSort },
-      { headerName: "Period to", field: "booklist.date_to", comparator: numberSort },
-      { headerName: "Date (exact/approx.)", field: "booklist.specific_date", comparator: numberSort },
-      { headerName: "Title", field: "booklist.title_orig"},
-      { headerName: "Title (translit.)", field: "booklist.title_orig_transliteration", hide: true},
-      { headerName: "Title (transla.)", field: "booklist.title_orig_translation", hide: true},
-      { headerName: "Notes on booklist", field: "booklist.notes"},
+      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles", hide: true },
+      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title", hide: true },
+      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles", hide: true },
+      { headerName: "All English titles", headerTooltip: "All English titles", field: "apocryphon.all_english_titles", hide: true },
+      { headerName: "All Latin titles", headerTooltip: "All Latin titles", field: "apocryphon.all_latin_titles", hide: true },
     ]},
     { headerName: "Owner", children: [ //booklist
       { headerName: "Owner", field: "booklist.library_owner" },
@@ -63,6 +39,30 @@
       { headerName: "Region", field: "booklist.region", editable: false, hide: true },
       { headerName: "Region (alternative)", hide: true, field: "booklist.region_alt"},
       { headerName: "Country", field: "booklist.country", editable: false, hide: true },
+    ]},
+    { headerName: "Booklist", children: [ //booklist
+      { headerName: "Booklist no.", field: "booklist.booklist_no", comparator: numberSort , hide: true },
+      { headerName: "Booklist type", field: "booklist.booklist_type"},
+      { headerName: "Language", field: "booklist.language_name" },
+      { headerName: "Period from", field: "booklist.date_from", comparator: numberSort },
+      { headerName: "Period to", field: "booklist.date_to", comparator: numberSort },
+      { headerName: "Year(s)", field: "booklist.specific_date", comparator: numberSort },
+      { headerName: "Notes on booklist", field: "booklist.notes"},
+      { headerName: "Title", field: "booklist.title_orig"},
+      { headerName: "Title (translit.)", field: "booklist.title_orig_transliteration", hide: true},
+      { headerName: "Title (transla.)", field: "booklist.title_orig_translation", hide: true},
+    ]},
+    { headerName: "Excerpts", children: [ //booklist section
+      { headerName: "Id", field: "excerpt.id", hide: true },
+      { headerName: "Sequence no", field: "excerpt.sequence_no", hide: true},
+      { headerName: "Heading", field: "excerpt.heading_orig"},
+      { headerName: "Heading (translit.)", field: "excerpt.heading_orig_transliteration", hide: true},
+      { headerName: "Heading (transla.)", field: "excerpt.heading_translation", hide: true},
+      { headerName: "Relevant text", field: "excerpt.relevant_text_orig"},
+      { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration", hide: true},
+      { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation", hide: true},
+      { headerName: "Notes on relevant text", field: "excerpt.notes"},
+      { headerName: "Extant as ms.", field: "excerpt.manuscript"}
     ]},
   ];
 

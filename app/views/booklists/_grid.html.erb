@@ -33,18 +33,18 @@
 
   const columnDefs = [
         { headerName: "Booklist no.", field: "booklist_no", comparator: numberSort },
-        { headerName: "Library owner", field: "library_owner" },
-
-        { headerName: "Library owner Person", children: [
+        { headerName: "Owner", field: "library_owner" },
+        { headerName: "Person", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
             { headerName: "Id", field: "library_owner_id", hide: true, editable: false, cellRenderer: function(params) {
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "library_owner")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
             } },
           <% end %>
+          { headerName: "Person", field: "library_owner_full_name", hide: true, editable: false },
           { headerName: "First name", field: "library_owner_first_name", hide: true, editable: false },
           { headerName: "Last name", field: "library_owner_last_name", hide: true, editable: false },
         ]},
-        { headerName: "Library owner Institution", children: [
+        { headerName: "Institution", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
             { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
@@ -53,7 +53,7 @@
           { headerName: "Name", field: "institution_name", hide: true, editable: false },
           { headerName: "Name (alternative)", field: "institution_name_alternative", hide: true, editable: false },
         ] },
-        { headerName: "Library owner Religious order", children: [
+        { headerName: "Religious order", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
             { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
@@ -62,7 +62,7 @@
           { headerName: "Name", field: "religious_order_name", hide: true, editable: false },
           <% if user_signed_in? && current_user.adm_editor? %>{ headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },<% end %>
         ] },
-        { headerName: "Library owner Location", children: [
+        { headerName: "Location", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
             { headerName: "Id", field: "location_id", hide: true, editable: false, cellRenderer: function(params) {
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'location')"><i class='fa-solid fa-arrows-repeat'></i></button>`
@@ -82,7 +82,7 @@
         { headerName: "Date", children: [
           { headerName: "Period from", field: "date_from", hide: false, comparator: numberSort },
           { headerName: "Period to", field: "date_to", hide: false, comparator: numberSort },
-          { headerName: "Date (exact/approx.)", field: "specific_date", hide: false, comparator: numberSort },
+          { headerName: "Year(s)", field: "specific_date", hide: false, comparator: numberSort },
         ]},
         { headerName: "Title", field: "title_orig"},
         { headerName: "Title (translit.)", field: "title_orig_transliteration", hide: true},
@@ -103,6 +103,7 @@
         library_owner: "<%= bl.display_library_owner.try(:html_safe) %>",
         library_owner_first_name: "<%= bl.library_owner.try(:first_name_vernacular) %>",
         library_owner_last_name: "<%= bl.library_owner.try(:last_name_vernacular) %>",
+        library_owner_full_name: "<%= bl.library_owner.try(:full_name) %>",
         library_owner_id: "<%= bl.library_owner_id %>",
         institution_id: "<%= bl.institution_id %>",
         institution_name: "<%= bl.institution.try(:name).try(:html_safe) %>",

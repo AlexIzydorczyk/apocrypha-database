@@ -9,7 +9,7 @@ class BooklistSectionsController < ApplicationController
     @booklists_accounted = @booklist_references.map{ |br| br.booklist_section.booklist_id}.uniq
 
     @booklist_sections = BooklistSection.where.not(id: @booklist_sections_accounted).all
-    @booklists_accounted.push(@booklist_sections.map(&:booklist_id)).uniq
+    @booklists_accounted = (@booklists_accounted + @booklist_sections.map(&:booklist_id)).uniq
 
     @booklists = Booklist.where.not(id: @booklists_accounted).all
 
