@@ -72,6 +72,24 @@
 			<%= render 'modern_source_references/list', modern_source_references: booklist.modern_source_references %>
 		</div>
 
+		<%= fields_for(:author_reference, @author_reference) do |ar| %>
+			<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || source_type != 'book'">
+				<label style="display: block;">Author(s)</label>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
+						<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.to_s.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if booklist.authors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
+				</div>
+			</div>
+		<% end %>
+
 	</div>
 	<div class="row">
 		<div class="col-12 col-lg-7">

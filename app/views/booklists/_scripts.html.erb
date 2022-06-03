@@ -54,6 +54,7 @@ $(document).ready(function(){
 
 function runTomSelects(){
 	new TomSelect("#booklist_library_owner_id", ts_sort_text_asc_max_1);
+	new TomSelect("#author_reference_id", ts_sort_text_asc_max_null);
 	new TomSelect("#booklist_booklist_type", ts_sort_text_asc_max_1_create);
 	var booklist_location_select = new TomSelect("#booklist_location_id",ts_sort_text_asc_max_1);
 	var booklist_religious_order_select = new TomSelect("#booklist_religious_order_id", ts_sort_text_asc_max_1);

@@ -19,10 +19,12 @@ class BooklistsController < ApplicationController
 
   def new
     @booklist = Booklist.new
+    @author_reference = @booklist.author_references.build
   end
 
   def edit
     @languages = Language.all
+    @author_reference = @booklist.author_references.build
     @modern_sources = ModernSource.left_outer_joins([:authors, :institution]).order("people.last_name_vernacular", "institutions.name", "people.first_name_vernacular", "modern_sources.publication_title_orig", "modern_sources.title_orig").all.uniq
   end
 
@@ -39,6 +41,14 @@ class BooklistsController < ApplicationController
   end
 
   def update
+    if params[:author_reference].present?
+      new_set = params[:author_reference][:id].filter{ |id| id.present? }.map{ |id| id.to_i }
+      PersonReference.where(record: @booklist, person_id: @booklist.authors.ids - new_set).destroy_all
+      build_person_references_for new_set - @booklist.authors.ids, 'author'
+    elsif params[:in_grid].blank?
+      @booklist.author_references.destroy_all
+    end
+
     if @booklist.update(booklist_params)
       ChangeLog.create(user_id: current_user.id, record_type: 'Booklist', record_id: @booklist.id, controller_name: 'booklist', action_name: 'update')
       if request.xhr?
@@ -65,6 +75,18 @@ class BooklistsController < ApplicationController
 
   def booklist_params
     params.require(:booklist).permit(:booklist_type, :manuscript_source, :library_owner_id, :institution_id, :location_id, :religious_order_id, :scribe_id, :language_id, :title_orig, :title_orig_transliteration, :title_orig_translation, :chapter_orig, :chapter_orig_transliteration, :chapter_translation, :date_from, :date_to, :specific_date, :notes, :date_exact, :booklist_no)
+  end
+
+  def build_person_references_for ids, reference_type
+    if ids.class == Array
+      ids.each do |id|
+        if id.present?
+          @booklist.person_references.build(person_id: id, reference_type: reference_type)
+        end
+      end
+    else
+      @booklist.person_references.build(person_id: ids, reference_type: reference_type)
+    end
   end
 
 end

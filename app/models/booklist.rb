@@ -9,6 +9,9 @@ class Booklist < ApplicationRecord
   has_many :modern_source_references, as: :record, dependent: :destroy
   has_many :modern_sources, through: :modern_source_references
   has_many :booklist_sections, dependent: :destroy
+  has_many :person_references, as: :record, dependent: :destroy
+  has_many :author_references, -> { author }, as: :record, class_name: "PersonReference"
+  has_many :authors, through: :author_references, class_name: "Person"
 
   def display_name
     "Booklist " + self.id.to_s

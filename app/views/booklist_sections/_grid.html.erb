@@ -47,6 +47,7 @@
       { headerName: "Period from", field: "booklist.date_from", comparator: numberSort },
       { headerName: "Period to", field: "booklist.date_to", comparator: numberSort },
       { headerName: "Year(s)", field: "booklist.specific_date", comparator: numberSort },
+      { headerName: "Author(s)", field: "booklist.authors"},
       { headerName: "Notes on booklist", field: "booklist.notes"},
       { headerName: "Title", field: "booklist.title_orig"},
       { headerName: "Title (translit.)", field: "booklist.title_orig_transliteration", hide: true},
@@ -62,7 +63,7 @@
       { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration", hide: true},
       { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation", hide: true},
       { headerName: "Notes on relevant text", field: "excerpt.notes"},
-      { headerName: "Extant as ms.", field: "excerpt.manuscript"}
+      { headerName: "Extant as ms.", field: "excerpt.manuscript"},
     ]},
   ];
 
@@ -127,6 +128,7 @@
             date_to: "<%= bl.date_to %>",
             specific_date: "<%= bl.specific_date %>",
             notes: `<%= bl.notes %>`,
+            authors: `<%= bl.authors.map(&:full_name).join(', ').html_safe %>`
           },
         },
 

@@ -84,6 +84,7 @@
           { headerName: "Period to", field: "date_to", hide: false, comparator: numberSort },
           { headerName: "Year(s)", field: "specific_date", hide: false, comparator: numberSort },
         ]},
+        { headerName: "Author(s)", field: "authors"},
         { headerName: "Title", field: "title_orig"},
         { headerName: "Title (translit.)", field: "title_orig_transliteration", hide: true},
         { headerName: "Title (transla.)", field: "title_orig_translation", hide: true},
@@ -130,6 +131,7 @@
         apocrypha_mentioned: "<%= bl.apocrypha_mentioned %>",
         extant_as_ms: "<%= bl.extant_as_ms %>",
         notes: `<%= bl.notes %>`,
+        authors: `<%= bl.authors.map(&:full_name).join(', ').html_safe %>`,
         links: { edit: "<%= edit_booklist_path(bl) %>", delete_btn: 'delete_<%= bl.id %>' }
       },
     <% end %>
