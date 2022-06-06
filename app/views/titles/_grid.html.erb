@@ -41,15 +41,10 @@
         }},
         
         { headerName: "Italicized?", field: "italicized", cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: ["true", "false"]}},
+        { headerName: "Title of apocryphon", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
+          return `<a href="/apocrypha/${apocryphon.value.id}/edit" target="_blank">${apocryphon.value.display_name}</a>`
+        }},
 
-        { headerName: "Apocryphon", children: [
-          { headerName: "Id", field: "apocryphon", editable: false, hide: true, suppressColumnsToolPanel: true, cellRenderer: function(params) {
-            return `${params.value.id} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('titles/${params.data.id}', 'title')"><i class='fa-solid fa-arrows-repeat'></i></button>`
-          }},
-          { headerName: "Title of apocryphon", field: "apocryphon", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(apocryphon) {
-            return `<a href="/apocrypha/${apocryphon.value.id}/edit" target="_blank">${apocryphon.value.display_name}</a>`
-          }},
-        ] },
           
         { headerName: "Actions", field: "links", pinned: "right", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
           return "<a href='#' onclick='if(confirm(\"Are you sure you want to delete this Title?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"

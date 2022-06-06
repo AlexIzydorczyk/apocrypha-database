@@ -35,7 +35,7 @@
     { headerName: "Manuscript: general features", children: [
       { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", filter: null },
       { headerName: "No. of pp./ff.", headerTooltip: "No. of pp./ff.", field: "manuscript.leaf_page_no", filter: null },
-      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSort, filter: 'agSetColumnFilter' },
+      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSortfilter: 'agNumberColumnFilter' },
       { headerName: "Period to", headerTooltip: "Period to", field: "manuscript.date_to", comparator: numberSort, filter: 'agSetColumnFilter' },
       { headerName: "Year(s)", headerTooltip: "Year(s)", field: "manuscript.specific_date", comparator: numberSort, filter: 'agSetColumnFilter' },
       { headerName: "Content type", headerTooltip: "Content type", field: "manuscript.content_type" , filter: 'agSetColumnFilter' },
@@ -46,9 +46,9 @@
       { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", filter: null },
       { headerName: "Pp./ff. in ms.", headerTooltip: "Pp./ff. in ms.", field: "booklet.pages_folios_from", filter: null },
       { headerName: "Content type", headerTooltip: "Content type", field: "booklet.content_type", filter: 'agSetColumnFilter' },
-      { headerName: "Period from", headerTooltip: "Period from", field: "booklet.date_from", comparator: numberSort, filter: 'agSetColumnFilter' },
-      { headerName: "Period to", headerTooltip: "Period to", field: "booklet.date_to", comparator: numberSort, filter: 'agSetColumnFilter' },
-      { headerName: "Year(s)", headerTooltip: "Specific date", field: "booklet.specific_date", comparator: numberSort, filter: 'agSetColumnFilter' },
+      { headerName: "Period from", headerTooltip: "Period from", field: "booklet.date_from", comparator: numberSortfilter: 'agNumberColumnFilter' },
+      { headerName: "Period to", headerTooltip: "Period to", field: "booklet.date_to", comparator: numberSort, filter: 'agNumberColumnFilter' },
+      { headerName: "Year(s)", headerTooltip: "Specific date", field: "booklet.specific_date", comparator: numberSort, filter: 'agNumberColumnFilter' },
     ]},
     { headerName: "Origin and provenance", children: [
       { headerName: "Origin of booklet or ms", headerTooltip: "Origin of booklet or ms", field: "genesis.full_description", aggFunc: null },
