@@ -35,7 +35,7 @@
     { headerName: "Manuscript: general features", children: [
       { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", filter: null },
       { headerName: "No. of pp./ff.", headerTooltip: "No. of pp./ff.", field: "manuscript.leaf_page_no", filter: null },
-      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSortfilter: 'agNumberColumnFilter' },
+      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSort, filter: 'agNumberColumnFilter' },
       { headerName: "Period to", headerTooltip: "Period to", field: "manuscript.date_to", comparator: numberSort, filter: 'agSetColumnFilter' },
       { headerName: "Year(s)", headerTooltip: "Year(s)", field: "manuscript.specific_date", comparator: numberSort, filter: 'agSetColumnFilter' },
       { headerName: "Content type", headerTooltip: "Content type", field: "manuscript.content_type" , filter: 'agSetColumnFilter' },
