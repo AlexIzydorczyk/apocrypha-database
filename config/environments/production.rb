@@ -78,6 +78,7 @@ Rails.application.configure do
     password:             'kpm-rjy9fvz7vbn8MAG',
     authentication:       'plain',
     enable_starttls_auto: true,
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
