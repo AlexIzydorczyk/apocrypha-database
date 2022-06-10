@@ -75,7 +75,7 @@ Rails.application.configure do
     port:                 587,
     domain:               'apocrypharius.com',
     user_name:            'contact@apocrypharius.com',
-    password:             'jbxsghmdqgxxzslf',
+    password:             Rails.application.credentials.smtp_app_password,
     authentication:       'plain',
     enable_starttls_auto: true,
   }
