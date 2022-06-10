@@ -9,6 +9,8 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.skip_confirmation!
+    @user.send_reset_password_instructions
 
     if @user.save
       ChangeLog.create(user_id: current_user.id, record_type: 'User', record_id: @user.id, controller_name: 'user', action_name: 'create')
