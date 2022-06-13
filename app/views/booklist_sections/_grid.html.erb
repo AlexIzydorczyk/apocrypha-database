@@ -1,47 +1,42 @@
-<div class="d-flex mb-2 align-items-end">
-  <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
-  <% if user_signed_in? %>
-    <button class="btn btn-sm btn-outline-action ms-auto" onclick="saveState()">Save grid configuration</button>
-    <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset grid configuration</button>
-  <% end %>
-</div>
+<%= render "user_grid_states/configuration_options", record_type: "BooklistSection" %>
+
 <div id="booklist_sections_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
 
 <%= render 'layouts/grid_save_state_js', record_type: "BooklistSection" %>
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: false, aggFunc: 'concat', filter: 'agMultiColumnFilter', autoHeight: true, enableValue: true, wrapText: true, cellStyle: {wordBreak: 'normal'} };
+  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: 'concat', filter: 'agMultiColumnFilter', autoHeight: true, enableValue: true, wrapText: true, cellStyle: {wordBreak: 'normal'} };
 
   const columnDefs = [
     { headerName: "Apocryphon mentioned", children: [ //booklist reference to booklist section
-      { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agSetColumnFilter', hide: true },
+      { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agSetColumnFilter'  },
       { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true },
-      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles", hide: true },
-      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title", hide: true },
-      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles", hide: true },
-      { headerName: "All English titles", headerTooltip: "All English titles", field: "apocryphon.all_english_titles", hide: true },
-      { headerName: "All Latin titles", headerTooltip: "All Latin titles", field: "apocryphon.all_latin_titles", hide: true },
+      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles"  },
+      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title"  },
+      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles"  },
+      { headerName: "All English titles", headerTooltip: "All English titles", field: "apocryphon.all_english_titles"  },
+      { headerName: "All Latin titles", headerTooltip: "All Latin titles", field: "apocryphon.all_latin_titles"  },
     ]},
     { headerName: "Owner", children: [ //booklist
       { headerName: "Owner", field: "booklist.library_owner" },
-      { headerName: "First name", field: "booklist.library_owner_first_name", hide: true},
-      { headerName: "Last name", field: "booklist.library_owner_last_name", hide: true},
-      { headerName: "Institution", field: "booklist.institution_name", hide: true},
-      { headerName: "Institution (alternative)", field: "booklist.institution_name_alternative", hide: true},
-      { headerName: "Religious order", field: "booklist.religious_order_name", hide: true},
+      { headerName: "First name", field: "booklist.library_owner_first_name" },
+      { headerName: "Last name", field: "booklist.library_owner_last_name" },
+      { headerName: "Institution", field: "booklist.institution_name" },
+      { headerName: "Institution (alternative)", field: "booklist.institution_name_alternative" },
+      { headerName: "Religious order", field: "booklist.religious_order_name" },
     ]},
     { headerName: "Location", children: [ //booklist
-      { headerName: "City", field: "booklist.city", editable: false, hide: true },
-      { headerName: "City (alternative)", field: "booklist.city_alt", editable: false, hide: true },
-      { headerName: "Diocese", field: "booklist.diocese", editable: false, hide: true },
-      { headerName: "Diocese (alternative)", hide: true, field: "booklist.diocese_alt"},
-      { headerName: "Region", field: "booklist.region", editable: false, hide: true },
-      { headerName: "Region (alternative)", hide: true, field: "booklist.region_alt"},
-      { headerName: "Country", field: "booklist.country", editable: false, hide: true },
+      { headerName: "City", field: "booklist.city", editable: false  },
+      { headerName: "City (alternative)", field: "booklist.city_alt", editable: false  },
+      { headerName: "Diocese", field: "booklist.diocese", editable: false  },
+      { headerName: "Diocese (alternative)" , field: "booklist.diocese_alt"},
+      { headerName: "Region", field: "booklist.region", editable: false  },
+      { headerName: "Region (alternative)" , field: "booklist.region_alt"},
+      { headerName: "Country", field: "booklist.country", editable: false  },
     ]},
     { headerName: "Booklist", children: [ //booklist
-      { headerName: "Booklist no.", field: "booklist.booklist_no", comparator: numberSort , hide: true },
+      { headerName: "Booklist no.", field: "booklist.booklist_no", comparator: numberSort   },
       { headerName: "Booklist type", field: "booklist.booklist_type"},
       { headerName: "Language", field: "booklist.language_name" },
       { headerName: "Period from", headerTooltip: "Period from", field: "booklist.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual']}},
@@ -50,18 +45,18 @@
       { headerName: "Author(s)", field: "booklist.authors"},
       { headerName: "Notes on booklist", field: "booklist.notes"},
       { headerName: "Title", field: "booklist.title_orig"},
-      { headerName: "Title (translit.)", field: "booklist.title_orig_transliteration", hide: true},
-      { headerName: "Title (transla.)", field: "booklist.title_orig_translation", hide: true},
+      { headerName: "Title (translit.)", field: "booklist.title_orig_transliteration" },
+      { headerName: "Title (transla.)", field: "booklist.title_orig_translation" },
     ]},
     { headerName: "Excerpts", children: [ //booklist section
-      { headerName: "Id", field: "excerpt.id", hide: true },
-      { headerName: "Sequence no", field: "excerpt.sequence_no", hide: true},
+      { headerName: "Id", field: "excerpt.id"  },
+      { headerName: "Sequence no", field: "excerpt.sequence_no" },
       { headerName: "Heading", field: "excerpt.heading_orig"},
-      { headerName: "Heading (translit.)", field: "excerpt.heading_orig_transliteration", hide: true},
-      { headerName: "Heading (transla.)", field: "excerpt.heading_translation", hide: true},
+      { headerName: "Heading (translit.)", field: "excerpt.heading_orig_transliteration" },
+      { headerName: "Heading (transla.)", field: "excerpt.heading_translation" },
       { headerName: "Relevant text", field: "excerpt.relevant_text_orig"},
-      { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration", hide: true},
-      { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation", hide: true},
+      { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration" },
+      { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation" },
       { headerName: "Notes on relevant text", field: "excerpt.notes"},
       { headerName: "Extant as ms.", field: "excerpt.manuscript"},
     ]},

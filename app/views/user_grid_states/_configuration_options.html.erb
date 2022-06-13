@@ -21,13 +21,13 @@
   <button class="btn btn-sm btn-outline-action ms-2" id="expand" onclick="expand();"><i class="far fa-expand-alt"></i> Expand all rows</button>
   <button class="btn btn-sm btn-outline-action ms-2" id="collapse" onclick="collapse();" style="display:none;"><i class="far fa-compress-alt"></i> Close all expanded</button>
   <button class="btn btn-sm btn-outline-action ms-2" onclick="gridOptions.api.setFilterModel(null);"><i class="far fa-filter"></i> Clear filters</button>
-  <button class="btn btn-sm btn-outline-action ms-auto" id="reset-to-default" style="display: <%= UserGridState.exists?(record_type: "Section", is_default: true) ? "block" : "none" %>;" onclick="getState({id: default_state_id})"><i class="fas fa-star"></i> Reset to default</button>
+  <button class="btn btn-sm btn-outline-action ms-auto" id="reset-to-default" style="display: <%= UserGridState.exists?(record_type: record_type, is_default: true) ? "block" : "none" %>;" onclick="getState({id: default_state_id})"><i class="fas fa-star"></i> Reset to default</button>
   <% if user_signed_in? %>
     <% if current_user.admin? %>
       <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset to blank grid</button>
     <% end %>
     <button class="btn btn-sm btn-outline-action ms-2" onclick="saveState()"><i class="fas fa-user"></i> Save grid config.</button>
-    <button class="btn btn-sm btn-outline-action ms-2" id="load-grid-config" style="display: <%= current_user.user_grid_states.exists?(record_type: "Section") ? "block" : "none" %>;" onclick="getState({user_id: <%= current_user.id %>, record_type: 'Section'})"><i class="fas fa-user"></i> Load grid config.</button>
+    <button class="btn btn-sm btn-outline-action ms-2" id="load-grid-config" style="display: <%= current_user.user_grid_states.exists?(record_type: record_type) ? "block" : "none" %>;" onclick="getState({user_id: <%= current_user.id %>, record_type: record_type})"><i class="fas fa-user"></i> Load grid config.</button>
   <% end %>
 </div>
 

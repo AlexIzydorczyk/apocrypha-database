@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-var default_state_id = <%= UserGridState.where(record_type: "Section", is_default: true).first.try(:id) || "null" %>;
+var default_state_id = <%= UserGridState.where(record_type: record_type, is_default: true).first.try(:id) || "null" %>;
 
 $(function() {
 	callBackFunc = typeof updateAllFilterVisiblity === "function" ? updateAllFilterVisiblity : null;
@@ -40,6 +40,7 @@ function setDefaultState(state_id) {
 		url: "/user_grid_states/" + state_id + "/set_default",
 		method: "PATCH",
 		data: {
+			record_type: "<%= record_type %>",
 			authenticity_token: "<%= form_authenticity_token %>",
 		},
 		success: function() {
