@@ -4,29 +4,6 @@ class SectionsController < ApplicationController
   before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
  def index
-    
-    @sections = Section.joins(text: :content).all.order("sections.index asc, contents.sequence_no asc").includes(text: [:languages, :transcriber, :scribes, content: [:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, ownerships: [:person, :institution, :location, :religious_order], manuscript: [:reproduction_urls, :database_urls, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :contents, :booklist_sections, :institution, institution: [:location], ownerships: [:person, :institution, :location, :religious_order]]]]])
-    
-    texts_w_section = Section.all.map(&:text_id)
-    @texts = Text.where.not(id: texts_w_section).all.includes(:languages, :transcriber, :scribes, content: [:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, ownerships: [:person, :institution, :location, :religious_order], manuscript: [:reproduction_urls, :database_urls, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :contents, :booklist_sections, :institution, institution: [:location], ownerships: [:person, :institution, :location, :religious_order]]]])
-
-    contents_w_text = Text.all.map(&:content_id)
-    @contents = Content.where.not(id: contents_w_text).all.order("sequence_no asc").includes(:author, title: [:apocryphon], booklet: [:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, ownerships: [:person, :institution, :location, :religious_order], manuscript: [:reproduction_urls, :database_urls, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :contents, :booklist_sections, :institution, institution: [:location], ownerships: [:person, :institution, :location, :religious_order]]])
-
-    booklet_w_contents = Content.all.map(&:booklet_id)
-    @booklets = Booklet.where.not(id: booklet_w_contents).all.includes(:scribes, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, ownerships: [:person, :institution, :location, :religious_order], manuscript: [:reproduction_urls, :database_urls, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :ownerships, :contents, :booklist_sections, :institution, institution: [:location], ownerships: [:person, :institution, :location, :religious_order]])
-
-    manuscripts_w_booklets = Booklet.all.map(&:manuscript_id)
-    manuscripts_w_contents = Content.all.map(&:manuscript_id)
-    manuscripts_to_exclude = (manuscripts_w_booklets + manuscripts_w_contents).uniq
-    @manuscripts = Manuscript.where.not(id: manuscripts_to_exclude).all.includes(:reproduction_urls, :database_urls, :genesis_location, :genesis_institution, :genesis_religious_order, :scribe_references, :scribes, :language_references, :languages, :booklets, :modern_source_references, :modern_sources, :person_references, :correspondent_references, :correspondents, :transcriber_references, :transcribers, :compiler_references, :compilers, :contents, :booklist_sections, :institution, institution: [:location], ownerships: [:person, :institution, :location, :religious_order])
-
-    @queries = {sections: @sections, texts: @texts, contents: @contents, booklets: @booklets, manuscripts: @manuscripts} 
-    @new_text = Text.new
-    @new_section = Section.new
-    @new_content = Content.new
-    @new_booklet = Booklet.new
-    @new_apocryphon = Apocryphon.new
 
     @grid_states = UserGridState.where(user_id: nil, record_type: "Section").order(:index)
 
@@ -34,6 +11,208 @@ class SectionsController < ApplicationController
 
     @initial_state = ugs.try(:state).try(:to_json).try(:html_safe)
     @initial_filter = ugs.try(:filters).try(:to_json).try(:html_safe)
+
+    @query = ActiveRecord::Base.connection.execute("
+
+SELECT
+
+sections.section_name AS section_name,
+sections.index + 1 AS section_number, -- special
+sections.pages_folios_incipit AS section_pages_folios_incipit,
+sections.incipit_orig AS section_incipit_orig,
+sections.incipit_translation AS section_incipit_orig_translation,
+sections.incipit_orig_transliteration AS section_incipit_orig_transliteration,
+sections.pages_folios_explicit AS section_pages_folios_explicit,
+sections.explicit_orig AS section_explicit_orig,
+sections.explicitorig_transliteration AS section_explicitorig_transliteration,
+sections.explicit_translation AS section_explicit_translation,
+
+texts.text_pages_folios_to AS text_text_pages_folios_to,
+texts.decoration AS text_decoration,
+texts.title_pages_folios_to AS text_title_pages_folios,
+texts.manuscript_title_orig AS text_manuscript_title_orig,
+texts.manuscript_title_orig_transliteration AS text_manuscript_title_orig_transliteration,
+texts.manuscript_title_translation AS text_manuscript_title_translation,
+texts.colophon_pages_folios_to AS text_colophon_pages_folios_to,
+texts.colophon_orig AS text_colophon_orig,
+texts.colophon_transliteration AS text_colophon_transliteration,
+texts.colophon_translation AS text_colophon_translation,
+texts.notes AS text_notes,
+  texts.version AS text_version,
+texts.extent AS text_extent,
+  STRING_AGG(text_language.language_name, ', ') AS text_language, -- special
+  texts.date_from AS text_date_from,
+texts.date_to AS text_date_to,
+  CONCAT((CASE WHEN texts.date_exact AND texts.specific_date != '' THEN 'ca. ' ELSE '' END), texts.specific_date) AS text_specific_date, -- special
+texts.no_columns AS text_no_columns,
+STRING_AGG(CONCAT_WS(' ', nullif(trim(text_scribes.first_name_vernacular), ''), nullif(trim(text_scribes.middle_name_vernacular), ''), nullif(trim(text_scribes.prefix_vernacular), ''), nullif(trim(text_scribes.last_name_vernacular), ''), nullif(trim(text_scribes.suffix_vernacular), '')), ', ') AS text_scribes, -- special
+texts.script AS text_script,
+texts.notes_on_scribe AS text_notes_on_scribe,
+
+contents.sequence_no AS content_sequence_no,
+STRING_AGG(nullif(trim(content_title.title_orig), ''),
+  nullif(trim(CONCAT_WS(' ',
+    nullif(trim(content_author.first_name_vernacular), ''),
+    nullif(trim(content_author.middle_name_vernacular), ''),
+    nullif(trim(content_author.prefix_vernacular), ''),
+    nullif(trim(content_author.last_name_vernacular), ''),
+    nullif(trim(content_author.suffix_vernacular), '')
+  )), ', ')
+) AS content_item,
+CASE WHEN content_title.apocryphon_id is null THEN 'Apocryphal' ELSE 'Non apocryphal' END AS content_apocryphal,
+STRING_AGG(main_eng_title.title_orig, ', ') AS apocryphon_main_english_title,
+STRING_AGG(main_latin_title.title_orig, ', ') AS apocryphon_other_english_titles,
+STRING_AGG(other_eng_titles.title_orig, ', ') AS apocryphon_main_latin_title,
+STRING_AGG(other_latin_titles.title_orig, ', ') AS apocryphon_other_latin_titles,
+CONCAT_WS(', ', STRING_AGG(main_eng_title.title_orig, ', '), STRING_AGG(other_eng_titles.title_orig, ', ')) AS apocryphon_all_english_titles,
+CONCAT_WS(', ', STRING_AGG(main_latin_title.title_orig, ', '), STRING_AGG(other_latin_titles.title_orig, ', ')) AS apocryphon_all_latin_titles,
+apocrypha.e_clavis_link AS apocryphon_e_clavis_link,
+
+booklets.booklet_no AS booklet_no,
+booklets.pages_folios_from AS booklet_pages_folios_from,
+booklets.pages_folios_to AS booklet_pages_folios_to,
+booklets.date_from AS booklet_date_from,
+booklets.date_to AS booklet_date_to,
+CONCAT((CASE WHEN booklets.date_exact AND booklets.specific_date != '' THEN 'ca. ' ELSE '' END), booklets.specific_date) AS booklet_specific_date, -- special
+booklets.content_type AS booklet_content_type,
+
+STRING_AGG('/manuscripts/', CAST(manuscripts.id AS varchar)) AS manuscript_show_link,
+STRING_AGG(reproduction_urls.url, ', ') AS manuscript_reproduction_online,
+STRING_AGG(database_urls.url, ', ') AS manuscript_urls,
+manuscripts.census_no AS manuscript_census_no,
+manuscripts.status AS manuscript_status,
+STRING_AGG(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT('[', repository.name_alt, ']') ELSE '' END)) AS manuscript_institution_name,
+repository.name_alt AS manuscript_institution_name_alternative,
+repository_location.city AS manuscript_institution_city,
+repository_location.city_alt AS manuscript_institution_city_alt,
+CONCAT_WS(', ', nullif(trim(repository_location.city), ''), nullif(trim(repository_location.city_alt), '')) AS manuscript_institution_city_concat,
+repository_location.region AS manuscript_institution_region,
+repository_location.region_alt AS manuscript_institution_region_alt,
+CONCAT_WS(', ', nullif(trim(repository_location.region), ''), nullif(trim(repository_location.region_alt), '')) AS manuscript_institution_region_concat,
+repository_location.country AS manuscript_institution_country,
+repository_location.diocese AS manuscript_institution_diocese,
+repository_location.diocese_alt AS manuscript_institution_diocese_alt,
+CONCAT_WS(', ', nullif(trim(repository_location.diocese), ''), nullif(trim(repository_location.diocese_alt), '')) AS manuscript_institution_diocese_concat,
+manuscripts.shelfmark AS manuscript_shelfmark,
+manuscripts.old_shelfmark AS manuscript_old_shelfmark,
+manuscripts.material AS manuscript_material,
+manuscripts.dimensions AS manuscript_dimensions,
+CASE WHEN manuscripts.leaf_page_no = '' THEN '' ELSE CONCAT(manuscripts.leaf_page_no, (CASE WHEN manuscripts.is_folios THEN ' ff.' ELSE ' pp.' END)) END AS manuscript_leaf_page_no,
+manuscripts.date_from AS manuscript_date_from,
+manuscripts.date_to AS manuscript_date_to,
+CONCAT((CASE WHEN manuscripts.date_exact AND manuscripts.specific_date != '' THEN 'ca. ' ELSE '' END), manuscripts.specific_date) AS manuscript_specific_date, -- special
+manuscripts.content_type AS manuscript_content_type,
+manuscripts.notes AS manuscript_notes,
+STRING_AGG(manuscript_languages.language_name, ', ') AS manuscript_languages, -- special
+CONCAT(manuscripts.census_no, (CASE WHEN manuscripts.census_no = '' THEN '' ELSE '. ' END), CONCAT_WS(', ',
+  CONCAT((CASE WHEN manuscripts.status in ('lost', 'destroyed') THEN '*' ELSE '' END), repository_location.city),
+  nullif(trim(repository_location.country), ''),
+  STRING_AGG(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT('[', repository.name_alt, ']') ELSE '' END)),
+  nullif(trim(manuscripts.shelfmark), '')
+)) AS manuscript_identification,
+
+genesis_institution.name AS genesis_institution_name,
+genesis_institution.name_alt AS genesis_institution_name_alt,
+CONCAT_WS(', ', nullif(trim(genesis_institution.name), ''), nullif(trim(genesis_institution.name_alt), '')) AS genesis_institution_name_concat,
+genesis_religious_order.order_name AS genesis_religious_order_name,
+genesis_religious_order.abbreviation AS genesis_religious_order_abbrev,
+genesis_location.city AS genesis_location_city,
+genesis_location.city_alt AS genesis_location_city_alt,
+CONCAT_WS(', ', nullif(trim(genesis_location.city), ''), nullif(trim(genesis_location.city_alt), '')) AS genesis_location_city_concat,
+genesis_location.region AS genesis_location_region,
+genesis_location.region_alt AS genesis_location_region_alt,
+CONCAT_WS(', ', nullif(trim(genesis_location.region), ''), nullif(trim(genesis_location.region_alt), '')) AS genesis_location_region_concat,
+genesis_location.diocese AS genesis_location_diocese,
+genesis_location.diocese_alt AS genesis_location_diocese_alt,
+CONCAT_WS(', ', nullif(trim(genesis_location.diocese), ''), nullif(trim(genesis_location.diocese_alt), '')) AS genesis_location_diocese_concat,
+genesis_location.country AS genesis_location_country,
+CASE WHEN booklets.id is null THEN manuscripts.origin_notes ELSE booklets.origin_notes END AS genesis_origin_notes,
+STRING_AGG(CONCAT_WS('. ',
+  nullif(trim(CONCAT_WS('; ',
+    nullif(trim(CONCAT_WS(', ',
+      nullif(trim(CONCAT_WS(' ',
+        nullif(trim(CONCAT_WS(' ',
+          nullif(trim(provenance_person.first_name_vernacular), ''),
+          nullif(trim(provenance_person.middle_name_vernacular), ''),
+          nullif(trim(provenance_person.prefix_vernacular), ''),
+          nullif(trim(provenance_person.last_name_vernacular), ''),
+          nullif(trim(provenance_person.suffix_vernacular), '')
+        )), ''),
+        CASE WHEN provenance_person.birth_date != '' AND provenance_person.death_date != '' THEN CONCAT('(', provenance_person.birth_date, ' - ', provenance_person.death_date, ')') ELSE null END
+      )), ''),
+    CONCAT(nullif(trim(provenance_institution.name), ''), (CASE WHEN provenance_institution.name_alt != '' THEN CONCAT('[', provenance_institution.name_alt, ']') ELSE null END)),
+    nullif(trim(provenance_religious_order.order_name), '')
+  )), ''),
+  nullif(trim(CONCAT_WS(', ',
+    nullif(trim(provenance_location.city), ''),
+    (CASE WHEN provenance_location.diocese != '' THEN CONCAT('dioc. ', provenance_location.diocese) ELSE null END),
+    nullif(trim(provenance_location.region), ''),
+    nullif(trim(provenance_location.country), '')
+    )), '')
+  )), ''),
+  provenance.provenance_notes
+  ),
+'||') AS ownerships,
+CONCAT_WS('. ',
+  nullif(trim(CONCAT_WS(', ',
+    nullif(trim(genesis_institution.name), ''),
+    nullif(trim(genesis_religious_order.order_name), ''),
+    nullif(trim(genesis_location.city), ''),
+    nullif(trim(genesis_location.diocese), ''),
+    nullif(trim(genesis_location.region), ''),
+    nullif(trim(genesis_location.country), '')
+  )), ''),
+  nullif(trim(CASE WHEN booklets.id is null THEN manuscripts.origin_notes ELSE booklets.origin_notes END), '')
+) AS genesis_full_description
+    
+FROM manuscripts
+LEFT JOIN language_references manuscript_language_references ON manuscript_language_references.record_type = 'Manuscript' AND manuscript_language_references.record_id = manuscripts.id
+LEFT JOIN languages manuscript_languages ON manuscript_languages.id = manuscript_language_references.language_id
+LEFT JOIN manuscript_urls reproduction_urls ON reproduction_urls.url_type = 'reproduction' AND manuscripts.id = reproduction_urls.manuscript_id
+LEFT JOIN manuscript_urls database_urls ON database_urls.url_type = 'database' AND manuscripts.id = database_urls.manuscript_id
+LEFT JOIN institutions repository ON manuscripts.institution_id = repository.id
+LEFT JOIN locations repository_location ON repository.location_id = repository_location.id
+FULL JOIN booklets ON manuscripts.id = booklets.manuscript_id
+LEFT JOIN institutions genesis_institution ON CASE WHEN booklets.id is null THEN manuscripts.genesis_institution_id = genesis_institution.id ELSE booklets.genesis_institution_id = genesis_institution.id END
+LEFT JOIN religious_orders genesis_religious_order ON CASE WHEN booklets.id is null THEN manuscripts.genesis_religious_order_id = genesis_religious_order.id ELSE booklets.genesis_religious_order_id = genesis_religious_order.id END
+LEFT JOIN locations genesis_location ON CASE WHEN booklets.id is null THEN manuscripts.genesis_location_id = genesis_location.id ELSE booklets.genesis_location_id = genesis_location.id END
+LEFT JOIN ownerships provenance ON CASE WHEN booklets.id is null THEN manuscripts.id = provenance.manuscript_id ELSE booklets.id = provenance.booklet_id END
+LEFT JOIN people provenance_person ON provenance.person_id = provenance_person.id
+LEFT JOIN institutions provenance_institution ON provenance.institution_id = provenance_institution.id
+LEFT JOIN religious_orders provenance_religious_order ON provenance.religious_order_id = provenance_religious_order.id
+LEFT JOIN locations provenance_location ON provenance.location_id = provenance_location.id
+LEFT JOIN contents ON contents.booklet_id = booklets.id OR contents.manuscript_id = manuscripts.id
+LEFT JOIN people content_author ON contents.author_id = content_author.id
+LEFT JOIN titles content_title ON contents.title_id = content_title.id
+LEFT JOIN apocrypha ON content_title.apocryphon_id = apocrypha.id
+LEFT JOIN titles main_eng_title ON main_eng_title.id = apocrypha.main_english_title_id
+LEFT JOIN titles main_latin_title ON main_latin_title.id = apocrypha.main_latin_title_id
+LEFT JOIN languages english ON english.language_name = 'English'
+LEFT JOIN languages latin ON latin.language_name = 'Latin'
+LEFT JOIN titles other_eng_titles ON apocrypha.id = other_eng_titles.id AND other_eng_titles.language_id = english.id
+LEFT JOIN titles other_latin_titles ON apocrypha.id = other_latin_titles.id AND other_latin_titles.language_id = latin.id
+FULL JOIN texts ON contents.id = texts.content_id
+LEFT JOIN language_references text_language_references ON text_language_references.record_type = 'Text' AND text_language_references.record_id = texts.id
+LEFT JOIN languages text_language ON text_language.id = text_language_references.language_id
+LEFT JOIN person_references text_scribe_references ON text_scribe_references.record_type = 'Text' AND text_scribe_references.reference_type = 'scribe' AND text_scribe_references.record_id = texts.id
+LEFT JOIN people text_scribes ON text_scribes.id = text_scribe_references.person_id
+FULL JOIN sections ON texts.id = sections.text_id
+
+GROUP BY
+manuscripts.id,
+booklets.id,
+content_title.id,
+texts.id,
+contents.id,
+sections.id,
+apocrypha.id,
+repository_location.id,
+repository.id,
+genesis_institution.id,
+genesis_religious_order.id,
+genesis_location.id;
+
+")
 
   end
 
