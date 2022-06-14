@@ -59,7 +59,7 @@ STRING_AGG(nullif(trim(content_title.title_orig), ''),
     nullif(trim(content_author.suffix_vernacular), '')
   )), ', ')
 ) AS content_item,
-CASE WHEN content_title.apocryphon_id is null THEN 'Apocryphal' ELSE 'Non apocryphal' END AS content_apocryphal,
+CASE WHEN content_title.apocryphon_id is null THEN 'Non apocryphal' ELSE 'Apocryphal' END AS content_apocryphal,
 STRING_AGG(main_eng_title.title_orig, ', ') AS apocryphon_main_english_title,
 STRING_AGG(other_eng_titles.title_orig, ', ') AS apocryphon_other_english_titles,
 STRING_AGG(main_latin_title.title_orig, ', ') AS apocryphon_main_latin_title,
