@@ -14,7 +14,7 @@ class SectionsController < ApplicationController
 
     @query = ActiveRecord::Base.connection.execute("
 
-SELECT
+SELECT DISTINCT
 
 sections.section_name AS section_name,
 sections.index + 1 AS section_number, -- special
@@ -38,34 +38,36 @@ texts.colophon_orig AS text_colophon_orig,
 texts.colophon_transliteration AS text_colophon_transliteration,
 texts.colophon_translation AS text_colophon_translation,
 texts.notes AS text_notes,
-  texts.version AS text_version,
+texts.version AS text_version,
 texts.extent AS text_extent,
-  STRING_AGG(text_language.language_name, ', ') AS text_language, -- special
-  texts.date_from AS text_date_from,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT text_language.language_name), NULL), ', ') AS text_language, -- special
+texts.date_from AS text_date_from,
 texts.date_to AS text_date_to,
-  CONCAT((CASE WHEN texts.date_exact AND texts.specific_date != '' THEN 'ca. ' ELSE '' END), texts.specific_date) AS text_specific_date, -- special
+CONCAT((CASE WHEN texts.date_exact AND texts.specific_date != '' THEN 'ca. ' ELSE '' END), texts.specific_date) AS text_specific_date, -- special
 texts.no_columns AS text_no_columns,
-STRING_AGG(CONCAT_WS(' ', nullif(trim(text_scribes.first_name_vernacular), ''), nullif(trim(text_scribes.middle_name_vernacular), ''), nullif(trim(text_scribes.prefix_vernacular), ''), nullif(trim(text_scribes.last_name_vernacular), ''), nullif(trim(text_scribes.suffix_vernacular), '')), ', ') AS text_scribes, -- special
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CONCAT_WS(' ', nullif(trim(text_scribes.first_name_vernacular), ''), nullif(trim(text_scribes.middle_name_vernacular), ''), nullif(trim(text_scribes.prefix_vernacular), ''), nullif(trim(text_scribes.last_name_vernacular), ''), nullif(trim(text_scribes.suffix_vernacular), ''))), NULL), ', ') AS text_scribes, -- special
 texts.script AS text_script,
 texts.notes_on_scribe AS text_notes_on_scribe,
 
+content_title.id,
 contents.sequence_no AS content_sequence_no,
-STRING_AGG(nullif(trim(content_title.title_orig), ''),
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CONCAT_WS(', ',
+  nullif(trim(content_title.title_orig), ''),
   nullif(trim(CONCAT_WS(' ',
     nullif(trim(content_author.first_name_vernacular), ''),
     nullif(trim(content_author.middle_name_vernacular), ''),
     nullif(trim(content_author.prefix_vernacular), ''),
     nullif(trim(content_author.last_name_vernacular), ''),
     nullif(trim(content_author.suffix_vernacular), '')
-  )), ', ')
-) AS content_item,
+  )), '')
+)), NULL), ', ') AS content_item,
 CASE WHEN content_title.apocryphon_id is null THEN 'Non apocryphal' ELSE 'Apocryphal' END AS content_apocryphal,
-STRING_AGG(main_eng_title.title_orig, ', ') AS apocryphon_main_english_title,
-STRING_AGG(other_eng_titles.title_orig, ', ') AS apocryphon_other_english_titles,
-STRING_AGG(main_latin_title.title_orig, ', ') AS apocryphon_main_latin_title,
-STRING_AGG(other_latin_titles.title_orig, ', ') AS apocryphon_other_latin_titles,
-CONCAT_WS(', ', STRING_AGG(main_eng_title.title_orig, ', '), STRING_AGG(other_eng_titles.title_orig, ', ')) AS apocryphon_all_english_titles,
-CONCAT_WS(', ', STRING_AGG(main_latin_title.title_orig, ', '), STRING_AGG(other_latin_titles.title_orig, ', ')) AS apocryphon_all_latin_titles,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT main_eng_title.title_orig), NULL), ', ') AS apocryphon_main_english_title,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT other_eng_titles.title_orig), NULL), ', ') AS apocryphon_other_english_titles,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT main_latin_title.title_orig), NULL), ', ') AS apocryphon_main_latin_title,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT other_latin_titles.title_orig), NULL), ', ') AS apocryphon_other_latin_titles,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_CAT(ARRAY_AGG(DISTINCT main_eng_title.title_orig), ARRAY_AGG(DISTINCT other_eng_titles.title_orig)), NULL), ', ') AS apocryphon_all_english_titles,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_CAT(ARRAY_AGG(DISTINCT main_latin_title.title_orig), ARRAY_AGG(DISTINCT other_latin_titles.title_orig)), NULL), ', ') AS apocryphon_all_latin_titles,
 apocrypha.e_clavis_link AS apocryphon_e_clavis_link,
 
 booklets.booklet_no AS booklet_no,
@@ -77,8 +79,8 @@ CONCAT((CASE WHEN booklets.date_exact AND booklets.specific_date != '' THEN 'ca.
 booklets.content_type AS booklet_content_type,
 
 STRING_AGG('/manuscripts/', CAST(manuscripts.id AS varchar)) AS manuscript_show_link,
-STRING_AGG(reproduction_urls.url, ', ') AS manuscript_reproduction_online,
-STRING_AGG(database_urls.url, ', ') AS manuscript_urls,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT reproduction_urls.url), NULL), ', ') AS manuscript_reproduction_online,
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT database_urls.url), NULL), ', ') AS manuscript_urls,
 manuscripts.census_no AS manuscript_census_no,
 manuscripts.status AS manuscript_status,
 STRING_AGG(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT('[', repository.name_alt, ']') ELSE '' END)) AS manuscript_institution_name,
@@ -103,11 +105,11 @@ manuscripts.date_to AS manuscript_date_to,
 CONCAT((CASE WHEN manuscripts.date_exact AND manuscripts.specific_date != '' THEN 'ca. ' ELSE '' END), manuscripts.specific_date) AS manuscript_specific_date, -- special
 manuscripts.content_type AS manuscript_content_type,
 manuscripts.notes AS manuscript_notes,
-STRING_AGG(manuscript_languages.language_name, ', ') AS manuscript_languages, -- special
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT manuscript_languages.language_name), NULL), ', ') AS manuscript_languages, -- special
 CONCAT(manuscripts.census_no, (CASE WHEN manuscripts.census_no = '' THEN '' ELSE '. ' END), CONCAT_WS(', ',
   CONCAT((CASE WHEN manuscripts.status in ('lost', 'destroyed') THEN '*' ELSE '' END), repository_location.city),
   nullif(trim(repository_location.country), ''),
-  STRING_AGG(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT('[', repository.name_alt, ']') ELSE '' END)),
+  CONCAT(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT(' [', repository.name_alt, ']') ELSE '' END)),
   nullif(trim(manuscripts.shelfmark), '')
 )) AS manuscript_identification,
 
@@ -127,7 +129,7 @@ genesis_location.diocese_alt AS genesis_location_diocese_alt,
 CONCAT_WS(', ', nullif(trim(genesis_location.diocese), ''), nullif(trim(genesis_location.diocese_alt), '')) AS genesis_location_diocese_concat,
 genesis_location.country AS genesis_location_country,
 CASE WHEN booklets.id is null THEN manuscripts.origin_notes ELSE booklets.origin_notes END AS genesis_origin_notes,
-STRING_AGG(CONCAT_WS('. ',
+ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CONCAT_WS('. ',
   nullif(trim(CONCAT_WS('; ',
     nullif(trim(CONCAT_WS(', ',
       nullif(trim(CONCAT_WS(' ',
@@ -151,8 +153,8 @@ STRING_AGG(CONCAT_WS('. ',
     )), '')
   )), ''),
   provenance.provenance_notes
-  ),
-'||') AS ownerships,
+  )
+), NULL), ' || ') AS ownerships,
 CONCAT_WS('. ',
   nullif(trim(CONCAT_WS(', ',
     nullif(trim(genesis_institution.name), ''),
@@ -166,13 +168,18 @@ CONCAT_WS('. ',
 ) AS genesis_full_description
     
 FROM manuscripts
+                                                   
+FULL JOIN booklets ON manuscripts.id = booklets.manuscript_id
+LEFT JOIN contents ON contents.booklet_id = booklets.id OR contents.manuscript_id = manuscripts.id
+FULL JOIN texts ON contents.id = texts.content_id
+FULL JOIN sections ON texts.id = sections.text_id
+
 LEFT JOIN language_references manuscript_language_references ON manuscript_language_references.record_type = 'Manuscript' AND manuscript_language_references.record_id = manuscripts.id
 LEFT JOIN languages manuscript_languages ON manuscript_languages.id = manuscript_language_references.language_id
 LEFT JOIN manuscript_urls reproduction_urls ON reproduction_urls.url_type = 'reproduction' AND manuscripts.id = reproduction_urls.manuscript_id
 LEFT JOIN manuscript_urls database_urls ON database_urls.url_type = 'database' AND manuscripts.id = database_urls.manuscript_id
 LEFT JOIN institutions repository ON manuscripts.institution_id = repository.id
 LEFT JOIN locations repository_location ON repository.location_id = repository_location.id
-FULL JOIN booklets ON manuscripts.id = booklets.manuscript_id
 LEFT JOIN institutions genesis_institution ON CASE WHEN booklets.id is null THEN manuscripts.genesis_institution_id = genesis_institution.id ELSE booklets.genesis_institution_id = genesis_institution.id END
 LEFT JOIN religious_orders genesis_religious_order ON CASE WHEN booklets.id is null THEN manuscripts.genesis_religious_order_id = genesis_religious_order.id ELSE booklets.genesis_religious_order_id = genesis_religious_order.id END
 LEFT JOIN locations genesis_location ON CASE WHEN booklets.id is null THEN manuscripts.genesis_location_id = genesis_location.id ELSE booklets.genesis_location_id = genesis_location.id END
@@ -181,7 +188,6 @@ LEFT JOIN people provenance_person ON provenance.person_id = provenance_person.i
 LEFT JOIN institutions provenance_institution ON provenance.institution_id = provenance_institution.id
 LEFT JOIN religious_orders provenance_religious_order ON provenance.religious_order_id = provenance_religious_order.id
 LEFT JOIN locations provenance_location ON provenance.location_id = provenance_location.id
-LEFT JOIN contents ON contents.booklet_id = booklets.id OR contents.manuscript_id = manuscripts.id
 LEFT JOIN people content_author ON contents.author_id = content_author.id
 LEFT JOIN titles content_title ON contents.title_id = content_title.id
 LEFT JOIN apocrypha ON content_title.apocryphon_id = apocrypha.id
@@ -189,14 +195,12 @@ LEFT JOIN titles main_eng_title ON main_eng_title.id = apocrypha.main_english_ti
 LEFT JOIN titles main_latin_title ON main_latin_title.id = apocrypha.main_latin_title_id
 LEFT JOIN languages english ON english.language_name = 'English'
 LEFT JOIN languages latin ON latin.language_name = 'Latin'
-LEFT JOIN titles other_eng_titles ON apocrypha.id = other_eng_titles.id AND other_eng_titles.language_id = english.id
-LEFT JOIN titles other_latin_titles ON apocrypha.id = other_latin_titles.id AND other_latin_titles.language_id = latin.id
-FULL JOIN texts ON contents.id = texts.content_id
+LEFT JOIN titles other_eng_titles ON apocrypha.id = other_eng_titles.apocryphon_id AND other_eng_titles.language_id = english.id AND other_eng_titles.id != main_eng_title.id
+LEFT JOIN titles other_latin_titles ON apocrypha.id = other_latin_titles.apocryphon_id AND other_latin_titles.language_id = latin.id AND other_latin_titles.id != main_latin_title.id
 LEFT JOIN language_references text_language_references ON text_language_references.record_type = 'Text' AND text_language_references.record_id = texts.id
 LEFT JOIN languages text_language ON text_language.id = text_language_references.language_id
 LEFT JOIN person_references text_scribe_references ON text_scribe_references.record_type = 'Text' AND text_scribe_references.reference_type = 'scribe' AND text_scribe_references.record_id = texts.id
 LEFT JOIN people text_scribes ON text_scribes.id = text_scribe_references.person_id
-FULL JOIN sections ON texts.id = sections.text_id
 
 GROUP BY
 manuscripts.id,
@@ -210,6 +214,7 @@ repository_location.id,
 repository.id,
 genesis_institution.id,
 genesis_religious_order.id,
+text_language.id,
 genesis_location.id;
 
 ")
