@@ -78,7 +78,7 @@ booklets.date_to AS booklet_date_to,
 CONCAT((CASE WHEN booklets.date_exact AND booklets.specific_date != '' THEN 'ca. ' ELSE '' END), booklets.specific_date) AS booklet_specific_date, -- special
 booklets.content_type AS booklet_content_type,
 
-STRING_AGG('/manuscripts/', CAST(manuscripts.id AS varchar)) AS manuscript_show_link,
+CONCAT('/manuscripts/', CAST(manuscripts.id AS varchar)) AS manuscript_show_link,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT reproduction_urls.url), NULL), ', ') AS manuscript_reproduction_online,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT database_urls.url), NULL), ', ') AS manuscript_urls,
 manuscripts.census_no AS manuscript_census_no,
