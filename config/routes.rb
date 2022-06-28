@@ -3,9 +3,13 @@ Rails.application.routes.draw do
 	devise_for :users
   resources :users
   
-	root to: "application#index"
+	root to: "application#about"
 
   get 'new_title_or_apocryphon', to: 'apocrypha#form_container'
+  get 'about', to: 'application#about'
+  get 'how_to_use', to: 'application#how_to_use'
+  get 'research', to: 'application#research'
+  get 'editor_menu', to: 'application#index'
 
   resources :person_references
   resources :modern_source_references

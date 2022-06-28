@@ -6,7 +6,7 @@
 
   <body>
     <%= render '/layouts/navbar' %>
-    <main class="container-fluid ms-0 my-2 px-3 mb-5">
+    <main class="<%= 'container-fluid ms-0 my-2 px-3 mb-5' unless controller_name == 'application' %>">
       <%= yield %>
     </main>
     <script type="text/javascript">

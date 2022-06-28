@@ -1,0 +1,60 @@
+<div class="container-fluid text-center bg-grey" id="header">
+	<div class="row">
+		<div class="col">
+			<%= image_tag("Apocrypharius-A-orange.png", height: 150, alt: "Apocrypharius letter A" ) %>
+			<h2 class="title" style="color: var(--purple);">site for research on manuscripts of<br>Christian apocrypha and parabiblica</h2>
+		</div>
+	</div>
+</div>
+<div class="w-100 bg-blue pb-5" id="research">
+	<div class="container">
+		<h1 class="static-page text-center pt-5 mb-3" style="color: var(--grey)">Start research here</h1>
+		<div class="row">
+			<div class="col-4">
+				<div class="card m-2">
+					<div class="card-body px-4">
+						<h3 class="static-page text-center">Apocrypha in manuscript</h3>
+						<p>Such information may be useful for</p>
+						<ul>
+							<li>establishing textual families of manuscripts;</li>
+							<li>for selecting manuscripts for closer examination and potential editions;</li>
+							<li>assessing availability of apocryph in certain regions or locations; and</li>
+							<li>rescarching many other aspects of such texts' history and cultural influence.</li>
+						</ul>
+						<p class="text-center"><button type="button" class="btn btn-lg btn-action w-100" onclick="location.href='<%= sections_path %>'">Apocrypha in manuscript</button></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card m-2">
+					<div class="card-body px-4">
+						<h3 class="static-page text-center">Apocrypha in booklists</h3>
+						<p>Such information may be useful for</p>
+						<ul>
+							<li>establishing textual families of booklistss;</li>
+							<li>for selecting booklistss for closer examination and potential editions;</li>
+							<li>assessing availability of apocryph in certain regions or locations; and</li>
+							<li>rescarching many other aspects of such texts' history and cultural influence.</li>
+						</ul>
+						<p class="text-center"><button type="button" class="btn btn-lg btn-action w-100" onclick="location.href='<%= booklist_sections_path %>'">Apocrypha in booklists</button></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card m-2">
+					<div class="card-body px-4">
+						<h3 class="static-page text-center">A list of apocrypha</h3>
+						<p>Such information may be useful for</p>
+						<ul>
+							<li>establishing textual families of manuscripts;</li>
+							<li>for selecting manuscripts for closer examination and potential editions;</li>
+							<li>assessing availability of apocryph in certain regions or locations; and</li>
+							<li>rescarching many other aspects of such texts' history and cultural influence.</li>
+						</ul>
+						<p class="text-center"><button type="button" class="btn btn-lg btn-action w-100" onclick="location.href='<%= apocrypha_path %>'">A list of apocrypha</button></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

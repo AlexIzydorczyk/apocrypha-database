@@ -10,10 +10,13 @@
 }
 
 :root {
-  --orange: #9F492D;
+  --orange: #DE3739;
   --faded-orange: #9F492D15;
   --background-grey: #F9F9F9;
   --modal-background: #EBEBEB;
+  --purple: #3D3275;
+  --grey: #EAE3DC;
+  --blue: #78B4B4;
 }
 
 body,h1,h2,h3,h4,h5,h6,p,a,span,div{
@@ -31,6 +34,12 @@ h1 {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   font-size: 26px;
+  &.static-page{
+    border-bottom: none;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    font-size: 26px;
+  }
 }
 
 h2 {
@@ -39,6 +48,11 @@ h2 {
   margin-top: 3rem;
   padding-bottom: 1rem;
   font-size: 20px;
+}
+
+h3.static-page{
+  font-size: 1.20rem;
+  padding-bottom: 10px;
 }
 
 textarea {
@@ -64,12 +78,34 @@ body {
   font-size: 18px;
 }
 
+.bg-grey{
+  background-color: var(--grey);
+}
+
+.bg-blue{
+  background-color: var(--blue);
+}
 // -------------- bootstrap edits -----------
 
-.nav-link.active {
-  background-color: var(--faded-orange) !important;
-  border-radius: 8px;
+.navbar{
+  background-color: var(--purple);
+  color: white;
 }
+
+.nav-link{
+  margin: 10px 10px;
+  color: white;
+  &:hover{
+    color: white;
+    border-bottom: solid 2px white;
+  }
+  &.active {
+    background-color: none;
+    // border-radius: 8px;
+    border-bottom: solid 2px white;
+  }
+}
+
 
 .navbar-brand {
   font-weight: 500;
@@ -356,3 +392,46 @@ dt.text-end{
     border-bottom-right-radius: 4px;
   }
 }
+
+#header{
+  font-family: 'Noto Sans', sans-serif;
+  color: white;
+  height: 350px;
+  padding-top: 100px;
+  h2.title{
+    font-family: 'Noto Sans', sans-serif;
+    border: none;
+    display: inline-block;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    font-size: 36px;
+  }
+}
+
+.row.g-0{
+  .col-6{
+    img{
+      max-width: 100%;
+    }
+  }
+}
+
+#research{
+  .card{
+    font-size: 14px;
+    padding-top: 20px;
+    border-radius: 20px;
+    background-color: var(--grey);
+    .btn.btn-lg.btn-action{
+      color: var(--grey);
+      box-shadow: none;
+      border: none;
+      &:hover{
+        background-color: var(--purple);
+        border:none;
+      }
+    }
+  }
+}
+
