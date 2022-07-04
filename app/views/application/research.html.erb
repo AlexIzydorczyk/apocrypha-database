@@ -1,4 +1,6 @@
 <div class="container-fluid text-center bg-grey" id="header">
+	<%= image_tag("floral-grey-pic.png", class: "h-100", id: "floral", alt: "Floral", style: "margin-top: 75px") %>
+	<div class="bg-grey" style="width: calc(100vw - 500px);height: 75px; position: absolute; bottom: -55px;left: 0;"></div>
 	<div class="row">
 		<div class="col">
 			<%= image_tag("Apocrypharius-A-orange.png", height: 150, alt: "Apocrypharius letter A" ) %>
@@ -6,7 +8,7 @@
 		</div>
 	</div>
 </div>
-<div class="w-100 bg-blue pb-5" id="research">
+<div class="w-100 py-5" id="research" style="background-image: url('<%= image_url('big-bg2.png') %>');">
 	<div class="container">
 		<h1 class="static-page text-center pt-5 mb-3" style="color: var(--grey)">Start research here</h1>
 		<div class="row">
