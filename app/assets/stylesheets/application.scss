@@ -447,3 +447,29 @@ dt.text-end{
   }
 }
 
+#login{
+  .btn-action{
+    &:hover{
+      background-color: var(--blue);
+      border: 1px solid var(--blue);
+      color: white
+    }
+  }
+  .form-control{
+    min-height: 50px;
+  }
+  .form-check-label{
+    color: white;
+    font-size: 14px;
+  }
+  .form-group{
+    a{
+      color: white;
+      font-size: 14px;
+      &:hover{
+        color: var(--blue)
+      }
+    }
+  }
+}
+
