@@ -19,8 +19,11 @@
   --blue: #78B4B4;
 }
 
-body,h1,h2,h3,h4,h5,h6,p,a,span,div{
+body,h1,h2,h3,h4,h5,h6,a,span,div{
   font-family: Inter;
+}
+p, ul, li{
+  font-family: 'Libre Baskerville', serif;
 }
 
 td.actions{
