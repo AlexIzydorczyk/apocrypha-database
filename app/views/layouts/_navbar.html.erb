@@ -15,7 +15,10 @@
           <%= link_to "How to Use", how_to_use_path, class: "nav-link #{ 'active' if current_page? how_to_use_path }" %>
         </li>
         <li class="nav-item">
-          <%= link_to "Research", research_path, class: "nav-link #{ 'active' unless (current_page?(about_path) || current_page?(how_to_use_path) || current_page?(root_path) || current_page?(new_user_session_path) || current_page?(editor_menu_path)) }" %>
+          <%= link_to "Contact", contact_path, class: "nav-link #{ 'active' if current_page? contact_path }" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Research", research_path, class: "nav-link #{ 'active' unless (current_page?(about_path) || current_page?(how_to_use_path) || current_page?(root_path) || current_page?(new_user_session_path) || current_page?(editor_menu_path) || current_page?(contact_path)) }" %>
         </li>
         <li class="d-none nav-item">
           <%= link_to "Contact", root_path, class: "nav-link #{ 'active' if current_page? about_path }" %>

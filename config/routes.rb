@@ -8,8 +8,15 @@ Rails.application.routes.draw do
   get 'new_title_or_apocryphon', to: 'apocrypha#form_container'
   get 'about', to: 'application#about'
   get 'how_to_use', to: 'application#how_to_use'
+  get 'contact', to: 'application#contact'
   get 'research', to: 'application#research'
   get 'editor_menu', to: 'application#index'
+
+  resources :mailers do
+    collection do
+      post :send_feedback
+    end
+  end
 
   resources :person_references
   resources :modern_source_references
