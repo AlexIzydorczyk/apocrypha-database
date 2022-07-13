@@ -242,7 +242,7 @@
     // onColumnVisible: onColumnVisible,
     defaultColDef: defaultColDef,
     suppressMenuHide: true,
-    groupAggFiltering: true,
+    groupAggFiltering: (params) => !!params.node.group,
     autoGroupColumnDef: {
       cellRendererParams: {
         // suppressCount: true,
