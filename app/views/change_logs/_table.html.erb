@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'user_id' %><th class="col"><input type="text" class="form-control" placeholder="User" disabled></th><% end %>
+                      <% unless hide_columns.include? 'controller_name' %><th class="col"><input type="text" class="form-control" placeholder="Controller name" disabled></th><% end %>
+                      <% unless hide_columns.include? 'action_name' %><th class="col"><input type="text" class="form-control" placeholder="Action name" disabled></th><% end %>
+                      <% unless hide_columns.include? 'record_id' %><th class="col"><input type="text" class="form-control" placeholder="Record" disabled></th><% end %>
+                      <% unless hide_columns.include? 'additional_info' %><th class="col"><input type="text" class="form-control" placeholder="Additional info" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% change_logs.each do |change_log| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= change_log.id %></td><% end -%>
+                      <% unless hide_columns.include? 'user_id' %><td class="col"><%= change_log.user_id %></td><% end %>
+                      <% unless hide_columns.include? 'controller_name' %><td class="col"><%= change_log.controller_name %></td><% end %>
+                      <% unless hide_columns.include? 'action_name' %><td class="col"><%= change_log.action_name %></td><% end %>
+                      <% unless hide_columns.include? 'record_id' %><td class="col"><%= change_log.record_id %></td><% end %>
+                      <% unless hide_columns.include? 'additional_info' %><td class="col"><%= change_log.additional_info %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", change_log, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_change_log_path(change_log), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

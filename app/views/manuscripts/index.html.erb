@@ -1,5 +1,11 @@
-<h1>Manuscripts</h1>
-<p><%= link_to "New manuscript", new_manuscript_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  Manuscripts
+</div>
+
+<h1>Manuscripts<%= button_to 'New manuscript', manuscripts_path, class: "btn btn-action", params: { manuscript: { census_no: "" } } %></h1>
+
 
 <div id="manuscripts">
     <%= render 'grid', manuscripts: @manuscripts %>

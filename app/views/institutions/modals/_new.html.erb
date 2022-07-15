@@ -1,0 +1,113 @@
+<div class="modal" id="modal-<%= pid %><%= depth.to_s %>-new-institution-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+	<% if parent.class == Ownership %><span class="second-modal" data-other-render="#addProvenanceModal<%= parent.try(:id) %>"></span><% end %>
+	<%= form_with(model: institution) do |form| %>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add institution</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label>Institution name</label>
+						<%= form.text_field :name, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
+					</div>
+					<div class="col-md-3">
+						<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+						<button type="button" class="btn btn-outline-action" @click="alternative_name = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_name">
+						<label>Writing system</label>
+						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_name">
+						<label>Name of institution: alternative or local name of institution</label>
+						<%= form.text_field :name_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Публичная библиотека" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_name && writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :name_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
+					</div>
+				</div>
+				<label class="mt-3 fw-bolder">Location</label>
+				<div class="row">
+					<div class="form-group col-md-12 mb-2">
+						<div class="d-flex">
+							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
+							<button type="button" id="instiution<%= ('-' + institution.id.to_s) if institution.id.present? %>-location-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#modal-instiution<%= ('-' + institution.id.to_s) if institution.id.present? %>-location-btn', '#modal-institution-<%= depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') %>location-modal')" data-backdrop="static" data-keyboard="false">New</button>	
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-12 mb-2">
+						<%= form.label :religious_order_id, "Religious Order", style: "display: block", class: " fw-bolder" %>
+						<div class="d-flex">
+							<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: institution.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
+							<button type="button" id="institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#institution<%= ('-' + institution.id.to_s) if institution.id.present? %>-new-religious-order-btn', '#<%= 'gen-' if defined?(genesis) && genesis %>institution-<%= depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') %>new-religious-order-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+					<div class="form-group col-12 mb-2">
+						<%= form.label :notes, "Notes", style: "display: block" %>
+						<%= form.text_area :notes, class: "form-control" %>
+					</div>
+				</div>
+			</div>
+			<% if local_assigns[:genesis].present? %>
+				<%= hidden_field_tag :genesis, true %>
+			<% end %>
+			<% if parent.class == Manuscript %>
+				<%= hidden_field_tag :manuscript_id, parent.id %>
+			<% elsif parent.class == Booklet %>
+				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
+			<% elsif parent.class == ModernSource %>
+				<%= hidden_field_tag :modern_source_id, parent.id %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
+			<% end %>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}#{depth.to_s}-new-institution-modal .ownership-field').val()" : local_assigns[:genesis].present? && genesis ? "'genesis'" : "'institution'" %>, 0);})">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>
+</div>
+
+<%= render 'locations/modals/form', location: Location.new, parent: institution, pid: "#{'gen-' if defined?(genesis) && genesis}institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: institution, pid: "#{'gen-' if defined?(genesis) && genesis}institution-#{ depth.to_s + '-' + ( institution.id.present? ? (institution.id.to_s + '-') : '') }", depth: depth+1 %>
+
+<script type="text/javascript">
+	var institutution_modal_vue;
+	$( document ).ready(function() {
+		institutution_vue = new Vue({
+			el: "#modal-<%= pid %><%= depth %>-new-institution-modal",
+			name: "modal-<%= pid %><%=depth %>-NewInstitutionModal",
+			data: function() {
+				return {
+					sub_modal_open: false,
+					record_id: <%= institution.try(:id) || "null" %>,
+					alternative_name: <%= institution.name_alt.present? || institution.name_transliteration.present? ? "true" : "false" %>,
+					writing_system_id: '<%= institution.writing_system_id %>',
+				}
+			},
+			methods: {
+				openSubModal(button_selector, selector){
+					saveForm($("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal form"), $(selector + ' .institution-field'));
+					console.log("selector", selector);
+					$(selector).modal('show');
+					$('.modal').on('hidden.bs.modal', function() {
+						this.sub_modal_open = false;
+					}.bind(this));
+					this.sub_modal_open = true;
+				}
+			},
+			mounted(){
+				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_location_id", ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal #institution_religious_order_id", ts_sort_text_asc_max_1);
+				createModalListeners("#modal-<%= pid %><%= depth.to_s %>-new-institution-modal");
+			},
+		});
+	});
+</script>

@@ -1,0 +1,2450 @@
+[
+    {
+        "_id": "352",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61b8bdad32d2c507f5c6a435"
+            },
+            "booklistId": "",
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "location": "Admont",
+                "religiousOrder": "Benedictines",
+                "diocese": "Salzburg",
+                "region": "Austria",
+                "institution": "Abbey (Benediktinerstift)"
+            }
+        },
+        "author": "Peter von Arbon (Petrus de Arbona)",
+        "specificDate": "after 1376",
+        "language": "Latin",
+        "chapterRef": "Hac pagina continet libros Ieronimi",
+        "title": "Annotacio omnium librorum Admontensis cenobii",
+        "relevantText": "Item exposicio de operibus sex dierum, incipit 'Fecit quoque Deus'; in eodem Alquinus super vetus testamentum et comentum Ieronimi super Marcum et <strong>hystoria Pilati</strong>.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-14T17:25:11.118Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-14T15:52:10.954Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61b8c2f932d2c507f5c6a43c"
+                },
+                "source": "354",
+                "pageRef": "p. 20"
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "folioPageRef": "f. 5va",
+                "source": "353",
+                "_id":
+                {
+                    "$oid": "61b8bdad32d2c507f5c6a437"
+                }
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61b8bdad32d2c507f5c6a436"
+                },
+                "source": "351"
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1376",
+            "to": "1400"
+        }
+    },
+    {
+        "_id": "355",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "Item Iacobum de Fragine de tempore, incipit 'Preparare'; in eodem <strong>ewangelium Nychodemi</strong> et de extremo iudicio.",
+        "specificDate": "after 1376",
+        "chapterRef": "Notandum quod anno Domini MoCCCoLXXVIo dominus Fridricus monasterii Admontensis notarius ad honorem sancte Marie et sancti Blasii pro remedio anime sue ad dictum monasterium legavit libros infrascriptos",
+        "language": "Latin",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61b8ce7c32d2c507f5c6a441"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "Austria",
+                "diocese": "Salzburg",
+                "religiousOrder": "Benedictines",
+                "location": "Admont",
+                "institution": "Abbey (Benediktinerstift)"
+            }
+        },
+        "attestationType": "Booklist",
+        "author": "Peter von Arbon (Petrus de Arbona)",
+        "title": "Annotacio omnium librorum Admontensis cenobii",
+        "updatedAt":
+        {
+            "$date": "2021-12-14T17:43:55.618Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-14T17:03:55.044Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 32",
+                "source": "354",
+                "_id":
+                {
+                    "$oid": "61b8ce7c32d2c507f5c6a444"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "folioPageRef": "f. 25vb",
+                "source": "353",
+                "_id":
+                {
+                    "$oid": "61b8ce7c32d2c507f5c6a443"
+                }
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "source": "106",
+                "_id":
+                {
+                    "$oid": "61b8ce7c32d2c507f5c6a442"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1400",
+            "from": "1376"
+        }
+    },
+    {
+        "_id": "356",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61b8d35132d2c507f5c6a44b"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Abbey (Benediktinerstift)",
+                "location": "Admont",
+                "region": "Austria",
+                "diocese": "Salzburg",
+                "religiousOrder": "Benedictines"
+            }
+        },
+        "title": "Annotacio librorum Admontensis monasterii ",
+        "author": "Peter von Arbon (Petrus de Arbona)",
+        "language": "Latin",
+        "chapterRef": "Hic annotantur libri Ieronimi",
+        "specificDate": "1380",
+        "relevantText": "Item Alcwinus super vetus testamentum, incipit 'Fecit quoque'; in eodem Ieronimus super Marcum et <strong>hystoria Pylati</strong>.",
+        "comments": "This is the  younger version of the catalogue.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-14T17:56:55.684Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-14T17:22:41.988Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61b8d35132d2c507f5c6a44c"
+                },
+                "source": "354",
+                "pageRef": "p. 43"
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "folioPageRef": "f. 5ra",
+                "source": "357",
+                "_id":
+                {
+                    "$oid": "61b8dae732d2c507f5c6a454"
+                }
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61b8d35132d2c507f5c6a44d"
+                },
+                "source": "351"
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1376",
+            "to": "1400"
+        }
+    },
+    {
+        "_id": "358",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "Item Iacobus de Voragine, incipit 'Preparare'; in eodem <strong>ewangelium Nychodemi</strong> .",
+        "specificDate": "1380",
+        "chapterRef": "Hic annotantur libri sermonum",
+        "language": "Latin",
+        "title": "Annotacio librarum Admontensis monasterii",
+        "author": "Peter von Arbon (Petrus de Arbona)",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61b8dd3d32d2c507f5c6a459"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "Austria",
+                "diocese": "Salzburg",
+                "religiousOrder": "Benedictines",
+                "location": "Admont",
+                "institution": "Abbey (Benediktinerstift)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-14T18:06:53.389Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-14T18:04:34.707Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 50",
+                "source": "354",
+                "_id":
+                {
+                    "$oid": "61b8dd3d32d2c507f5c6a45c"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "folioPageRef": "f. 9ra",
+                "source": "357",
+                "_id":
+                {
+                    "$oid": "61b8dd3d32d2c507f5c6a45b"
+                }
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "source": "106",
+                "_id":
+                {
+                    "$oid": "61b8dd3d32d2c507f5c6a45a"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1400",
+            "from": "1376"
+        }
+    },
+    {
+        "_id": "361",
+        "title": "Katalog aus der zweiten Hälfte des 15. Jahrh.",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "author": "",
+        "relevantText": "B 4. 1. Hugo de claustro anime quatuor libri.  Ibidem <strong>gesta salvatoris Nicodemi</strong>.  Item quinque libri beati Bernhardi de consideracione ad Eugenium papam.  Item quatuor libri beati Augustini de doctrina christiana.  Ibidem liber Augustini de ecclesiasticis dogmatibus cum tabula, quem alii dicunt esse Gympnasii de fide summe trinitatis.  Item exposicio beati Augustini super symbolum.  Item liber Augustini de fide ad Petrum.  Ibidem alia exposicio Augustini super symbolum.  Item sermo Augustini de incarnacione et nativitate domini.  Ibidem exhortacio et exposicio beati Ambrosii ad neophitos.  Item liber Augustini episcopi de natura et gracia.  Ibidem liber Augustini de gracia et libero arbitrio.  Item iterum claustrum anime minus cum exposicione officiorum et officialium.",
+        "chapterRef": "Shelfmark B4. 1",
+        "language": "Latin",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bc08f532d2c507f5c6a468"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "Lower Austria (Niederösterreich)",
+                "religiousOrder": "Carthusians",
+                "location": "Aggsbach",
+                "institution": "Unser Frauen Pforte (Porta sanctae Mariae)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T18:47:32.032Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-17T03:48:07.679Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 536",
+                "source": "359",
+                "_id":
+                {
+                    "$oid": "61bc08f532d2c507f5c6a46a"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "folioPageRef": "f. 5r",
+                "source": "360",
+                "_id":
+                {
+                    "$oid": "61bc08f532d2c507f5c6a469"
+                }
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bc0a0b32d2c507f5c6a46e"
+                },
+                "source": "106"
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1500",
+            "from": "1451"
+        }
+    },
+    {
+        "_id": "362",
+        "title": "Katalog aus der zweiten Hälfte des 15. Jahrh.",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bc09df32d2c507f5c6a46d"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Unser Frauen Pforte (Porta sanctae Mariae)",
+                "location": "Aggsbach",
+                "religiousOrder": "Carthusians",
+                "region": "Lower Austria (Niederösterreich)"
+            }
+        },
+        "author": "",
+        "language": "Latin",
+        "chapterRef": "Shelfmark E2. 2",
+        "relevantText": "E2. 2. Item Henricus de Frimaria super decem precepta.  Item ibidem quedam de confessionibus audiendis.  Ibidem <strong>evangelium Nicodemi</strong>.  Ibidem sermones de sanctis de corpore Christi.  Ibidem tractatus de pestilencia in vulgari.  Ibidem sermones de passione domini Iacobini.  Ibidem plures sermones de tempore et de sanctis.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "__v": 0,
+        "updatedAt":
+        {
+            "$date": "2021-12-19T18:47:55.521Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-17T03:54:06.914Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "359",
+                "pageRef": "p. 572",
+                "_id":
+                {
+                    "$oid": "61bc09df32d2c507f5c6a46b"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "source": "360",
+                "folioPageRef": "f. 24r",
+                "_id":
+                {
+                    "$oid": "61bc09df32d2c507f5c6a46c"
+                }
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bc0a1d32d2c507f5c6a46f"
+                },
+                "source": "106"
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1451",
+            "to": "1500"
+        }
+    },
+    {
+        "_id": "363",
+        "title": "Katalog aus der zweiten Hälfte des 15. Jahrh.",
+        "__v": 0,
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "G.12 3. Item Hugo de claustro anime.  Item liber Augustini de opere monachali.  Item liber Augustini de modo orandi deum.  Item liber Augustini de bono coniugali.  Item liber Augustini de ecclesiasticis dogmatibus.  Ibidem <strong>gesta salvatoris</strong>.",
+        "chapterRef": "Shelfmark G12. 3",
+        "language": "Latin",
+        "author": "",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bc0ac732d2c507f5c6a473"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "Lower Austria (Niederösterreich)",
+                "religiousOrder": "Carthusians",
+                "location": "Aggsbach",
+                "institution": "Unser Frauen Pforte (Porta sanctae Mariae)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T18:48:16.282Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-17T03:57:59.668Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bc0ac732d2c507f5c6a470"
+                },
+                "pageRef": "p. 596",
+                "source": "359"
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bc0ac732d2c507f5c6a471"
+                },
+                "folioPageRef": "f. 38r",
+                "source": "360"
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bc0ac732d2c507f5c6a472"
+                },
+                "source": "106"
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1500",
+            "from": "1451"
+        }
+    },
+    {
+        "_id": "365",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "76. Sermones XXIII. Decreta innouata in concilio Alexandri pape. Questiones de diuinitate. <strong>Gesta saluatoris</strong>. Dupplices glose super cantica canticorum. Dialetice, Boecii. Epistulare Oracii, Persii, et alia multa bona.",
+        "chapterRef": "No. 76",
+        "language": "Latin",
+        "author": "Bernard de Quinsac (?)",
+        "title": "Hii sunt libri communes et Bernardi de Quinsac",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bd2bab32d2c507f5c6a490"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "location": "Aureil",
+                "institution": "Priory",
+                "religiousOrder": "Canons regular",
+                "diocese": "Limoges",
+                "region": "Limousin, France"
+            }
+        },
+        "updatedAt":
+        {
+            "$date": "2021-12-20T00:58:50.256Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-17T04:58:26.048Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 122, no. 76",
+                "source": "364",
+                "_id":
+                {
+                    "$oid": "61bcb51432d2c507f5c6a47d"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "106",
+                "_id":
+                {
+                    "$oid": "61bcb51432d2c507f5c6a47c"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1250",
+            "from": "1226"
+        }
+    },
+    {
+        "_id": "368",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bd1a8532d2c507f5c6a484"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Priory",
+                "religiousOrder": "Canons regular",
+                "location": "Aureil",
+                "region": "Limousin, France",
+                "diocese": "Limoges"
+            }
+        },
+        "title": "Hii sint libri communes et Bernardi de Quinsac",
+        "author": "Bernard de Quinsac (?)",
+        "language": "Latin",
+        "relevantText": "127. <strong>Liber de nati[uitate] sancte de[ipare]</strong>. De expositione misse. Regule uersificandi. Vita sancti Christofori, et alia bona.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "__v": 0,
+        "updatedAt":
+        {
+            "$date": "2021-12-18T00:30:51.38Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-17T23:17:24.912Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "364",
+                "pageRef": "p. 127",
+                "_id":
+                {
+                    "$oid": "61bd1a8532d2c507f5c6a483"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "366",
+                "_id":
+                {
+                    "$oid": "61bd1a8532d2c507f5c6a482"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1226",
+            "to": "1250"
+        }
+    },
+    {
+        "_id": "372",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61be0a6632d2c507f5c6a497"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Collège d'Annecy",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "author": "",
+        "title": "Sequitur inventarium librorum",
+        "language": "Latin",
+        "specificDate": "1435",
+        "relevantText": "45. Item, Liber Ystorie Vaundalice seu Vindalice persecutionis, in quo est vita Beato Genesii, scriptus in pergameno, de littera formata, coopertus de postibus nudis. Item etiam in eodem libro est <strong>Ystoria de mala vita et gestis Pilati</strong>, scriptus de alia littera, ad duas columpnas.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T18:48:32.302Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-18T16:20:34.491Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61be0a6632d2c507f5c6a499"
+                },
+                "source": "369",
+                "pageRef": "p. 84"
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61be124432d2c507f5c6a4a6"
+                },
+                "source": "376"
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61be0a6632d2c507f5c6a498"
+                },
+                "source": "373"
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1426",
+            "to": "1450"
+        }
+    },
+    {
+        "_id": "375",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "40. Item, <strong>Liber Epistolarum Senece ad Paulum, et Pauli ad Senecam</strong>, scriptus in pergameno, ad duas columpnas, de littera formata antiqua et prima, coopertus pelle rubea antiqua, cum multis aliis Tractatibus.",
+        "specificDate": "1435",
+        "language": "Latin",
+        "author": "",
+        "title": "Sequitur inventarium librorum",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61be0f4132d2c507f5c6a49d"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Collège d'Annecy"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T18:48:47.646Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-18T16:41:35.26Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 84",
+                "source": "369",
+                "_id":
+                {
+                    "$oid": "61be0f4132d2c507f5c6a49f"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61be1fb032d2c507f5c6a4a8"
+                },
+                "source": "376"
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "source": "374",
+                "_id":
+                {
+                    "$oid": "61be0f4132d2c507f5c6a49e"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1450",
+            "from": "1426"
+        }
+    },
+    {
+        "_id": "378",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "573. Item <strong>itinerarium beati Clementis</strong> cum <strong>epistola ad Iacobum</strong>, coopertum corio viridi, quod incipit in sescundo corundello promi folii: <i>mee</i>, et finit in ultimo corundello penultimi folii: <i>cum</i>",
+        "specificDate": "1369",
+        "language": "Latin",
+        "title": "Recensio librarum anno 1369 in palatio Avenionensi asservtorum",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bec40832d2c507f5c6a4ae"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T05:54:24.741Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T05:32:53.314Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 332",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61bec40832d2c507f5c6a4b1"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "folioPageRef": "f. 50r",
+                "_id":
+                {
+                    "$oid": "61bec40832d2c507f5c6a4b2"
+                },
+                "source": "379"
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "source": "104",
+                "_id":
+                {
+                    "$oid": "61bec40832d2c507f5c6a4b0"
+                }
+            },
+            {
+                "source": "377",
+                "_id":
+                {
+                    "$oid": "61bec40832d2c507f5c6a4af"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "380",
+        "__v": 0,
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "2038. Item <strong>liber de infancia Salvatoris</strong> cum Ysopo, coopertus pergamento sine postibus, qui incipit in secundo folio: <i>permansit</i>, et finit in penultimo folio:: <i>mori</i>.",
+        "specificDate": "1369",
+        "language": "Latin",
+        "title": "Recensio librorum anno 1369 in palatio Avenionensi asservatorum",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bec8d032d2c507f5c6a4b8"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "chapterRef": "Sequntur libri inventi in camera immediate subtus capellam sancti Michaelis",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T18:59:05.414Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T05:53:20.499Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bec8d032d2c507f5c6a4b6"
+                },
+                "pageRef": "p. 431",
+                "source": "371"
+            }
+        ],
+        "handwrittenSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bec8d032d2c507f5c6a4b7"
+                },
+                "source": "379",
+                "folioPageRef": "f. 103v"
+            }
+        ],
+        "apocrypha":
+        [
+            {
+                "source": "119",
+                "_id":
+                {
+                    "$oid": "61becc1532d2c507f5c6a4ba"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "381",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "44. Item in volumine signato per XLIIII consilia sanctorum patrum Ilarii, Augustini, <strong>epistola Clementis pape ad sanctum Iacobum</strong>, exemplar constituti domini Constantini imperatoris, Augustinus de correctione et gracia, Ylarius de essentia Patris et Filii contra hereticos, est sine postibus.",
+        "specificDate": "1375",
+        "language": "Latin",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "title": "Recensio bibliothecae Avionensis a Gregorio XI concinnata ac disposita",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61becf7b32d2c507f5c6a4be"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T06:21:47.691Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T06:21:32.106Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 459",
+                "_id":
+                {
+                    "$oid": "61becf7b32d2c507f5c6a4c0"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "104",
+                "_id":
+                {
+                    "$oid": "61becf7b32d2c507f5c6a4bf"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "383",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "62. Item in volumine signato per LXII speculum Augustini, de mirabilibus sacre scripture, item Origenes de Helcana, Senenna (!), Samuele de Heli, Ophni, et Finees; item Origenes super Ysaiam, Ieremiam, Ezechielem, Cantica Canticorum, Genesim, Exodum, Leviticum, Numerum, Iosue,  Iudicum, item <strong>ydenetarium (i.e., itinerarium) Clementis</strong>, <strong>epistola Clementis ad Iacobum</strong>, <strong>epistola Dyonisii et (i.e., ad) Timotheum de morte apostolorum Petri et Pauli</strong>",
+        "specificDate": "1375",
+        "language": "Latin",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "title": "Recensio bibliothecae Avionensis a Gregorio XI concinnata ac disposita",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T06:38:37.106Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T06:38:36.193Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 460",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61bed36d32d2c507f5c6a4c5"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "104",
+                "_id":
+                {
+                    "$oid": "61bed36d32d2c507f5c6a4c8"
+                }
+            },
+            {
+                "source": "377",
+                "_id":
+                {
+                    "$oid": "61bed36d32d2c507f5c6a4c7"
+                }
+            },
+            {
+                "source": "382",
+                "_id":
+                {
+                    "$oid": "61bed36d32d2c507f5c6a4c6"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "384",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "280. Item in volumine signato per XXXIII Damascenus de trisagio, vita eiusdem, item logica, de ente et substancia, de heresibus, sentenciarum, condiciones, libri sentenciarum, elementarium, de duabus naturis, apocriphorismorum, item exameron Ambrosii, item libri Gregorii Niseni de condicione hominis, item exposicio vocabulorum super dicta Iohannis Damasceni, item commentum Bernardi super Lucam, item <strong>ewangelium Nicodemi</strong>, item libri Efrem dyaconi de iudicio dei, de compunctione cordis, de pudicitia et oratione, item dialogus de unitate sancte trinitatis, item sermones Augustini de condicione future vite, de adventu, de sancto Iohanne ewangelista, item tractatus de figuris veteris et novi testamenti, item tractatus Augustini de oracione et ieiunio, de sex alis cherubin, de questione ewangelica, de blasphemia Spiritus Sancti, de ieiunio sabbati, de caritate et de laude caritatis, de incarnacione Verbi, de essentia dei, de penetencia, de agone christiano, de videndo deum, epistole alique, item sermo Ylarii de dedicacione, item sermones domini Petri Rogerii dictus Clemens VI, item speculum Bernardi, item Augnstinus contra Parmemam, de periculis novissimorum, item orationes Ancelmi, item Augustinus contra Manicheum, item de predestinacione dei et de predestinacione sanctorum, item de predestinacione divina, item sermones domini Petri Rogerii dictus Clemens VI de passagio.",
+        "specificDate": "1375",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "language": "Latin",
+        "title": "Recensio bibliothecae Avionensis a Gregorio XI concinnata ac disposita",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bf697032d2c507f5c6a4cf"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T17:18:39.935Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T17:17:36.664Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 474",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61bf697032d2c507f5c6a4d1"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "106",
+                "_id":
+                {
+                    "$oid": "61bf697032d2c507f5c6a4d0"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "385",
+        "language": "Latin",
+        "title": "Recensio bibliothecae Avenionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bf897a32d2c507f5c6a4d4"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "specificDate": "1375",
+        "relevantText": "753. Item in volumine signato per CCLII <strong>liber de nativitate beate Marie virginis et infancie Salvatoris</strong>.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T19:37:16.077Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T19:35:14.909Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61bf897a32d2c507f5c6a4d5"
+                },
+                "source": "371",
+                "pageRef": "p. 504"
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "386",
+                "_id":
+                {
+                    "$oid": "61bf89ec32d2c507f5c6a4d6"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        }
+    },
+    {
+        "_id": "388",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "756. Item in volumine signato per CCLV <strong>liber de ortu Salvatoris et beate Marie</strong> et de sacramentis ecclesie et de preceptis dechalogi, item liber de abstinentia.",
+        "specificDate": "1375",
+        "language": "Latin",
+        "title": "Recensio bibliothecae Avenionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bfbed932d2c507f5c6a4da"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T23:23:05.563Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T23:22:57.066Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 505",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61bfbed932d2c507f5c6a4dc"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "387",
+                "_id":
+                {
+                    "$oid": "61bfbed932d2c507f5c6a4db"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "389",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bfbfe132d2c507f5c6a4df"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "title": "Recensio bibliothecae Avenionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "language": "Latin",
+        "specificDate": "1375",
+        "relevantText": "759. Item in volumine signato per CCLVIII itinerarium beati Clementis.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-19T23:27:29.256Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-19T23:27:29.256Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 505",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61bfbfe132d2c507f5c6a4dd"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "377",
+                "_id":
+                {
+                    "$oid": "61bfbfe132d2c507f5c6a4de"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "391",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bfcf3132d2c507f5c6a4e4"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "title": "Recensio bibliothecae Avenionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "language": "Latin",
+        "specificDate": "1375",
+        "relevantText": "1189. Item in volumine signato per XXVIII passio sanctorum Geneseorum, item libri wandalice persecutionis  et in secundo est liber fidei catholice; item libri historie lombardice, item <strong>de vita mala et gestis Pilati</strong>, item vita XXXII sanctorum et sanctarum martirum, qui raro reperiuntur in kalendario romano.",
+        "updatedAt":
+        {
+            "$date": "2021-12-20T00:32:49.259Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-20T00:32:48.1Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 526",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61bfcf3132d2c507f5c6a4e5"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "390",
+                "_id":
+                {
+                    "$oid": "61bfcf3132d2c507f5c6a4e3"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "392",
+        "title": "Recensio bibliothecae Avenionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bfd1b732d2c507f5c6a4e8"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "language": "Latin",
+        "specificDate": "1375",
+        "relevantText": "1337. Item intitulatus <strong>Epistola Clementis ad Iacobum fratrem domini{/strong>, ubi continentur diverse epistole sive decreta sanctorum sive summorum pontificum; in volumine cooperto de viridi.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-20T00:43:34.935Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-20T00:43:34.935Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 540",
+                "_id":
+                {
+                    "$oid": "61bfd1b732d2c507f5c6a4e6"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "104",
+                "_id":
+                {
+                    "$oid": "61bfd1b732d2c507f5c6a4e7"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "393",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61bfd52832d2c507f5c6a4eb"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "title": "Recensio bibliothecae Avenionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "language": "Latin",
+        "specificDate": "after 1375",
+        "relevantText": "1330. Item octo epistole Cipriani archiepiscopi, item Prosper de vita contemplativa, item historie Ierosolimitane III libri, item historia de perdicione Acconen,  item <strong>liber de infancia Salvatoris</strong>, item libri Policranei (!), item libri de vita et moribus philosophorum per X partes, item libri Thimei Platonis, item Marcius Capella de nupciis Mercurii et phisiologie, item astronomie Marchiani, item sompnu[i]um Scipionis, item Macrobii Ambrosii super sompn[i]um Scipionis libri duo, item liber de ymagine mundi, item liber de mirabilibus Rome, item Dares Sergius de excidio Troianorum, item iudicis Guidonis de excidio Troianorum libri XXXV, item entheticus Iohannis in Policratcitum; in uno volumine, cooperto de postis nudis.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-20T00:58:16.374Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-20T00:58:16.374Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 539",
+                "_id":
+                {
+                    "$oid": "61bfd52832d2c507f5c6a4e9"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "119",
+                "_id":
+                {
+                    "$oid": "61bfd52832d2c507f5c6a4ea"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "394",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "Item unum librum, in quo continentur epistole Senomanensis episcopi, scriptum de competendi nota in cartis pecudinis, qui incipit in secundo folio: <i>negotia</i>, et finit in penultimo: <i>curo Christi et sanguis</i>, et post dictum librum sunt aliqui sermones de adventu domini, et post dictos sermkones secuntur alique epistole <strong>Senece viri clarissimi ad Paulum apostolum</strong> et <strong>Pauli ad Senecam</strong>, et est in tabulis cohopertis de corio nigro laborato cum uno clausorio.",
+        "specificDate": "1311",
+        "language": "Latin",
+        "title": "Index Perusinus (anni 1311) bibliothecae Bonifatianae",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c14eff32d2c507f5c6a4ef"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T03:50:23.718Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T03:37:06.319Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 90",
+                "_id":
+                {
+                    "$oid": "61c14eff32d2c507f5c6a4f1"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "374",
+                "_id":
+                {
+                    "$oid": "61c14eff32d2c507f5c6a4f0"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1325",
+            "from": "1301"
+        }
+    },
+    {
+        "_id": "395",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "507. Item unum librum magnum antiquum, in quo continentur <strong>epistole antique Clementis pape ad Iacobum fratrem domini</strong>, qui incipit in secundo folio: <i>peccatores autem</i>. et finit in penultimo: <i>congaudebam quando</i>, et est in  tabulis sine copertura et  clasoriis.",
+        "specificDate": "1311",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c1508732d2c507f5c6a4f5"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "language": "Latin",
+        "title": "Index Perusinus (anni 1311) bibliothecae Bonifatianae",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T03:56:55.124Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T03:56:53.34Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 84",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61c1508732d2c507f5c6a4f7"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "104",
+                "_id":
+                {
+                    "$oid": "61c1508732d2c507f5c6a4f6"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1325",
+            "from": "1301"
+        }
+    },
+    {
+        "_id": "396",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "116. Liber Clementis cum istoriis Apolonii, estimatus flor. I.",
+        "specificDate": "1327",
+        "language": "Latin",
+        "title": "Ex indice Assisiensi an. 1327 iussu Ioannis XXII conscripto",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c1549732d2c507f5c6a4fb"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T04:14:15.088Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T04:00:29.497Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 105",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61c1549732d2c507f5c6a4fd"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "377",
+                "_id":
+                {
+                    "$oid": "61c1549732d2c507f5c6a4fc"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1350",
+            "from": "1326"
+        }
+    },
+    {
+        "_id": "397",
+        "attestationType": "Booklist",
+        "title": "Index Perusinus (anni 1311) bibliothecae Bonifatianae",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c15e4a32d2c507f5c6a4ff"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "language": "Latin",
+        "specificDate": "1311",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "__v": 0,
+        "relevantText": "287. Item unum tractatum in parvo volumine <strong>de ortu vita et conversatione beate Marie virginis</strong>, scriptum in cartis edinis de bona lictera, qui incipit in secundo folio: <i>quia sciens</i>, et finit in penultimo: <i>iocundum habita</i>, et est cohopertus de carta grossa pecudina. (=Bo. 91 Liber de ortu beate Virginis, qui incipit: <i>Anna et Emeria</i>)",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T05:12:41.763Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T04:55:38.48Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 59",
+                "_id":
+                {
+                    "$oid": "61c15e4a32d2c507f5c6a4fe"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "117",
+                "_id":
+                {
+                    "$oid": "61c1624932d2c507f5c6a503"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1301",
+            "to": "1325"
+        }
+    },
+    {
+        "_id": "399",
+        "__v": 0,
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "17. Item unum librum vite beate Marie, cum cooperturis fusteis -- eidxem -- X sol.",
+        "specificDate": "1363",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c1676232d2c507f5c6a505"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "title": "Recepta et venditiones librorum",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T05:36:43.008Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T05:34:26.678Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61c1676232d2c507f5c6a504"
+                },
+                "pageRef": "p. 187",
+                "source": "371"
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "400",
+                "_id":
+                {
+                    "$oid": "61c167eb32d2c507f5c6a506"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "401",
+        "language": "Latin",
+        "title": "Ex libris introitus et exitus camerae apostolicae",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "15. Die XXI mensis aprilis pro scriptura duorum librorum, quorum unus vocatur <i>Promptuarium</i> et alius <i><strong>Itinerarium sancti Clementis</strong></i> [=Ur. 573], quos dominus noster papa facit scribi, solvimus domino Philippo de Revesto, scriptori et familiari ipsius domini nostri pape -- XX sol. turonensium grossorum cum o rotunda.t ",
+        "specificDate": "1332",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c2208c32d2c507f5c6a510"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T18:44:28.184Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T05:55:52.309Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 152",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61c2208c32d2c507f5c6a512"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "377",
+                "_id":
+                {
+                    "$oid": "61c2208c32d2c507f5c6a511"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1350",
+            "from": "1326"
+        }
+    },
+    {
+        "_id": "404",
+        "chapterRef": "Sequntur libri inventi in camera immediate subtus capellam sancti Michaelis",
+        "language": "Latin",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c223de32d2c507f5c6a518"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "specificDate": "1369",
+        "relevantText": "2009. Item parvus liber, coopertus pano (!) de serico, continens <strong>vitam beate Marie</strong>, qui incipit in secundo folio:  <i>sit</i>, et finit in penultimo folio: <i>mortem</i>.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "__v": 0,
+        "title": "Recensio librorum anno 1369 in palatio Avenionensi asservatorum",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T19:01:01.263Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T18:58:38.521Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 429",
+                "_id":
+                {
+                    "$oid": "61c223de32d2c507f5c6a517"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "405",
+                "_id":
+                {
+                    "$oid": "61c2246d32d2c507f5c6a519"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        }
+    },
+    {
+        "_id": "406",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c2310832d2c507f5c6a51c"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "author": "Gregorius XI  (Pierre Roger de Beaufort) ",
+        "title": "Recensio bibliothecae Avionensis a Gregorio XI concinnata ac disposita",
+        "language": "Latin",
+        "specificDate": "1375",
+        "relevantText": "841. Item in volumine signato peer CCCXL Seneca de clementia ad Neronem, libri epistolarum XXII, de providencia, dei, de beata vita, de tranquilitate anime, de brevitate vite, de consolacione, de ira, de beneficiis, proverbia, de moribus, de quatuor virtutibus, de literalibus (i.e., liberalibus) artibus, de remediis fortuitorum, de questionibus naturalibus, de declamacione, item <strong>epistole Senece ad Paulum et Pauli ad Senecam<strong>",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T19:54:47.831Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T19:54:47.831Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p. 510",
+                "_id":
+                {
+                    "$oid": "61c2310832d2c507f5c6a51a"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "374",
+                "_id":
+                {
+                    "$oid": "61c2310832d2c507f5c6a51b"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "407",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c232ac32d2c507f5c6a51f"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "title": "Recensio bibliothecae Avionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort)",
+        "language": "Latin",
+        "specificDate": "1375",
+        "relevantText": "850. Item in volumine signato per CCCXLVIIII <strong>epistole Pauli ad Senecam</strong>, Seneca de clemencia, item epistole ad Lucillum, de remediis fortuitorum, de quatuor virtutibus, declamacione (!), de questionibus naturalibus, de proverbiis, de moribus, de beneficiis, de providencia die, de beata vita, de tranquilitate animi, de brevitate vite, de ira, de consolacione. ",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T20:01:47.953Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T20:01:47.953Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "371",
+                "pageRef": "p.  510",
+                "_id":
+                {
+                    "$oid": "61c232ac32d2c507f5c6a51e"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "374",
+                "_id":
+                {
+                    "$oid": "61c232ac32d2c507f5c6a51d"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1351",
+            "to": "1375"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "408",
+        "__v": 0,
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "1340. Et primo extractiones in libro de naturalibus questionibus, item liber de remediis casuum fortuitorum, item de moribus non completus, item de quatuor virtutibus non completus, item de beneficiis, item epistole Senece ad Lucillum, sed non videntur ordinate; item <strong>epistole ad Paulum</strong>, item ludus Senece, item proverbia Senece per alphabetum, item liber de clemencia, item liber de paupertate, item exctractiones alique de libro Senece, idem tragedie, item liber declamacionum non completus, item liber fontis vite, item Macrobius de sompno Scipionis, item liber de anima cum commento, item liber Gundissalvi de anima; item liber, qui incipit <i>Consideracio>; item liber  qui incipit <i>Henrico</i>, item logica Algazel, item divisiones Boecii, item epistola librorum moralium; in uno volumine cooperto de rubeo.",
+        "specificDate": "1375",
+        "language": "Latin",
+        "title": "Recensio bibliothecae Avionensis a Gregorio XI concinnata ac disposita",
+        "author": "Gregorius XI  (Pierre Roger de Beaufort)",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c235d632d2c507f5c6a520"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-21T21:49:10.245Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-21T20:15:18.623Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "pp. 540-41",
+                "source": "371",
+                "_id":
+                {
+                    "$oid": "61c24bd632d2c507f5c6a525"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "374",
+                "_id":
+                {
+                    "$oid": "61c24bd632d2c507f5c6a526"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1375",
+            "from": "1351"
+        }
+    },
+    {
+        "_id": "410",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c3f87732d2c507f5c6a52d"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "title": "Nova ordinacio librorum in maiori libraria sacri palacii Avinionis",
+        "language": "Latin",
+        "specificDate": "1407",
+        "chapterRef": "Secundi ordinis -- quarte domuncule -- primi armarii",
+        "relevantText": "CCCXXXVII. Item Origenes de Elchanna, Fennena, Samuele, Hely, Ofny, et Finees, super Ysayam, Ieremiam et Ezechielem, Cantica Canticorum, Genesim, Exodum, Leviticum, NUmerorum, Iosue, Iudicum. Et in eodem volumine continentur Speculum Augustini de mirabilibus sacre scripture. Itinerarium Clementis. <strong>Epistola Clementis ad Iacobum  fratrem Domini</strong>, <strong>Epistola Dyonisii ad Thimoteum De morte apostolorum Patri et Pauli</strong>.",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-23T04:17:59.008Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-23T04:17:59.008Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "409",
+                "pageRef": "p. 111",
+                "_id":
+                {
+                    "$oid": "61c3f87732d2c507f5c6a52c"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "377",
+                "_id":
+                {
+                    "$oid": "61c3f87732d2c507f5c6a52b"
+                }
+            },
+            {
+                "source": "104",
+                "_id":
+                {
+                    "$oid": "61c3f87732d2c507f5c6a52a"
+                }
+            },
+            {
+                "source": "382",
+                "_id":
+                {
+                    "$oid": "61c3f87732d2c507f5c6a529"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1401",
+            "to": "1425"
+        },
+        "__v": 0
+    },
+    {
+        "_id": "411",
+        "relevantText": "IIIIcLV. Item <strong>liber de nativitate vita et transsitu Marie</strong> et <strong>infancie Salvatoris</strong> et <strong>ystorie Pilati</strong> et liber viarum Dei qui anunciatus est ab angelo Dei altissimi et Helizabeth ancille Xpi. in Vto anno visitacionis eius et questio facta gloriose Virgini Marie ab Helizabeth utrum solo spiritu an et corpore sit assumpta ipse Virgo virginum et tractatus Bernardi abbatis de conflictu Babilonie et Ierusalem et obviacione misericordie et veritatis et de obsculo iusticie et pacis.",
+        "specificDate": "1407",
+        "chapterRef": "Primi ordinis -- prime domuncule",
+        "language": "Latin",
+        "title": "Nova ordinacio librorum in maiori libraria sacri palacii Avinionis",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c3fb0632d2c507f5c6a533"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-23T04:28:54.178Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-23T04:18:35.308Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 118",
+                "source": "409",
+                "_id":
+                {
+                    "$oid": "61c3fb0632d2c507f5c6a536"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "386",
+                "_id":
+                {
+                    "$oid": "61c3fb0632d2c507f5c6a535"
+                }
+            },
+            {
+                "source": "351",
+                "_id":
+                {
+                    "$oid": "61c3fb0632d2c507f5c6a534"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1425",
+            "from": "1401"
+        }
+    },
+    {
+        "_id": "412",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "IIIIcLXXX. Item Augustinus de achademicis. De salute anime. Speculum sive Manuale. Confessio qualiter Xpus humano generi subvenerit. De mirabilibus sacre Scripture. Super Matheum et Lucham locuciones. Questiones veteris testamenti. Exposicio quarundam proposicionum epistolarum ad Romanos, et Galatas. De correctione Donatistarum. De gracia Dei et peccato originali ad Orosium. De erroribus Origenis. De bono paciencie. De hiis que falsse sibi imputabantur. De vera innocencia. De penitencia. De vera et falsa penitencia penitencia. Item sermones de ascensione Domini. De nativitate Virginis Marie. De laudibus eiusdem. <strong>De humana effigie Dimini nostri Ihu Xpi</strong>.",
+        "specificDate": "1407",
+        "chapterRef": "Peimi ordinis -- prime domuncule -- secundi armarii",
+        "language": "Latin",
+        "title": "Nova ordinacio librorum in maiori libraria sacri palacii Aviniensis",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c3ffc132d2c507f5c6a53a"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "region": "France",
+                "location": "Avignon",
+                "institution": "Palais des Papes (Palatium Avionense)"
+            }
+        },
+        "attestationType": "Booklist",
+        "updatedAt":
+        {
+            "$date": "2021-12-23T04:49:05.77Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-23T04:47:16.493Z"
+        },
+        "printSource":
+        [
+            {
+                "pageRef": "p. 120",
+                "source": "409",
+                "_id":
+                {
+                    "$oid": "61c3ffc132d2c507f5c6a53c"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "114",
+                "_id":
+                {
+                    "$oid": "61c3ffc132d2c507f5c6a53b"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "to": "1425",
+            "from": "1401"
+        }
+    },
+    {
+        "_id": "415",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c547bb32d2c507f5c6a5d3"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "title": "Nova ordinacio librorum in maiori libraria sacri palacii Avinionis",
+        "language": "Latin",
+        "specificDate": "1407",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "relevantText": "VIcXL. Item liber de moralitatibus VII<sup>tem</sup>. Marchi Urbevetani ordinis Minorum. Bumo sper Pentateucum. <strong>Epistola Mileti de transitu Marie</strong>. Omelia beati Iohannis Grisostomi in Lucam <i>homo quidam</i>. Liber Methodii de principio et fine seculorum. Liber de Secundo philosofo. Liber de fisonomia et viribus hominum. <strong>Epistola Dyonisii de morte Apostolorum Petri et Pauli</strong>. Admonitorium ad iudeos. Liber Ysidori contra iudeos. Armarium eloquencie. Sermones Petri Damiani. Homelie eiusdem super librum generacionis. Sermo eiusdem de dedicacione ecclesie.",
+        "updatedAt":
+        {
+            "$date": "2021-12-24T04:13:28.872Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-24T03:37:55.646Z"
+        },
+        "printSource":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61c547bb32d2c507f5c6a5d5"
+                },
+                "source": "409",
+                "pageRef": "p. 138"
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "_id":
+                {
+                    "$oid": "61c547bb32d2c507f5c6a5d4"
+                },
+                "source": "124"
+            },
+            {
+                "source": "382",
+                "_id":
+                {
+                    "$oid": "61c548e932d2c507f5c6a5d8"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1401",
+            "to": "1450"
+        }
+    },
+    {
+        "_id": "416",
+        "attestationType": "Booklist",
+        "booklist":
+        {
+            "_id":
+            {
+                "$oid": "61c54b4032d2c507f5c6a5db"
+            },
+            "textId":
+            [],
+            "booksOwner":
+            {
+                "institution": "Palais des Papes (Palatium Avionense)",
+                "location": "Avignon",
+                "region": "France"
+            }
+        },
+        "title": "Nova ordinacio librorum in maiori libraria sacri palacii Avinionis",
+        "language": "Latin",
+        "specificDate": "1407",
+        "relevantText": "VIcLXXIII. Item Promptuarium sive concordancie fratris Gerardi de Boyssa ordinis fratrum Minorum let liber beati Anselmi de amissione virginitatis. De conceptione beate Marie. De excellencia eiusdem. Numerus annorum ab Adam usque ad Xpm., et <strong>evangelium Nicodemi.</strong>",
+        "createdBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedBy": "z.izydorczyk@uwinnipeg.ca",
+        "updatedAt":
+        {
+            "$date": "2021-12-24T04:23:28.072Z"
+        },
+        "createdAt":
+        {
+            "$date": "2021-12-24T04:23:28.072Z"
+        },
+        "printSource":
+        [
+            {
+                "source": "409",
+                "pageRef": "p. 142",
+                "_id":
+                {
+                    "$oid": "61c54b4032d2c507f5c6a5d9"
+                }
+            }
+        ],
+        "handwrittenSource":
+        [],
+        "apocrypha":
+        [
+            {
+                "source": "106",
+                "_id":
+                {
+                    "$oid": "61c54b4032d2c507f5c6a5da"
+                }
+            }
+        ],
+        "dateRange":
+        {
+            "from": "1401",
+            "to": "1425"
+        },
+        "__v": 0
+    }
+]

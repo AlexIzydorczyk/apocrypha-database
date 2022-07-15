@@ -1,6 +1,9 @@
-<h1>Sections</h1>
-<p><%= link_to "New section", new_section_path, class: "btn btn-outline-success" %></p>
-
+<div class="breadcrumbs">
+  <%= link_to "Research", research_path %>
+  <i class="far fa-chevron-right"></i>
+  Apocrypha in manuscripts
+</div>
+<h1>Apocrypha in manuscripts</h1>
 <div id="sections">
     <%= render 'grid', sections: @sections %>
 </div>

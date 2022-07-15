@@ -1,10 +1,27 @@
-<h1>Editing title</h1>
-
-<%= render "form", title: @title %>
-
-<br>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  Title
+</div>
 
 <div>
-  <%= link_to "Show this title", @title %> |
-  <%= link_to "Back to titles", titles_path %>
+  <h1>Title - Non-apocryphal</h1>
+  <div class="form-group">
+    <label class="form-check-label d-block" disabled>New title is</label>
+    <div class="form-check  d-inline-block">
+      <input class="form-check-input" type="radio" name="is_apocryphon" id="apocryphal" disabled>
+      <label class="form-check-label" for="apocryphal" disabled>
+        Apocryphal
+      </label>
+    </div>
+    <div class="form-check d-inline-block">
+      <input class="form-check-input" type="radio" name="is_apocryphon" id="non-apocryphal" onselect="" checked disabled>
+      <label class="form-check-label" for="non-apocryphal" disabled>
+        Non-apocryphal
+      </label>
+    </div>
+  </div>
+
+  <%= render "form", title: @title %>
 </div>
+

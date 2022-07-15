@@ -1,5 +1,10 @@
-<h1>Booklists</h1>
-<p><%= link_to "New booklist", new_booklist_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  Booklists grid 
+</div>
+
+<h1>Booklists <%= button_to 'New booklist', booklists_path, class: "btn btn-action", params: { booklist: { booklist_type: "" } } if current_user.present? && current_user.adm_editor? %></h1>
 
 <div id="booklists">
     <%= render 'grid', booklists: @booklists %>

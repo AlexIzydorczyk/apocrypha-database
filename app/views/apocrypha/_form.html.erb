@@ -1,49 +1,253 @@
+<div id="apocryphon-form">
+	<%= form_with(model: apocryphon, class: "autosave #{ 'block-submit' if params[:old_path].present?} save-before-modals") do |form| %>
+	<div class="row">
+		<div class="form-group col-4 my-2">
+			<%= form.label :apocryphon_no, "Apocryphon no.", style: "display: block" %>
+			<%= form.text_field :apocryphon_no, class: "form-control" %>
+		</div>
+		<div class="form-group col-4 mb-2 d-none">
+			<%= form.label :abbreviation, style: "display: block" %>
+			<%= form.text_field :abbreviation, class: "form-control" %>
+		</div>
+	</div>
 
+	<div class="row mt-4">
+		<div class="col-3"><%= link_to "Add title", '#titles', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#title-modal"} %>
+		</div>
+	</div>
 
-<%= form_with(model: apocryphon) do |form| %>
-  <% if apocryphon.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(apocryphon.errors.count, "error") %> prohibited this apocryphon from being saved:</h2>
+	<div class="row mb-3">
+		<div class="col-3">
+			<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+			<%= text_field_tag "english", "English", class: "form-control",  disabled: true %>
+		</div>
+		<div class="col-6">
+			<%= form.label "Standard title", style: "display: block" %>
+			<div class="d-flex">
+				<%= text_field_tag "main_english_title", @apocryphon.main_eng_title, class: "form-control #{'italic' if @apocryphon.main_english_title_id.present? && Title.find(@apocryphon.main_english_title_id).italicized }",  disabled: true  %>
+				<% if @apocryphon.main_eng_title.present? %>
+					<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= @apocryphon.main_english_title_id %>-title-modal">
+						<i class="far fa-pencil"></i>
+					</a>
+				<% end %>
+			</div>
+		</div>
+		<div class="col-3">
+			<%= form.label "Abbreviation", style: "display: block" %>
+			<%= form.text_field :english_abbreviation, class: "form-control" %>
+		</div>
+	</div>
 
-      <ul>
-        <% apocryphon.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<div class="row">
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :apocryphon_no, style: "display: block" %>
-	    <%= form.text_field :apocryphon_no, class: "form-control" %>
+	<% @other_english_titles.each do |t| %>
+	<div class="row mb-3">
+		<div class="col-3">
+			<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+			<%= text_field_tag "english", "English", class: "form-control",  disabled: true %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :cant_no, style: "display: block" %>
-	    <%= form.text_field :cant_no, class: "form-control" %>
+		<div class="col-6">
+			<%= form.label "Other titles", style: "display: block" %>
+			<div class="d-flex">
+				<%= text_field_tag "main_english_title", t.title_orig, class: "form-control #{'italic' if t.italicized}",  disabled: true  %>
+				<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= t.id %>-title-modal">
+					<i class="far fa-pencil"></i>
+				</a>
+			</div>
+			
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :bhl_no, style: "display: block" %>
-	    <%= form.text_field :bhl_no, class: "form-control" %>
+		<div class="col-3">
+			<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+			<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteTitle('<%= t.id %>')">
+				<i class="far fa-trash-alt"></i>
+			</button>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :bhg_no, style: "display: block" %>
-	    <%= form.text_field :bhg_no, class: "form-control" %>
+	</div>
+	<% end %>
+
+	<div class="row mb-3">
+		<div class="col-3">
+			<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+			<%= text_field_tag "latin", "Latin", class: "form-control",  disabled: true %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :bho_no, style: "display: block" %>
-	    <%= form.text_field :bho_no, class: "form-control" %>
+		<div class="col-6">
+			<%= form.label "Standard title", style: "display: block" %>
+			<div class="d-flex">
+				<%= text_field_tag "main_latin_title", @apocryphon.main_lat_title, class: "form-control #{'italic' if @apocryphon.main_latin_title_id.present? && Title.find(@apocryphon.main_latin_title_id).italicized }",  disabled: true  %>
+				<% if @apocryphon.main_lat_title.present? %>
+					<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= @apocryphon.main_latin_title_id %>-title-modal">
+						<i class="far fa-pencil"></i>
+					</a>
+				<% end %>
+			</div>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :e_clavis_no, style: "display: block" %>
-	    <%= form.text_field :e_clavis_no, class: "form-control" %>
+		<div class="col-3">
+			<%= form.label "Abbreviation", style: "display: block" %>
+			<%= form.text_field :latin_abbreviation, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :e_clavis_link, style: "display: block" %>
-	    <%= form.text_field :e_clavis_link, class: "form-control" %>
+	</div>
+
+	<% @other_latin_titles.each do |t| %>
+	<div class="row mb-3">
+		<div class="col-3">
+			<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+			<%= text_field_tag "latin", "Latin", class: "form-control",  disabled: true %>
 		</div>
+		<div class="col-6">
+			<%= form.label "Other titles", style: "display: block" %>
+			<div class="d-flex">
+				<%= text_field_tag "main_latin_title", t.title_orig, class: "form-control #{'italic' if t.italicized}",  disabled: true  %>
+				<a href="#" class="btn btn-outline-action ms-2" data-bs-toggle="modal" data-bs-target="#edit-<%= t.id %>-title-modal">
+					<i class="far fa-pencil"></i>
+				</a>
+			</div>
+		</div>
+		<div class="col-3">
+			<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+			<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteTitle('<%= t.id %>')">
+				<i class="far fa-trash-alt"></i>
+			</button>
+		</div>
+	</div>
+	<% end %>
+
+	<div class="row mb-3 d-none">
+		<div class="col-md-3">
+			<%= form.label "Standard English title", style: "display: block" %>
+			<%= text_field_tag "main_english_title", @apocryphon.main_eng_title, class: "form-control",  disabled: true %>
+		</div>
+		<div class="col">
+			<%= form.label "All English titles" %>
+			<div class="row">
+				<% @english_titles.each do |t| %>
+				<div class="col-4 title-card">
+					<span><%= t.title_orig %></span>
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="setMainTitle('eng', <%= t.id %>)" <%= 'disabled' if @apocryphon.main_english_title_id == t.id %> >
+							<i class="<%= @apocryphon.main_english_title_id == t.id ? 'fas' : 'fal' %> fa-star"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteTitle(<%= t.id %>)">
+							<i class="far fa-trash-alt"></i>
+						</button>
+					</span>
+				</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="row d-none">
+		<div class="col-md-3">
+			<%= form.label "Standard Latin title", style: "display: block" %>
+			<%= text_field_tag "main_latin_title", @apocryphon.main_lat_title, class: "form-control",  disabled: true %>
+		</div>
+		<div class="col">
+			<%= form.label "All Latin titles" %>
+			<div class="row">
+				<% @latin_titles.each do |t| %>
+				<div class="col-4 title-card">
+					<span><%= t.title_orig %></span>
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="setMainTitle('latin', <%= t.id %>)" <%= 'disabled' if @apocryphon.main_latin_title_id == t.id %> >
+							<i class="<%= @apocryphon.main_latin_title_id == t.id ? 'fas' : 'fal' %> fa-star"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteTitle(<%= t.id %>)">
+							<i class="far fa-trash-alt"></i>
+						</button>
+					</span>
+				</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mt-5">
+		<div class="form-group col mb-2">
+			<%= form.label :cant_no, "CANT no.", style: "display: block" %>
+			<%= form.text_field :cant_no, class: "form-control" %>
+		</div>
+		<div class="form-group col mb-2">
+			<%= form.label :bhl_no, "BHL no.", style: "display: block" %>
+			<%= form.text_field :bhl_no, class: "form-control" %>
+		</div>
+		<div class="form-group col mb-2">
+			<%= form.label :bhg_no, "BHG no.", style: "display: block" %>
+			<%= form.text_field :bhg_no, class: "form-control" %>
+		</div>
+		<div class="form-group col mb-2">
+			<%= form.label :bho_no, "BHO no.", style: "display: block" %>
+			<%= form.text_field :bho_no, class: "form-control" %>
+		</div>
+		<div class="form-group col mb-2">
+			<%= form.label :e_clavis_no, "e-Clavis no.", style: "display: block" %>
+			<%= form.text_field :e_clavis_no, class: "form-control" %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-12 mb-2">
+			<%= form.label :e_clavis_link, "Link to e-Clavis", style: "display: block" %>
+			<%= form.text_field :e_clavis_link, class: "form-control" %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-12 mb-2">
+			<%= form.label "Languages in Apocrypharius", "Languages in Apocrypharius", style: "display: block" %>
+			<%= form.text_field "list_of_languages", value: @list_of_languages, class: "form-control", disabled: true %>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-12 mb-2">
+			<%= form.label :notes, style: "display: block" %>
+			<%= form.text_area :notes, class: "form-control" %>
+		</div>
+	</div>
+
+	<%= render 'layouts/save_now', form: form %>
+	<% end %>
 </div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
+
+<%= render 'titles/modals/form', title: Title.new, pid: "", parent: apocryphon %>
+
+<% @apocryphon_titles.each do |title| %>
+	<%= render 'titles/modals/edit', title: title, pid: title.id.to_s, parent: apocryphon %>
 <% end %>
-	
+
+<script type="text/javascript">
+	// new TomSelect("#language_reference_id",{ sortField: {field: "text", direction: "asc"}, maxItems: null });
+
+	function setMainTitle(lang, t_id){
+		if(confirm("Are you sure you want to make this title the main title for this Apocryphon?")){
+			var my_data = {};
+			var field = (lang == 'eng' ? 'main_english_title_id' : 'main_latin_title_id');
+			my_data.apocryphon = {};
+			my_data.apocryphon[field] = t_id;
+	    my_data.authenticity_token = "<%= form_authenticity_token %>";
+	    $("#page-title").removeClass("d-none");
+	    console.log('my_data', my_data)
+	    $.ajax({
+	      url: "<%= apocryphon_path(@apocryphon) %>",
+	      type: 'PUT',
+	      data: JSON.stringify(my_data),
+	      contentType: 'application/json',
+	      success: function(data) {
+	        console.log('result received:');
+	        console.log(data);
+	        timeoutReload(null, 0);
+	      }
+	    });
+		}
+	}
+
+	function deleteTitle(t_id){
+		if(confirm("Are you sure you want to delete this title from the system?")){
+		saveBeforeModalForms()
+	    $.ajax({
+	      url: "/titles/"+t_id,
+	      type: 'DELETE',
+	      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+	      contentType: 'application/json',
+	      success: function(data) {
+	        timeoutReload(null, 0);
+	      }
+	    });
+		}
+	}
+</script>
+

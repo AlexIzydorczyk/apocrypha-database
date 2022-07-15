@@ -1,5 +1,7 @@
 class OwnershipsController < ApplicationController
   before_action :set_ownership, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
     @ownerships = Ownership.all
@@ -17,9 +19,12 @@ class OwnershipsController < ApplicationController
 
   def create
     @ownership = Ownership.new(ownership_params)
+    ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'create')
 
     if @ownership.save
-      redirect_to ownerships_url, notice: "Ownership was successfully created."
+      if request.xhr?
+        render :json => { new_url: ownership_path(@ownership), id: @ownership.id }
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,10 +32,13 @@ class OwnershipsController < ApplicationController
 
   def update
     if @ownership.update(ownership_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'update')
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render :json => {id: @ownership.id}  
       else
-        redirect_to ownerships_url, notice: "Ownership was successfully updated."
+        redirect_path = params[:moved_to_booklet] ? edit_manuscript_path(@ownership.booklet.manuscript) : ownerships_path
+        notice = params[:moved_to_booklet] ? "Provenance was successfully moved to booklet." : "Ownership was successfully updated."
+        redirect_to redirect_path, notice: notice
       end
     else
       render :edit, status: :unprocessable_entity
@@ -39,7 +47,14 @@ class OwnershipsController < ApplicationController
 
   def destroy
     @ownership.destroy
-    redirect_to ownerships_url, notice: "Ownership was successfully destroyed."
+    ChangeLog.create(user_id: current_user.id, record_type: 'Ownership', record_id: @ownership.id, controller_name: 'ownership', action_name: 'destroy')
+    redirect_to ownerships_url, notice: "Ownership was successfully destroyed." unless request.xhr?
+  end
+
+  def sort
+    params[:ownership].each_with_index do |id, i|
+      Ownership.where(id: id).update_all(index: i + 1)
+    end
   end
 
   private
@@ -48,6 +63,6 @@ class OwnershipsController < ApplicationController
     end
 
     def ownership_params
-      params.require(:ownership).permit(:booklet_id, :person_id, :institution_id, :location_id, :religious_order_id, :date_from, :date_to, :date_for_owner, :owner_date_is_approximate, :provenance_notes)
+      params.require(:ownership).permit(:booklet_id, :person_id, :institution_id, :location_id, :religious_order_id, :date_from, :date_to, :specific_date, :date_exact, :provenance_notes, :manuscript_id)
     end
 end

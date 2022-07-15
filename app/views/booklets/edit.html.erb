@@ -1,10 +1,32 @@
-<h1>Editing booklet</h1>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  <!-- if accessed through manuscript -->
+  <% if @booklet.manuscript && current_page?(edit_manuscript_booklet_path(@booklet.manuscript, @booklet)) %>
+    <%= link_to 'Manuscripts', manuscripts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= link_to @booklet.manuscript.display_name, edit_manuscript_path(@booklet.manuscript) %>
+    <i class="far fa-chevron-right"></i>
+    <%= @booklet.display_name %>
+  <!-- else accessed through booklets grid -->
+  <% else %>
+    <%= link_to 'Booklets', manuscripts_path %>
+    <i class="far fa-chevron-right"></i>
+    <%= @booklet.display_name %>
+  <% end %>
+</div>
 
-<%= render "form", booklet: @booklet %>
-
-<br>
-
-<div>
-  <%= link_to "Show this booklet", @booklet %> |
-  <%= link_to "Back to booklets", booklets_path %>
+<div class="d-flex mt-3">
+  <div style="width: 500px" class="me-5">
+    <%= render 'layouts/filetree', tree: @booklet.manuscript.present? ? manuscript_family_tree(@booklet.manuscript) : booklet_family_tree(@booklet) %>
+  </div>
+  <div>
+    <h1 id="page-title" class="d-none">
+      <%= @booklet.display_name %>
+      <% if @booklet.manuscript && current_page?(edit_manuscript_booklet_path(@booklet.manuscript, @booklet)) %>
+        <%= link_to "Close", edit_manuscript_path(@booklet.manuscript), class: "btn btn-action d-none", style: "margin-top: 5px" %>
+      <% end %>
+    </h1>
+    <%= render "form", booklet: @booklet %>
+  </div>
 </div>

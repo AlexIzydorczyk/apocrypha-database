@@ -1,86 +1,344 @@
-<%= form_with(model: manuscript) do |form| %>
-  <% if manuscript.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(manuscript.errors.count, "error") %> prohibited this manuscript from being saved:</h2>
-
-      <ul>
-        <% manuscript.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<div class="row">
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :identifier, style: "display: block" %>
-	    <%= form.text_field :identifier, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :census_no, style: "display: block" %>
-	    <%= form.text_field :census_no, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :status, style: "display: block" %>
-	    <%= form.text_field :status, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		  <%= form.label :institution_id, style: "display: block" %>
-			<select id="institution-select" placeholder="Select a person..." autocomplete="off">
-	      <option value="">Select a person...</option>
-	      <% Institution.all.each do |i| %>
-	        <option value="<%= i.id %>"><%= i.name_english %></option>
-	      <% end %>
-	    </select>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :shelfmark, style: "display: block" %>
-	    <%= form.text_field :shelfmark, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :old_shelfmark, style: "display: block" %>
-	    <%= form.text_field :old_shelfmark, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :material, style: "display: block" %>
-	    <%= form.text_field :material, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :dimensions, style: "display: block" %>
-	    <%= form.text_field :dimensions, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :leaf_page_no, style: "display: block" %>
-	    <%= form.text_field :leaf_page_no, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_from, style: "display: block" %>
-	    <%= form.text_field :date_from, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_to, style: "display: block" %>
-	    <%= form.text_field :date_to, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :content_type, style: "display: block" %>
-	    <%= form.text_field :content_type, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :notes, style: "display: block" %>
-	    <%= form.text_area :notes, class: "form-control" %>
-		</div>
+<div class="spinner-border text-secondary" id="manuscript-preloader" role="status">
+  <span class="visually-hidden">Loading...</span>
 </div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
-<% end %>
-	
+<div id="manuscript-form" class="d-none">
 
-<script type="text/javascript">
-  new TomSelect("#institution-select",{
-    create: true,
-    sortField: {
-      field: "text",
-      direction: "asc"
-    }
-  });
-</script>
+<%= form_with(model: manuscript, class: "autosave save-before-modals #{ 'block-submit' if params[:old_path].present?}") do |form| %>
+
+<div class="row">
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :census_no, style: "display: block" %>
+		<%= form.text_field :census_no, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :status, style: "display: block" %>
+		<%= form.select :status, options_for_select(%w(extant lost destroyed), manuscript.status), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
+	</div>
+	<div class="form-group col-md-12 mb-2" id="institution">
+		<%= form.label :institution_id, "Repository", style: "display: block" %>
+		<div class="d-flex">
+			<%= form.collection_select :institution_id, Institution.includes(:location).all, :id, :display_name_with_city_country, {selected: manuscript.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select a repository"} %>
+			<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
+		</div>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :shelfmark, style: "display: block" %>
+		<%= form.text_field :shelfmark, class: "form-control" %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :old_shelfmark, "Old shelfmarks", style: "display: block" %>
+		<%= form.text_field :old_shelfmark, class: "form-control" %>
+	</div>
+</div>
+
+<h2>Description</h2>
+<div class="row">
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :material, style: "display: block" %>
+		<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper", "papyrus"], manuscript.material), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
+	</div>
+	<div class="form-group col-md-3 mb-2 d-flex align-items-start pt-4">
+		<%= form.hidden_field :is_folios, "v-model": "is_folios" %>
+		<span @click="is_folios = true" class="pointer">
+			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-dot-circle' : 'fa-circle'"></i>
+			<label>Foliated</label>
+		</span>
+		<span @click="is_folios = false" class="pointer ms-3">
+			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-circle' : 'fa-dot-circle'"></i>
+			<label>Paginated</label>
+		</span>
+	</div>
+	<div class="form-group col-md-3 mb-2">
+		<label for="manuscript_leaf_page_no" style="display: block;">No. of {{ is_folios ? 'folios' : 'pages' }}</label>
+		<div class="input-group">
+			<%= form.text_field :leaf_page_no, class: "form-control border-end-0"%>
+			<span class="input-group-text bg-white">{{ is_folios ? 'ff.' : 'pp.' }}</span>
+		</div>
+	</div>
+	<div class="form-group col-md-3 mb-2">
+		<%= form.label :dimensions, style: "display: block" %>
+		<%= form.text_field :dimensions, class: "form-control" %>
+	</div>
+</div>
+<div class="row">
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :date_to, "Date range", style: "display: block;" %>
+		<div class="d-flex align-items-baseline">
+			<select name="manuscript[date_from]" id="manuscript_date_from" class="form-control" placeholder="From" v-model="date_from">
+				<option></option>
+				<option v-for="n in <%= Date.today.year %>" v-if="
+					(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
+				" :value="n + ''">{{n}}</option>
+			</select>
+			<i class="far fa-minus m-2"></i>
+			<select name="manuscript[date_to]" id="manuscript_date_to" class="form-control" placeholder="To" v-model="date_to">
+				<option></option>
+				<option v-for="n in <%= Date.today.year %>" v-if="
+					(
+						((date_from == '' || (parseInt(date_from)-1)%25 == 0) && n%25==0)
+					 || ((date_from == '' || ((parseInt(date_from)%100)-1)%33 == 0) && (n%100 != 99) && n%100%33==0)
+					 || n==<%= Date.today.year %>
+					) && n>date_from
+				">{{n}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+		<label>
+			Date (<span @click="date_exact = true" class="pointer">exact
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+			</span>
+			or<span @click="date_exact = false" class="pointer">
+				approximate
+				<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+			</span>
+			)
+		</label>
+		<div class="input-group">
+			<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
+			<%= form.text_field :specific_date, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<%= fields_for(@language_references) do |lr| %>
+		<div class="form-group col-md-6 mb-2">
+			<%= lr.label :id, "Languages in manuscript", style: "display: block" %>
+			<%= lr.collection_select :id, @languages, "id", "language_name", {selected: manuscript.languages.map(&:id), include_blank: true}, {class: "form-control", multiple: true, placeholder: "Select or add…"} %>
+		</div>
+	<% end %>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :content_type, "Type of content", style: "display: block" %>
+		<%= form.select :content_type, options_for_select(@content_types, manuscript.content_type), {include_blank: true}, {class: "form-control", placeholder: "Select or add…"} %>
+	</div>
+	<div class="form-group col-md-6 mb-2">
+		<%= form.label :notes, style: "display: block" %>
+		<%= form.text_area :notes, class: "form-control" %>
+	</div>				
+</div>
+
+<h2 id="booklets">Booklets <button type="button" class="btn btn-action" onclick="$('#add-booklet').click();" v-show="known_booklet_composition">Add booklet</button></h2>
+<div>
+	<p>Booklet compositon is: 
+		<%= form.hidden_field :known_booklet_composition, "v-model": "known_booklet_composition" %>		
+		<span @click="clickKnown" class="pointer ms-3">
+			<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-dot-circle' : 'fa-circle'"></i>
+			<label>Known</label>
+		</span>
+		<span @click="clickUnknown" class="pointer ms-3">
+			<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-circle' : 'fa-dot-circle'"></i>
+			<label>Unknown</label>
+		</span>
+	</p>
+	<div class="col grey-bubble py-3" v-if="!known_booklet_composition && !has_booklets">
+		<p class="m-0">Booklet structure has not been determined for this manuscript.</p>
+	</div>
+	<div v-else id="booklets-list">
+		<% manuscript.booklets.each_with_index do |booklet, index| %>
+			<div class="card grey mb-2" id="<%= dom_id booklet %>">
+				<div class="card-body d-flex align-items-center">
+					<i class="fas fa-bars me-4 grab"></i>
+					<span><%= booklet.display_name %><% if booklet.content_type.present? %>: <%= booklet.content_type %><% end %></span>
+					<%= link_to "Open", edit_manuscript_booklet_path(manuscript, booklet), class: "btn btn-outline-action ms-auto" %>
+					<button class="btn btn-outline-action ms-2" type="button" id="booklet-options-<%= booklet.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+					  	<i class="far fa-ellipsis-h"></i>
+					  </button>
+					  <ul class="dropdown-menu" aria-labelledby="booklet-options-<%= booklet.id %>">
+					    <li><button type="button" class="dropdown-item" onclick="deleteBooklet(<%= booklet.id.to_s %>)">Delete booklet</button></li>
+					  </ul>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<div id="origin" v-show="!known_booklet_composition">
+	<h2>Origin</h2>
+	<div class="row">
+		<div class="form-group col-md-6 mb-2">
+			<%= form.label :genesis_institution_id, "Institution", style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :genesis_institution_id, Institution.all, :id, :display_name, {selected: manuscript.genesis_institution_id, include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-genesis_location0-new-institution-modal">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-6 mb-2" id="religious-order">
+			<%= form.label :genesis_religious_order_id, "Religious order", style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :genesis_religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: manuscript.genesis_religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select religious order"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-6 mb-2" id="location">
+			<%= form.label :genesis_location_id, "Location", style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :genesis_location_id, Location.all, :id, :city_region_country, {selected: manuscript.genesis_location_id, include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New</button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col form-group">
+			<%= form.label :origin_notes, "Notes on origin", style: "display: block" %>
+			<%= form.text_area :origin_notes, class: "form-control" %>
+		</div>
+	</div>
+</div>
+
+
+<template v-if="!known_booklet_composition || has_ownerships">
+	<h2 id="provenances">Provenance <%= link_to "Add provenance", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"} %></h2>
+	<%= render 'ownerships/list', parent: manuscript %>
+</template>
+
+<template v-if="!known_booklet_composition || has_contents">
+	<h2 id="contents">Contents <%= link_to "Add content", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
+	<%= render 'contents/list', parent: manuscript %>
+</template>
+
+<h2 id="modern-source-references">Bibliography <button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button></h2>
+<div class="row">
+	<div class="form-group col-md-12 mb-2">
+		<%= render 'modern_source_references/list', modern_source_references: manuscript.modern_source_references %>
+	</div>
+</div>
+<div class="row">
+	<div class="form-group col-md-12 mb-2">
+		<label>Reproduction online</label>
+		<div id="urls">
+			<div v-for="(obj, index) in reproduction_urls" class="row mb-2">
+				<div class="col">
+					<input type="text" name="reproduction_urls[]" class="form-control me-2" v-model="obj.url" placeholder="URL">	
+				</div>
+				<div class="col-2">
+					<button type="button" v-show="index == reproduction_urls.length-1" class="btn btn-outline-action w-100" @click="addReproductionUrl">Add URL</button>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-md-12 mb-2">
+		<label>Online databases</label>
+		<div id="urls">
+			<div v-for="(obj, index) in manuscript_urls" class="row mb-2">
+				<div class="col">
+					<input type="text" name="manuscript_urls[]" class="form-control me-2" v-model="obj.url" placeholder="URL">	
+				</div>
+				<div class="col-2">
+					<button type="button" v-show="index == manuscript_urls.length-1" class="btn btn-outline-action w-100" @click="addUrl">Add URL</button>	
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<h2>Credits</h2>
+<div class="row">
+	<div class="form-group col-md-12 mb-2" id="correspondent">
+		<%= fields_for :correspondent_reference, @correspondent_reference do |r| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= r.label :id, "Correspondent", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="correspondent_reference[id][]" id="correspondent_reference_id" placeholder="Select contributor">
+						<% sort_hash_keys(@grouped_people, ['correspondent', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.to_s.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.correspondents.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-correspondent">New</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="form-group col-md-12 mb-2" id="transcriber">
+		<%= fields_for :transcriber_reference, @transcriber_reference do |r| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= r.label :id, "Transcriptions by", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="transcriber_reference[id][]" id="transcriber_reference_id" placeholder="Select contributor">
+						<% sort_hash_keys(@grouped_people, ['transcriber', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.to_s.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.transcribers.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-transcriber">New</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="form-group col-md-12 mb-2" id="compiler">
+		<%= fields_for :compiler_reference, @compiler_reference do |r| %>
+			<div class="form-group col-md-12 mb-2">
+				<%= r.label :id, "Compiled by", style: "display: block" %>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="compiler_reference[id][]" id="compiler_reference_id" placeholder="Select contributor">
+						<% sort_hash_keys(@grouped_people, ['compiler', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.to_s.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if manuscript.compilers.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-compiler">New</button>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>
+
+<%= render 'layouts/save_now', form: form %>
+<% end %>
+
+</div>
+
+<!-- Additional forms -->
+<%= button_to 'Add booklet', manuscript_booklets_path(manuscript), class: "btn btn-action d-none", id: "add-booklet", params: { booklet: { manuscript_id: manuscript.id, booklet_no: manuscript.booklets.count+1 }, in_manuscript: true } %>
+<%= form_with(url: sort_booklets_path, method: 'PUT', remote: true, id: 'sort-booklet-form') do |f| %><% end %>
+<%= form_with(url: sort_contents_path, method: 'PUT', remote: true, id: 'sort-content-form') do |f| %><% end %>
+
+<!-- Modals -->
+<% manuscript.ownerships.each do |ownership| %>
+<%= render 'ownerships/modals/form', parent: manuscript, ownership: ownership, pid: '', depth: 0 %>
+<%= render "/ownerships/modals/move_to_booklet", ownership: ownership %>
+<% end %>
+<%= render 'ownerships/modals/form', parent: manuscript, ownership: manuscript.ownerships.new, pid: '', depth: 0 %>
+<% manuscript.contents.each do |content| %>
+<%= render 'contents/modals/form', parent: manuscript, content: content %>
+<%= render "/contents/modals/move_to_booklet", content: content %>
+<% end %>
+<%= render 'contents/modals/form', parent: manuscript, content: manuscript.contents.new %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: manuscript, pid: '', depth: 0 %>
+
+<%= render '/languages/modals/new', language: Language.new, pid: "", in_vue: false, parent: manuscript %>
+
+<% if manuscript.institution.present? %>
+<%= render 'institutions/modals/new', institution: manuscript.institution, parent: manuscript, pid: "#{manuscript.institution.id}-", depth: 0 %>
+<% end %>
+
+<%= render 'institutions/modals/new', institution: Institution.new, parent: manuscript, genesis: true, pid: 'genesis_location', depth: 0 %>
+<% if manuscript.genesis_institution.present? %>
+<%= render 'institutions/modals/new', institution: manuscript.genesis_institution, parent: manuscript, pid: "#{manuscript.genesis_institution.id}-", depth: 0 %>
+<% end %>
+
+<% manuscript.modern_source_references.each do |msr| %>
+	<%= render 'modern_source_references/modals/form', parent: manuscript, msr: msr %>
+<% end %>
+<%= render 'modern_source_references/modals/form', parent: manuscript, msr: manuscript.modern_source_references.new %>
+
+<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'correspondent', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'transcriber', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: manuscript, reference_type: 'compiler', pid: '', depth: 0 %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: manuscript, pid: '', depth: 0 %>
+<%= render 'locations/modals/form', location: Location.new, parent: manuscript, pid: '', depth: 0 %>
+
+<!-- Scripts -->
+<%= render '/manuscripts/scripts', manuscript: manuscript %>
+<%= render '/contents/list_script' %>
+<%= render '/ownerships/list_script' %>

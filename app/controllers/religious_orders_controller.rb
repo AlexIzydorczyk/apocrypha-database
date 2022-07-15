@@ -1,11 +1,18 @@
 class ReligiousOrdersController < ApplicationController
   before_action :set_religious_order, only: %i[ show edit update destroy ]
+  skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
     @religious_orders = ReligiousOrder.all
+    @initial_state = current_user.user_grid_states.find_by(record_type: "ReligiousOrder").try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = current_user.user_grid_states.find_by(record_type: "ReligiousOrder").try(:filters).try(:to_json).try(:html_safe)
   end
 
   def show
+    if request.xhr?
+      render json: {religious_order: @religious_order}
+    end
   end
 
   def new
@@ -17,9 +24,24 @@ class ReligiousOrdersController < ApplicationController
 
   def create
     @religious_order = ReligiousOrder.new(religious_order_params)
-
-    if @religious_order.save
-      redirect_to religious_orders_url, notice: "Religious order was successfully created."
+    saved = @religious_order.save
+    if params[:booklet_id].present?
+      Booklet.find(params[:booklet_id]).update(genesis_religious_order_id: @religious_order.id)
+    elsif params[:ownership_id].present?
+      Ownership.find(params[:ownership_id]).update(religious_order_id: @religious_order.id)
+    elsif params[:booklist_id].present?
+      Booklist.find(params[:booklist_id]).update(religious_order: @religious_order)
+    elsif params[:manuscript_id].present?
+      Manuscript.find(params[:manuscript_id]).update(genesis_religious_order_id: @religious_order.id)
+    elsif params[:institution_id].present?
+      Institution.find(params[:institution_id]).update(religious_order_id: @religious_order.id)
+    end
+    ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'create')
+    if saved && !request.xhr?
+      # redirect_path = params[:booklet_id].present? ? edit_manuscript_booklet_path(Booklet.find(params[:booklet_id]).manuscript, params[:booklet_id]) : religious_orders_path
+      # redirect_to redirect_path, notice: "Religious order was successfully created."
+    elsif request.xhr?
+      render json: {id: @religious_order.id}
     else
       render :new, status: :unprocessable_entity
     end
@@ -27,8 +49,9 @@ class ReligiousOrdersController < ApplicationController
 
   def update
     if @religious_order.update(religious_order_params)
+      ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'update')
       if request.xhr?
-        render :json => {"status": "updated"}  
+        render json: {id: @religious_order.id}  
       else
         redirect_to religious_orders_url, notice: "Religious order was successfully updated."
       end
@@ -38,8 +61,13 @@ class ReligiousOrdersController < ApplicationController
   end
 
   def destroy
-    @religious_order.destroy
-    redirect_to religious_orders_url, notice: "Religious order was successfully destroyed."
+    begin
+      @religious_order.destroy
+      ChangeLog.create(user_id: current_user.id, record_type: 'ReligiousOrder', record_id: @religious_order.id, controller_name: 'religious_order', action_name: 'destroy')
+      redirect_to religious_orders_url, notice: "Religious order was successfully destroyed."
+    rescue StandardError => e
+      redirect_to religious_orders_url, alert: "Object could not be deleted because it's being used somewhere else in the system"
+    end
   end
 
   private
@@ -48,6 +76,6 @@ class ReligiousOrdersController < ApplicationController
     end
 
     def religious_order_params
-      params.require(:religious_order).permit(:order_name)
+      params.require(:religious_order).permit(:order_name, :abbreviation)
     end
 end

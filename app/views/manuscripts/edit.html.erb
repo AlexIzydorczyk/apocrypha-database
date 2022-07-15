@@ -1,10 +1,17 @@
-<h1>Editing manuscript</h1>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= link_to 'Manuscripts', manuscripts_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= @manuscript.display_name %>
+</div>
 
-<%= render "form", manuscript: @manuscript %>
-
-<br>
-
-<div>
-  <%= link_to "Show this manuscript", @manuscript %> |
-  <%= link_to "Back to manuscripts", manuscripts_path %>
+<div class="d-flex mt-2">
+  <div style="width: 500px" class="me-5">
+    <%= render 'layouts/filetree', tree: manuscript_family_tree(@manuscript) %>
+  </div>
+  <div>
+    <h1 class="d-none" id="page-title">Manuscript</h1>
+    <%= render "form", manuscript: @manuscript %>
+  </div>
 </div>

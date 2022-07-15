@@ -1,0 +1,26 @@
+<div class="modal" id="move-content-<%= content.id %>" tabindex="-1" aria-hidden="true">
+	<%= form_with url: move_to_booklet_contents_path do |form| %> 
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Move content</h5>
+					<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal">Cancel</button>
+				</div>
+				<div class="modal-body">
+					<% content.manuscript.booklets.each do |booklet| %>
+						<div class="card grey mb-3 pointer" onclick="$(this).find('input').attr('checked', !$(this).find('input').attr('checked'))">
+							<div class="card-body d-flex align-items-center">
+								<input type="checkbox" name="booklets[]" value="<%= booklet.id %>" class="me-2">
+								<%= booklet.display_name %>
+							</div>
+						</div>
+						<%= hidden_field_tag :id, content.id %>
+					<% end %>
+				</div>
+				<div class="modal-footer">
+					<%= form.submit "Move", class: "btn btn-action px-4" %>
+				</div>
+			</div>
+		</div>
+	<% end %>
+</div>

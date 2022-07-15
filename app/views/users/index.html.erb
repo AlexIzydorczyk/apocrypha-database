@@ -1,0 +1,51 @@
+<div class="breadcrumbs">
+  <%= link_to "Research", research_path %>
+  <i class="far fa-chevron-right"></i>
+  Users
+</div>
+
+<h1>Users <button type="button" class="btn btn-action mt-0"  data-bs-toggle="modal" data-bs-target="#new-user">New user</button></h1>
+<div class="row">
+	<div class="col">
+		<table class="table">
+		  <thead>
+		    <tr>
+		      <th scope="col-4">#</th>
+		      <th scope="col-4">Email</th>
+		      <th scope="col-4">Role</th>
+		      <th scope="col-4">Links</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		  	<% @users.each do |user|  %>
+		    <tr>
+		      <th scope="row">1</th>
+		      <td><%= user.email %></td>
+		      <td><%= user.role %></td>
+		      <td>
+		      	<div class="dropdown">
+						  <button class="btn btn-outline-action dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+						    Edit role
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+						    <li>
+						    	<%= button_to "Admin", user_path(user), method: :patch, params: { user: {role: 'admin'} }, class: "dropdown-item" %>
+						    </li>
+						    <li>
+						    	<%= button_to "Editor", user_path(user), method: :patch, params: { user: {role: 'editor'} }, class: "dropdown-item" %>
+						    </li>
+						    <li>
+						    	<%= button_to "Inactive", user_path(user), method: :patch, params: { user: {role: 'inactive'} }, class: "dropdown-item" %>
+						    </li>
+						  </ul>
+						</div>
+					</td>
+		    </tr>
+		    <% end %>
+		  </tbody>
+		</table>
+
+	</div>
+</div>
+
+<%= render "/users/modals/new" %>

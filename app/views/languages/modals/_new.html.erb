@@ -1,0 +1,44 @@
+<% if in_vue %>
+<div v-if="record_class != ''" class="modal" :id="pid + 'new-language'" tabindex="-1" aria-hidden="true" :data-depth="depth+1">
+<% else %>
+	<div class="modal" id="new-language" tabindex="-1" aria-hidden="true" data-depth="0">
+<% end %>
+	<%= form_with(model: language, class: "autosave no-autosave") do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add language</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="form-group col-md-12 mb-2">
+						<%= form.label :language_name, style: "display: block;" %>
+						<% if in_vue %>
+							<%= form.text_field :language_name, class: "form-control", "v-model": "new_lang" %>
+						<% else %>
+							<%= form.text_field :language_name, class: "form-control" %>
+						<% end %>
+					</div>
+					<div class="form-group col-md-12 mb2">
+						<%= form.label :requires_transliteration, style: "display: block" %>
+      					<%= form.check_box :requires_transliteration %>
+					</div>
+				</div>
+			</div>
+			<% if in_vue %>
+				<input type="hidden" name="record_class" :value="record_class">
+				<input type="hidden" name="record_id" :value="real_record_id">
+				<input type="hidden" name="record_field_name" :value="language_column">
+			<% elsif parent.present? %>
+				<input type="hidden" name="record_class" value="<%= parent.class %>">
+				<input type="hidden" name="record_id" id="record-id" value="<%= parent.id %>">
+			<% end %>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(null, 0);})">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+

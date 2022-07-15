@@ -1,10 +1,14 @@
-<h1>Editing modern source</h1>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= link_to 'Bibliography', modern_sources_path %>
+  <i class="far fa-chevron-right"></i>
+  <%= @modern_source.display_name_html_safe %>
+</div>
 
-<%= render "form", modern_source: @modern_source %>
-
-<br>
-
-<div>
-  <%= link_to "Show this modern source", @modern_source %> |
-  <%= link_to "Back to modern sources", modern_sources_path %>
+<div class="d-flex mt-2">
+  <div class="w-100">
+    <h1 class="d-none" id="page-title">Bibliographic item</h1>
+    <%= render "form", modern_source: @modern_source %>
+  </div>
 </div>

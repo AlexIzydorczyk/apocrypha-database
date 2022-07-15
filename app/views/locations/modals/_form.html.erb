@@ -1,0 +1,143 @@
+<div class="modal" id="modal-<%= pid %>location-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+	<%= form_with(model: location, url: location.new_record? ? locations_path : location_path(location)) do |form| %>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Location</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label class="fw-bolder">City, town, village, settlement</label>
+						<%= form.text_field :city, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Warsaw" %>
+					</div>
+					<div class="col-md-3">
+						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
+						<button type="button" class="btn btn-outline-action" @click="alternative_location = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_location">
+						<label>Writing system</label>
+						<%= form.collection_select :city_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "city_writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_location">
+						<label>City, town, village, settlement: alternative or local name</label>
+						<%= form.text_field :city_alt, class: "form-control mb-2", placeholder: "Alternative location name, e.g., Москва" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_location && city_writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :city_translilteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label class="fw-bolder">Diocese</label>
+						<%= form.text_field :diocese, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
+					</div>
+					<div class="col-md-3">
+						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
+						<button type="button" class="btn btn-outline-action" @click="alternative_diocese = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_diocese">
+						<label>Writing system</label>
+						<%= form.collection_select :diocese_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "diocese_writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_diocese">
+						<label>Diocese: alternative or local name</label>
+						<%= form.text_field :diocese_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_diocese && diocese_writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :diocese_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label class="fw-bolder">Region</label>
+						<%= form.text_field :region, class: "form-control mb-2", placeholder: "Standard name used in English, e.g., Warsaw" %>
+					</div>
+					<div class="col-md-3">
+						<%= form.label 'alt', "&nbsp;".html_safe, style: "display: block" %>
+						<button type="button" class="btn btn-outline-action" @click="alternative_region = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_region">
+						<label>Writing system</label>
+						<%= form.collection_select :region_writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "region_writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_region">
+						<label>Region: alternative or local name</label>
+						<%= form.text_field :region_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Москва" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_region && region_writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :region_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Moskva" %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 mb-4">
+						<%= form.label "Country", class: "fw-bolder" %>
+						<%= form.select :country, options_for_select(Location.all.map{ |l| l.country }.uniq, location.country), class: "form-control",  data: { placeholder: "Standard name used in English"} %>
+					</div>
+				</div>
+				<%= form.label "Coordinates of location", class: "fw-bolder" %>
+				<div class="row">
+					<div class="col-md-6">
+						<%= form.label :longitude %>
+						<%= form.text_field :longitude, placeholder: "Degrees north/south", class: "form-control" %>
+					</div>
+					<div class="col-md-6">
+						<%= form.label :latitude %>
+						<%= form.text_field :latitude, placeholder: "Degrees east/west", class: "form-control" %>
+					</div>
+				</div>
+			</div>
+			<% if parent.class == Booklet %>
+				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
+			<% elsif parent.class == ModernSource %>
+				<%= hidden_field_tag :modern_source_id, parent.id %>
+			<% elsif parent.class == Institution %>
+				<%= hidden_field_tag :institution_id, parent.id, class: "institution-field" %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
+			<% elsif parent.class == Manuscript %>
+				<%= hidden_field_tag :manuscript_id, parent.id %>
+			<% end %>
+			<div class="modal-footer">
+				<% if parent.class == Institution && depth == 2 %>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('#modal-ownership-institution-' + $('#modal-<%= pid %>location-modal .institution-field').val() + '-<%= depth-1 %>-new-institution-modal', 0);})">Save & Close</button>
+				<% elsif parent.class == Institution %>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('#modal-' + $('#modal-<%= pid %>location-modal .institution-field').val() + '-<%= depth-1 %>-new-institution-modal', 0);})">Save & Close</button>
+				<% else %>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('#modal-#{pid}location-modal .ownership-field').val()" : "'location'" %>, 0);})">Save & Close</button>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	var location_modal_vue;
+	$( document ).ready(function() {
+		location_modal_vue = new Vue({
+			el: "#modal-<%= pid %>location-modal",
+			name: "modal-<%= pid %>LocationModal",
+			data: function() {
+				return {
+					alternative_location: <%= location.city_alt.present? || location.city_translilteration.present? ? "true" : "false" %>,
+					city_writing_system_id: '<%= location.city_writing_system_id %>',
+					alternative_diocese: <%= location.diocese_alt.present? || location.diocese_transliteration.present? ? "true" : "false" %>,
+					diocese_writing_system_id: '<%= location.diocese_writing_system_id %>',
+					alternative_region: <%= location.region_alt.present? || location.region_transliteration.present? ? "true" : "false" %>,
+					region_writing_system_id: '<%= location.region_writing_system_id %>',
+				}
+			},
+			mounted(){
+				new TomSelect("#modal-<%= pid %>location-modal #location_city_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_diocese_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_region_writing_system_id",ts_sort_text_asc_max_1);
+				new TomSelect("#modal-<%= pid %>location-modal #location_country",ts_sort_text_asc_max_1_create);
+				createModalListeners("#modal-<%= pid %>location-modal");
+			},
+		});
+	});
+</script>

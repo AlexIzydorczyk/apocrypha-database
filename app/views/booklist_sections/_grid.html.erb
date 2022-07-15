@@ -1,0 +1,289 @@
+<%= render "user_grid_states/configuration_options", record_type: "BooklistSection" %>
+
+<div id="booklist_sections_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<%= render 'layouts/grid_save_state_js', record_type: "BooklistSection" %>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: false , sortable: true, filter: true, resizable: true, hide: true, aggFunc: 'concat', filter: 'agMultiColumnFilter', autoHeight: true, enableValue: true, wrapText: true, cellStyle: {wordBreak: 'normal'} };
+
+  const columnDefs = [
+    { headerName: "Apocryphon mentioned", children: [ //booklist reference to booklist section
+      { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agSetColumnFilter'  },
+      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true },
+      { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles"  },
+      { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title"  },
+      { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles"  },
+      { headerName: "All English titles", headerTooltip: "All English titles", field: "apocryphon.all_english_titles"  },
+      { headerName: "All Latin titles", headerTooltip: "All Latin titles", field: "apocryphon.all_latin_titles"  },
+    ]},
+    { headerName: "Owner", children: [ //booklist
+      { headerName: "Owner", field: "booklist.library_owner" },
+      { headerName: "First name", field: "booklist.library_owner_first_name" },
+      { headerName: "Last name", field: "booklist.library_owner_last_name" },
+      { headerName: "Institution", field: "booklist.institution_name" },
+      { headerName: "Institution (alternative)", field: "booklist.institution_name_alternative" },
+      { headerName: "Religious order", field: "booklist.religious_order_name" },
+    ]},
+    { headerName: "Location", children: [ //booklist
+      { headerName: "City", field: "booklist.city", editable: false  },
+      { headerName: "City (alternative)", field: "booklist.city_alt", editable: false  },
+      { headerName: "Diocese", field: "booklist.diocese", editable: false  },
+      { headerName: "Diocese (alternative)" , field: "booklist.diocese_alt"},
+      { headerName: "Region", field: "booklist.region", editable: false  },
+      { headerName: "Region (alternative)" , field: "booklist.region_alt"},
+      { headerName: "Country", field: "booklist.country", editable: false  },
+    ]},
+    { headerName: "Booklist", children: [ //booklist
+      { headerName: "Booklist no.", field: "booklist.booklist_no", comparator: numberSort   },
+      { headerName: "Booklist type", field: "booklist.booklist_type"},
+      { headerName: "Language", field: "booklist.language_name" },
+      { headerName: "Period from", headerTooltip: "Period from", field: "booklist.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual', 'lessThanOrEqual']}},
+      { headerName: "Period to", headerTooltip: "Period to", field: "booklist.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual', 'greaterThanOrEqual']}},
+      { headerName: "Year(s)", field: "booklist.specific_date", comparator: numberSort , filter: 'agNumberColumnFilter'},
+      { headerName: "Author(s)", field: "booklist.authors"},
+      { headerName: "Notes on booklist", field: "booklist.notes"},
+      { headerName: "Title", field: "booklist.title_orig"},
+      { headerName: "Title (translit.)", field: "booklist.title_orig_transliteration" },
+      { headerName: "Title (transla.)", field: "booklist.title_orig_translation" },
+    ]},
+    { headerName: "Excerpts", children: [ //booklist section
+      { headerName: "Id", field: "excerpt.id"  },
+      { headerName: "Sequence no", field: "excerpt.sequence_no" },
+      { headerName: "Heading", field: "excerpt.heading_orig"},
+      { headerName: "Heading (translit.)", field: "excerpt.heading_orig_transliteration" },
+      { headerName: "Heading (transla.)", field: "excerpt.heading_translation" },
+      { headerName: "Relevant text", field: "excerpt.relevant_text_orig"},
+      { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration" },
+      { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation" },
+      { headerName: "Notes on relevant text", field: "excerpt.notes"},
+      { headerName: "Extant as ms.", field: "excerpt.manuscript"},
+    ]},
+  ];
+
+  const rowData = [
+    <% @queries.each do |key, value| %>
+      <% value.each do |rec| %>
+        {
+          apocryphon: { //from booklist_reference
+            <% br = key == :booklist_references ? rec : @new_booklist_reference %>
+            <% apocryphon = br.record_type == 'Apocryphon' ? br.record : @new_apocryphon %>
+            id: <%= apocryphon.id || "undefined" %>,
+            apocryphon_no: `<%= apocryphon.apocryphon_no.html_safe %>`,
+            main_english_title: `<%= apocryphon.main_eng_title.try(:html_safe) if apocryphon.id.present? %>`,
+            other_english_titles: `<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }.join(', ').html_safe if apocryphon.id.present? %>`,
+            main_latin_title: `<%= apocryphon.main_lat_title.try(:html_safe) if apocryphon.id.present? %>`,
+            other_latin_titles: `<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }.join(', ').html_safe if apocryphon.id.present? %>`,
+            all_english_titles: <%= apocryphon.id.present? ? [apocryphon.main_eng_title, Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }].flatten.to_json.html_safe : "[]" %>,
+            all_latin_titles: <%= apocryphon.id.present? ? [apocryphon.main_lat_title, Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }].flatten.to_json.html_safe : "[]" %>,
+            e_clavis_link: `<%= apocryphon.e_clavis_link.html_safe %>`,
+          },
+          excerpt: {
+            <% bs = key == :booklist_sections ? rec : ( key == :booklist_references ? br.booklist_section : @new_booklist_section) %>
+            id:'<%= bs.id %>',
+            sequence_no: "<%= bs.sequence_no %>",
+            heading_orig: "<%= bs.heading_orig.try(:html_safe) %>",
+            heading_orig_transliteration: "<%= bs.heading_orig_transliteration.try(:html_safe) %>",
+            heading_translation: "<%= bs.heading_translation.try(:html_safe) %>",
+            relevant_text_orig: "<%= bs.relevant_text_orig.try(:html_safe) %>",
+            relevant_text_orig_transliteration: "<%= bs.relevant_text_orig_transliteration.try(:html_safe) %>",
+            relevant_text_translation: "<%= bs.relevant_text_translation.try(:html_safe) %>",
+            manuscript: "<%= bs.manuscript.try(:display_name) %>"
+          },
+          booklist: {
+            <% bl = key == :booklists ? rec : ( key == :booklist_references ? br.booklist_section.booklist : ( key == :booklist_sections ? bs.booklist : @new_booklist_section)) %>
+            id: '<%= bl.id %>',
+            booklist_type: "<%= bl.booklist_type %>",
+            booklist_no: "<%= bl.booklist_no.present? ? bl.booklist_no : bl.id %>",
+            library_owner: "<%= bl.display_library_owner.try(:html_safe) %>",
+            library_owner_first_name: "<%= bl.library_owner.try(:first_name_vernacular) %>",
+            library_owner_last_name: "<%= bl.library_owner.try(:last_name_vernacular) %>",
+            library_owner_id: "<%= bl.library_owner_id %>",
+            institution_id: "<%= bl.institution_id %>",
+            institution_name: "<%= bl.institution.try(:name).try(:html_safe) %>",
+            institution_name_alternative: "<%= bl.institution.try(:name_alt).try(:html_safe) %>",
+            location_id: "<%= bl.location_id %>",
+            city: "<%= bl.location.try(:city) %>",
+            city_alt: "<%= bl.location.try(:city_alt) %>",
+            region: "<%= bl.location.try(:region) %>",
+            region_alt: "<%= bl.location.try(:region_alt) %>",
+            country: "<%= bl.location.try(:country) %>",
+            diocese: "<%= bl.location.try(:diocese) %>",
+            diocese_alt: "<%= bl.location.try(:diocese_alt) %>",
+            language_id: "<%= bl.language_id %>",
+            language_name: "<%= bl.try(:language).try(:language_name) %>",
+            religious_order_id: "<%= bl.religious_order_id %>",
+            religious_order_name: "<%= bl.religious_order.try(:order_name) %>",
+            religious_order_abbreviation: "<%= bl.religious_order.try(:abbreviation) %>",
+            title_orig: "<%= bl.title_orig %>",
+            title_orig_transliteration: "<%= bl.title_orig_transliteration %>",
+            title_orig_translation: "<%= bl.title_orig_translation %>",
+            date_from: "<%= bl.date_from %>",
+            date_to: "<%= bl.date_to %>",
+            specific_date: "<%= bl.specific_date %>",
+            notes: `<%= bl.notes %>`,
+            authors: `<%= bl.authors.map(&:full_name).join(', ').html_safe %>`
+          },
+        },
+
+      <% end %>
+    <% end %>
+  ];
+
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    // onColumnVisible: onColumnVisible,
+    defaultColDef: defaultColDef,
+    suppressMenuHide: true,
+    groupAggFiltering: true,
+    autoGroupColumnDef: {
+      cellRendererParams: {
+        // suppressCount: true,
+      },
+      filter: 'agTextColumnFilter',
+      filterValueGetter: params => {      
+          // console. log("params", params);
+          const colId = params.column.colId;        
+          if (colId.includes('identification')) {
+              return params.data.manuscript.identification;   
+          }
+      },           
+    },
+    rowData: rowData,
+    sideBar: {
+      toolPanels: [
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel',
+          toolPanelParams: {
+            suppressSyncLayoutWithGrid: true,
+          },
+        },
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+        },
+      ],
+      defaultToolPanel: null,
+    },
+    rowHeight: 28,
+    suppressAggFuncInHeader: true,
+    groupDisplayType: 'multipleColumns',
+    enableBrowserTooltips: true,
+    aggFuncs: {
+      concat: (params) => {
+        let arr = params.values.filter(onlyUnique).map(function(val) {
+          return val == "" || val == [] || val == {} ? '(blank)' : val;
+        })
+        return arr.join(' ‖ ');
+      },
+      linkAgg: (params) => {
+        return params.values.flat().filter(onlyUnique);
+      }
+    },
+    initialGroupOrderComparator: function (params) {
+      if(params.nodeA.field == "manuscript.identification" && params.nodeB.field == "manuscript.identification"){
+        a1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_city;
+        a2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_city;
+        b1 = params.nodeA.allLeafChildren[0].data.manuscript.institution_name;
+        b2 = params.nodeB.allLeafChildren[0].data.manuscript.institution_name;
+        c1 = params.nodeA.allLeafChildren[0].data.manuscript.shelfmark;
+        c2 = params.nodeB.allLeafChildren[0].data.manuscript.shelfmark;
+        // d1 = params.nodeA.allLeafChildren[0].data.contents.sequence_no;
+        // d2 = params.nodeB.allLeafChildren[0].data.contents.sequence_no;
+        // e1 = params.nodeA.allLeafChildren[0].data.section.section_number;
+        // e2 = params.nodeB.allLeafChildren[0].data.section.section_number;
+        if(a1 == a2){
+          if(b1 == b2) return b1 < b2 ? -1 : b1 > b2 ? 1 : 0;
+          else return c1 < c2 ? -1 : c1 > c2 ? 1 : 0;
+        } else return a1 < a2 ? -1 : a1 > a2 ? 1 : 0;
+      } else {
+        const a = params.nodeA.key || '';
+        const b = params.nodeB.key || '';
+        return a < b ? -1 : a > b ? 1 : 0;
+      }
+    },
+    rowGroupPanelShow: "onlyWhenGrouping",
+    statusBar: {
+      statusPanels: [
+        { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'left' },
+        { statusPanel: 'agTotalRowCountComponent', align: 'center' },
+        { statusPanel: 'agFilteredRowCountComponent' },
+        { statusPanel: 'agSelectedRowCountComponent' },
+      ],
+    },
+  };
+
+  function numberSort(num1, num2){
+    return parseInt(num1) - parseInt(num2);
+  };
+
+  function richTextRender(p) {
+    return p.value;
+  }
+
+  function linkRenderer(p) {
+    let to_return = [];
+    if(Array.isArray(p.value) && p.value.length > 0){
+      to_return = p.value.map(function(value) {
+        if(!value || value.length < 1){
+          return ""
+        }else{
+          let temp = document.createElement('a');
+          temp.href = value;
+          return "<a href='" + value + "' target='blank'>" + (p.display_text || temp.hostname) + "</a>"
+        }
+      });
+    } else {
+      if(!p.value || p.value.length < 1){
+        to_return = [""];
+      }else{
+        let temp = document.createElement('a');
+        temp.href = p.value;
+        to_return = ["<a href='" + p.value + "' target='blank'>" + (p.display_text || temp.hostname) + "</a>"];
+      };
+    }
+    return to_return.filter( s => s && s.length > 0 ).join(", ");
+  }
+
+  function onFilterTextBoxChanged() {
+      gridOptions.api.setQuickFilter(
+        document.getElementById('filter-text-box').value
+      );
+  }
+
+  function tooltipValueGetter(params) {
+    return params.colDef.headerName;
+  }
+
+  function expand(argument) {
+    gridOptions.api.expandAll();
+    $("#expand").hide();
+    $("#collapse").show();
+  }
+
+  function collapse(argument) {
+    gridOptions.api.collapseAll();
+    $("#expand").show();
+    $("#collapse").hide();
+  }
+
+  const eGridDiv = document.querySelector('#booklist_sections_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.collapseColumnGroups();
+  autoSizeAll(gridOptions, false);
+  // updateAllFilterVisiblity();
+
+  // var model = {content.apocryphal: {values: ["Apocryphal"], filterType: "set"}};
+  // gridOptions.api.setFilterModel(model);
+
+</script>

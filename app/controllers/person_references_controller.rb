@@ -1,5 +1,7 @@
 class PersonReferencesController < ApplicationController
   before_action :set_person_reference, only: %i[ show edit update destroy ]
+  # skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ index edit update destroy create ]
 
   def index
     @person_references = PersonReference.all

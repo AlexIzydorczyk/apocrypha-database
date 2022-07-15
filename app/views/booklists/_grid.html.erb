@@ -1,48 +1,158 @@
+<div class="d-flex mb-2 align-items-end">
+  <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  <% if user_signed_in? %>
+    <button class="btn btn-sm btn-outline-action ms-auto" onclick="saveState()">Save grid configuration</button>
+    <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset grid configuration</button>
+  <% end %>
+</div>
 <div id="booklists_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<% booklists.each do |booklist| %>
+  <%= button_to "Delete", booklist_path(booklist), method: :delete, class: "d-none", id: 'delete_'+booklist.id.to_s %>
+<% end %>
+
+<% if user_signed_in? && current_user.adm_editor? %>
+  <%= render 'booklists/modals/change_person', booklist: booklists.first, reference_type: "library_owner" %>
+  <%= render 'booklists/modals/change_institution', booklist: booklists.first %>
+  <%= render 'booklists/modals/change_location', booklist: booklists.first %>
+  <%= render 'booklists/modals/change_religious_order', booklist: booklists.first %>
+  <%= render 'locations/modals/form_from_grid', location: Location.first %>
+  <%= render 'institutions/modals/form_from_grid', institution: Institution.first %>
+  <%= render 'religious_orders/modals/form_from_grid', religious_order: ReligiousOrder.first %>
+  <%= render 'people/modals/form_from_grid', person: Person.first, reference_type: "library_owner" %>
+  <%= render 'layouts/grid_modal_js' %>
+<% end %>
+<% if user_signed_in? %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Booklist" %>
+<% end %>
+
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, wrapText: true, cellStyle: {wordBreak: 'normal'}, autoHeight: true};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Booklist type", field: "booklist_type"},
-        { headerName: "Manuscript source", field: "manuscript_source"},
-        { headerName: "Library owner", field: "library_owner_id"},
-        { headerName: "Institution", field: "institution_id"},
-        { headerName: "Location", field: "location_id"},
-        { headerName: "Religious order", field: "religious_order_id"},
-        { headerName: "Scribe", field: "scribe_id"},
-        { headerName: "Language", field: "language_id"},
-        { headerName: "Title orig", field: "title_orig"},
-        { headerName: "Title orig transliteration", field: "title_orig_transliteration"},
-        { headerName: "Title orig translation", field: "title_orig_translation"},
-        { headerName: "Chapter orig", field: "chapter_orig"},
-        { headerName: "Chapter orig transliteration", field: "chapter_orig_transliteration"},
-        { headerName: "Chapter translation", field: "chapter_translation"},
-        { headerName: "Date from", field: "date_from"},
-        { headerName: "Date to", field: "date_to"},
-        { headerName: "Specific date", field: "specific_date"},
-        { headerName: "Notes", field: "notes"},
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
-    } }
+        { headerName: "Booklist no.", field: "booklist_no", comparator: numberSort },
+        { headerName: "Owner", field: "library_owner" },
+        { headerName: "Person", children: [
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "library_owner_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("people/${params.value}", "person", "library_owner")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'library_owner')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
+          { headerName: "Person", field: "library_owner_full_name", hide: true, editable: false },
+          { headerName: "First name", field: "library_owner_first_name", hide: true, editable: false },
+          { headerName: "Last name", field: "library_owner_last_name", hide: true, editable: false },
+        ]},
+        { headerName: "Institution", children: [
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "institution_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("institutions/${params.value}", "institution")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
+          { headerName: "Name", field: "institution_name", hide: true, editable: false },
+          { headerName: "Name (alternative)", field: "institution_name_alternative", hide: true, editable: false },
+        ] },
+        { headerName: "Religious order", children: [
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "religious_order_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
+          { headerName: "Name", field: "religious_order_name", hide: true, editable: false },
+          <% if user_signed_in? && current_user.adm_editor? %>{ headerName: "Abbreviation", field: "religious_order_abbreviation", hide: true, editable: false },<% end %>
+        ] },
+        { headerName: "Location", children: [
+          <% if user_signed_in? && current_user.adm_editor? %>
+            { headerName: "Id", field: "location_id", hide: true, editable: false, cellRenderer: function(params) {
+              return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('booklists/${params.data.id}', 'booklist', 'location')"><i class='fa-solid fa-arrows-repeat'></i></button>`
+            } },
+          <% end %>
+          { headerName: "City", field: "city", editable: false, hide: true },
+          { headerName: "City (alternative)", field: "city_alt", editable: false, hide: true },
+          { headerName: "Diocese", field: "diocese", editable: false, hide: true },
+          { headerName: "Diocese (alternative)", hide: true, field: "diocese_alt", editable: false },
+          { headerName: "Region", field: "region", editable: false, hide: true },
+          { headerName: "Region (alternative)", hide: true, field: "region_alt", editable: false },
+          { headerName: "Country", field: "country", editable: false, hide: true },
+        ] },
+
+        { headerName: "Booklist type", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
+        { headerName: "Language", field: "language_name" },
+        { headerName: "Date", children: [
+          { headerName: "Period from", field: "date_from", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual', 'lessThanOrEqual']} },
+          { headerName: "Period to", field: "date_to", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: { filterOptions: ['lessThanOrEqual', 'greaterThanOrEqual']} },
+          { headerName: "Year(s)", field: "specific_date", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter' },
+        ]},
+        { headerName: "Author(s)", field: "authors"},
+        { headerName: "Title", field: "title_orig"},
+        { headerName: "Title (translit.)", field: "title_orig_transliteration", hide: true},
+        { headerName: "Title (transla.)", field: "title_orig_translation", hide: true},
+        { headerName: "Apocrypha mentioned ", field: "apocrypha_mentioned", hide: true, editable: false},
+        { headerName: "Extant as ms.", field: "extant_as_ms", hide: true, editable: false},
+        <% if user_signed_in? && current_user.adm_editor? %>{ headerName: "Actions", field: "links", pinned: "right", editable: false, cellRenderer: function(links) {
+      return "<a href='" + links.value.edit + "?old_path=" + window.location.pathname + "' class='btn btn-outline-secondary btn-sm'>edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this booklist?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
+    } }<% end %>
   ];
 
   const rowData = [
-    <% booklists.each do |booklist| %>
-      { id:<%= booklist.id %>,
-        booklist_type: "<%= booklist.booklist_type %>",manuscript_source: "<%= booklist.manuscript_source %>",library_owner_id: "<%= booklist.library_owner_id %>",institution_id: "<%= booklist.institution_id %>",location_id: "<%= booklist.location_id %>",religious_order_id: "<%= booklist.religious_order_id %>",scribe_id: "<%= booklist.scribe_id %>",language_id: "<%= booklist.language_id %>",title_orig: "<%= booklist.title_orig %>",title_orig_transliteration: "<%= booklist.title_orig_transliteration %>",title_orig_translation: "<%= booklist.title_orig_translation %>",chapter_orig: "<%= booklist.chapter_orig %>",chapter_orig_transliteration: "<%= booklist.chapter_orig_transliteration %>",chapter_translation: "<%= booklist.chapter_translation %>",date_from: "<%= booklist.date_from %>",date_to: "<%= booklist.date_to %>",specific_date: "<%= booklist.specific_date %>",notes: "<%= booklist.notes %>",
-        links: { show: "<%= booklist_path(booklist) %>", edit: "<%= edit_booklist_path(booklist) %>" }
+    <% booklists.each do |bl| %>
+      {
+        id: <%= bl.id %>,
+        booklist_type: "<%= bl.booklist_type %>",
+        booklist_no: "<%= bl.booklist_no.present? ? bl.booklist_no : bl.id %>",
+        library_owner: "<%= bl.display_library_owner.try(:html_safe) %>",
+        library_owner_first_name: "<%= bl.library_owner.try(:first_name_vernacular) %>",
+        library_owner_last_name: "<%= bl.library_owner.try(:last_name_vernacular) %>",
+        library_owner_full_name: "<%= bl.library_owner.try(:full_name) %>",
+        library_owner_id: "<%= bl.library_owner_id %>",
+        institution_id: "<%= bl.institution_id %>",
+        institution_name: "<%= bl.institution.try(:name).try(:html_safe) %>",
+        institution_name_alternative: "<%= bl.institution.try(:name_alt).try(:html_safe) %>",
+        location_id: "<%= bl.location_id %>",
+        city: "<%= bl.location.try(:city) %>",
+        city_alt: "<%= bl.location.try(:city_alt) %>",
+        region: "<%= bl.location.try(:region) %>",
+        region_alt: "<%= bl.location.try(:region_alt) %>",
+        country: "<%= bl.location.try(:country) %>",
+        diocese: "<%= bl.location.try(:diocese) %>",
+        diocese_alt: "<%= bl.location.try(:diocese_alt) %>",
+        language_id: "<%= bl.language_id %>",
+        language_name: "<%= bl.try(:language).try(:language_name) %>",
+        religious_order_id: "<%= bl.religious_order_id %>",
+        religious_order_name: "<%= bl.religious_order.try(:order_name) %>",
+        religious_order_abbreviation: "<%= bl.religious_order.try(:abbreviation) %>",
+        title_orig: "<%= bl.title_orig %>",
+        title_orig_transliteration: "<%= bl.title_orig_transliteration %>",
+        title_orig_translation: "<%= bl.title_orig_translation %>",
+        date_from: "<%= bl.date_from %>",
+        date_to: "<%= bl.date_to %>",
+        specific_date: "<%= bl.specific_date %>",
+        apocrypha_mentioned: "<%= bl.apocrypha_mentioned %>",
+        extant_as_ms: "<%= bl.extant_as_ms %>",
+        notes: `<%= bl.notes %>`,
+        authors: `<%= bl.authors.map(&:full_name).join(', ').html_safe %>`,
+        links: { edit: "<%= edit_booklist_path(bl) %>", delete_btn: 'delete_<%= bl.id %>' }
       },
     <% end %>
   ];
+
+  function numberSort(num1, num2){
+      return num1 - num2;
+    };
+
+  function onFilterTextBoxChanged() {
+    gridOptions.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
+  }
 
   const gridOptions = {
     columnDefs: columnDefs,
     defaultColDef: defaultColDef,
     rowData: rowData,
     onCellValueChanged: onCellValueChanged,
+    sideBar: ['filters', 'columns'],
   };
 
   function onCellValueChanged(event){
@@ -52,6 +162,7 @@
 
   function saveChange(id, data){
     var my_data = {};
+    my_data.in_grid = "1";
     my_data.authenticity_token = "<%= form_authenticity_token %>";
     my_data.booklist = data;
     console.log('my_data', my_data);
@@ -69,5 +180,5 @@
 
   const eGridDiv = document.querySelector('#booklists_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
-
+  autoSizeAll(gridOptions, false)
 </script>

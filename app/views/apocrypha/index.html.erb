@@ -1,5 +1,10 @@
-<h1>Apocrypha</h1>
-<p><%= link_to "New apocryphon", new_apocryphon_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Research", research_path %>
+  <i class="far fa-chevron-right"></i>
+  A list of apocrypha
+</div>
+
+<h1>A list of apocrypha <%= button_to 'New Apocryphon', apocrypha_path, class: "btn btn-action", params: { apocryphon: { apocryphon_no: "" } } if current_user.present? && current_user.adm_editor? %></h1>
 
 <div id="apocrypha">
     <%= render 'grid', apocrypha: @apocrypha %>

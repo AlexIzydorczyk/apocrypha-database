@@ -1,0 +1,147 @@
+<div class="d-flex flex-wrap mb-2 align-items-center" id="options">
+  <% if user_signed_in? && current_user.admin? %>
+    <button class="btn btn-sm btn-outline-action mx-2 mb-2 create" data-bs-toggle="modal" data-bs-target="#create-configuration"><i class="far fa-floppy-disk"></i> Create option</button>
+    <button class="btn btn-sm btn-outline-action mx-2 mb-2 create" data-bs-toggle="modal" data-bs-target="#update-configuration-order"><i class="far fa-sort"></i> Update order</button>
+  <% end %>
+  <% @grid_states.each do |state| %>
+    <div class="btn-group mx-2 mb-2 states <%= 'user_signed_in' if user_signed_in? %>" role="group">
+      <button type="button" class="btn btn-sm btn-outline-action change-state-button" id="change-state-button-<%= state.id %>" data-bs-toggle="modal" data-bs-target="#keep-filters-<%= state.id %>"><%= state.state_name %></button>
+      <button type="button" class="btn btn-sm btn-outline-action reset" style="display: none;" onclick="getState({id: <%= state.id %>})"><i class='far fa-undo'></i></button>
+      <% if user_signed_in? && current_user.admin? %>
+        <button type="button" class="btn btn-sm btn-outline-action" id="default-state-button-<%= state.id %>" onclick="setDefaultState(<%= state.id %>)"><i class="<%= state.is_default ? 'fas' : 'far' %> fa-star"></i></button>
+        <button type="button" class="btn btn-sm btn-outline-action" onclick="deleteState('delete-state-<%= state.id %>')"><i class='far fa-trash-alt'></i></button>
+      <% end %>
+    </div>
+    <%= button_to "hidden", user_grid_state_path(state), method: :delete, class: "d-none", id: "delete-state-#{state.id}" %>
+  <% end %>
+</div>
+
+<div class="d-flex mb-2">
+  <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  <button class="btn btn-sm btn-outline-action ms-2" id="expand" onclick="expand();"><i class="far fa-expand-alt"></i> Expand all rows</button>
+  <button class="btn btn-sm btn-outline-action ms-2" id="collapse" onclick="collapse();" style="display:none;"><i class="far fa-compress-alt"></i> Close all expanded</button>
+  <button class="btn btn-sm btn-outline-action ms-2" onclick="gridOptions.api.setFilterModel(null);"><i class="far fa-filter"></i> Clear filters</button>
+  <button class="btn btn-sm btn-outline-action ms-auto" id="reset-to-default" style="display: <%= UserGridState.exists?(record_type: record_type, is_default: true) ? "block" : "none" %>;" onclick="getState({id: default_state_id})"><i class="fas fa-star"></i> Reset to default</button>
+  <% if user_signed_in? %>
+    <% if current_user.admin? %>
+      <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset to blank grid</button>
+    <% end %>
+    <button class="btn btn-sm btn-outline-action ms-2" onclick="saveState()"><i class="fas fa-user"></i> Save grid config.</button>
+    <button class="btn btn-sm btn-outline-action ms-2" id="load-grid-config" style="display: <%= current_user.user_grid_states.exists?(record_type: record_type) ? "block" : "none" %>;" onclick="getState({user_id: <%= current_user.id %>, record_type: record_type})"><i class="fas fa-user"></i> Load grid config.</button>
+  <% end %>
+</div>
+
+<!-- Modals -->
+<div class="modal" id="create-configuration" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create configuration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Creating configuration based on current grid state.</p>
+          <p>Note: state option will be avaliable to all users.</p>
+          <div class="form-group">
+            <label>Configuration name</label>
+            <input type="text" name="state_name" id="new-grid-state-name" placeholder="Configuration name" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action disable-on-click" onclick="saveState(false, $('#new-grid-state-name').val(), function(){timeoutReload('', 0);})">Save & Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal" id="update-configuration-order" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content"  id="rearrange">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update configuration order</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <transition-group name="animate" tag="ul" class="list-group">
+            <li class="list-group-item d-flex" v-for="(state, index) in states" :key="'state-' + state.id">
+              <span>{{ state.state_name }}</span>
+              <span class="ms-auto">
+                <button class="btn btn-sm btn-outline-action" type="button" @click="up(index)"><i class="fas fa-angle-up"></i></button>
+                <button class="btn btn-sm btn-outline-action" type="button" @click="down(index)"><i class="fas fa-angle-down"></i></button>
+              </span>
+            </li>
+          </transition-group>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action disable-on-click" @click="save">Save & Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<% @grid_states.each do |state| %>
+  <div class="modal" id="keep-filters-<%= state.id %>" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Loading configuration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Would you like to keep the current filters on the grid or load the preset filters that come with the configuration you have selected?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-action disable-on-click" onclick="getState({id: <%= state.id %>}, false)" data-bs-dismiss="modal">Keep current filters</button>
+          <button type="button" class="btn btn-action disable-on-click" onclick="getState({id: <%= state.id %>}, true)" data-bs-dismiss="modal">Load new filters</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    vue = new Vue({
+      el: "#rearrange",
+      data: {
+        states: <%= @grid_states.map(&:attributes).to_json.html_safe %>,
+      },
+      methods: {
+        up(index){
+          if(index > 0){
+            temp = this.states[index-1]
+            this.$set(this.states, index-1, this.states[index]);
+            this.$set(this.states, index, temp);
+          }
+          this.resetIndexes();
+        },
+        down(index){
+          if(index < this.states.length-1){
+            temp = this.states[index+1]
+            this.$set(this.states, index+1, this.states[index]);
+            this.$set(this.states, index, temp);
+          }
+          this.resetIndexes();
+        },
+        resetIndexes(){
+          this.states.forEach(function(state, index) {
+            this.$set(state, 'index', index);
+          }.bind(this));
+        },
+        save(){
+          vue = this;
+          $.ajax({
+            url: "<%= sort_user_grid_states_path %>",
+            method: "PUT",
+            data: {
+              ids: vue.states.map( s => s.id ),
+              authenticity_token: "<%= form_authenticity_token %>",
+            },
+            success: function(data) {
+              timeoutReload('', 0);
+            }
+          })
+        },
+      },
+    });
+  });
+</script>
+

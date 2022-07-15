@@ -1,21 +1,30 @@
+<div class="d-flex mb-2 align-items-end">
+  <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  <% if user_signed_in? %>
+    <button class="btn btn-sm btn-outline-action ms-auto" onclick="saveState()">Save grid <br class="d-md-none d-inline">configuration</button>
+    <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset grid <br class="d-md-none d-inline">configuration</button>
+  <% end %>
+</div>
 <div id="languages_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<% if user_signed_in? %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Language" %>
+<% end %>
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Language name", field: "language_name"},
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
-    } }
+    { headerName: "Language name", field: "language_name"},
+    { headerName: "Requires transliteration", field: "requires_transliteration", cellEditor: "agRichSelectCellEditor", cellEditorParams: { values: ["true", "false"]}, suppressColumnsToolPanel: true},
   ];
 
   const rowData = [
     <% languages.each do |language| %>
       { id:<%= language.id %>,
         language_name: "<%= language.language_name %>",
+        requires_transliteration: "<%= language.requires_transliteration %>",
         links: { show: "<%= language_path(language) %>", edit: "<%= edit_language_path(language) %>" }
       },
     <% end %>
@@ -33,8 +42,15 @@
     saveChange(event.data.id, event.data);
   }
 
+  function onFilterTextBoxChanged() {
+    gridOptions.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
+  }
+
   function saveChange(id, data){
     var my_data = {};
+    my_data.in_grid = "1";
     my_data.authenticity_token = "<%= form_authenticity_token %>";
     my_data.language = data;
     console.log('my_data', my_data);
@@ -52,5 +68,5 @@
 
   const eGridDiv = document.querySelector('#languages_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
-
+  autoSizeAll(gridOptions, false)
 </script>

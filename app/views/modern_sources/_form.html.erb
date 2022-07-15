@@ -1,129 +1,264 @@
-
-
-<%= form_with(model: modern_source) do |form| %>
-  <% if modern_source.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(modern_source.errors.count, "error") %> prohibited this modern_source from being saved:</h2>
-
-      <ul>
-        <% modern_source.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div id="modern-source-form" class="d-none">
+<%= form_with(model: modern_source, class: "autosave save-before-modals #{ 'block-submit' if params[:old_path].present?}") do |form| %>
+	<%= hidden_field_tag :old_path, params[:old_path] %>
 <div class="row">
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :publication_title_orig, style: "display: block" %>
-	    <%= form.text_field :publication_title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :publication_title_transliteration, style: "display: block" %>
-	    <%= form.text_field :publication_title_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :publication_title_translation, style: "display: block" %>
-	    <%= form.text_field :publication_title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_orig, style: "display: block" %>
-	    <%= form.text_field :title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_transliteration, style: "display: block" %>
-	    <%= form.text_field :title_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_translation, style: "display: block" %>
-	    <%= form.text_field :title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :source_type, style: "display: block" %>
-	    <%= form.text_field :source_type, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :num_volumes, style: "display: block" %>
-	    <%= form.text_field :num_volumes, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :volume_no, style: "display: block" %>
-	    <%= form.text_field :volume_no, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :volume_title_orig, style: "display: block" %>
-	    <%= form.text_field :volume_title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :volume_title_transliteration, style: "display: block" %>
-	    <%= form.text_field :volume_title_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :volume_title_translation, style: "display: block" %>
-	    <%= form.text_field :volume_title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :part_no, style: "display: block" %>
-	    <%= form.text_field :part_no, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :part_title_orig, style: "display: block" %>
-	    <%= form.text_field :part_title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :part_title_transliteration, style: "display: block" %>
-	    <%= form.text_field :part_title_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :part_title_translation, style: "display: block" %>
-	    <%= form.text_field :part_title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :series_no, style: "display: block" %>
-	    <%= form.text_field :series_no, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :series_title_orig, style: "display: block" %>
-	    <%= form.text_field :series_title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :series_title_transliteration, style: "display: block" %>
-	    <%= form.text_field :series_title_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :series_title_translation, style: "display: block" %>
-	    <%= form.text_field :series_title_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :edition, style: "display: block" %>
-	    <%= form.text_field :edition, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :publication_location_id, style: "display: block" %>
-	    <%= form.text_field :publication_location_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :publisher, style: "display: block" %>
-	    <%= form.text_field :publisher, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :publication_creation_date, style: "display: block" %>
-	    <%= form.text_field :publication_creation_date, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :shelfmark, style: "display: block" %>
-	    <%= form.text_field :shelfmark, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :ISBN, style: "display: block" %>
-	    <%= form.text_field :ISBN, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :DOI, style: "display: block" %>
-	    <%= form.text_field :DOI, class: "form-control" %>
-		</div>
+	<div class="form-group col-md-4 mb-2">
+		<%= form.label :source_type, "Type of bibliographic item", style: "display: block" %>
+		<%= form.select :source_type, options_for_select(%w(book book_chapter journal_article unpublished_document web_page handwritten_document).map{ |i| [ i.humanize, i ]}, modern_source.source_type), {include_blank: true}, {class: "form-control", placeholder: "Select one of new bibliographic item", "v-model": "source_type"} %>
+	</div>
+	<div class="form-group col-md-3 mb-2" v-show="source_type != 'web_page'">
+		<%= form.label :writing_system_id %>
+		<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control", "v-model": "writing_system_id"} %>
+	</div>
 </div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
-<% end %>
-	
+
+<div v-show="source_type != ''">
+	<div class="row">
+		<div class="col-md-6 mb-2">
+			<div class="row">
+				<div class="form-group col-md-12" v-show="source_type == 'book'">
+					<%= form.hidden_field :author_type, "v-model": "author_type" %>
+					<div class="d-flex">
+						<%= form.label :author_type, "Type of author:", style: "display: block", class: "me-3" %>
+						<span @click="author_type = 'regular'" class="pointer">
+							<i class="far" style="color: var(--orange)" :class="author_type == 'regular' ? 'fa-dot-circle' : 'fa-circle'"></i>
+							<label>Regular</label>
+						</span>
+						<span @click="author_type = 'corporate'" class="pointer ms-3">
+							<i class="far" style="color: var(--orange)" :class="author_type == 'corporate' ? 'fa-dot-circle' : 'fa-circle'"></i>
+							<label>Corporate</label>
+						</span>
+					</div>
+				</div>
+				<%= fields_for(:author_reference, @author_reference) do |ar| %>
+					<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || source_type != 'book'">
+						<label style="display: block;">{{ source_type == 'book' ? "Regular author(s)" : "Author(s)" }}</label>
+						<div class="d-flex">
+							<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
+								<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<optgroup label="<%= group.to_s.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if modern_source.authors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
+							<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
+						</div>
+					</div>
+				<% end %>
+				<div class="form-group col-md-12 mb-2" v-show="author_type == 'corporate' && source_type == 'book'" v-if="source_type != 'handwritten_document'">
+					<%= form.label :institution_id, "Corporate author(s)", style: "display: block" %>
+					<div class="d-flex">
+						<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Enter corporate author"} %>
+						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document' ? 'col-md-12' : 'col-md-12'" v-show="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' || source_type == 'unpublished_document' || source_type == 'handwritten_document'">
+			<label>{{ title_orig_label }}</label>
+			<%= form.text_field :title_orig, class: "form-control mb-2", ":placeholder": "title_orig_label" %>
+			<%= form.text_field :title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+		</div>
+
+		<div class="form-group mb-2" :class="source_type == 'journal_article' || source_type == 'book_chapter' || source_type == 'web_page' ? 'col-md-12' : 'col-md-12'" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document'">
+			<label>{{ source_type == 'journal_article' ? "Journal title" : (source_type == 'web_page' ? "Title of website" : "Book title") }}</label>
+			<%= form.text_field :publication_title_orig, class: "form-control mb-2", ":placeholder": "source_type == 'journal_article' ? 'Journal title' : (source_type == 'web_page' ? 'Title of website' : 'Book title')" %>
+			<%= form.text_field :publication_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :publication_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+		</div>
+
+		<div class="col-md-6" v-show="!(source_type == 'book' || source_type == 'book_chapter' || source_type == 'journal_article' || source_type == 'web_page' || source_type == 'unpublished_document')"></div>
+
+		<div class="col-md-6" v-show="source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'handwritten_document'">
+			<div class="row">
+				<%= fields_for :editor_reference, @editor_reference do |er| %>
+					<div class="form-group col-md-12 mb-2" id="editor">
+						<%= er.label :id, "Editor(s)", style: "display: block" %>
+						<div class="d-flex">
+							<select class="form-control" multiple="multiple" name="editor_reference[id][]" id="editor_reference_id" placeholder="Select editor(s)">
+								<% sort_hash_keys(@grouped_people, ['editor', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<optgroup label="<%= group.to_s.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if modern_source.editors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
+							<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-editor">New</button>
+						</div>
+					</div>
+				<% end %>
+				<%= fields_for :translator_reference, @translator_reference do |tr| %>
+					<div class="form-group col-md-12 mb-2" id="translator">
+						<%= tr.label :id, "Translator(s)", style: "display: block" %>
+						<div class="d-flex">
+							<select class="form-control" multiple="multiple" name="translator_reference[id][]" id="translator_reference_id" placeholder="Select translator(s)">
+								<% sort_hash_keys(@grouped_people, ['translator', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<optgroup label="<%= group.to_s.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if modern_source.translators.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
+							<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-translator">New</button>
+						</div>
+					</div>
+				<% end %>
+			</div>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="form-group col-md-3 mb-2" v-show="source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'handwritten_document'">
+					<%= form.label :edition, style: "display: block" %>
+					<%= form.select :edition, options_for_select(@editions, modern_source.edition), {include_blank: true}, {class: "form-control", placeholder: "Select or add"} %>
+				</div>
+				<div class="form-group col-md-2 offset-md-2 mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'book_chapter' && source_type != 'handwritten_document' && source_type != 'web_page'">
+					<%= form.label :num_volumes, "No. of vols", style: "display: block" %>
+					<%= form.text_field :num_volumes, class: "form-control" %>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-md-2 mb-2" v-show="source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'handwritten_document' && source_type != 'web_page'">
+			<label style="display: block;">Volume no.</label>
+			<%= form.text_field :volume_no, class: "form-control" %>
+		</div>
+		<div class="form-group col-md-10 mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
+			<label>Volume title</label>
+			<%= form.text_field :volume_title_orig, class: "form-control mb-2", placeholder: "Volume title" %>
+			<%= form.text_field :volume_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :volume_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+		</div>
+
+		<div class="form-group col-2 mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
+			<%= form.label :part_no, "Part no.", style: "display: block" %>
+			<%= form.text_field :part_no, class: "form-control" %>
+		</div>
+		<div class="form-group col-md-10  mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
+			<label>Part title</label>
+			<%= form.text_field :part_title_orig, class: "form-control mb-2", placeholder: "Part title" %>
+			<%= form.text_field :part_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+			<%= form.text_field :part_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+		</div>
+
+		<div class="col-md-12">
+			<div class="row">
+				<div class="form-group col-md mb-2" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
+					<label style="display: block;">{{ source_type == 'journal_article' ? "Journal series" : "Series title" }}</label>
+					<%= form.text_field :series_title_orig, class: "form-control mb-2", ":placeholder": "source_type == 'journal_article' ? 'Journal series' : 'Series title'" %>
+					<%= form.text_field :series_title_transliteration, class: "form-control mb-2", placeholder: "Transliteration", "v-show": "not_latin" %>
+					<%= form.text_field :series_title_translation, class: "form-control mb-2", placeholder: "Translation", "v-show": "not_latin" %>
+				</div>
+				<div class="form-group col-2 mb-2" v-show="source_type != 'unpublished_document' && source_type != 'handwritten_document' && source_type != 'web_page'">
+					<label style="display: block;">{{ source_type == 'journal_article' ? "Issue no." : "Series no." }}</label>
+					<%= form.text_field :series_no, class: "form-control" %>
+				</div>
+				<div class="form-group col-md-2 mb-2" v-if="source_type == 'journal_article'">
+					<label style="display: block;">Year</label>
+					<%= form.text_field :publication_creation_date, class: "form-control", placeholder: "Year" %>
+				</div>
+				<div class="form-group col-md-2 mb-2" v-show="source_type == 'book_chapter' || source_type == 'journal_article' || source_type == 'handwritten_document'" v-if="source_type != 'handwritten_document' && source_type != 'web_page'">
+					<label style="display: block;">{{ source_type == 'handwritten_document' ? "Folios" : (source_type == 'book_chapter' ? "Pages in book" : (source_type == 'journal_article' ? "Pages" : "Pages in publication")) }}</label>
+					<%= form.text_field :pages_in_publication, class: "form-control" %>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group col-md-12 mb-2" v-show="source_type == 'unpublished_document' && source_type != 'web_page'">
+			<%= form.label :document_type, "Type of unpublished document", style: "display: block;" %>
+			<%= form.select :document_type, options_for_select(@document_types, modern_source.document_type), {include_blank: true}, {class: "form-control", placeholder: "Select or add" } %>
+		</div>
+		<div class="col-md-12">
+			<div class="row">
+				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'journal_article' && source_type != 'web_page'">
+					<label style="display: block;">Originally published</label>
+					<%= form.text_field :original_publication_creation_date, class: "form-control", placeholder: "Year (for reprints only)" %>
+				</div>
+				<div class="form-group col-md-4 mb-2" v-show="source_type != 'journal_article' && source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'web_page'" id="institution">
+					<label style="display: block;">{{ source_type == "handwritten_document" ? "Location" : "Place of publication" }}</label>
+					<div class="d-flex">
+						<%= form.collection_select :publication_location_id, Location.all, :id, :city_region_country, {selected: modern_source.publication_location_id, include_blank: true}, {class: "form-control", placeholder: "Place of publication"} %>
+						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New</button>
+					</div>
+				</div>
+				<div class="form-group col-md-4 mb-2" v-if="source_type == 'handwritten_document'">
+					<%= form.label :institution_id, "Repository", style: "display: block" %>
+					<div class="d-flex">
+						<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
+						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
+					</div>
+				</div>
+				<div class="form-group col-2 mb-2" v-show="source_type == 'handwritten_document' && source_type != 'web_page'">
+					<%= form.label :shelfmark, style: "display: block" %>
+					<%= form.text_field :shelfmark, class: "form-control", placeholder: "Shelfmark" %>
+				</div>
+				<div class="form-group col-md-2 mb-2" v-if="source_type == 'handwritten_document'">
+					<label style="display: block;">Pages or folios</label>
+					<%= form.text_field :pages_in_publication, class: "form-control", placeholder: "Pages or folios" %>
+				</div>
+				<div class="form-group col-md-4 mb-2" v-show="source_type != 'journal_article' && source_type != 'unpublished_document' && source_type != 'handwritten_document'">
+					<%= form.label :publisher, style: "display: block" %>
+					<%= form.select :publisher, options_for_select(@publishers, modern_source.publisher), {include_blank: true}, {class: "form-control", placeholder: "Publisher"} %>
+				</div>
+				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document'" v-if="source_type != 'journal_article'">
+				<label style="display: block;">{{ source_type == 'web_page' ? "Last modified" : "Year" }}</label>
+					<%= form.text_field :publication_creation_date, class: "form-control", ":placeholder": "source_type == 'web_page' ? 'Date' : 'Year'" %>
+				</div>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="form-group col-md-2 mb-2 d-none">
+							<%= form.label :date_accessed, "Accessed" %>
+							<%= form.text_field :date_accessed, class: "form-control", placeholder: "Date accessed" %>
+						</div>
+						<div class="form-group col-md mb-2">
+							<div id="urls">
+								<div v-for="(source, index) in sources" class="row mb-2">
+									<div class="col-4">
+										<label style="display: block;">Accessed</label>
+										<input type="text" name="source_urls[urls][][date_accessed]" class="form-control accessed-field" v-model="source.accessed" placeholder="Date accessed">			
+									</div>
+									<div class="col">
+										<label style="display: block;">URL</label>
+										<input type="text" name="source_urls[urls][][url]" class="form-control me-2" v-model="source.url" placeholder="URL">	
+									</div>
+									<div class="col-2">
+										<label class="w-100"></label>
+										<button type="button" v-show="index == sources.length-1" class="btn btn-outline-action w-100" @click="addUrl();">Add URL</button>	
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-3 mb-2" v-show="source_type != 'web_page' && source_type != 'unpublished_document' && source_type != 'handwritten_document'">
+							<%= form.label :DOI, "doi", style: "display: block" %>
+							<%= form.text_field :DOI, class: "form-control", placeholder: "doi" %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<%= render 'layouts/save_now', form: form, save_and_new: "create-new" %>
+	<% end %>
+	</div>
+
+</div>
+
+<%= button_to 'New bibliographic item', modern_sources_path, class: "btn btn-action d-none", id: "create-new", params: { modern_source: { publication_title_orig: "" } } %>
+
+<%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'author', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'editor', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: modern_source, reference_type: 'translator', pid: '', depth: 0 %>
+<%= render 'locations/modals/form', location: Location.new, parent: modern_source, pid: '', depth: 0 %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: modern_source, pid: '', depth: 0 %>
+
+<!-- Scripts -->
+<%= render "modern_sources/scripts", modern_source: modern_source %>
+<%= render "layouts/vue_language_form_group" %>

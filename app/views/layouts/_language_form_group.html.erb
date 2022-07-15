@@ -1,0 +1,38 @@
+<div>
+	<div class="row" :id="$vnode.key">
+		<div class="form-group col-md-3 mb-2">
+			<select placeholder="Language" v-model="lang_val2" :name="record_type + group + '[' + language_column + ']'" class="form-control">
+				<option value=""></option>
+				<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
+			</select>
+		</div>
+		<div class="form-group col-md-9 mb-2">
+			<textarea v-if="textareas" :placeholder="title + ' in original language'" v-model="orig_val2" :name="record_type + group + '[' + orig + ']'" class="form-control" spellcheck="false"></textarea>
+			<input v-else :placeholder="title + ' in original language'" v-model="orig_val2" type="text" :name="record_type + group + '[' + orig + ']'" class="form-control">
+		</div>
+		<div class="col-md-12" v-show="requires_translit">
+			<div class="row">
+				<div class="form-group col-md-4 mb-2">
+					<input type="text" disabled="disabled" value="Transliteration" class="form-control bg-white">
+				</div> 
+				<div class="form-group col-md-8 mb-2">
+					<textarea v-if="textareas" :placeholder="title + ' as transliteration to english'" v-model="translit_val2" :name="record_type + group + '[' + translit + ']'" class="form-control" spellcheck="false"></textarea>
+					<input v-else :placeholder="title + ' as transliteration to english'" v-model="translit_val2" type="text" :name="record_type + group + '[' + translit + ']'" class="form-control">
+				</div> 
+			</div>
+		</div>
+		<div class="col-md-12" v-show="requires_english">
+			<div class="row">
+				<div class="form-group col-md-4 mb-2">
+					<input type="text" disabled="disabled" value="English" class="form-control bg-white">
+				</div> 
+				<div class="form-group col-md-8 mb-2">
+					<textarea v-if="textareas" :placeholder="title + ' in English'" v-model="eng_val2" :name="record_type + group + '[' + eng + ']'" class="form-control" spellcheck="false"></textarea>
+					<input v-else :placeholder="title + ' in English'" v-model="eng_val2" type="text" :name="record_type + group + '[' + eng + ']'" class="form-control">
+				</div>
+			</div>
+		</div>
+		<input type="hidden" class="record-id">
+	</div>
+	<%= render '/languages/modals/new', language: Language.new, in_vue: true %>
+</div>

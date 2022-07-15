@@ -1,0 +1,79 @@
+<div class="modal" id="institution-modal" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: institution) do |form| %>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Institution</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6 offset-3">
+						<label>Institution name</label>
+						<%= form.text_field :name, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
+					</div>
+					<div class="col-md-3">
+						<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
+						<button type="button" class="btn btn-outline-action" @click="alternative_name = true">Add alternative</button>
+					</div>
+					<div class="col-md-3" v-show="alternative_name">
+						<label>Writing system</label>
+						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "writing_system_id"} %>
+					</div>
+					<div class="col-md-6" v-show="alternative_name">
+						<label>Name of institution: alternative or local name of institution</label>
+						<%= form.text_field :name_english, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Публичная библиотека" %>
+					</div>
+					<div class="col-md-6 offset-3" v-show="alternative_name && writing_system_id != '<%= latin_writing_system_id %>'">
+						<%= form.text_field :name_orig_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
+					</div>
+				</div>
+				<label class="mt-3 fw-bolder">Location</label>
+				<div class="row">
+					<div class="form-group col-md-12 mb-2">
+						<div class="d-flex">
+							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {include_blank: true}, {class: "form-control", placeholder: "Select location"} %>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-12 mb-2">
+						<%= form.label :religious_order_id, "Religious Order", style: "display: block", class: " fw-bolder" %>
+						<div class="d-flex">
+							<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: institution.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
+						</div>
+					</div>
+					<div class="form-group col-12 mb-2">
+						<%= form.label :notes, "Notes", style: "display: block" %>
+						<%= form.text_area :notes, class: "form-control" %>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action" onclick="saveModal('institution')">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	var location_modal_vue;
+	$( document ).ready(function() {
+		location_modal_vue = new Vue({
+			el: "#institution-modal",
+			name: "InstitutionModal",
+			data: function() {
+				return {
+					alternative_name: false,
+					writing_system_id: "<%= latin_id %>",
+				}
+			},
+			mounted(){
+				new TomSelect("#institution-modal #institution_religious_order_id",ts_sort_text_asc_max_1);
+				new TomSelect("#institution-modal #institution_location_id",ts_sort_text_asc_max_1);
+				new TomSelect("#institution-modal #institution_writing_system_id",ts_sort_text_asc_max_1);
+			},
+		});
+	});
+</script>

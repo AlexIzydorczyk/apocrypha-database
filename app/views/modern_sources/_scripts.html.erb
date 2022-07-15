@@ -1,0 +1,115 @@
+<script type="text/javascript">
+let modernSourcesVue;
+$(document).ready(function(){
+	modernSourcesVue = new Vue({
+		name: 'modernSourcesVue',
+		el: '#modern-source-form',
+		data: {
+			author_type: '<%= modern_source.author_type %>',
+			sources: <%= modern_source.source_urls.map{ |ms| {url: ms.url, accessed: (ms.date_accessed.present? ? format_date(ms.date_accessed) : '')} }.to_json.html_safe %>,
+			source_type: '<%= modern_source.source_type %>',
+			writing_system_id: '<%= modern_source.writing_system_id %>',
+		},
+		computed: {
+			title_orig_label(){
+				switch(this.source_type){
+					case 'journal_article':
+						return "Article title";
+					case 'unpublished_document':
+						return 'Document title';
+					case 'web_page':
+						return "Title of webpage";
+					case "handwritten_document":
+						return "Document title";
+					case "book_chapter":
+						return "Chapter title"
+					default: 
+						return 'Book title in original language';
+				}
+			},
+			not_latin(){
+				return this.writing_system_id != "<%= latin_writing_system_id %>" && this.source_type != "web_page"
+			},
+		},
+		methods: {
+			addUrl(){
+				this.sources.push({url: '', accessed: ''});
+				setTimeout(function() {
+					$( ".accessed-field" ).last().datepicker({
+				      changeMonth: true,
+				      changeYear: true,
+				      dateFormat: "d MM, yy",
+				      maxDate: "+0"
+				    });
+				}, 200);
+					
+			}
+		},
+		mounted(){
+			runTomSelects();
+			$('#modern-source-form, #page-title').removeClass('d-none');
+	    $( ".accessed-field" ).datepicker({
+	      changeMonth: true,
+	      changeYear: true,
+	      dateFormat: "d MM, yy",
+	      maxDate: "+0"
+	    });
+		},
+	});
+});
+
+function runTomSelects(){
+	new TomSelect("#modern_source_source_type",ts_sort_text_asc_max_1);
+	new TomSelect("#author_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc",
+		},
+		maxItems: null,
+		hidePlaceholder: true,
+		lockOptgroupOrder: true,
+		maxOptions: null,
+		closeAfterSelect: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
+	});
+	new TomSelect("#modern_source_institution_id",ts_sort_text_asc_max_1);
+	new TomSelect("#editor_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc",
+		},
+		maxItems: null,
+		lockOptgroupOrder: true,
+		hidePlaceholder: true,
+		maxOptions: null,
+		closeAfterSelect: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
+	});
+	new TomSelect("#translator_reference_id",{
+		sortField: {
+			field: "text",
+			direction: "asc",
+		},
+		maxItems: null,
+		lockOptgroupOrder: true,
+		hidePlaceholder: true,
+		maxOptions: null,
+	  closeAfterSelect: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
+	});
+	new TomSelect("#modern_source_publication_location_id",ts_sort_text_asc_max_1);
+	new TomSelect("#modern_source_document_type",ts_sort_text_asc_max_1_create);
+	new TomSelect("#modern_source_publisher", ts_sort_text_asc_max_1_create);
+	new TomSelect("#modern_source_edition",ts_sort_text_asc_max_1_create);
+	new TomSelect("#modern_source_writing_system_id",ts_sort_text_asc_max_1);
+};
+</script>

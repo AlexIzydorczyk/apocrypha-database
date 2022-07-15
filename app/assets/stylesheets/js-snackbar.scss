@@ -1,5 +1,5 @@
 .js-snackbar-container {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
     display: flex;
@@ -78,9 +78,9 @@
     display: inline-flex;
     box-sizing: border-box;
     border-radius: 3px;
-    color: #eee;
+    color: white;
     font-size: 16px;
-    background-color: #262626;
+    background-color: var(--orange);
     vertical-align: bottom;
     box-shadow: 0 0 4px 0 black;
     margin: 0 10px;
@@ -137,7 +137,7 @@
 
 .js-snackbar__icon {
     display: block;
-    border: 2px solid white;
+    border: 2px solid var(--orange);
     font-weight: bold;
     border-radius: 20px;
     height: 20px;
@@ -179,7 +179,7 @@
 }
 
 .js-snackbar.js-snackbar--show {
-    background: #0d6efd;
+    background: var(--orange);
     min-width: 400px;
     @media (max-width: 400px){
         min-width: 80vw !important;

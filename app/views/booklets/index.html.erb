@@ -1,5 +1,10 @@
-<h1>Booklets</h1>
-<p><%= link_to "New booklet", new_booklet_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  Booklets
+</div>
+
+<h1>Booklets <%= button_to 'New Booklet', booklets_path, class: "btn btn-action", params: { booklet: { booklet_no: "1" } } %></h1>
 
 <div id="booklets">
     <%= render 'grid', booklets: @booklets %>

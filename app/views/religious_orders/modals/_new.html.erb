@@ -1,0 +1,61 @@
+<div class="modal" id="<%= pid %>new-religious-order-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+	<%= form_with(model: religious_order) do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add religious order</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="form-group col-md-12 mb-2">
+						<%= form.label :order_name, "Name of religious order", style: "display: block;", class: "fw-bolder" %>
+						<%= form.text_field :order_name, class: "form-control", placeholder: "Standard name" %>
+					</div>
+					<div class="form-group col-md-12 mb-2">
+						<%= form.label :abbreviation, style: "display: block;", class: "fw-bolder" %>
+						<%= form.text_field :abbreviation, class: "form-control", placeholder: "Abbreviation" %>
+					</div>
+					<div class="form-group col-md-12 mb-2">
+						<%= form.label :notes, style: "display: block;", class: "fw-bolder" %>
+						<%= form.text_area :notes, class: "form-control", style: "min-height: 60px;" %>
+					</div>
+				</div>
+			</div>
+			<% if parent.class == Booklet %>
+				<%= hidden_field_tag :booklet_id, parent.id %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
+			<% elsif parent.class == Manuscript %>
+				<%= hidden_field_tag :manuscript_id, parent.id %>
+			<% elsif parent.class == Institution %>
+				<%= hidden_field_tag :institution_id, parent.id, class: "institution-field" %>
+			<% end %>
+			<div class="modal-footer">
+				<% if parent.class == Institution && depth == 2 %>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('#modal-ownership-institution-' + $('#<%= pid %>new-religious-order-modal .institution-field').val() + '-<%= depth-1 %>-new-institution-modal', 0);})">Save & Close</button>
+				<% else %>
+					<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}new-religious-order-modal .ownership-field').val()" : "'religious-order'" %>, 0);})">Save & Close</button>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+
+<script type="text/javascript">
+	var location_modal_vue;
+	$( document ).ready(function() {
+		location_modal_vue = new Vue({
+			el: "#<%= pid %>new-religious-order-modal",
+			name: "<%= pid %>NewReligiousOrderModal",
+			mounted(){
+				createModalListeners("#<%= pid %>new-religious-order-modal");
+			},
+		});
+	});
+</script>
+

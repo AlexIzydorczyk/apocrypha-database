@@ -1,93 +1,183 @@
+<div id="booklist-form" class="d-none">
+	<%= form_with(model: booklist, class: "autosave save-before-modals base-form #{ 'block-submit' if params[:old_path].present?}") do |form| %>
 
+	<h2>Books' owner</h2>
+	<div class="row">
+		<div class="form-group col-md-4 mb-2" id="owner">
+			<%= form.label :library_owner_id, "Person", style: "display: block" %>
+			<div class="d-flex">
+				<select class="form-control" name="booklist[library_owner_id]" id="booklist_library_owner_id" placeholder="Select person">
+					<% sort_hash_keys(@grouped_people, ['owner', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+						<option></option>
+						<optgroup label="<%= group.to_s.humanize %>">
+							<% people.each do |person| %>
+								<option value="<%= person.id %>" <%= 'selected' if booklist.library_owner_id == person.id %>><%= person.full_name %></option>
+							<% end %>
+						</optgroup>
+					<% end %>
+				</select>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-owner">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-4 mb-2" id="institution">
+			<%= form.label :institution_id, style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :institution_id, Institution.all, :id, :long_display_name, {selected: booklist.institution_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select institution"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-4 mb-2" id="religious-order">
+			<%= form.label :religious_order_id, style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :display_name, {selected: booklist.religious_order_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select religious order"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New</button>
+			</div>
+		</div>
+		<div class="form-group col-md-8 mb-2" id="location">
+			<%= form.label :location_id, style: "display: block" %>
+			<div class="d-flex">
+				<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: booklist.location_id, include_blank: true}, {class: "form-control", multiple: false, placeholder: "Select location"} %>
+				<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New</button>
+			</div>
+		</div>
+	</div>
 
-<%= form_with(model: booklist) do |form| %>
-  <% if booklist.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(booklist.errors.count, "error") %> prohibited this booklist from being saved:</h2>
+	<h2>Booklist information</h2>
+	<div class="row">
+		<div class="form-group col-4 mb-2">
+			<%= form.label :booklist_no, "Booklist no.", style: "display: block" %>
+			<%= form.text_field :booklist_no, value: (booklist.booklist_no.present? ? booklist.booklist_no : booklist.id), class: "form-control" %>
+		</div>
+		<div class="form-group col-4 mb-2">
+			<%= form.label :booklist_type, "Type of booklist", style: "display: block" %>
+			<%= form.select :booklist_type, options_for_select(Booklist.all.map{ |b| b.booklist_type }.uniq, booklist.booklist_type), class: "form-control" %>
+		</div>
+		<div class="form-group col-4 mb-2">
+			<%= form.label :language_id, style: "display: block" %>
+			<select placeholder="Select language" v-model="language_id" name="booklist[language_id]" class="form-control" id="booklist_language_id">
+				<option value=""></option>
+				<option v-for="l in languages" :value="l.id">{{ l.language_name }}</option>
+			</select>
+		</div>
+	</div>
+	<div class="row my-3">
+		<div class="col text-start">
+			<label style="line-height: 35px;">Preserved in Manuscript</label>	
+		</div>
+		<div class="col text-end" id="modern-source-references">
+			<button type="button" class="btn btn-action ms-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal" onclick="$('#modern-source-reference-modal #modern_source_reference_reference_type').val('')">Add bibliographic reference</button>
+		</div>
+		
+		<div class="col-12 my-3">
+			<%= render 'modern_source_references/list', modern_source_references: booklist.modern_source_references %>
+		</div>
 
-      <ul>
-        <% booklist.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-<div class="row">
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :booklist_type, style: "display: block" %>
-	    <%= form.text_field :booklist_type, class: "form-control" %>
+		<%= fields_for(:author_reference, @author_reference) do |ar| %>
+			<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || source_type != 'book'">
+				<label style="display: block;">Author(s)</label>
+				<div class="d-flex">
+					<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
+						<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+							<optgroup label="<%= group.to_s.humanize %>">
+								<% people.each do |person| %>
+									<option value="<%= person.id %>" <%= 'selected' if booklist.authors.map(&:id).include?(person.id) %>><%= person.full_name %></option>
+								<% end %>
+							</optgroup>
+						<% end %>
+					</select>
+					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
+				</div>
+			</div>
+		<% end %>
+
+	</div>
+	<div class="row">
+		<div class="col-12 col-lg-7">
+			<div class="row">
+				<div class="form-group col-md-6 mb-2">
+					<%= form.label :date_to, "Date range", style: "display: block;" %>
+					<div class="d-flex align-items-baseline">
+						<select name="booklist[date_from]" id="booklist_date_from" class="form-control" placeholder="From" v-model="date_from">
+							<option></option>
+							<option v-for="n in <%= Date.today.year %>" v-if="
+								(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
+							" :value="n + ''">{{n}}</option>
+						</select>
+						<i class="far fa-minus m-2"></i>
+						<select name="booklist[date_to]" id="booklist_date_to" class="form-control" placeholder="To" v-model="date_to">
+							<option></option>
+							<option v-for="n in <%= Date.today.year %>" v-if="
+								(
+									((date_from == '' || (parseInt(date_from)-1)%25 == 0) && n%25==0)
+								 || ((date_from == '' || ((parseInt(date_from)%100)-1)%33 == 0) && (n%100 != 99) && n%100%33==0)
+								 || n==<%= Date.today.year %>
+								) && n>date_from
+							">{{n}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group col-md-6 mb-2">
+					<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+					<label>
+						Date (<span @click="date_exact = true" class="pointer">exact
+							<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+						</span>
+						or<span @click="date_exact = false" class="pointer">
+							approximate
+							<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+						</span>
+						)
+					</label>
+					<div class="input-group">
+						<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
+						<%= form.text_field :specific_date, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
+					</div>
+				</div>
+			</div>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :manuscript_source, style: "display: block" %>
-	    <%= form.text_field :manuscript_source, class: "form-control" %>
+		<div class="form-group col-12 mb-2">
+			<%= form.label "Booklist title",style: "display: block" %>
+			<%= form.text_field :title_orig, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :library_owner_id, style: "display: block" %>
-	    <%= form.text_field :library_owner_id, class: "form-control" %>
+			
+		<div class="form-group col-12 mb-2">
+			<%= form.label :notes, "Notes on booklist", style: "display: block" %>
+			<%= form.text_area :notes, class: "form-control" %>
 		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :institution_id, style: "display: block" %>
-	    <%= form.text_field :institution_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :location_id, style: "display: block" %>
-	    <%= form.text_field :location_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :religious_order_id, style: "display: block" %>
-	    <%= form.text_field :religious_order_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :scribe_id, style: "display: block" %>
-	    <%= form.text_field :scribe_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :language_id, style: "display: block" %>
-	    <%= form.text_field :language_id, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_orig, style: "display: block" %>
-	    <%= form.text_field :title_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_orig_transliteration, style: "display: block" %>
-	    <%= form.text_field :title_orig_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :title_orig_translation, style: "display: block" %>
-	    <%= form.text_field :title_orig_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :chapter_orig, style: "display: block" %>
-	    <%= form.text_field :chapter_orig, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :chapter_orig_transliteration, style: "display: block" %>
-	    <%= form.text_field :chapter_orig_transliteration, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :chapter_translation, style: "display: block" %>
-	    <%= form.text_field :chapter_translation, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_from, style: "display: block" %>
-	    <%= form.text_field :date_from, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :date_to, style: "display: block" %>
-	    <%= form.text_field :date_to, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :specific_date, style: "display: block" %>
-	    <%= form.text_field :specific_date, class: "form-control" %>
-		</div>
-  <div class="form-group col-4 mb-2">
-		    <%= form.label :notes, style: "display: block" %>
-	    <%= form.text_area :notes, class: "form-control" %>
-		</div>
+	</div>
+
+	<%= render 'layouts/save_now', form: form %>
+	<% end %>
+
+	<h2>Excerpts <%= button_to 'Add excerpt', booklist_sections_path, class: "btn btn-action", params: { booklist_section: { booklist_id: @booklist.id, sequence_no: @booklist.booklist_sections.count + 1 } } %></h2>
+	<%= render 'booklist_sections/list', booklist: booklist %>
+
 </div>
-  <div>
-    <%= form.submit "Submit", class: "btn btn-primary mt-2" %>
-  </div>
+
+<%= render 'booklists/modals/preserved', booklist: booklist %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: booklist, pid: '', depth: 0 %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: booklist, pid: '', depth: 0 %>
+<%= render 'locations/modals/form', location: Location.new, parent: booklist, pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: booklist, reference_type: 'owner', pid: '', depth: 0 %>
+<%= render 'people/modals/form', person: Person.new, parent: booklist, reference_type: 'author', pid: '', depth: 0 %>
+
+<% if booklist.institution.present? %>
+<%= render 'institutions/modals/new', institution: booklist.institution, parent: booklist, pid: "#{booklist.institution.id}-", depth: 0 %>
 <% end %>
-	
+
+<% booklist.modern_source_references.each do |msr| %>
+	<%= render 'modern_source_references/modals/form', parent: booklist, msr: msr %>
+<% end %>
+<%= render 'modern_source_references/modals/form', parent: booklist, msr: booklist.modern_source_references.new %>
+
+<% booklist.booklist_sections.each do |bs| %>
+	<%= render 'modern_source_references/modals/form', parent: bs, msr: bs.modern_source_references.new, bl: bs.id %>
+	<% if bs.modern_source_references.count > 0 %>
+		<%= render 'modern_source_references/modals/form', parent: bs, msr: bs.modern_source_references.first, bl: bs.id %>
+	<% end %>
+<% end %>
+
+<%= render '/languages/modals/new', language: Language.new, pid: "", in_vue: false, parent: booklist %>
+
+<!-- Scripts -->
+<%= render '/booklists/scripts', booklist: booklist %>

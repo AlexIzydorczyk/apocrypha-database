@@ -1,0 +1,39 @@
+<div id="ownerships-list">
+	<% parent.ownerships.order(:index).each do |p| %>
+		<div class="card grey mb-3" id="<%= dom_id p %>">
+			<div class="card-body">
+				<div class="d-flex align-items-center w-100">
+					<i class="fas fa-bars me-2 grab"></i>
+					<div class="row w-100">
+						<div class="col-sm-3 text-end">
+							<%= p.written_date_range %>
+							<% if p.written_date_range.present? && p.specific_date.present? %>
+								<br>
+							<% end %>
+							<% unless p.date_exact %><span>ca. </span><% end %>
+							<%= p.specific_date %>
+							<% if p.written_date_range.present? && (p.display_name.present? || p.location.try(:city_region_country).present? || p.provenance_notes.present?) %>
+								<span class="ms-3">&#124;</span>
+							<% end %>
+						</div>
+						<div class="col-sm">
+							<span class=""><%= p.full_display_name %></span>
+						</div>
+						<div class="col-4 d-flex align-items-center justify-content-end">
+							<%= link_to "Edit", '#manuscripts', class: "btn btn-outline-action", data: { 'bs-toggle': "modal",  'bs-target': "#addProvenanceModal"+p.id.to_s} %>
+							<div class="dropdown">
+							  <button class="btn btn-outline-action ms-2" type="button" id="ownership-options-<%= p.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+							  	<i class="far fa-ellipsis-h"></i>
+							  </button>
+							  <ul class="dropdown-menu" aria-labelledby="ownership-options-<%= p.id %>">
+							    <% if parent.class == Manuscript %><li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#move-ownership-<%= p.id %>">Move to booklet</button></li><% end %>
+							    <li><button type="button" class="dropdown-item" onclick="deleteOwnership(<%= p.id.to_s %>)">Delete provenance</button></li>
+							  </ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<% end %>
+</div>

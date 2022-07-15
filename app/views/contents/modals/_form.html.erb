@@ -1,0 +1,116 @@
+<div class="modal" id="addContentModal<%= content.try(:id) %>" tabindex="-1" aria-hidden="true">
+	<%= form_with(model: content, class: "autosave") do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><%= content.id.present? ? 'Edit' : 'Add' %> Contents</h5>
+				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal">Cancel</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+
+					<div class="form-group col-12 mb-2">
+						<%= form.label :author_id, "Author", style: "display: block" %>
+						<div class="d-flex">
+							<select class="form-control" name="content[author_id]" id="content_author_id" placeholder="Select author">
+								<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<option></option>
+									<optgroup label="<%= group.to_s.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if content.author_id == person.id %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
+							<button type="button" id="content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#content<%= ('-' + content.id.to_s) if content.id.present? %>-new-person-btn', '#content<%= ('-' + content.id.to_s) if content.id.present? %>-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+
+					<div class="form-group col-12 mb-2">
+						<%= form.label :title_id, "Title", style: "display: block" %>
+						<div class="d-flex">
+							<select class="form-control" name="content[title_id]" id="content_title_id" placeholder="Select title">
+								<option></option>
+								<optgroup label="Apocryphal">
+									<%  Title.where(id: Apocryphon.all.map{ |a| a.main_latin_title_id.present? ? a.main_latin_title_id : (a.main_english_title_id.present? ? a.main_english_title_id : nil )}.compact).order('title_orig').each do |at| %>
+										<option value="<%= at.id %>" <%= 'selected' if content.title_id == at.id %>><%= at.title_orig %></option>
+									<% end %>
+								</optgroup>
+								<optgroup label="Non-Apocryphal">
+									<%  Title.where(apocryphon_id: nil).order('title_orig').all.each do |nt| %>
+										<option value="<%= nt.id %>" <%= 'selected' if content.title_id == nt.id %>><%= nt.title_orig %></option>
+									<% end %>
+								</optgroup>
+							</select>
+							<button type="button" class="btn btn-outline-action ms-4" id="new_title" onclick="saveForm($('#addContentModal<%= content.try(:id) %> form'), $('#addContentModal<%= content.try(:id) %> #content_content_id'))">New</button>
+						</div>
+					</div>
+
+					<input type="hidden" name="content_id" id="content_content_id">
+					<% unless content.id.present? %><input type="hidden" name="_method" id="form-method-input" value="post" autocomplete="off"><% end %>
+					<%= form.hidden_field :sequence_no, value: content.sequence_no || parent.contents.count+1 %>
+					<%= form.hidden_field parent.class == Manuscript ? :manuscript_id : :booklet_id %>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('contents', 0);})">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<%= render 'people/modals/form', person: Person.new, parent: content, pid: "content-#{ (content.id.to_s + '-') if content.id.present? }", depth: 1 %>
+
+<%= render 'titles/modals/form', title: Title.new, parent: content, pid: "content-#{ (content.id.to_s + '-') if content.id.present? }", depth: 1 %>
+
+<script type="text/javascript">
+
+	$( document ).ready(function() {
+		person_modal = new Vue({
+			el: "#addContentModal<%= content.try(:id) %>",
+			name: "addContentModal<%= content.try(:id) %>",
+			data: {
+				sub_modal_open: false,
+			},
+			watch: {
+			},
+			methods: {
+				openSubModal(button_selector, selector){
+					saveForm($("#addContentModal<%= content.try(:id) %> form"), $(selector + ' .content-field'));
+					$(selector).modal('show');
+					$('.modal').on('hidden.bs.modal', function() {
+						this.sub_modal_open = false;
+					}.bind(this));
+					this.sub_modal_open = true;
+				}
+			},
+			mounted(){
+				new TomSelect("#addContentModal<%= content.id %> #content_author_id",{
+					sortField: { field: "text", direction: "asc" },
+					maxOptions: null,
+					hidePlaceholder: true,
+				});
+
+				new TomSelect("#addContentModal<%= content.id %> #content_title_id",{
+					//sortField: { field: "text", direction: "asc" },
+					maxOptions: null,
+					hidePlaceholder: true,
+				});
+				$('#addContentModal<%= content.try(:id) %> #content_content_id').change(function(){
+					console.log('running on change');
+					let url = '<%= new_title_path(parent_type: parent.class.to_s, parent_id: parent.id.to_s, from: request.path) %>' + '&content_id=' + $(this).val();
+					console.log('url', url);
+					window.location.href = url;
+				});
+
+				createModalListeners("#addContentModal<%= content.try(:id) %>");
+			}
+		});
+
+
+
+	});
+
+</script>

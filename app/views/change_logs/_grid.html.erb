@@ -1,0 +1,62 @@
+<div id="change_logs_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<script type="text/javascript" charset="utf-8">
+
+  const defaultColDef = {editable: false , sortable: true, filter: true,  resizable: true, flex: 1};
+
+  const columnDefs = [
+    { headerName: "Id", field: "id"},
+    { headerName: "User", field: "user_id"},
+    { headerName: "Controller name", field: "controller_name"},
+    { headerName: "Action name", field: "action_name"},
+    { headerName: "Record", field: "record_id"},
+    { headerName: "Additional info", field: "additional_info"}, 
+    { headerName: "Date", field: "date"}   
+  ];
+
+  const rowData = [
+    <% change_logs.each do |change_log| %>
+      { id:<%= change_log.id %>,
+        user_id: "<%= change_log.user.email %>",
+        controller_name: "<%= change_log.controller_name %>",
+        action_name: "<%= change_log.action_name %>",
+        record_id: "<%= change_log.record_id %>",
+        additional_info: "<%= change_log.additional_info %>",
+        date: "<%= change_log.created_at %>"
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    defaultColDef: defaultColDef,
+    rowData: rowData,
+    onCellValueChanged: onCellValueChanged
+  };
+
+  function onCellValueChanged(event){
+    console.log('cell value changed ', event);
+    saveChange(event.data.id, event.data);
+  }
+
+  function saveChange(id, data){
+    var my_data = {};
+    my_data.authenticity_token = "<%= form_authenticity_token %>";
+    my_data.location = data;
+    console.log('my_data', my_data);
+    $.ajax({
+      url: "/change_logs/"+id,
+      type: 'PUT',
+      data: JSON.stringify(my_data),
+      contentType: 'application/json',
+      success: function(data) {
+        console.log('result received:');
+        console.log(data);
+      }
+    });
+  };
+
+  const eGridDiv = document.querySelector('#change_logs_grid');
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+</script>

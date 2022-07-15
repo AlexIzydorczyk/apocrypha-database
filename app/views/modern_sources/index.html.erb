@@ -1,5 +1,10 @@
-<h1>Modern sources</h1>
-<p><%= link_to "New modern source", new_modern_source_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  Bibliography
+</div>
+
+<h1>Bibliography <%= button_to 'New bibliographic item', modern_sources_path, class: "btn btn-action", params: { modern_source: { publication_title_orig: "" } } %></h1>
 
 <div id="modern_sources">
     <%= render 'grid', modern_sources: @modern_sources %>

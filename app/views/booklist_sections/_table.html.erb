@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="filterable">
+    <div class="panel-heading text-end">
+      <button class="btn btn-outline-secondary btn-sm btn-filter"><i class="far fa-filter"></i> Filter</button>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr class="filters">
+          <% unless hide_columns.include? 'id' %><th class="col"><input type="text" class="form-control" placeholder="Id" disabled></th><% end %>
+                      <% unless hide_columns.include? 'booklist_id' %><th class="col"><input type="text" class="form-control" placeholder="Booklist" disabled></th><% end %>
+                      <% unless hide_columns.include? 'sequence_no' %><th class="col"><input type="text" class="form-control" placeholder="Sequence no" disabled></th><% end %>
+                      <% unless hide_columns.include? 'heading_orig' %><th class="col"><input type="text" class="form-control" placeholder="Heading orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'heading_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Heading orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'heading_translation' %><th class="col"><input type="text" class="form-control" placeholder="Heading translation" disabled></th><% end %>
+                      <% unless hide_columns.include? 'relevant_text_orig' %><th class="col"><input type="text" class="form-control" placeholder="Relevant text orig" disabled></th><% end %>
+                      <% unless hide_columns.include? 'relevant_text_orig_transliteration' %><th class="col"><input type="text" class="form-control" placeholder="Relevant text orig transliteration" disabled></th><% end %>
+                      <% unless hide_columns.include? 'relevant_text_translation' %><th class="col"><input type="text" class="form-control" placeholder="Relevant text translation" disabled></th><% end %>
+                    <% unless hide_buttons.count == 2 %><th class="col-3">Actions</th><% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% booklist_sections.each do |booklist_section| %>
+      	<tr>
+          <% unless hide_columns.include? 'id' %><td class="col"><%= booklist_section.id %></td><% end -%>
+                      <% unless hide_columns.include? 'booklist_id' %><td class="col"><%= booklist_section.booklist_id %></td><% end %>
+                      <% unless hide_columns.include? 'sequence_no' %><td class="col"><%= booklist_section.sequence_no %></td><% end %>
+                      <% unless hide_columns.include? 'heading_orig' %><td class="col"><%= booklist_section.heading_orig %></td><% end %>
+                      <% unless hide_columns.include? 'heading_orig_transliteration' %><td class="col"><%= booklist_section.heading_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'heading_translation' %><td class="col"><%= booklist_section.heading_translation %></td><% end %>
+                      <% unless hide_columns.include? 'relevant_text_orig' %><td class="col"><%= booklist_section.relevant_text_orig %></td><% end %>
+                      <% unless hide_columns.include? 'relevant_text_orig_transliteration' %><td class="col"><%= booklist_section.relevant_text_orig_transliteration %></td><% end %>
+                      <% unless hide_columns.include? 'relevant_text_translation' %><td class="col"><%= booklist_section.relevant_text_translation %></td><% end %>
+                  	<td class="col-3">
+        		<% unless hide_buttons.include? 'open' %><%= link_to "Open", booklist_section, class: "btn btn-outline-primary me-2" %><% end %>
+        		<% unless hide_buttons.include? 'edit' %><%= link_to "Edit", edit_booklist_section_path(booklist_section), class: "btn btn-outline-primary me-2" %><% end %>
+        	</td>
+        </tr>
+        <% end %>
+      </tbody>
+      <caption>No.of Rows : <span id="rowcount"></span></caption>
+    </table>
+  </div>
+</div>

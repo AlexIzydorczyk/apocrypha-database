@@ -1,6 +1,13 @@
-<h1>Religious orders</h1>
-<p><%= link_to "New religious order", new_religious_order_path, class: "btn btn-outline-success" %></p>
+<div class="breadcrumbs">
+  <%= link_to "Home", editor_menu_path %>
+  <i class="far fa-chevron-right"></i>
+  Religious orders
+</div>
+
+<h1>Religious orders<button type="button" class="btn btn-action" style="margin-top: 0" data-bs-toggle="modal" data-bs-target="#new-religious-order-modal">New religious order</button></h1>
 
 <div id="religious_orders">
     <%= render 'grid', religious_orders: @religious_orders %>
 </div>
+
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: nil, pid: '', depth: 0 %>

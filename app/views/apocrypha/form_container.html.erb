@@ -1,0 +1,19 @@
+<div id="title_apocrypha_form_container">
+	<div class="form-group">
+		<label class="d-block">New title is</label>
+		<div class="form-check  d-inline-block">
+		  <input class="form-check-input" type="radio" name="is_apocryphal" id="apocryphal" onclick="$('#new_apocryphon_form').click()">
+		  <label class="form-check-label" for="apocryphal">
+		    Apocryphal
+		  </label>
+		</div>
+		<div class="form-check d-inline-block">
+		  <input class="form-check-input" type="radio" name="is_apocryphal" id="non-apocryphal" onselect="">
+		  <label class="form-check-label" for="non-apocryphal">
+		    Non-apocryphal
+		  </label>
+		</div>
+	</div>
+</div>
+<%= button_to 'New Apocryphon', apocrypha_path, class: "btn btn-action d-none", id: 'new_apocryphon_form', params: { apocryphon: { apocryphon_no: "" } } %>
+

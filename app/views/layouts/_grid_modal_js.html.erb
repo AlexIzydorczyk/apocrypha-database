@@ -1,0 +1,75 @@
+<script type="text/javascript">
+	
+
+var cached_action;
+function openModal(action, record_name, modifier=''){
+	cached_action = action;
+	let modifier_string = modifier == '' ? '' : '-' + modifier;
+	$.ajax({
+    	url: action,
+      	type: 'GET',
+      	data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+      	contentType: 'application/json',
+      	success: function(data) {
+      		console.log('data', data);
+	      	$('#' + record_name + '-modal' + modifier_string + ' form').first().attr('action', action);
+	      	let key = Object.keys(data)[0];
+	      	let obj = data[key];
+	      	console.log('obj', obj)
+	      	for(i in obj){
+	      		$('#' + record_name + '-modal' + modifier_string +' #' + record_name + '_' + i).each(function(){
+	      			if($(this).is('select')){
+	      				console.log("in select", this);
+	      				this.tomselect.clear();
+	      				if(Array.isArray(obj[i])){
+	      					obj[i].forEach( s => this.tomselect.addItem(s) );
+	      				} else {
+	      					this.tomselect.addItem(obj[i]);
+	      				}
+	      			}else{
+	      				$(this).val(obj[i]);
+	      			}
+	      		});
+	      	}
+	      	$('#' + record_name + '-modal' + modifier_string).modal('show');
+	    }
+	});
+};
+
+function saveModal(record_name, modifier=''){
+	let modifier_string = modifier == '' ? '' : '-' + modifier;
+	var my_data = {[record_name]: {}, in_grid: '1'}
+	seria = $('#' + record_name + '-modal' + modifier_string + ' form').first().serializeArray();
+	console.log('seria', seria);
+	for(i in seria){
+		if(i > 1){
+			let data_key = seria[i].name.split('[')[seria[i].name.split('[').length == 1 ? 0 : 1].split('[')[0]
+			if(data_key[data_key.length - 1] == ']') data_key = data_key.slice(0, -1);
+			if(my_data[record_name][data_key] == undefined){
+				my_data[record_name][data_key] = seria[i].value;
+			} else if(Array.isArray(my_data[record_name][data_key])) {
+				my_data[record_name][data_key].push(seria[i].value);
+			} else {
+				my_data[record_name][data_key] = [my_data[record_name][data_key], seria[i].value];
+			}
+		}
+	}
+	my_data["authenticity_token"] = "<%= form_authenticity_token %>"
+	console.log(my_data);
+	$.ajax({
+		url: cached_action,
+		type: 'PATCH',
+		data: JSON.stringify(my_data),
+		contentType: 'application/json',
+		success: function(data) {
+			console.log('updated');
+			if(confirm("Property was saved. Do you want to refresh the page?")){
+				timeoutReload(null, 0)
+			} else {
+				$('.modal').modal('hide');
+			}
+		}
+    });
+}
+
+</script>

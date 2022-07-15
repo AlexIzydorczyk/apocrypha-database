@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @writing_system %>
+
+<div>
+  <%= link_to "Edit this writing system", edit_writing_system_path(@writing_system) %> |
+  <%= link_to "Back to writing systems", writing_systems_path %>
+
+  <%= button_to "Destroy this writing system", @writing_system, method: :delete %>
+</div>

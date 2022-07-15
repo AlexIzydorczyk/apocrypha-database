@@ -1,0 +1,163 @@
+<div class="modal" id="<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+	<%= form_with(model: person, url: person.new_record? ? people_path : person_path(person), class: parent.class == Booklist ? "autosave" : "") do |form| %>
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add person</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-8 offset-md-2">
+						<%= form.label "Standard form", "Standard form", class: "fw-bolder" %>		
+						<div class="row">
+							<div class="col-md"><label>First name</label></div>
+							<div class="col-md"><label>Middle name</label></div>
+						</div>
+						<div class="row">
+							<div class="col-md"><%= form.text_field :first_name_vernacular, class: "form-control", placeholder: "First name" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_vernacular, class: "form-control", placeholder: "Middle name" %></div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-md-3"><label>Prefix</label></div>
+							<div class="col-md-6"><label>Last name</label></div>
+							<div class="col-md-3"><label>Suffix</label></div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-md-3"><%= form.text_field :prefix_vernacular, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_vernacular, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_vernacular, class: "form-control", placeholder: "Suffix" %></div>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<button type="button" class="btn btn-outline-action" @click="alternative = true">Add alternative</button>
+					</div>
+					<div class="col-md-2" v-show="alternative">
+						<label>Writing system</label>
+						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "writing_system_id"} %>
+					</div>
+					<div class="col-md-8" v-show="alternative">
+						<label>Alternative or local form</label>
+						<div class="row mt-2">
+							<div class="col-md"><%= form.text_field :first_name_english, class: "form-control", placeholder: "First name" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_english, class: "form-control", placeholder: "Middle name" %></div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-md-3"><%= form.text_field :prefix_english, class: "form-control", placeholder: "Prefix" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_english, class: "form-control", placeholder: "Last name" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_english, class: "form-control", placeholder: "Suffix" %></div>
+						</div>
+					</div>
+					<div class="col-md-8 offset-md-2" v-show="alternative && writing_system_id != '<%= latin_writing_system_id %>'">
+						<div class="row mt-2">
+							<div class="col-md"><%= form.text_field :first_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md"><%= form.text_field :middle_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+						</div>
+						<div class="row mb-2">
+							<div class="col-md-3"><%= form.text_field :prefix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-6"><%= form.text_field :last_name_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+							<div class="col-md-3"><%= form.text_field :suffix_transliteration, class: "form-control", placeholder: "Transliteration" %></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-9">
+						<%= form.label :birth_date, "Dates", class: "fw-bolder mt-4" %>
+						<div class="row">
+							<div class="col-md-6">
+								<%= form.hidden_field :birth_date_exact, "v-model": "birth_date_exact" %>
+								<label>
+									Year of birth (<span @click="birth_date_exact = true" class="pointer">exact
+										<i class="far" style="color: var(--orange)" :class="birth_date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+									</span>
+									or<span @click="birth_date_exact = false" class="pointer">
+										approximate
+										<i class="far" style="color: var(--orange)" :class="birth_date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+									</span>
+									)
+								</label>
+								<div class="input-group">
+									<span class="input-group-text bg-white" v-if="!birth_date_exact">ca.</span>
+									<%= form.number_field :birth_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !birth_date_exact }" %>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<%= form.hidden_field :death_date_exact, "v-model": "death_date_exact" %>
+								<label>
+									Year of death (<span @click="death_date_exact = true" class="pointer">exact
+										<i class="far" style="color: var(--orange)" :class="death_date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+									</span>
+									or<span @click="death_date_exact = false" class="pointer">
+										approximate
+										<i class="far" style="color: var(--orange)" :class="death_date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+									</span>
+									)
+								</label>
+								<div class="input-group">
+									<span class="input-group-text bg-white" v-if="!death_date_exact">ca.</span>
+									<%= form.number_field :death_date, max: Date.today.year, class: "form-control", ":class": "{ 'border-start-0' : !death_date_exact }" %>
+								</div>
+							</div>
+						</div>
+
+						<div class="d-flex mt-4 justify-content-between">
+							<%= form.label :viaf, "VIAF: Virtual International Authority File", class: "fw-bolder" %>
+							<a href="https://viaf.org/" target="_blank" class="text-decoration-none text-dark">https://viaf.org</a>
+						</div>
+						<%= form.text_field :viaf, class: "form-control" %>
+
+					</div>
+				</div>
+
+			</div>
+			<% if parent.class == Booklet %>
+				<%= hidden_field_tag :booklet_id, parent.id %>
+				<%= hidden_field_tag :reference_type, reference_type %>
+			<% elsif parent.class == Ownership %>
+				<%= hidden_field_tag :ownership_id, parent.id, class: "ownership-field" %>
+			<% elsif parent.class == Content %>
+				<%= hidden_field_tag :content_id, parent.id, class: "content-field" %>
+			<% elsif parent.class == ModernSource %>
+				<%= hidden_field_tag :modern_source_id, parent.id %>
+				<%= hidden_field_tag :reference_type, reference_type %>
+			<% elsif parent.class == Manuscript %>
+				<%= hidden_field_tag :manuscript_id, parent.id %>
+				<%= hidden_field_tag :reference_type, reference_type %>
+			<% elsif parent.class == Booklist %>
+				<%= hidden_field_tag :booklist_id, parent.id %>
+				<% if reference_type == 'author' %>
+					<%= hidden_field_tag :db_field, 'scribe_id' %>
+				<% elsif reference_type == 'owner' %>
+					<%= hidden_field_tag :db_field, 'library_owner_id' %>
+				<% end %>
+			<% end %>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(<%= parent.class.to_s == "Ownership" ? "'#addProvenanceModal' + $('##{pid}person-modal .ownership-field').val()" : (parent.class.to_s == "Content" ? "'#addContentModal' + $('##{pid}person-modal .content-field').val()" : "'#{local_assigns[:reference_type]}'") %>, 0);})">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>	
+</div>
+
+<script type="text/javascript">
+	var person_modal_vue;
+	$( document ).ready(function() {
+		person_modal_vue = new Vue({
+			el: "#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>",
+			name: "<%= pid %>PersonModal<%= reference_type.humanize if defined?(reference_type) %>",
+			data(){ return{
+				languages: <%= Language.all.to_json.html_safe %>,
+				language: '',
+				alternative: <%= ["first_name_english","middle_name_english","prefix_english","last_name_english","suffix_english","first_name_transliteration","middle_name_transliteration","prefix_transliteration","last_name_transliteration","suffix_transliteration"].any?{ |c| person[c].present? } ? "true" : "false" %>,
+				writing_system_id: '<%= person.writing_system_id %>',
+				birth_date_exact: <%= person.birth_date_exact ? "true" : "false" %>,
+				death_date_exact: <%= person.death_date_exact ? "true" : "false" %>,
+			} },
+			mounted(){
+				createModalListeners("#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %>");
+				new TomSelect('#<%= pid %>person-modal<%= ('-' + reference_type) if defined?(reference_type) %> #person_writing_system_id',ts_sort_text_asc_max_1);
+			}
+		});
+	});
+</script>

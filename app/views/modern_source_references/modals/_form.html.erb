@@ -1,0 +1,54 @@
+<div class="modal" id="modern-source-reference-modal<%= '-' if msr.id.present? %><%= msr.try(:id) %><% if local_assigns[:bl].present? && bl>0 %>-section-<%= bl %><% end %>" tabindex="-1" aria-hidden="true" data-depth="0">
+	<%= form_with(model: msr, class: "#{'autosave' unless msr.new_record?} reference-form") do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><%= msr.id.present? ? 'Edit' : 'Add' %> bibliographic reference</h5>
+				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal" aria-label="close">Cancel</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12 mb-2">
+						<%= form.label :modern_source_id, "Bibliographic item", style: "display: block" %>
+						<div class="d-flex align-items-baseline">
+							<%= form.collection_select :modern_source_id, @modern_sources, "id", "display_name_html_safe", {selected: msr.modern_source_id, include_blank: true}, {class: "form-control", placeholder: "Select bibliographic item"} %>
+							<button type="button" class="btn btn-action ms-2" onclick="newModernSource(<%= msr.try(:id) %>)">New</button>
+						</div>
+					</div>
+					<div class="form-group col-6 mb-2">
+						<%= form.label :specific_page, "Page reference", style: "display: block" %>
+						<%= form.text_field :specific_page, class: "form-control", placeholder: "e.g., vol. x, pp. xx-xx" %>
+					</div>
+					<div class="form-group col-6 mb-2">
+						<%= form.label :siglum, style: "display: block" %>
+						<%= form.text_field :siglum, class: "form-control", placeholder: "Manuscript siglum" %>
+					</div>
+					<%= form.hidden_field :record_type %>
+					<%= form.hidden_field :record_id %>
+					<%= form.hidden_field :reference_type %>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				 <button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('modern-source-references', 0);})">Save & Close</button>
+			</div>
+		</div> 
+	</div>
+	<% end %>
+	<%= button_to 'New', create_from_text_modern_sources_path, class: "btn btn-action ms-2 d-none new-ms", params: { from: request.original_fullpath, modern_source_reference_id: msr.try(:id) } %>
+	<%= button_to 'New', create_from_manuscript_modern_sources_path, class: "btn btn-action ms-2 d-none new-ms", params: { from: request.original_fullpath, modern_source_reference_id: msr.try(:id) } %>
+</div>
+
+<script type="text/javascript">
+	
+	new TomSelect("#modern-source-reference-modal<%= '-' if msr.id.present? %><%= msr.try(:id) %><% if local_assigns[:bl].present? && bl>0 %>-section-<%= bl %><% end %> #modern_source_reference_modern_source_id", ts_sort_text_asc_max_1);
+
+	<% unless msr.id.present? %>
+		function newModernSource(id) {
+			saveForm($(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } .reference-form`), id == undefined ? $(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } input[name='modern_source_reference_id']`) : null, function() {
+				$(`#modern-source-reference-modal${ id != undefined ? ('-' + id) : '' } .new-ms`).click();
+			});
+		}
+	<% end %>
+
+</script>

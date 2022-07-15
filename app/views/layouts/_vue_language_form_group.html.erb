@@ -1,0 +1,75 @@
+<script type="text/javascript">
+Vue.component('language-form-groups', {
+	props: {
+		record_type: {},
+		language_column: {},
+		orig: {},
+		translit: {},
+		eng: {},
+		name: {},
+		lang_val: {default: ""},
+		orig_val: {default: ""},
+		translit_val: {default: ""},
+		eng_val: {default: ""},
+		record_class: {default: ""},
+		record_id: {default: ""},
+		depth: {default: -1},
+		inside_group: {default: false},
+		textareas: {default: false},
+	},
+	data: function() {
+		return {
+			languages: <%= Language.all.to_json.html_safe %>,
+			lang_val2: this.lang_val,
+			orig_val2: this.orig_val,
+			translit_val2: this.translit_val,
+			eng_val2: this.eng_val,
+			new_lang: "",
+			real_record_id: this.record_id,
+		}
+	},
+	watch: {
+	},
+	methods: {
+	},
+	computed:{
+		requires_translit: function() {
+			return this.lang_val2 != '' && this.languages.find( l => l.id == this.lang_val2 ).requires_transliteration;
+		},
+		requires_english: function() {
+			return this.lang_val2 != '' && this.languages.find( l => l.id == this.lang_val2 ).language_name.toLowerCase() != 'english';
+		},
+		title(){
+			let words = this.name.match(/[A-Za-z][a-z]*/g) || [];
+			words = words.join(" ").toLowerCase();
+			return words.charAt(0).toUpperCase() + words.slice(1);
+		},
+		pid(){
+			return this.$vnode.key + '-';
+		},
+		group(){
+			return this.inside_group ? ("[" + this.real_record_id + "]") : "";
+		}
+	},
+	mounted(){
+		createModalListeners("#new-language");
+		let vue = this;
+		new TomSelect(`#${this.$vnode.key} select`,{
+			sortField: {
+				field: "text",
+				direction: "asc",
+			},
+			maxItems: 1,
+			create: vue.record_class == '' ? false : function(l){
+				vue.$set(vue, 'new_lang', l);
+				saveForm($(`#${vue.$vnode.key}`).closest("form"), $(`#${vue.$vnode.key} .record-id`));
+				$('#' + vue.pid + 'new-language').modal('show');
+			},
+		});
+		$(`#${vue.$vnode.key} .record-id`).change(function() {
+			vue.$set(vue, 'real_record_id', $(this).val());
+		})
+	},
+	template: `<%= render "layouts/language_form_group" %>`
+});
+</script>

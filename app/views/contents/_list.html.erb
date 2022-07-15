@@ -1,0 +1,29 @@
+<div id="contents-list">
+	<% parent.contents.includes(:title).order("sequence_no ASC").each_with_index do |c, i| %>
+		<div class="card grey mb-2" id="<%= dom_id c %>">
+			<div class="card-body d-flex align-items-center">
+				<i class="fas fa-bars me-2 grab"></i>
+				<span class="index me-4"><%= i+1 %></span>
+				<span class="me-auto"><%= c.display_name %></span>
+				<% if c.text.present? %>
+					<%= link_to "Open", parent.class == Manuscript ? edit_manuscript_content_text_path(parent, c, c.text) : edit_booklet_content_text_path(parent, c, c.text), class: "btn btn-outline-action" %>
+				<% else %>
+					<%= button_to 'Add details', texts_path, class: "btn btn-outline-action", params: { text: { content_id: c.id } } %>
+				<% end %>
+				<div class="dropdown">
+				  <button class="btn btn-outline-action ms-2" type="button" id="content-options-<%= c.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+				  	<i class="far fa-ellipsis-h"></i>
+				  </button>
+				  <ul class="dropdown-menu" aria-labelledby="content-options-<%= c.id %>">
+				    <% if parent.class == Manuscript && parent.booklets.any? %>
+				    	<li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#move-content-<%= c.id %>">Move to booklet</button></li>
+				    <% end %>
+				    <li><%= link_to "Edit Author/Title", '#contents', class: "dropdown-item", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"+c.id.to_s} %></li>
+				    <% if c.text.present? %><li><button type="button" class="dropdown-item" onclick="removeDetails(<%= c.text.id.to_s %>)">Remove details</button></li><% end %>
+				    <li><button type="button" class="dropdown-item" onclick="deleteContent(<%= c.id.to_s %>)">Delete content</button></li>
+				  </ul>
+				</div>
+			</div>
+		</div>
+	<% end %>
+</div>

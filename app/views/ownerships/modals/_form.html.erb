@@ -1,0 +1,209 @@
+<div class="modal" id="addProvenanceModal<%= ownership.try(:id) %>" tabindex="-1" aria-hidden="true" data-depth="0">
+	<%= form_with(model: ownership, class: "#{'autosave' unless ownership.new_record?}") do |form| %>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title"><%= ownership.id.present? ? 'Edit' : 'Add' %> provenance</h5>
+				<button type="button" class="btn btn-outline-action" data-bs-dismiss="modal" aria-label="close" :disabled="sub_modal_open">Cancel</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="form-group col-md-12 mb-2">
+						<%= form.label :date_to, "Date range", style: "display: block;" %>
+						<div class="d-flex align-items-baseline">
+							<select name="ownership[date_from]" class="form-control" id="addProvenanceModal<%= ownership.try(:id) %>-from" placeholder="From" v-model="date_from">
+								<option></option>
+								<option v-for="n in <%= Date.today.year %>" v-if="
+									(n-1)%25==0 || ((n%100)-1)%33==0 || n==<%= Date.today.year %>
+								" :value="n + ''">{{n}}</option>
+							</select>
+							<i class="far fa-minus m-2"></i>
+							<select name="ownership[date_to]" class="form-control date-to" id="addProvenanceModal<%= ownership.try(:id) %>-to" placeholder="To" v-model="date_to">
+								<option></option>
+								<option v-for="n in <%= Date.today.year %>" v-if="
+									(
+										((date_from == '' || (parseInt(date_from)-1)%25 == 0) && n%25==0)
+									 || ((date_from == '' || ((parseInt(date_from)%100)-1)%33 == 0) && (n%100 != 99) && n%100%33==0)
+									 || n==<%= Date.today.year %>
+									) && n>date_from
+								">{{n}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group col-md-12 mb-2">
+						<%= form.hidden_field :date_exact, "v-model": "date_exact" %>
+						<label>
+							Specific date (<span @click="date_exact = true" class="pointer">exact
+								<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-dot-circle' : 'fa-circle'"></i>
+							</span>
+							or<span @click="date_exact = false" class="pointer">
+								approximate
+								<i class="far" style="color: var(--orange)" :class="date_exact ? 'fa-circle' : 'fa-dot-circle'"></i>
+							</span>
+							)
+						</label>
+						<div class="input-group">
+							<span class="input-group-text bg-white" v-if="!date_exact">ca.</span>
+							<%= form.text_field :specific_date, class: "form-control", ":class": "{ 'border-start-0' : !date_exact }" %>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-12 mb-2">
+						<%= form.label :person_id, "Person (owner)", style: "display: block" %>
+						<div class="d-flex">
+							<select class="form-control" name="ownership[person_id]" id="ownership_person_id" placeholder="Select a person">
+								<% sort_hash_keys(@grouped_people, ['owner', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+									<option></option>
+									<optgroup label="<%= group.to_s.humanize %>">
+										<% people.each do |person| %>
+											<option value="<%= person.id %>" <%= 'selected' if person.id == ownership.person_id %>><%= person.full_name %></option>
+										<% end %>
+									</optgroup>
+								<% end %>
+							</select>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-person-btn', '#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-person-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+					<div class="form-group col-12 mb-2">
+						<%= form.label :institution_id, "Institution", style: "display: block" %>
+						<div class="d-flex">
+							<%= form.collection_select :institution_id, Institution.all, :id, :long_display_name, {selected: ownership.institution_id, include_blank: true}, {class: "form-control", placeholder: "Select an institution"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-institution-btn', '#modal-ownership-<%= (ownership.id.to_s + '-') if ownership.id.present? %>1-new-institution-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+					<div class="form-group col-12 mb-2">
+						<%= form.label :religious_order_id, "Religious Order", style: "display: block" %>
+						<div class="d-flex">
+							<%= form.collection_select :religious_order_id, ReligiousOrder.all, :id, :order_name, {selected: ownership.religious_order_id, include_blank: true}, {class: "form-control", placeholder: "Select a religious order"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-religious-order-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-new-religious-order-btn', '#ownership-new-religious-order-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+					<div class="form-group col-12 mb-2">
+						<%= form.label :location_id, "Location", style: "display: block" %>
+						<div class="d-flex">
+							<%= form.collection_select :location_id, Location.all, :id, :city_region_country, {selected: ownership.location_id, include_blank: true}, {class: "form-control", placeholder: "Select a location"} %>
+							<button type="button" id="ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn" class="btn btn-outline-action ms-4" @click="openSubModal('#ownership<%= ('-' + ownership.id.to_s) if ownership.id.present? %>-location-btn', '#modal-ownership-location-modal')" data-backdrop="static" data-keyboard="false">New</button>
+						</div>
+					</div>
+					
+					<div class="form-group col-12 mb-2">
+						<%= form.label :provenance_notes, "Notes on provenance", style: "display: block" %>
+						<%= form.text_area :provenance_notes, class: "form-control" %>
+					</div>
+					<%= form.hidden_field parent.class == Manuscript ? :manuscript_id : :booklet_id %>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				 <button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload('provenances', 0);})">Save & Close</button>
+			</div>
+		</div> 
+	</div>
+	<% end %>
+</div>
+
+<%= render 'people/modals/form', person: Person.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<%= render 'institutions/modals/new', institution: Institution.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<% if ownership.institution_id.present? %>
+<%= render 'institutions/modals/new', institution: ownership.institution, parent: ownership, pid: "ownership-institution-#{ownership.institution_id}-", depth: 1 %>
+<% end %>
+<%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+<%= render 'locations/modals/form', location: Location.new, parent: ownership, pid: "ownership-#{ (ownership.id.to_s + '-') if ownership.id.present? }", depth: 1 %>
+
+
+<script type="text/javascript">
+
+	$( document ).ready(function() {
+		ownership_modal = new Vue({
+			el: "#addProvenanceModal<%= ownership.try(:id) %>",
+			name: "ProvenanceModal<%= ownership.try(:id) %>",
+			data: {
+				sub_modal_open: false,
+				date_exact: <%= ownership.date_exact ? "true" : "false" %>,
+				date_to: '<%= ownership.date_to %>', date_from: '<%= ownership.date_from %>',
+				date_to_select: null, date_from_select: null,
+			},
+			watch: {
+				date_from(){
+					this.setFrom();
+				},
+			},
+			methods: {
+				openSubModal(button_selector, selector){
+					saveForm($(button_selector).closest('form'), $(selector + ' .ownership-field'));
+					$(selector).modal('show');
+					$('.modal').on('hidden.bs.modal', function() {
+						this.sub_modal_open = false;
+					}.bind(this));
+					this.sub_modal_open = true;
+				},
+				setFrom(){
+					let new_options = [];
+					for(let i=0; i<<%= Date.today.year%>; i++){
+						if (
+							(
+								this.date_from == ''
+							 || (( (parseInt(this.date_from)-1)%25 == 0) && i%25==0)
+							 || (( ((parseInt(this.date_from)%100)-1)%33 == 0) && (i%100 != 99) && i%100%33==0)
+							 || i==<%= Date.today.year %>
+							)
+							&& i>this.date_from
+						) new_options.push(i);
+					}
+					if(!(this.date_to_select.items.length > 0 && this.date_from != '' && (((this.date_from-1)%100%33==0 && this.date_to_select.items[0]%100%33==0) || ((this.date_from-1)%25==0 && this.date_to_select.items[0]%25==0)))) this.date_to_select.clear();
+					this.date_to_select.clearOptions(true);
+					this.date_to_select.addOptions(new_options.map( o => ({value: o, text: o})));
+					if(this.date_to_select.items.length < 1) this.date_to_select.refreshOptions(true);
+				}
+			},
+			computed: {
+			},
+			mounted(){
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_person_id", ts_max_1);
+				var provenance_location_select = new TomSelect("#addProvenanceModal<%= ownership.id %>  #ownership_location_id",ts_sort_text_asc_max_1);
+				var provenance_religious_order_select = new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_religious_order_id", ts_sort_text_asc_max_1);
+				new TomSelect("#addProvenanceModal<%= ownership.id %> #ownership_institution_id", {
+					maxItems: 1,
+					valueField: 'id',
+					searchField: ['institution','location_name'],
+					options: [
+						<% Institution.all.includes(:location).each do |i| %>
+						{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>", religious_order_id: "<%= i.religious_order_id %>"},
+						<% end %>
+					],
+					onItemAdd: function(value, item){
+						console.log('are we here?');
+						let location_id = $(item).attr('location_id');
+						provenance_location_select.addItem(location_id);
+						let religious_order_id = $(item).attr('religious_order_id');
+						provenance_religious_order_select.addItem(religious_order_id);
+					},
+					render: {
+						option: function(data, escape) {
+							return '<div class="double-ts-option">' +
+									'<span class="title">' + escape(data.institution) + '</span>' +
+									'<span class="subtitle">' + escape(data.location_name) + '</span>' +
+								'</div>';
+						},
+						item: function(data, escape) {
+							return '<div location_id="' + escape(data.location_id) + '" religious_order_id="' + escape(data.religious_order_id) + '">' + escape(data.institution) + '</div>';
+						}
+					}
+				});
+				createModalListeners("#addProvenanceModal<%= ownership.try(:id) %>");
+				this.date_to_select = new TomSelect("#addProvenanceModal<%= ownership.try(:id) %>-to", {
+				  maxItems: 1,
+				  maxOptions: null,
+				  hidePlaceholder: true,
+				});
+				this.date_from_select = new TomSelect("#addProvenanceModal<%= ownership.try(:id) %>-from", {
+				  maxItems: 1,
+				  maxOptions: null,
+				  hidePlaceholder: true,
+				});
+			}
+		});
+	});
+		
+</script>

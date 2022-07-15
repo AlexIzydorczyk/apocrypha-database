@@ -1,0 +1,23 @@
+<div class="modal" id="apocrypha-mentioned-modal-<%= booklist_section.id %>" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add Apocrypha Mentioned</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="d-flex">
+						<select class="form-control" id="apocrypha-mentioned-section-<%= booklist_section.id %>" multiple placeholder="Select apocryphon mentioned" name="apocrypha-mentioned">
+						</select>
+						<%= button_to 'New', create_from_booklist_apocrypha_path, form_class: 'd-inline-block', class: "btn btn-outline-action ms-4", params: { apocryphon: { apocryphon_no: "" }, from: request.original_fullpath, booklist_section_id: booklist_section.id } %>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="addResource('#apocrypha-mentioned-section-<%= booklist_section.id %>', '<%= booklist_section.id %>')">Save & Close</button>
+			</div>
+		</div>
+	</div>	
+</div>
+

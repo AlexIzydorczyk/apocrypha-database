@@ -1,10 +1,9 @@
-<h1>Editing content</h1>
-
-<%= render "form", content: @content %>
-
-<br>
-
-<div>
-  <%= link_to "Show this content", @content %> |
-  <%= link_to "Back to contents", contents_path %>
+<div class="d-flex mt-3">
+  <div style="width: 500px" class="me-5">
+    <%= render 'layouts/filetree', tree: manuscript_family_tree(@content.manuscript.present? ? @content.manuscript : @content.booklet.manuscript) %>
+  </div>
+  <div>
+    <h1>Content</h1>
+    <%= render "form", content: @content %>
+  </div>
 </div>

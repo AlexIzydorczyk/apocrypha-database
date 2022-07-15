@@ -1,28 +1,66 @@
+<div class="d-flex mb-2 align-items-end">
+  <input type="text" class="form-control w-auto" id="filter-text-box" placeholder="Filter grid" oninput="onFilterTextBoxChanged()" name="filter">
+  <% if user_signed_in? %>
+    <button class="btn btn-sm btn-outline-action ms-auto" onclick="saveState()">Save grid configuration</button>
+    <button class="btn btn-sm btn-outline-action ms-2" onclick="resetState()">Reset grid configuration</button>
+  <% end %>
+</div>
 <div id="apocrypha_grid" class="ag-theme-alpine" style="height: 75vh; width:100%;"></div>
+
+<% apocrypha.each do |apocryphon| %>
+  <%= button_to "Delete", apocryphon_path(apocryphon), method: :delete, class: "d-none", id: 'delete_'+apocryphon.id.to_s %>
+<% end %>
+<% if user_signed_in? %>
+  <%= render 'layouts/grid_save_state_js', record_type: "Apocryphon" %>
+<% end %>
 
 <script type="text/javascript" charset="utf-8">
 
-  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true, flex: 1};
+  const defaultColDef = {editable: true , sortable: true, filter: true,  resizable: true};
 
   const columnDefs = [
-    { headerName: "Id", field: "id", editable: false},//cellRenderer: 'agGroupCellRenderer'
-        { headerName: "Apocryphon no", field: "apocryphon_no"},
-        { headerName: "Cant no", field: "cant_no"},
-        { headerName: "Bhl no", field: "bhl_no"},
-        { headerName: "Bhg no", field: "bhg_no"},
-        { headerName: "Bho no", field: "bho_no"},
-        { headerName: "E clavis no", field: "e_clavis_no"},
-        { headerName: "E clavis link", field: "e_clavis_link"},
-        { headerName: "Links", field: "links", editable: false, cellRenderer: function(links) {
-      return "<a href='" + links.value.show + "' class='btn btn-outline-primary btn-sm me-1'>display</a><a href='" + links.value.edit + "' class='btn btn-outline-secondary btn-sm'>edit</a>"
-    } }
+    { headerName: "No.", field: "apocryphon_no", comparator: numberSort },
+    { headerName: "Standard English title", field: "main_english_title", editable: false},
+    { headerName: "English abbrev.", field: "english_abbreviation" },
+    { headerName: "Other English titles", field: "other_english_titles", editable: false},
+    { headerName: "Standard Latin title", field: "main_latin_title", editable: false},
+    { headerName: "Latin abbrev.", field: "latin_abbreviation" },
+    { headerName: "Other Latin titles", field: "other_latin_titles", editable: false},
+    { headerName: "Lgs in Apocrypharius", field: "languages_list", editable: false, hide: true },
+    { headerName: "Identifiers", children: [
+      { headerName: "CANT", field: "cant_no", comparator: numberSort },
+      { headerName: "BHL", field: "bhl_no" },
+      { headerName: "BHG", field: "bhg_no" },
+      { headerName: "e-Clavis", field: "e_clavis_no", comparator: numberSort },
+      { headerName: "Link to e-Clavis", field: "e_clavis_link", hide: true},
+    ]},
+    { headerName: "Notes", hide: true, editable: false, field: "notes" },
+    { headerName: "Actions", field: "links", <% if current_user.present? && current_user.adm_editor? %>pinned: "right",<% end %> editable: false, cellRenderer: function(links) {
+        var eclavis = links.value.eclavis ? "<a href='" + links.value.eclavis + "' target='_blank' class='btn btn-outline-secondary btn-sm'>e-Clavis</a>" : "" ;
+        return <% if current_user.present? && current_user.adm_editor? %>"<a href='" + links.value.edit + "?old_path=" + window.location.pathname + "' class='btn btn-outline-secondary btn-sm'>Edit</a><a href='#' onclick='if(confirm(\"Are you sure you want to delete this apocryphon and all contained titles?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>" +<% end %> eclavis
+      } 
+    }
   ];
 
   const rowData = [
     <% apocrypha.each do |apocryphon| %>
       { id:<%= apocryphon.id %>,
-        apocryphon_no: "<%= apocryphon.apocryphon_no %>",cant_no: "<%= apocryphon.cant_no %>",bhl_no: "<%= apocryphon.bhl_no %>",bhg_no: "<%= apocryphon.bhg_no %>",bho_no: "<%= apocryphon.bho_no %>",e_clavis_no: "<%= apocryphon.e_clavis_no %>",e_clavis_link: "<%= apocryphon.e_clavis_link %>",
-        links: { show: "<%= apocryphon_path(apocryphon) %>", edit: "<%= edit_apocryphon_path(apocryphon) %>" }
+        apocryphon_no: "<%= apocryphon.apocryphon_no %>",
+        main_english_title: `<%= apocryphon.main_eng_title.try(:html_safe) %>`,
+        main_latin_title: `<%= apocryphon.main_lat_title.try(:html_safe) %>`,
+        english_abbreviation: `<%= apocryphon.english_abbreviation.html_safe %>`,
+        latin_abbreviation: `<%= apocryphon.latin_abbreviation.html_safe %>`,
+        other_english_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: english_id).order('title_orig').where.not(id: apocryphon.main_english_title_id).map{ |t| t.title_orig.html_safe }.join(', ') %>",
+        other_latin_titles: "<%= Title.where(apocryphon_id: apocryphon.id).where(language_id: latin_id).order('title_orig').where.not(id: apocryphon.main_latin_title_id).map{ |t| t.title_orig.html_safe }.join(', ') %>",
+        cant_no: "<%= apocryphon.cant_no %>",
+        bhl_no: "<%= apocryphon.bhl_no %>",
+        bhg_no: "<%= apocryphon.bhg_no %>",
+        bho_no: "<%= apocryphon.bho_no %>",
+        e_clavis_no: "<%= apocryphon.e_clavis_no %>",
+        e_clavis_link: "<%= apocryphon.e_clavis_link %>",
+        languages_list: "<%= apocryphon.languages_list %>",
+        notes: `<%= apocryphon.notes %>`,
+        links: { edit: "<%= edit_apocryphon_path(apocryphon) %>", eclavis: "<%= apocryphon.e_clavis_link %>", delete_btn: 'delete_<%= apocryphon.id %>' },
       },
     <% end %>
   ];
@@ -32,6 +70,29 @@
     defaultColDef: defaultColDef,
     rowData: rowData,
     onCellValueChanged: onCellValueChanged,
+    sideBar: {
+      toolPanels: [
+        {
+          id: 'filters',
+          labelDefault: 'Filters',
+          labelKey: 'filters',
+          iconKey: 'filter',
+          toolPanel: 'agFiltersToolPanel',
+          toolPanelParams: {
+            suppressSyncLayoutWithGrid: true,
+          },
+        },
+        {
+          id: 'columns',
+          labelDefault: 'Columns',
+          labelKey: 'columns',
+          iconKey: 'columns',
+          toolPanel: 'agColumnsToolPanel',
+        },
+      ],
+      defaultToolPanel: null,
+    },
+
   };
 
   function onCellValueChanged(event){
@@ -39,8 +100,19 @@
     saveChange(event.data.id, event.data);
   }
 
+  function numberSort(num1, num2){
+    return num1 - num2;
+  };
+
+  function onFilterTextBoxChanged() {
+    gridOptions.api.setQuickFilter(
+      document.getElementById('filter-text-box').value
+    );
+  }
+
   function saveChange(id, data){
     var my_data = {};
+    my_data.in_grid = "1";
     my_data.authenticity_token = "<%= form_authenticity_token %>";
     my_data.apocryphon = data;
     console.log('my_data', my_data);
@@ -58,5 +130,8 @@
 
   const eGridDiv = document.querySelector('#apocrypha_grid');
   new agGrid.Grid(eGridDiv, gridOptions);
-
+  gridOptions.columnApi.autoSizeColumns(['apocryphon_no','cant_no','bhl_no','bhg_no','bho_no','e_clavis_no'], true);
+  var columnToolPanel = gridOptions.api.getToolPanelInstance('columns');
+  columnToolPanel.collapseColumnGroups();
+  autoSizeAll(gridOptions, false);
 </script>

@@ -24,5 +24,9 @@ module IzydorcykyProject
       g.test_framework    nil
       g.jbuilder          false
     end
+
+    if Rails.env.development?
+      Rack::MiniProfiler.config.enabled = false
+    end
   end
 end

@@ -1,0 +1,70 @@
+<%= form_with(model: booklist_section, class: 'autosave save-before-modals adjacent-base-form') do |form| %>
+<div class="row">
+	<div class="form-group col-12 mb-2">
+		<label>Booklist section</label>
+		<%= form.text_field :heading_orig, class: "form-control" %>
+	</div>
+	<div class="form-group col-12 mb-2">
+		<%= form.label :relevant_text_orig, "Relevant text", style: "display: block" %>
+		<%= form.text_area :relevant_text_orig, class: "form-control" %>
+	</div>
+</div>
+
+<%= form.hidden_field :sequence_no, value: bs_index+1 %>
+
+<div class="row my-3">
+	<div class="col text-start">
+		<label style="line-height: 35px;">Apocrypha mentioned</label>	
+	</div>
+	<div class="col text-end">
+		<%= link_to "Add apocryphon mentioned", '#', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#apocrypha-mentioned-modal-"+booklist_section.id.to_s } %>
+	</div>
+	
+	<% if booklist_section.booklist_references.where(record_type: 'Apocryphon').any? %>
+	<div class="col-12 my-3">
+		<ul class="list-group">
+			<% booklist_section.booklist_references.where(record_type: 'Apocryphon').all.each do |br| %>
+				<li class="list-group-item">
+					<%= br.record.display_name %> 
+					<span class="float-end">
+						<button type="button" class="btn btn-sm btn-outline-action" onclick="deleteBooklistReference(<%= br.id %>)"><i class="far fa-trash-alt"></i></button>
+					</span>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+	<% else %>
+		<div class="col-12 my-3">
+			<%= form.text_field :none, value: "No apocryphon added yet" ,class: "form-control", disabled: true %>
+		</div>
+	<% end %>
+</div>
+
+<div class="row my-3">
+	<div class="form-group col-12 mb-2">
+		<%= form.label :manuscript_id, "Manuscript described in booklist extant as", style: "display: block" %>
+		<select class="form-control" id="booklist_section_<%= booklist_section.id %>_manuscript_id" multiple placeholder="Select manuscript" name="booklist_section[manuscript_id]">
+		</select>
+	</div>
+	<div class="form-group col-12 mb-2">
+		<%= form.label :notes, style: "display: block" %>
+		<%= form.text_area :notes, class: "form-control" %>
+	</div>
+	<div class="form-group col-10 mb-2">
+			<%= form.label :modern_source_id, "Bibliographic reference", style: "display: block" %>
+			<% if booklist_section.modern_source_references.count > 0 %>
+				<%= render 'modern_source_references/list', modern_source_references: [booklist_section.modern_source_references.first], bs: booklist_section.id %>
+			<% else %>
+				<button type="button" class="btn btn-action mt-2" data-bs-toggle="modal" data-bs-target="#modern-source-reference-modal-section-<%= booklist_section.id %>">Add bibliographic reference</button>
+			<% end %>
+		</div>
+		<div class="form-group col-2 mb-2">
+		<%= form.label :page_ref, style: "display: none" %>
+		<%= form.text_field :page_ref, class: "form-control d-none" %>
+	</div>
+
+</div>
+<% end %>
+<%= button_to 'New', create_from_booklist_modern_sources_path, class: "d-none", id: "new-bibliography-#{booklist_section.id.to_s}", params: { modern_source: { publication_title_orig: "" }, from: request.path, booklist_section_id: booklist_section.id } %>
+
+<%= render 'booklist_sections/modals/apocrypha_mentioned', booklist_section: booklist_section %>

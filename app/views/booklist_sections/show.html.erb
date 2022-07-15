@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @booklist_section %>
+
+<div>
+  <%= link_to "Edit this booklist section", edit_booklist_section_path(@booklist_section) %> |
+  <%= link_to "Back to booklist sections", booklist_sections_path %>
+
+  <%= button_to "Destroy this booklist section", @booklist_section, method: :delete %>
+</div>

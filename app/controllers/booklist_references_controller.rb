@@ -1,5 +1,7 @@
 class BooklistReferencesController < ApplicationController
   before_action :set_booklist_reference, only: %i[ show edit update destroy ]
+  #skip_before_action :authenticate_user!, only: %i[ index ]
+  before_action :allow_for_editor, only: %i[ edit update destroy create ]
 
   def index
     @booklist_references = BooklistReference.all
@@ -19,7 +21,11 @@ class BooklistReferencesController < ApplicationController
     @booklist_reference = BooklistReference.new(booklist_reference_params)
 
     if @booklist_reference.save
-      redirect_to booklist_references_url, notice: "Booklist reference was successfully created."
+      if request.xhr?
+        render :json => {"status": "updated"}  
+      else
+        redirect_to booklist_url(@booklist_reference.booklist_section.booklist), notice: "Booklist reference was successfully created."
+      end
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,8 +44,13 @@ class BooklistReferencesController < ApplicationController
   end
 
   def destroy
+    booklist_section = @booklist_reference.booklist_section
     @booklist_reference.destroy
-    redirect_to booklist_references_url, notice: "Booklist reference was successfully destroyed."
+    if request.xhr?
+      render :json => {"status": "updated"}  
+    else
+      redirect_to edit_booklist_url(booklist_section.booklist), notice: "Booklist reference was successfully destroyed."
+    end
   end
 
   private
@@ -48,6 +59,6 @@ class BooklistReferencesController < ApplicationController
     end
 
     def booklist_reference_params
-      params.require(:booklist_reference).permit(:booklist_id, :text_id, :relevant_text_booklist_orig, :relevant_text_booklist_orig_transliteration, :relevant_text_booklist_translation, :apocryphon_id)
+      params.require(:booklist_reference).permit(:booklist_section_id, :record_id, :record_type)
     end
 end

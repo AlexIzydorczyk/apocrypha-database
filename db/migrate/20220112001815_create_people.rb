@@ -13,6 +13,8 @@ class CreatePeople < ActiveRecord::Migration[7.0]
       t.string :character, null: false, default: ""
       t.string :viaf, null: false, default: ""
       t.timestamps
+      # added language_id later
+      # rebuild fields later to reflect '3 rows of fields' style translation/transliteration
     end
   end
 end

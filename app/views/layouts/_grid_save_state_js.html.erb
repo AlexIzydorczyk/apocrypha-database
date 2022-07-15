@@ -1,0 +1,95 @@
+<script type="text/javascript">
+
+var default_state_id = <%= UserGridState.where(record_type: record_type, is_default: true).first.try(:id) || "null" %>;
+
+$(function() {
+	callBackFunc = typeof updateAllFilterVisiblity === "function" ? updateAllFilterVisiblity : null;
+	setState(<%= @initial_state || "null" %>,<%= @initial_filter || "null" %>,callBackFunc);
+});
+
+function getState(parameters, load_new_filters=true) {
+	$.ajax({
+		url: "<%= get_user_grid_states_path %>",
+		method: "GET",
+		data: parameters,
+		success: function(data) {
+			filters = load_new_filters ? data.filters : gridOptions.api.getFilterModel();
+			setState(data.state, filters);
+		}
+	})
+	if(parameters.id) setTimeout(function() {
+		reenableButton($("#keep-filters-" + parameters.id + " button"));
+	    $(".change-state-button").removeClass("active").closest(".btn-group").find(".reset").hide();
+	    $("#change-state-button-" + parameters.id).addClass("active");
+	    $("#change-state-button-" + parameters.id).closest(".btn-group").find(".reset").show();
+	}, 300);
+}
+
+function restoreState() {
+	getState({record_type: "<%= record_type %>"});
+}
+
+function deleteState(button_id) {
+	if(confirm('Are you sure you want to delete this configuration option?')){
+		$('#' + button_id).click();
+	}
+}
+
+function setDefaultState(state_id) {
+	$.ajax({
+		url: "/user_grid_states/" + state_id + "/set_default",
+		method: "PATCH",
+		data: {
+			record_type: "<%= record_type %>",
+			authenticity_token: "<%= form_authenticity_token %>",
+		},
+		success: function() {
+			default_state_id = state_id;
+			$("#reset-to-default").show();
+			$(".fa-star.fas").removeClass("fas").addClass("far");
+			$("#default-state-button-" + state_id + " i.fa-star").removeClass("far").addClass("fas");
+		}
+	})
+}
+
+function setState(state, filters=null, callback){
+	console.log("SETTING STATE", state);
+	if(state){
+		gridOptions.columnApi.applyColumnState({
+			state: state,
+			applyOrder: true,
+		});
+	}
+	if(filters) gridOptions.api.setFilterModel(filters);
+	if(callback) callback();
+}
+
+function saveState(show_saved=true, state_name=null, callback=null) {
+	$.ajax({
+		url: "<%= save_user_grid_states_path %>",
+		method: "PUT",
+		data: {
+			state_name: state_name,
+			state: JSON.stringify(gridOptions.columnApi.getColumnState()),
+			filters: JSON.stringify(gridOptions.api.getFilterModel()),
+			record_type: "<%= record_type %>",
+			authenticity_token: "<%= form_authenticity_token %>",
+		},
+		success: function() {
+			if(show_saved) window.SnackBar({message: "<i class='far fa-save'></i> Configuration saved", position: "tr", dismissible: false, timeout: 2000});
+			if(callback != null) callback();
+			if(state_name == null) $("#load-grid-config").show();
+		}
+	})
+}
+
+function resetState() {
+	gridOptions.columnApi.resetColumnState();
+	gridOptions.api.setFilterModel(null);
+	if(typeof updateAllFilterVisiblity === "function") updateAllFilterVisiblity();
+	// saveState(false);
+	window.SnackBar({message: "<i class='fa-solid fa-rotate-left'></i> Configuration reset", position: "tr", dismissible: false, timeout: 2000});
+	$(".change-state-button").removeClass("active").closest(".btn-group").find(".reset").hide();
+}
+
+</script>

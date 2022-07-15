@@ -1,67 +1,278 @@
 <div id="<%= dom_id manuscript %>">
-  <p>
-    <strong>Identifier:</strong>
-    <%= manuscript.identifier %>
-  </p>
 
-  <p>
-    <strong>Census no:</strong>
-    <%= manuscript.census_no %>
-  </p>
+  <dl class="row mb-0 pb-0">
+    <% if manuscript.census_no.present? %><dt class="col-sm-3 text-end">Ms no.</dt>
+    <dd class="col-sm-9"><%= manuscript.census_no %></dd><% end %>
+    <% if manuscript.status.present? %><dt class="col-sm-3 text-end">Status</dt>
+    <dd class="col-sm-9"><%= manuscript.status %></dd><% end %>
+    <% if manuscript.institution.present? %><dt class="col-sm-3 text-end">Repository</dt>
+    <dd class="col-sm-9"><span class="highlight"><%= manuscript.institution.display_name_with_city_country %></span></dd><% end %>
+    <% if manuscript.shelfmark.present? %><dt class="col-sm-3 text-end">Shelfmark</dt>
+    <dd class="col-sm-9"><span class="highlight"><%= manuscript.shelfmark %></span></dd><% end %>
+    <% if manuscript.old_shelfmark.present? %><dt class="col-sm-3 text-end">Old shelfmark</dt>
+    <dd class="col-sm-9"><%= manuscript.old_shelfmark %></dd><% end %>
+    <% if manuscript.material.present? %><dt class="col-sm-3 text-end">Material</dt>
+    <dd class="col-sm-9"><%= manuscript.material %></dd><% end %>
+    <% if manuscript.leaf_page_no.present? %><dt class="col-sm-3 text-end">No. of <%= manuscript.is_folios ? 'folios' : 'pages' %></dt>
+    <dd class="col-sm-9"><%= manuscript.leaf_page_no %> <%= manuscript.is_folios ? 'ff.' : 'pp.' %></dd><% end %>
+    <% if manuscript.dimensions.present? %><dt class="col-sm-3 text-end">Dimensions</dt>
+    <dd class="col-sm-9"><%= manuscript.dimensions %></dd><% end %>
+    <% if manuscript.date_from.present? || manuscript.date_to.present? %><dt class="col-sm-3 text-end">Ms date range</dt>
+    <dd class="col-sm-9"><%= manuscript.date_from %> - <%= manuscript.date_to %></dd><% end %>
+    <% if manuscript.specific_date.present? %><dt class="col-sm-3 text-end">Specific Date</dt>
+    <dd class="col-sm-9"><%= "ca." unless manuscript.date_exact %> <%= manuscript.specific_date %></dd><% end %>
+    <% if manuscript.languages.present? %><dt class="col-sm-3 text-end">Languages in ms</dt>
+    <dd class="col-sm-9"><%= manuscript.languages.pluck(:language_name).join(', ') %></dd><% end %>
+    <% if manuscript.content_type.present? %><dt class="col-sm-3 text-end">Type of content</dt>
+    <dd class="col-sm-9"><%= manuscript.content_type %></dd><% end %>
+    <% if manuscript.notes.present? %><dt class="col-sm-3 text-end">Notes</dt>
+    <dd class="col-sm-9"><%= manuscript.notes %></dd><% end %>
+  </dl>
 
-  <p>
-    <strong>Status:</strong>
-    <%= manuscript.status %>
-  </p>
+  <% if manuscript.booklets.present? %>
+    <strong>Booklets</strong>
+    <hr class="mt-0 pt-0">
 
-  <p>
-    <strong>Institution:</strong>
-    <%= manuscript.institution_id %>
-  </p>
+    <% manuscript.booklets.each do |booklet| %>
+      <dl class="row">
+        <% if booklet.booklet_no.present? %><dt class="col-sm-3">Booklet no. <%= booklet.booklet_no %></dt>
+        <dd class="col-sm-9"></dd><% end %>
+        <% if booklet.pages_folios_from.present? %><dt class="col-sm-3 text-end">Location in ms</dt>
+        <dd class="col-sm-9">ff. <%= booklet.pages_folios_from %></dd><% end %>
+        <% if booklet.content_type.present? %><dt class="col-sm-3 text-end">Type of content</dt>
+        <dd class="col-sm-9"><%= booklet.content_type %></dd><% end %>
+        <% if booklet.date_from.present? || booklet.date_to.present? %><dt class="col-sm-3 text-end">Booklet date range</dt>
+        <dd class="col-sm-9"><%= booklet.date_from %> - <%= booklet.date_to %></dd><% end %>
+        <% if booklet.specific_date.present? %><dt class="col-sm-3 text-end">Specific Date</dt>
+        <dd class="col-sm-9"><%= "ca." unless booklet.date_exact %> <%= booklet.specific_date %></dd><% end %>
+        <% if booklet.genesis_institution.present? %><dt class="col-sm-3 text-end">Institution</dt>
+        <dd class="col-sm-9"><%= booklet.genesis_institution.display_name_with_city_country %></dd><% end %>
+        <% if booklet.genesis_institution.present? && booklet.genesis_institution.blank? %><dt class="col-sm-3 text-end">Location</dt>
+        <dd class="col-sm-9"><%= booklet.genesis_location.try(:city_region_country) %></dd><% end %>
+        <% if booklet.genesis_religious_order.present? %><dt class="col-sm-3 text-end">Religious Order</dt>
+        <dd class="col-sm-9"><%= booklet.genesis_religious_order.display_name %></dd><% end %>
+        <% if booklet.origin_notes.present? %><dt class="col-sm-3 text-end">Notes on origin</dt>
+        <dd class="col-sm-9"><%= booklet.origin_notes %></dd><% end %>
+        <% if booklet.ownerships.present? %><dt class="col-sm-3 text-end">Provenance</dt>
+        <dd class="col-sm-9"><% booklet.ownerships.order(:index).each do |p| %>
+          <p><%= p.full_display_name_with_date %></p>
+          <% end %>
+        </dd><% end %>
+      </dl>
 
-  <p>
-    <strong>Shelfmark:</strong>
-    <%= manuscript.shelfmark %>
-  </p>
+      <% if booklet.contents.present? %>
+        <dl class="row mt-3">
+          <dt class="col-sm-3 mb-4"></dt><dt class="col-sm-9">Booklet Contents:</dt>
+            <% booklet.contents.includes(:title).order("sequence_no ASC").each_with_index do |content, i| %>
+              <% text = content.text %>
+              <dt class="col-sm-3 text-end mt-3">Item</dt>
+              <dd class="col-sm-9 mt-3"><%= i+1 %>. <%= content.show_display_name %></dd>
+              <% if text.present? %>
+              <% if text.text_pages_folios_to.present? %><dt class="col-sm-3 text-end">Location in ms</dt>
+              <dd class="col-sm-9"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'ff' : 'p' %>. <%= text.text_pages_folios_to %></dd><% end %>
+              <% if text.languages.present? %><dt class="col-sm-3 text-end">Language</dt>
+              <dd class="col-sm-9"><%= text.languages.map(&:language_name).join(', ') %></dd><% end %>
+              <% if text.writing_system.present? %><dt class="col-sm-3 text-end">Writing system</dt>
+              <dd class="col-sm-9"><%= text.writing_system.name %></dd><% end %>
+              <% if text.date_from.present? || text.date_to.present? %><dt class="col-sm-3 text-end">Text date range</dt>
+              <dd class="col-sm-9"><%= text.date_from %> - <%= text.date_to %></dd><% end %>
+              <% if text.specific_date.present? %><dt class="col-sm-3 text-end">Specific Date</dt>
+              <dd class="col-sm-9"><%= "ca." unless text.date_exact %> <%= text.specific_date %></dd><% end %>
+              <% if text.no_columns.present? %><dt class="col-sm-3 text-end">Columns</dt>
+              <dd class="col-sm-9"><%= text.no_columns %></dd><% end %>
+              <% if text.scribes.present? %><dt class="col-sm-3 text-end">Scribe(s)</dt>
+              <dd class="col-sm-9"><%= text.scribes.map(&:full_name).join(', ') %></dd><% end %>
+              <% if text.script.present? %><dt class="col-sm-3 text-end">Script</dt>
+              <dd class="col-sm-9"><%= text.script %></dd><% end %>
+              <% if text.notes_on_scribe.present? %><dt class="col-sm-3 text-end">Notes on scribe</dt>
+              <dd class="col-sm-9"><%= text.notes_on_scribe %></dd><% end %>
+              <% if text.decoration.present? %><dt class="col-sm-3 text-end">Decoration</dt>
+              <dd class="col-sm-9"><%= text.decoration %></dd><% end %>
+              
 
-  <p>
-    <strong>Old shelfmark:</strong>
-    <%= manuscript.old_shelfmark %>
-  </p>
+              <% if text.sections.present? %>
+                <dt class="col-sm-4 "></dt><dt class="col-sm-8 mt-4">Text in this booklet:</dt>
+              <% end %>
 
-  <p>
-    <strong>Material:</strong>
-    <%= manuscript.material %>
-  </p>
+                <% if text.manuscript_title_orig.present? %><dt class="col-sm-4 text-end">Title as in ms.</dt>
+                <dd class="col-sm-8"><% if text.title_pages_folios_to.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= text.title_pages_folios_to %> <% end %><%= text.manuscript_title_orig %></dd><% end %>
+                <% if text.manuscript_title_translation.present? %><dt class="col-sm-4 text-end">Title as in ms. translation</dt>
+                <dd class="col-sm-8"><%= text.manuscript_title_translation %></dd><% end %>
+                <% if text.manuscript_title_orig_transliteration.present? %><dt class="col-sm-4 text-end">Title as in ms. transliteration</dt>
+                <dd class="col-sm-8"><%= text.manuscript_title_orig_transliteration %></dd><% end %>
 
-  <p>
-    <strong>Dimensions:</strong>
-    <%= manuscript.dimensions %>
-  </p>
+                <% text.sections.each do |section| %>
+                  <% if section.section_name.present? %><dt class="col-sm-4 text-end mt-3">Section name</dt>
+                  <dd class="col-sm-8 mt-3"><%= section.section_name %></dd><% end %>
+                  <% if section.incipit_orig.present? %><dt class="col-sm-4 text-end">Incipit</dt>
+                  <dd class="col-sm-8"><% if section.pages_folios_incipit.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= section.pages_folios_incipit %> <% end %><%= section.incipit_orig.html_safe %></dd><% end %>
+                  <% if section.incipit_translation.present? %><dt class="col-sm-4 text-end">Incipit translation</dt>
+                  <dd class="col-sm-8"><%= section.incipit_translation.html_safe %></dd><% end %>
+                  <% if section.incipit_orig_transliteration.present? %><dt class="col-sm-4 text-end">Incipit transliteration</dt>
+                  <dd class="col-sm-8"><%= section.incipit_orig_transliteration.html_safe %></dd><% end %>
+                  <% if section.explicit_orig.present? %><dt class="col-sm-4 text-end">Explicit</dt>
+                  <dd class="col-sm-8"><% if section.pages_folios_explicit.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= section.pages_folios_explicit %> <% end %><%= section.explicit_orig.html_safe %></dd><% end %>
+                  <% if section.explicit_translation.present? %><dt class="col-sm-4 text-end">Explicit translation</dt>
+                  <dd class="col-sm-8"><%= section.explicit_translation.html_safe %></dd><% end %>
+                  <% if section.explicitorig_transliteration.present? %><dt class="col-sm-4 text-end">Explicit transliteration</dt>
+                  <dd class="col-sm-8"><%= section.explicitorig_transliteration.html_safe %></dd><% end %>
+                <% end %>
 
-  <p>
-    <strong>Leaf page no:</strong>
-    <%= manuscript.leaf_page_no %>
-  </p>
+                <% if text.colophon_orig.present? %><dt class="col-sm-4 text-end">Colophon as in ms.</dt>
+                <dd class="col-sm-8"><% if text.colophon_pages_folios_to.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= text.colophon_pages_folios_to %> <% end %><%= text.colophon_orig %></dd><% end %>
+                <% if text.colophon_translation.present? %><dt class="col-sm-4 text-end">Colophon as in ms. translation</dt>
+                <dd class="col-sm-8"><%= text.colophon_translation %></dd><% end %>
+                <% if text.colophon_transliteration.present? %><dt class="col-sm-4 text-end">Colophon as in ms. transliteration</dt>
+                <dd class="col-sm-8"><%= text.colophon_transliteration %></dd><% end %>
 
-  <p>
-    <strong>Date from:</strong>
-    <%= manuscript.date_from %>
-  </p>
+              <div class="row my-3"></div>
+              
+              <% if text.version.present? %><dt class="col-sm-3 text-end">Version of text</dt>
+              <dd class="col-sm-9"><%= text.version %></dd><% end %>
+              <% if text.extent.present? %><dt class="col-sm-3 text-end">Extent of text</dt>
+              <dd class="col-sm-9"><%= text.extent %></dd><% end %>
+              <% if text.notes.present? %><dt class="col-sm-3 text-end">Notes</dt>
+              <dd class="col-sm-9"><%= text.notes.html_safe %></dd><% end %>
+              <% if text.inventoried.present? %><dt class="col-sm-3 text-end">Inventoried by</dt>
+              <dd class="col-sm-9"><% text.inventoried.each do |inv| %>
+                <p><%= inv.modern_source.try(:display_name_html_safe) %> <%= "<strong>Page reference: </strong>#{inv.specific_page}. ".html_safe if inv.specific_page.present? %><%= "<strong>Siglum: </strong>#{inv.siglum}.".html_safe if inv.siglum.present? %></p>
+              <% end %></dd><% end %>
+              <% if text.edition_by.present? %><dt class="col-sm-3 text-end">Used for edition by</dt>
+              <dd class="col-sm-9"><% text.edition_by.each do |inv| %>
+                <p><%= inv.modern_source.try(:display_name_html_safe) %> <%= "<strong>Page reference: </strong>#{inv.specific_page}. ".html_safe if inv.specific_page.present? %><%= "<strong>Siglum: </strong>#{inv.siglum}.".html_safe if inv.siglum.present? %></p>
+              <% end %></dd><% end %>
 
-  <p>
-    <strong>Date to:</strong>
-    <%= manuscript.date_to %>
-  </p>
+            <% end %>
+          <% end %>
+        </dl>
+      <% end %>
+    <% end %>
+  <% end %>
 
-  <p>
-    <strong>Content type:</strong>
-    <%= manuscript.content_type %>
-  </p>
+  <dl class="row">
+    <% if manuscript.genesis_institution.present? %><dt class="col-sm-3 text-end">Institution</dt>
+    <dd class="col-sm-9"><%= manuscript.genesis_institution.display_name_with_city_country %></dd><% end %>
+    <% if manuscript.genesis_institution.present? && manuscript.genesis_institution.blank? %><dt class="col-sm-3 text-end">Location</dt>
+    <dd class="col-sm-9"><%= manuscript.genesis_location.try(:city_region_country) %></dd><% end %>
+    <% if manuscript.genesis_religious_order.present? %><dt class="col-sm-3 text-end">Religious Order</dt>
+    <dd class="col-sm-9"><%= manuscript.genesis_religious_order.display_name %></dd><% end %>
+    <% if manuscript.origin_notes.present? %><dt class="col-sm-3 text-end">Notes on origin</dt>
+    <dd class="col-sm-9"><%= manuscript.origin_notes %></dd><% end %>
+    <% if manuscript.ownerships.present? %><dt class="col-sm-3 text-end">Provenance</dt>
+    <dd class="col-sm-9"><% manuscript.ownerships.order(:index).each do |p| %>
+      <p><%= p.full_display_name_with_date %></p>
+      <% end %></dd><% end %>
+  </dl>
 
-  <p>
-    <strong>Notes:</strong>
-    <%= manuscript.notes %>
-  </p>
+  <% if manuscript.contents.present? %>
+    <dl class="row mt-3">
+      <dt class="col-sm-3 mb-4"></dt><dt class="col-sm-9">Manuscript Contents:</dt>
+        <% manuscript.contents.includes(:title).order("sequence_no ASC").each_with_index do |content, i| %>
+          <% text = content.text %>
+          <dt class="col-sm-3 text-end mt-3">Item</dt>
+          <dd class="col-sm-9 mt-3"><%= i+1 %>. <%= content.show_display_name %></dd>
+          <% if text.present? %>
+          <% if text.text_pages_folios_to.present? %><dt class="col-sm-3 text-end">Location in ms</dt>
+          <dd class="col-sm-9"><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'ff' : 'p' %>. <%= text.text_pages_folios_to %></dd><% end %>
+          <% if text.languages.present? %><dt class="col-sm-3 text-end">Language</dt>
+          <dd class="col-sm-9"><%= text.languages.map(&:language_name).join(', ') %></dd><% end %>
+          <% if text.writing_system.present? %><dt class="col-sm-3 text-end">Writing system</dt>
+          <dd class="col-sm-9"><%= text.writing_system.name %></dd><% end %>
+          <% if text.date_from.present? || text.date_to.present? %><dt class="col-sm-3 text-end">Text date range</dt>
+          <dd class="col-sm-9"><%= text.date_from %> - <%= text.date_to %></dd><% end %>
+          <% if text.specific_date.present? %><dt class="col-sm-3 text-end">Specific Date</dt>
+          <dd class="col-sm-9"><%= "ca." unless text.date_exact %> <%= text.specific_date %></dd><% end %>
+          <% if text.no_columns.present? %><dt class="col-sm-3 text-end">Columns</dt>
+          <dd class="col-sm-9"><%= text.no_columns %></dd><% end %>
+          <% if text.scribes.present? %><dt class="col-sm-3 text-end">Scribe(s)</dt>
+          <dd class="col-sm-9"><%= text.scribes.map(&:full_name).join(', ') %></dd><% end %>
+          <% if text.script.present? %><dt class="col-sm-3 text-end">Script</dt>
+          <dd class="col-sm-9"><%= text.script %></dd><% end %>
+          <% if text.notes_on_scribe.present? %><dt class="col-sm-3 text-end">Notes on scribe</dt>
+          <dd class="col-sm-9"><%= text.notes_on_scribe %></dd><% end %>
+          <% if text.decoration.present? %><dt class="col-sm-3 text-end">Decoration</dt>
+          <dd class="col-sm-9"><%= text.decoration %></dd><% end %>
+          
+          <% if text.sections.present? %>
+            <dt class="col-sm-4 "></dt><dt class="col-sm-8 mt-3">Text in this ms.:</dt>
+          <% end %>
+
+            <% if text.manuscript_title_orig.present? %><dt class="col-sm-4 text-end">Title as in ms.</dt>
+            <dd class="col-sm-8"><% if text.title_pages_folios_to.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= text.title_pages_folios_to %> <% end %><%= text.manuscript_title_orig %></dd><% end %>
+            <% if text.manuscript_title_translation.present? %><dt class="col-sm-4 text-end">Title as in ms. translation</dt>
+            <dd class="col-sm-8"><%= text.manuscript_title_translation %></dd><% end %>
+            <% if text.manuscript_title_orig_transliteration.present? %><dt class="col-sm-4 text-end">Title as in ms. transliteration</dt>
+            <dd class="col-sm-8"><%= text.manuscript_title_orig_transliteration %></dd><% end %>
+
+
+            <% text.sections.each do |section| %>
+              <% if section.section_name.present? %><dt class="col-sm-4 text-end mt-3">Section name</dt>
+              <dd class="col-sm-8 mt-3"><%= section.section_name %></dd><% end %>
+              <% if section.incipit_orig.present? %><dt class="col-sm-4 text-end">Incipit</dt>
+              <dd class="col-sm-8"><% if section.pages_folios_incipit.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= section.pages_folios_incipit %> <% end %><%= section.incipit_orig.html_safe %></dd><% end %>
+              <% if section.incipit_translation.present? %><dt class="col-sm-4 text-end">Incipit translation</dt>
+              <dd class="col-sm-8"><%= section.incipit_translation.html_safe %></dd><% end %>
+              <% if section.incipit_orig_transliteration.present? %><dt class="col-sm-4 text-end">Incipit transliteration</dt>
+              <dd class="col-sm-8"><%= section.incipit_orig_transliteration.html_safe %></dd><% end %>
+              <% if section.explicit_orig.present? %><dt class="col-sm-4 text-end">Explicit</dt>
+              <dd class="col-sm-8"><% if section.pages_folios_explicit.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= section.pages_folios_explicit %> <% end %><%= section.explicit_orig.html_safe %></dd><% end %>
+              <% if section.explicit_translation.present? %><dt class="col-sm-4 text-end">Explicit translation</dt>
+              <dd class="col-sm-8"><%= section.explicit_translation.html_safe %></dd><% end %>
+              <% if section.explicitorig_transliteration.present? %><dt class="col-sm-4 text-end">Explicit transliteration</dt>
+              <dd class="col-sm-8"><%= section.explicitorig_transliteration.html_safe %></dd><% end %>
+            <% end %>
+
+            <% if text.colophon_orig.present? %><dt class="col-sm-4 text-end">Colophon</dt>
+            <dd class="col-sm-8"><% if text.colophon_pages_folios_to.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= text.colophon_pages_folios_to %> <% end %><%= text.colophon_orig %></dd><% end %>
+            <% if text.colophon_translation.present? %><dt class="col-sm-4 text-end">Colophon as in ms. translation</dt>
+            <dd class="col-sm-8"><%= text.colophon_translation %></dd><% end %>
+            <% if text.colophon_transliteration.present? %><dt class="col-sm-4 text-end">Colophon as in ms. transliteration</dt>
+            <dd class="col-sm-8"><%= text.colophon_transliteration %></dd><% end %>
+
+          <div class="row my-3"></div>
+
+          
+          <% if text.version.present? %><dt class="col-sm-3 text-end">Version of text</dt>
+          <dd class="col-sm-9"><%= text.version %></dd><% end %>
+          <% if text.extent.present? %><dt class="col-sm-3 text-end">Extent of text</dt>
+          <dd class="col-sm-9"><%= text.extent %></dd><% end %>
+          <% if text.notes.present? %><dt class="col-sm-3 text-end">Notes</dt>
+          <dd class="col-sm-9"><%= text.notes.html_safe %></dd><% end %>
+          <% if text.inventoried.present? %><dt class="col-sm-3 text-end">Inventoried by</dt>
+          <dd class="col-sm-9"><% text.inventoried.each do |inv| %>
+            <p><%= inv.modern_source.try(:display_name_html_safe) %> <%= "#{inv.specific_page}. " if inv.specific_page.present? %><%= "<strong>Siglum: </strong>#{inv.siglum}.".html_safe if inv.siglum.present? %></p>
+          <% end %></dd><% end %>
+          <% if text.edition_by.present? %><dt class="col-sm-3 text-end">Used for edition by</dt>
+          <dd class="col-sm-9"><% text.edition_by.each do |inv| %>
+            <p><%= inv.modern_source.try(:display_name_html_safe) %> <%= "<strong>Page reference: </strong>#{inv.specific_page}. ".html_safe if inv.specific_page.present? %><%= "<strong>Siglum: </strong>#{inv.siglum}.".html_safe if inv.siglum.present? %></p>
+          <% end %></dd><% end %>
+
+        <% end %>
+      <% end %>
+    </dl>
+  <% end %>
+
+  <dl class="row">
+    <% if manuscript.modern_source_references.present? %><dt class="col-sm-3 text-end">Bibliographic references</dt>
+    <dd class="col-sm-9"><% manuscript.modern_source_references.each do |msr| %>
+      <p><%= msr.modern_source.try(:display_name_html_safe) %> <%= "#{msr.specific_page}. ".html_safe if msr.specific_page.present? %><%= "<strong>Siglum: </strong>#{msr.siglum}.".html_safe if msr.siglum.present? %></p>
+    <% end %></dd><% end %>
+    <% if manuscript.reproduction_urls.present? %><dt class="col-sm-3 text-end">Reproduction online</dt>
+    <dd class="col-sm-9"><%= manuscript.reproduction_urls.map{ |du| link_to du.url, du.url }.join(', ').html_safe %></dd><% end %>
+    <% if manuscript.database_urls.present? %><dt class="col-sm-3 text-end">Online databases</dt>
+    <dd class="col-sm-9"><%= manuscript.database_urls.map{ |du| link_to du.url, du.url }.join(', ').html_safe %></dd><% end %>
+    <% if manuscript.correspondents.present? %><dt class="col-sm-3 text-end">Correspondent</dt>
+    <dd class="col-sm-9"><%= manuscript.correspondents.map(&:full_name).join(', ') %></dd><% end %>
+    <% if manuscript.transcribers.present? %><dt class="col-sm-3 text-end">Transcriber</dt>
+    <dd class="col-sm-9"><%= manuscript.transcribers.map(&:full_name).join(', ') %></dd><% end %>
+    <% if manuscript.compilers.present? %><dt class="col-sm-3 text-end">Compiled by</dt>
+    <dd class="col-sm-9"><%= manuscript.compilers.map(&:full_name).join(', ') %></dd><% end %>
+    <% if manuscript.created_at.present? %><dt class="col-sm-3 text-end">Ms. created</dt>
+    <dd class="col-sm-9"><%= manuscript.created_at.strftime('%e %B, %Y') %></dd><% end %>
+    <% if manuscript.updated_at.present? %><dt class="col-sm-3 text-end">Ms. updated</dt>
+    <dd class="col-sm-9"><%= manuscript.updated_at.strftime('%e %B, %Y') %></dd><% end %>
+  </dl>
 
 </div>
+
+<p class="mt-5"><small>This records may be cited as "<%= "Ms no #{manuscript.census_no}, " if manuscript.census_no.present? %><%= manuscript.institution.display_name_with_city_country + ", " if manuscript.institution.present? %><%= manuscript.shelfmark %>". <%= "Compiled by #{manuscript.compilers.map(&:full_name).join(', ')}." %> <i>Apocrypharius: Manuscripta apocryphorum antiquae et mediae aetatis</i>. Accessed <%= Date.today.strftime('%e %B, %Y') %>. <%= request.url %></small></p>

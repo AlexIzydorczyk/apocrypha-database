@@ -1,0 +1,6 @@
+<h1>Writing systems</h1>
+<p><%= link_to "New writing system", new_writing_system_path, class: "btn btn-outline-success" %></p>
+
+<div id="writing_systems">
+    <%= render 'grid', writing_systems: @writing_systems %>
+</div>

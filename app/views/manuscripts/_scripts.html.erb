@@ -1,0 +1,236 @@
+<script type="text/javascript">
+let manuscriptVue;
+$(document).ready(function(){
+	manuscriptVue = new Vue({
+		name: 'manuscriptVue',
+		el: '#manuscript-form',
+		data: {
+			known_booklet_composition: <%= manuscript.known_booklet_composition %>,
+			is_folios: <%= manuscript.is_folios %>,
+			has_contents: <%= manuscript.contents.count > 0 %>,
+			has_ownerships: <%= manuscript.ownerships.count > 0 %>,
+			has_booklets: <%= manuscript.booklets.count > 0 %>,
+			date_exact: <%= manuscript.date_exact ? "true" : "false" %>,
+			date_to: '<%= manuscript.date_to %>', date_from: '<%= manuscript.date_from %>',
+			date_to_select: null, date_from_select: null,
+			manuscript_urls: <%= @manuscript_urls.map{ |mu| { url: mu.url } }.to_json.html_safe %>,
+			reproduction_urls: <%= @reproduction_urls.map{ |mu| { url: mu.url } }.to_json.html_safe %>,
+		},
+		watch: {
+			date_from(){
+				this.setFrom();
+			},
+		},
+		methods: {
+			setFrom: function(){
+				let new_options = [];
+				for(let i=0; i<<%= Date.today.year%>; i++){
+					if (
+						(
+							this.date_from == ''
+						 || (( (parseInt(this.date_from)-1)%25 == 0) && i%25==0)
+						 || (( ((parseInt(this.date_from)%100)-1)%33 == 0) && (i%100 != 99) && i%100%33==0)
+						 || i==<%= Date.today.year %>
+						)
+						&& i>this.date_from
+					) new_options.push(i);
+				}
+				if(!(this.date_to_select.items.length > 0 && this.date_from != '' && (((this.date_from-1)%100%33==0 && this.date_to_select.items[0]%100%33==0) || ((this.date_from-1)%25==0 && this.date_to_select.items[0]%25==0)))) this.date_to_select.clear();
+				this.date_to_select.clearOptions(true);
+				this.date_to_select.addOptions(new_options.map( o => ({value: o, text: o})));
+				if(this.date_to_select.items.length < 1) this.date_to_select.refreshOptions(true);
+			},
+			clickUnknown: function(){
+				if(<%= manuscript.booklets.count %> >= 1){
+					if(confirm('Are you sure you want to destroy Booklet(s) and move their content to the Manuscript?')){
+						$.ajax({
+				      url: "/manuscripts/"+<%= manuscript.id %>+"/revert_known_composition",
+				      type: 'POST',
+				      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+				      contentType: 'application/json',
+				      success: function(data) {
+				      	console.log('success');
+				      	manuscriptVue.known_booklet_composition = false;
+				        timeoutReload(null, 0);
+				      }
+				    });
+					}
+				}else{
+					this.known_booklet_composition = false
+				}
+			},
+			clickKnown: function(){
+				if(<%= manuscript.genesis_institution_id.present? || manuscript.genesis_religious_order_id.present? || manuscript.genesis_location_id.present? || manuscript.origin_notes.present? || manuscript.ownerships.count > 0 || manuscript.contents.count > 0 ? "true" : "false" %>){
+					if(confirm('Are you sure you want to change booklet composition to known? Origin details, provenance, and contents will be transfered to a new booklet.')){
+						$.ajax({
+				      url: "/manuscripts/"+<%= manuscript.id %>+"/set_known_composition",
+				      type: 'POST',
+				      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+				      contentType: 'application/json',
+				      success: function(data) {
+				        timeoutReload(null, 0);
+				      }
+				    });
+					}
+				}else{
+					this.known_booklet_composition = true;
+				}
+			},
+			addUrl(){
+				this.manuscript_urls.push({url: ""});
+			},
+			addReproductionUrl(){
+				this.reproduction_urls.push({url: ""});
+			}
+		},
+		mounted(){
+
+			$("#booklets-list").sortable({
+				update: function(e, ui) {
+					$.ajax({
+						url: '<%= sort_booklets_path %>',
+						type: 'PUT',
+						data: $(this).sortable('serialize') + '&authenticity_token=' + $('#sort-booklet-form').find('input[name="authenticity_token"]').val()
+					});
+					setTimeout(function() {
+						$("#booklets-list").children().each(function(i) {
+							$(this).find('span').text('Booklet ' + (i+1));
+						})
+					}, 500);
+				}
+			});
+			
+			runTomSelects();
+			setDraggable();
+			setOwnershipDraggable();
+			$('#manuscript-form, #page-title').removeClass('d-none');
+			$('#manuscript-preloader').addClass('d-none');
+			this.date_to_select = new TomSelect("#manuscript_date_to", {
+			  maxItems: 1,
+			  maxOptions: null,
+			});
+			this.date_from_select = new TomSelect("#manuscript_date_from", {
+			  maxItems: 1,
+			  maxOptions: null,
+			});
+		},
+	});
+});
+
+function runTomSelects(){
+	new TomSelect("#manuscript_institution_id", ts_sort_text_asc_max_1);
+	new TomSelect("#manuscript_status");
+	new TomSelect("#manuscript_material",ts_sort_text_asc_max_1);
+	new TomSelect("#language_reference_id", {
+		sortField: {
+			field: "text",
+			direction: "asc",
+		},
+		maxItems: null,
+		create: function(l){
+			saveForm($(`#manuscript-form form`), $(`#new-language #record-id`));
+			$("#new-language #language_language_name").val(l);
+			$('#new-language').modal('show');
+		}
+	});
+
+	new TomSelect("#manuscript_content_type", ts_sort_text_asc_max_1_create);
+	var manuscript_genesis_location_select = new TomSelect("#manuscript_genesis_location_id",ts_sort_text_asc_max_1);
+	var manuscript_genesis_religious_order_select = new TomSelect("#manuscript_genesis_religious_order_id", ts_sort_text_asc_max_1);
+	new TomSelect("#manuscript_genesis_institution_id", {
+		maxItems: 1,
+		valueField: 'id',
+		searchField: ['institution','location_name'],
+		sortField: {
+	    field: "institution",
+	    direction: "asc"
+	  },
+		options: [
+			<% Institution.includes(:location).all.each do |i| %>
+			{id: <%= i.id %>, institution: "<%= i.display_name %>", location_name: "<%= i.location.try(:city_region_country) %>", location_id: "<%= i.location.try(:id) %>", religious_order_id: "<%= i.religious_order_id %>"},
+			<% end %>
+		],
+		onItemAdd: function(value, item){
+			let location_id = $(item).attr('location_id');
+			manuscript_genesis_location_select.addItem(location_id);
+			let religious_order_id = $(item).attr('religious_order_id');
+			manuscript_genesis_religious_order_select.addItem(religious_order_id);
+		},
+		render: {
+			option: function(data, escape) {
+				return '<div class="double-ts-option">' +
+						'<span class="title">' + escape(data.institution) + '</span>' +
+						'<span class="subtitle">' + escape(data.location_name) + '</span>' +
+					'</div>';
+			},
+			item: function(data, escape) {
+				return '<div location_id="' + escape(data.location_id) + '" religious_order_id="' + escape(data.religious_order_id) + '">' + escape(data.institution) + '</div>';
+			}
+		}
+	});
+	new TomSelect("#correspondent_reference_id",{
+		maxItems: null,
+		lockOptgroupOrder: true,
+		maxOptions: null,
+		closeAfterSelect: true,
+	  hidePlaceholder: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
+	});
+	new TomSelect("#transcriber_reference_id",{
+		maxItems: null,
+		lockOptgroupOrder: true,
+		maxOptions: null,
+		closeAfterSelect: true,
+	  hidePlaceholder: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
+	});
+	new TomSelect("#compiler_reference_id",{
+		maxItems: null,
+		lockOptgroupOrder: true,
+		maxOptions: null,
+		closeAfterSelect: true,
+	  hidePlaceholder: true,
+	  onDropdownClose: function(d) {
+	    $("*:focus").blur();
+	  },
+	  hideSelected: false,
+	});
+};
+
+function deleteModernSourceReference(msr_id){
+	if(confirm("Are you sure you want to remove this record from this manuscript?")){
+		saveBeforeModalForms();
+    $.ajax({
+      url: "/modern_source_references/"+msr_id,
+      type: 'DELETE',
+      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+      contentType: 'application/json',
+      success: function(data) {
+        timeoutReload(null, 0);
+      }
+    });
+	}
+}
+
+function deleteBooklet(booklet_id){
+	if(confirm("Are you sure you want to delete this booklet?")){
+		saveBeforeModalForms();
+    $.ajax({
+      url: "/booklets/"+booklet_id,
+      type: 'DELETE',
+      data: JSON.stringify({authenticity_token: "<%= form_authenticity_token %>"}),
+      contentType: 'application/json',
+      success: function(data) {
+        timeoutReload('booklets-list', 0);
+      }
+    });
+	}
+}
+
+</script>
