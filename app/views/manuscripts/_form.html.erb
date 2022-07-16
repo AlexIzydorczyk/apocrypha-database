@@ -35,7 +35,7 @@
 <div class="row">
 	<div class="form-group col-md-3 mb-2">
 		<%= form.label :material, style: "display: block" %>
-		<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper"], manuscript.material), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
+		<%= form.select :material, options_for_select(["paper", "parchment", "parchment and paper", "papyrus"], manuscript.material), {include_blank: true}, {class: "form-control", placeholder: "Select"} %>
 	</div>
 	<div class="form-group col-md-3 mb-2 d-flex align-items-start pt-4">
 		<%= form.hidden_field :is_folios, "v-model": "is_folios" %>

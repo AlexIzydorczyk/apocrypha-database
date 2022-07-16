@@ -6,7 +6,7 @@ set :repo_url, "git@github.com:AlexIzydorczyk/apocrypha-database.git"
 
 # Deploy to the user's home directory
 set :deploy_to, "/home/deploy/#{fetch :application}"
-set :branch, :main
+set :branch, ENV['CAP_BRANCH'] || :main
 
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
 

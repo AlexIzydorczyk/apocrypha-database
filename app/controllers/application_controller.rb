@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 	before_action :authenticate_user!
 	before_action :set_grouped_people, if: :user_signed_in?
-	# skip_before_action :authenticate_user!, only: %i[ index ]
+	skip_before_action :authenticate_user!, only: %i[ how_to_use about contact research ]
 	
 	def index
 	end

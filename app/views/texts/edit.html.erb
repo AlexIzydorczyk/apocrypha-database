@@ -1,5 +1,5 @@
 <div class="breadcrumbs">
-  <%= link_to "Home", root_path %>
+  <%= link_to "Home", editor_menu_path %>
   <i class="far fa-chevron-right"></i>
   <!-- if accessed through manuscript with booklet -->
   <% if @text.content.parent.class == Booklet && @text.content.parent.manuscript.present? && @text.find_manuscript.present? && current_page?(edit_manuscript_booklet_content_text_path(@text.find_manuscript, @text.content.booklet, @text.content, @text)) %>

@@ -34,8 +34,8 @@
     { headerName: "Manuscript: general features", children: [
       { headerName: "Material", headerTooltip: "Material", field: "manuscript.material", filter: null },
       { headerName: "No. of pp./ff.", headerTooltip: "No. of pp./ff.", field: "manuscript.leaf_page_no", filter: null },
-      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual']}},
-      { headerName: "Period to", headerTooltip: "Period to", field: "manuscript.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual']}},
+      { headerName: "Period from", headerTooltip: "Period from", field: "manuscript.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual', 'lessThanOrEqual']}},
+      { headerName: "Period to", headerTooltip: "Period to", field: "manuscript.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual', 'greaterThanOrEqual']}},
       { headerName: "Year(s)", headerTooltip: "Year(s)", field: "manuscript.specific_date", comparator: numberSort, filter: 'agSetColumnFilter' },
       { headerName: "Content type", headerTooltip: "Content type", field: "manuscript.content_type" , filter: 'agSetColumnFilter' },
       { headerName: "Languages in ms.", headerTooltip: "Languages in ms.", field: "manuscript.languages"  },
@@ -45,8 +45,8 @@
       { headerName: "Booklet no.", headerTooltip: "Booklet no.", field: "booklet.booklet_no", filter: null },
       { headerName: "Pp./ff. in ms.", headerTooltip: "Pp./ff. in ms.", field: "booklet.pages_folios_from", filter: null },
       { headerName: "Content type", headerTooltip: "Content type", field: "booklet.content_type", filter: 'agSetColumnFilter' },
-      { headerName: "Period from", headerTooltip: "Period from", field: "booklet.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual']}},
-      { headerName: "Period to", headerTooltip: "Period to", field: "booklet.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual']}},
+      { headerName: "Period from", headerTooltip: "Period from", field: "booklet.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual', 'lessThanOrEqual']}},
+      { headerName: "Period to", headerTooltip: "Period to", field: "booklet.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual', 'greaterThanOrEqual']}},
       { headerName: "Year(s)", headerTooltip: "Specific date", field: "booklet.specific_date", comparator: numberSort, filter: 'agNumberColumnFilter' },
     ]},
     { headerName: "Origin and provenance", children: [
@@ -75,8 +75,8 @@
     { headerName: "Apocryphon in ms.: general features", children: [
       { headerName: "Language", headerTooltip: "Language", field: "text.languages" },
       { headerName: "Pp/ff. in ms.", headerTooltip: "Ff./pp. in ms.", field: "text.text_pages_folios", filter: false },
-            { headerName: "Period from", headerTooltip: "Period from", field: "text.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual']}},
-      { headerName: "Period to", headerTooltip: "Period to", field: "text.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual']}},
+            { headerName: "Period from", headerTooltip: "Period from", field: "text.date_from", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual', 'lessThanOrEqual']}},
+      { headerName: "Period to", headerTooltip: "Period to", field: "text.date_to", comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['lessThanOrEqual', 'greaterThanOrEqual']}},
       { headerName: "Year(s)", headerTooltip: "Specific date", field: "text.specific_date", comparator: numberSort, filter: 'agSetColumnFilter' },
       { headerName: "Columns", headerTooltip: "Columns", field: "text.no_columns", filter: null },
       { headerName: "Decoration", headerTooltip: "Decoration", field: "text.decoration", filter: 'agSetColumnFilter' },

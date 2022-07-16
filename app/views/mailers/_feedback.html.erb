@@ -1,0 +1,33 @@
+<%= form_tag(send_feedback_mailers_path, method: 'post', multipart: true, id: 'feedback_form') do %>
+	<%= hidden_field_tag :full_name, current_user.try(:full_name) %>
+	<% if user_signed_in? %>
+		<%= hidden_field_tag :email, current_user.try(:email) %>
+	<% else %>
+		<label>Your email:</label>
+		<%= text_field_tag :email, "", class: "form-control-wl form-control mb-3" %>
+	<% end %>
+ 	<% unless current_page?(contact_path) %>
+ 		<div class="form-group">Message sent from page: <strong><%= request.path %></strong></div>
+ 	<% end %>
+ 	<input type="hidden" name="request_path" value="<%= request.path %>">
+ 	<div class="form-group mb-4">
+	 	<label>Your message:</label>
+	  	<%= text_area_tag "description", "", class: 'form-control form-control-wl', onkeyup: 'textAreaAdjust(this)', style: "height: 250px; overflow:hidden;" %>
+ 	</div>
+ 	<div class="d-flex justify-content-between flex-wrap">
+ 		<% if user_signed_in? %>
+	 		<div class="form-group">
+				<!-- <label style="font-weight: 500; padding-bottom:15px;">Attach a screenshot or file if it may help you explain your message.</label> -->
+				<span><%= file_field_tag "attachment" %></span>
+		 	</div>
+	 	<% end %>
+	 	<%= submit_tag "Send", class: "btn btn-action ms-auto" %>
+ 	</div>
+<% end %>
+
+<script type="text/javascript">
+	function textAreaAdjust(element) {
+	  element.style.height = "227px";
+	  element.style.height = (25+element.scrollHeight)+"px";
+	}
+</script>

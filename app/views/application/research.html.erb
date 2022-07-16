@@ -1,0 +1,65 @@
+<div class="container-fluid text-center bg-grey" id="header">
+	<%= image_tag("floral-grey-pic.png", class: "h-100", id: "floral", alt: "Floral", style: "margin-top: 75px") %>
+	<div class="bg-grey" style="width: calc(100vw - 500px);height: 75px; position: absolute; bottom: -55px;left: 0;"></div>
+	<div class="row">
+		<div class="col">
+			<%= image_tag("Apocrypharius-A-orange.png", height: 150, alt: "Apocrypharius letter A" ) %>
+			<h2 class="title" style="color: var(--purple);">site for research on manuscripts of<br>Christian apocrypha and parabiblica</h2>
+		</div>
+	</div>
+</div>
+<div class="w-100 py-5" id="research" style="background-image: url('<%= image_url('big-bg2.png') %>');">
+	<div class="container">
+		<h1 class="static-page text-center pt-5 mb-3" style="color: var(--grey)">Start research here</h1>
+		<div class="row">
+			<div class="col-4">
+				<div class="card m-2">
+					<div class="card-body px-4">
+						<h3 class="static-page text-center">Apocrypha in manuscript</h3>
+						<p>Use this grid to explore (when available)</p>
+						<ul>
+							<li>a census of manuscripts that preserve each apocryphal/parabiblical text</li>
+							<li>brief descriptions of manuscripts, including their contents</li>
+							<li>manuscripts’ origins and provenances</li>
+							<li>titles, incipits, explicits, and colophons of each apocryphal/parabiblical text as they appear in manuscripts</li>
+						</ul>
+						<p class="text-center"><button type="button" class="btn btn-lg btn-action w-100" onclick="location.href='<%= sections_path %>'">Apocrypha in manuscript</button></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card m-2">
+					<div class="card-body px-4">
+						<h3 class="static-page text-center">Apocrypha in booklists</h3>
+						<p>Use this grid to explore (when available)</p>
+						<ul>
+							<li>a census of booklists that mention each apocryphal/parabiblical text</li>
+							<li>brief identifications of booklists</li>
+							<li>identifications of the books’ owner(s) and/or locations</li>
+							<li>excerpts from booklists that mention an apocryphal/parabiblical text</li>
+						</ul>
+						<p class="text-center"><button type="button" class="btn btn-lg btn-action w-100" onclick="location.href='<%= booklist_sections_path %>'">Apocrypha in booklists</button></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="card m-2">
+					<div class="card-body px-4">
+						<h3 class="static-page text-center">A list of apocrypha</h3>
+						<p>Use this grid to access</p>
+						<ul>
+							<li>a complete listing of apocryphal/parabibllical  texts surveyed on this website</li>
+							<li>brief identifications of each text (CANT, BHL, BHG, e-Clavis)</li>
+						</ul>
+						<p>Please note: titles preceded by * are derived from booklists and cannot be fully identified</p>
+						<p class="text-center"><button type="button" class="btn btn-lg btn-action w-100" onclick="location.href='<%= apocrypha_path %>'">A list of apocrypha</button></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('body').css('background-color', 'val(--grey)').css('min-height', '100vh')
+</script>

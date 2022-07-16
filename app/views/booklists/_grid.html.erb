@@ -80,8 +80,8 @@
         { headerName: "Booklist type", field: "booklist_type", cellEditor: 'agRichSelectCellEditor', cellEditorParams: { values: <%= Booklist.all.pluck(:booklist_type).uniq.select{ |t| t.present? }.to_json.html_safe %> }},
         { headerName: "Language", field: "language_name" },
         { headerName: "Date", children: [
-          { headerName: "Period from", field: "date_from", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual']} },
-          { headerName: "Period to", field: "date_to", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: { filterOptions: ['lessThanOrEqual']} },
+          { headerName: "Period from", field: "date_from", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: {filterOptions: ['greaterThanOrEqual', 'lessThanOrEqual']} },
+          { headerName: "Period to", field: "date_to", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter', filterParams: { filterOptions: ['lessThanOrEqual', 'greaterThanOrEqual']} },
           { headerName: "Year(s)", field: "specific_date", hide: false, comparator: numberSort, filter: 'agNumberColumnFilter' },
         ]},
         { headerName: "Author(s)", field: "authors"},
