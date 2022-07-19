@@ -135,7 +135,7 @@ class ModernSource < ApplicationRecord
   end
 
   def person_list people, are_editors=false, first_list=false 
-    names = people.order(last_name_vernacular: :asc).map.with_index{ |p, i| p.modern_source_display(i>0 || !first_list) }
+    names = people.order(:sequence_no, last_name_vernacular: :asc).map.with_index{ |p, i| p.modern_source_display(i>0 || !first_list) }
     names = names.length > 3 ? names[0..2].join(', ') + ', et al.' : (names.length < 2 ? names[0] + '.' : names[0..-2].join(', ') + ", and " + names[-1] + '.')
     names += people.count > 1 ? ", eds." : ", ed." if are_editors
     names + " "
