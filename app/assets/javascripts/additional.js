@@ -89,6 +89,9 @@ function reenableButton(btn){
 // --------- rdy ---------
 
 $(function() {
+  addEventListener("trix-change", function(event){
+    formChanges[$('form.autosave').index($(event.target).closest('form.autosave'))] = true;
+  });
   setTimeout(function() {
 
     $("button.disable-on-click").on("click", function() {
@@ -133,7 +136,7 @@ $(function() {
       if (e.keyCode == 13 && !e.shiftKey) e.preventDefault();
     });
 
-    setInterval(autoSaveFun,10000);
+    setInterval(autoSaveFun,4000);
 
   }, 250);
  

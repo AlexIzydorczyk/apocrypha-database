@@ -116,7 +116,7 @@
 	</div>
 </div>
 
-<h2>Incipits and explicits <button type="button" class="btn btn-action" onclick="$('#add-section').click();">Add incipits and explicits</button></h2>
+<h2>Incipits and explicits <button type="button" class="btn btn-action" onclick="saveBeforeModalForms();$('#add-section').click();">Add incipits and explicits</button></h2>
 <transition-group name="animate">
 	<div v-for="(section, index) in sorted_sections" :key="'section-' + section.id">
 		<input type="hidden" :name="'sections[' + section.id + '][index]'" v-model="section.index">
