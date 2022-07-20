@@ -148,12 +148,12 @@
 					<div class="col">
 						<label>Incipit</label>
 						<input type="hidden" :name="'sections[' + section.id + '][incipit_orig]'" v-model="section.incipit_orig" :id="'sections_' + section.id + '_incipit_orig'">
-						<component is="trix-editor" spellcheck="false" :input="'sections_' + section.id + '_incipit_orig'" placeholder="Incipit"></component>
+						<component is="trix-editor" spellcheck="false" :data-section-id="section.id" data-field-name="incipit_orig" :input="'sections_' + section.id + '_incipit_orig'" placeholder="Incipit"></component>
 						<div v-show="not_latin">
 							<input type="hidden" :name="'sections[' + section.id + '][incipit_orig_transliteration]'" v-model="section.incipit_orig_transliteration" :id="'sections_' + section.id + '_incipit_orig_transliteration'">
-							<component is="trix-editor" :input="'sections_' + section.id + '_incipit_orig_transliteration'" placeholder="Transliteration" spellcheck="false"></component>
+							<component is="trix-editor" :input="'sections_' + section.id + '_incipit_orig_transliteration'" :data-section-id="section.id" data-field-name="incipit_orig_transliteration" placeholder="Transliteration" spellcheck="false"></component>
 							<input type="hidden" :name="'sections[' + section.id + '][incipit_translation]'" v-model="section.incipit_translation" :id="'sections_' + section.id + '_incipit_translation'">
-							<component is="trix-editor" :input="'sections_' + section.id + '_incipit_translation'" placeholder="Translation" spellcheck="false"></component>
+							<component is="trix-editor" :data-section-id="section.id" data-field-name="incipit_orig_translation" :input="'sections_' + section.id + '_incipit_translation'" placeholder="Translation" spellcheck="false"></component>
 						</div>
 					</div>
 				</div>
@@ -168,12 +168,12 @@
 					<div class="col">
 						<label>Explicit</label>
 						<input type="hidden" :name="'sections[' + section.id + '][explicit_orig]'" v-model="section.explicit_orig" :id="'sections_' + section.id + '_explicit_orig'">
-						<component is="trix-editor" :input="'sections_' + section.id + '_explicit_orig'" placeholder="Explicit" spellcheck="false"></component>
+						<component is="trix-editor" :data-section-id="section.id" data-field-name="explicit_orig" :id="section.id" :input="'sections_' + section.id + '_explicit_orig'" placeholder="Explicit" spellcheck="false"></component>
 						<div v-show="not_latin">
 							<input type="hidden" :name="'sections[' + section.id + '][explicitorig_transliteration]'" v-model="section.explicitorig_transliteration" :id="'sections_' + section.id + '_explicitorig_transliteration'">
-							<component is="trix-editor" :input="'sections_' + section.id + '_explicitorig_transliteration'" placeholder="Transliteration" spellcheck="false"></component>
+							<component is="trix-editor"  :data-section-id="section.id" data-field-name="explicit_orig_transliteration":input="'sections_' + section.id + '_explicitorig_transliteration'" placeholder="Transliteration" spellcheck="false"></component>
 							<input type="hidden" :name="'sections[' + section.id + '][explicit_translation]'" v-model="section.explicit_translation" :id="'sections_' + section.id + '_explicit_translation'">
-							<component is="trix-editor" :input="'sections_' + section.id + '_explicit_translation'" placeholder="Translation" spellcheck="false"></component>
+							<component is="trix-editor"  :data-section-id="section.id" data-field-name="explicit_orig_translation" :input="'sections_' + section.id + '_explicit_translation'" placeholder="Translation" spellcheck="false"></component>
 						</div>
 					</div>
 				</div>
@@ -326,6 +326,13 @@
 				  maxOptions: null,
 				  hidePlaceholder: true,
 				});
+				let vue = this;
+				addEventListener("trix-change", function(event) {
+          let id = $(event.target).data('section-id');
+          let input = $(event.target).data('field-name');
+          let content = $('#'+$(event.target).attr('input')).attr('value');
+          console.log('secid', id, input, 'content', content);
+        });
 			},
 		});
 	});
