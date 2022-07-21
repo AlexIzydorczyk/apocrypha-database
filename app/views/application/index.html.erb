@@ -1,66 +1,68 @@
-<div class="breadcrumbs">
-	Home
-</div>
+<div class="container-fluid">
+	<div class="breadcrumbs">
+		Editor Menu
+	</div>
 
-<h1>Home</h1>
-<div class="row">
-	<div class="col-4 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Manuscripts (<%= Manuscript.count.to_s %>)</h5>
-				<p class="pt-2"><%= link_to "View Manuscripts Grid", manuscripts_path,  class: "card-link" %></p>
-				<p><%= button_to 'New Manuscript', manuscripts_path, class: "card-link", params: { manuscript: { census_no: "" } } %></p>
+	<h1>Editor Menu</h1>
+	<div class="row">
+		<div class="col-4 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Manuscripts (<%= Manuscript.count.to_s %>)</h5>
+					<p class="pt-2"><%= link_to "View Manuscripts Grid", manuscripts_path,  class: "card-link" %></p>
+					<%= button_to 'New Manuscript', manuscripts_path, class: "btn btn-link card-link", params: { manuscript: { census_no: "" } } %>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-4 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Apocrypha (<%= Apocryphon.count.to_s %>)</h5>
-				<p class="pt-2"><%= link_to "View Apocrypha Grid", apocrypha_path,  class: "card-link" %></p>
-				<p><%= button_to 'New Apocryphon', apocrypha_path, class: "card-link", params: { apocryphon: { apocryphon_no: "" } } %></p>
+		<div class="col-4 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Apocrypha (<%= Apocryphon.count.to_s %>)</h5>
+					<p class="pt-2"><%= link_to "View Apocrypha Grid", apocrypha_path,  class: "card-link" %></p>
+					<%= button_to 'New Apocryphon', apocrypha_path, class: "card-link", params: { apocryphon: { apocryphon_no: "" } } %>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-4 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Booklists (<%= Booklist.count.to_s %>)</h5>
-				<p class="pt-2"><%= link_to "View Booklists Grid", booklists_path,  class: "card-link" %></p>
-				<p><%= button_to 'New Booklist', booklists_path, class: "card-link", params: { booklist: { booklist_type: "" } } %></p>
+		<div class="col-4 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Booklists (<%= Booklist.count.to_s %>)</h5>
+					<p class="pt-2"><%= link_to "View Booklists Grid", booklists_path,  class: "card-link" %></p>
+					<%= button_to 'New Booklist', booklists_path, class: "card-link", params: { booklist: { booklist_type: "" } } %>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-4 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Bibliography (<%= ModernSource.count.to_s %>)</h5>
-				<p class="pt-2"><%= link_to "View Bibliography Grid", modern_sources_path,  class: "card-link" %></p>
-				<p><%= button_to 'New bibliographic item', modern_sources_path, class: "card-link", params: { modern_source: { publication_title_orig: "" } } %></p>
+		<div class="col-4 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Bibliography (<%= ModernSource.count.to_s %>)</h5>
+					<p class="pt-2"><%= link_to "View Bibliography Grid", modern_sources_path,  class: "card-link" %></p>
+					<%= button_to 'New bibliographic item', modern_sources_path, class: "card-link", params: { modern_source: { publication_title_orig: "" } } %>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-4 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Additional tables</h5>
-				<p class="pt-2"><%= link_to "View people grid", people_path, class: "card-link" %></p>
-				<p><%= link_to "View institutions grid", institutions_path, class: "card-link" %></p>
-				<p><%= link_to "View locations grid", locations_path, class: "card-link" %></p>
-				<p><%= link_to "View religious orders grid", religious_orders_path, class: "card-link" %></p>
-				<p><%= link_to "View titles grid", titles_path, class: "card-link" %></p>
-				<p><%= link_to "View languages grid", languages_path, class: "card-link" %></p>
-				<% if user_signed_in? && current_user.admin? %><p><%= link_to "View users grid", users_path, class: "card-link" %></p><% end %>
+		<div class="col-4 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Additional tables</h5>
+					<p class="pt-2"><%= link_to "View people grid", people_path, class: "card-link" %></p>
+					<p><%= link_to "View institutions grid", institutions_path, class: "card-link" %></p>
+					<p><%= link_to "View locations grid", locations_path, class: "card-link" %></p>
+					<p><%= link_to "View religious orders grid", religious_orders_path, class: "card-link" %></p>
+					<p><%= link_to "View titles grid", titles_path, class: "card-link" %></p>
+					<p><%= link_to "View languages grid", languages_path, class: "card-link" %></p>
+					<% if user_signed_in? && current_user.admin? %><p><%= link_to "View users grid", users_path, class: "card-link" %></p><% end %>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-4 mb-3">
-		<div class="card">
-			<div class="card-body">
-				<h5 class="card-title">Public grids</h5>
-				<p class="pt-2"><%= link_to "View Apocrypha in manuscripts", sections_path,  class: "card-link" %></p>
-				<p class="pt-2"><%= link_to "View A list of Apocrypha", apocrypha_path,  class: "card-link" %></p>
-				<p class="pt-2"><%= link_to "View Apocrypha in booklists", booklist_sections_path,  class: "card-link" %></p>
+		<div class="col-4 mb-3">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Public grids</h5>
+					<p><%= link_to "View Apocrypha in manuscripts", sections_path,  class: "card-link" %></p>
+					<p><%= link_to "View A list of Apocrypha", apocrypha_path,  class: "card-link" %></p>
+					<p><%= link_to "View Apocrypha in booklists", booklist_sections_path,  class: "card-link" %></p>
+				</div>
 			</div>
 		</div>
 	</div>

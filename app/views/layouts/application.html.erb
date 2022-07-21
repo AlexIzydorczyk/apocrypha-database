@@ -6,9 +6,17 @@
 
   <body>
     <%= render '/layouts/navbar' %>
-    <main class="<%= 'container-fluid ms-0 my-2 px-3 mb-5' unless controller_name == 'application' %>">
+    <main class="<%= 'container-fluid ms-0 my-2 px-3 pb-5 mb-5' unless controller_name == 'application' %>">
       <%= yield %>
     </main>
+    <footer>
+      <div class="containter">
+        <div class="row">
+          <div class="col text-start">Apocrypharius.com</div>
+          <div class="col text-end">Terms of Use | Privacy Policy</div>
+        </div>
+      </div>
+    </footer>
     <% if Rails.env.staging? %>
       <div class="position-fixed bottom-0 left-0 right-0 alert alert-danger w-100 text-center">
         Note: This is the staging environment. All changes made will be deleted at 8pm CDT.

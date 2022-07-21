@@ -331,7 +331,7 @@
           let id = $(event.target).data('section-id');
           let input = $(event.target).data('field-name');
           let content = $('#'+$(event.target).attr('input')).attr('value');
-          console.log('secid', id, input, 'content', content);
+          vue.$set(vue.sections[vue.sections.findIndex(obj => obj.id == id)], input, content);
         });
 			},
 		});

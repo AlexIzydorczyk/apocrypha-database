@@ -17,6 +17,7 @@
   --purple: #3D3275;
   --grey: #EBE4DB;
   --blue: #78B4B4;
+  --footer-black: #28272E;
 }
 
 body,h1,h2,h3,h4,h5,h6,a,span,div{
@@ -67,6 +68,13 @@ textarea {
 
 body {
   background-color: var(--background-grey);
+}
+
+footer {
+  padding: 15px;
+  background-color: var(--footer-black);
+  color: var(--grey);
+  text-align: center;
 }
 
 // -------------- colors -----------
@@ -170,6 +178,7 @@ h2 form .btn-action {
 
 .card-link{
   color: var(--orange);
+  font-size: 14px;
   &:hover{
     color: var(--orange);
     font-weight: 500;

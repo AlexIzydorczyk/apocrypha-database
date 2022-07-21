@@ -120,17 +120,16 @@
 
 <h2 id="booklets">Booklets <button type="button" class="btn btn-action" onclick="$('#add-booklet').click();" v-show="known_booklet_composition">Add booklet</button></h2>
 <div>
-	<p>Booklet compositon is: 
-		<%= form.hidden_field :known_booklet_composition, "v-model": "known_booklet_composition" %>		
-		<span @click="clickKnown" class="pointer ms-3">
-			<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-dot-circle' : 'fa-circle'"></i>
-			<label>Known</label>
-		</span>
-		<span @click="clickUnknown" class="pointer ms-3">
-			<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-circle' : 'fa-dot-circle'"></i>
-			<label>Unknown</label>
-		</span>
-	</p>
+	<label class="mb-2">Booklet compositon is: </label>
+	<%= form.hidden_field :known_booklet_composition, "v-model": "known_booklet_composition" %>		
+	<span @click="clickKnown" class="pointer ms-3">
+		<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-dot-circle' : 'fa-circle'"></i>
+		<label>Known</label>
+	</span>
+	<span @click="clickUnknown" class="pointer ms-3">
+		<i class="far" style="color: var(--orange)" :class="known_booklet_composition ? 'fa-circle' : 'fa-dot-circle'"></i>
+		<label>Unknown</label>
+	</span>
 	<div class="col grey-bubble py-3" v-if="!known_booklet_composition && !has_booklets">
 		<p class="m-0">Booklet structure has not been determined for this manuscript.</p>
 	</div>
