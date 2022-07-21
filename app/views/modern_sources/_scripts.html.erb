@@ -62,6 +62,21 @@ function runTomSelects(){
 	new TomSelect("#modern_source_source_type",ts_sort_text_asc_max_1);
 	new TomSelect("#author_reference_id",{
 		plugins: ['caret_position'],
+		optgroups: <%= @grouped_people.keys.map{ |k| { value: k, label: k.to_s.humanize } }.to_json.html_safe %>,
+		items: <%= @modern_source.author_references.order(:sequence_no).map(&:person_id).to_json.html_safe %>,
+		options: [
+			<% sort_hash_keys(@grouped_people, ['author', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+				<% people.each do |person| %>
+					{
+						value: <%= person.id %>,
+						text: "<%= person.full_name %>",
+						group: "<%= group.to_s %>",
+						sequence_no: "<%= modern_source.author_references.where(person_id: person.id).first.sequence_no if modern_source.author_references.map(&:person_id).include?(person.id) %>"
+					},
+				<% end %>
+			<% end %>
+		],
+		optgroupField: "group",
 		sortField: {
 			field: "text",
 			direction: "asc",
@@ -79,6 +94,21 @@ function runTomSelects(){
 	new TomSelect("#modern_source_institution_id",ts_sort_text_asc_max_1);
 	new TomSelect("#editor_reference_id",{
 		plugins: ['caret_position'],
+		optgroups: <%= @grouped_people.keys.map{ |k| { value: k, label: k.to_s.humanize } }.to_json.html_safe %>,
+		items: <%= @modern_source.editor_references.order(:sequence_no).map(&:person_id).to_json.html_safe %>,
+		options: [
+			<% sort_hash_keys(@grouped_people, ['editor', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+				<% people.each do |person| %>
+					{
+						value: <%= person.id %>,
+						text: "<%= person.full_name %>",
+						group: "<%= group.to_s %>",
+						sequence_no: "<%= modern_source.editor_references.where(person_id: person.id).first.sequence_no if modern_source.editor_references.map(&:person_id).include?(person.id) %>"
+					},
+				<% end %>
+			<% end %>
+		],
+		optgroupField: "group",
 		sortField: {
 			field: "text",
 			direction: "asc",
@@ -95,6 +125,21 @@ function runTomSelects(){
 	});
 	new TomSelect("#translator_reference_id",{
 		plugins: ['caret_position'],
+		optgroups: <%= @grouped_people.keys.map{ |k| { value: k, label: k.to_s.humanize } }.to_json.html_safe %>,
+		items: <%= @modern_source.translator_references.order(:sequence_no).map(&:person_id).to_json.html_safe %>,
+		options: [
+			<% sort_hash_keys(@grouped_people, ['translator', 'multiple_roles', 'no_role_assigned']).each do |group, people| %>
+				<% people.each do |person| %>
+					{
+						value: <%= person.id %>,
+						text: "<%= person.full_name %>",
+						group: "<%= group.to_s %>",
+						sequence_no: "<%= modern_source.translator_references.where(person_id: person.id).first.sequence_no if modern_source.translator_references.map(&:person_id).include?(person.id) %>"
+					},
+				<% end %>
+			<% end %>
+		],
+		optgroupField: "group",
 		sortField: {
 			field: "text",
 			direction: "asc",
