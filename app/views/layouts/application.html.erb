@@ -6,7 +6,7 @@
 
   <body>
     <%= render '/layouts/navbar' %>
-    <main class="<%= 'container-fluid ms-0 my-2 px-3 pb-5 mb-5' unless controller_name == 'application' %>">
+    <main class="<%= 'container-fluid ms-0 my-2 px-3 pb-5 mb-5' unless controller_name == 'application' %>" style="min-height: calc(100vh - 54px - 107px);">
       <%= yield %>
     </main>
     <footer>
