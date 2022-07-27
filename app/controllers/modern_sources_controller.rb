@@ -127,6 +127,9 @@ class ModernSourcesController < ApplicationController
       build_person_references_for new_set - @modern_source.translators.ids, 'translator'
     end
 
+
+    
+
     if params[:source_urls].present?
       new_set = params[:source_urls][:urls].filter{ |url| url[:url].present? }.map{ |url| url[:url] }
       SourceUrl.where(modern_source_id: @modern_source.id).where.not(url: new_set).destroy_all
@@ -138,6 +141,10 @@ class ModernSourcesController < ApplicationController
     end
 
     if @modern_source.update!(modern_source_params)
+      if [:modern_source].present? && params[:modern_source][:source_type].present? && params[:modern_source][:source_type] == 'handwritten_document'
+        @modern_source.institution_id = params[:modern_source][:handwritten_document_institution_id]
+        @modern_source.save
+      end
       ChangeLog.create(user_id: current_user.id, record_type: 'ModernSource', record_id: @modern_source.id, controller_name: 'modern_source', action_name: 'update')
       if request.xhr?
         render :json => {"status": "updated"}  

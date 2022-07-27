@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="col-md-6 mb-2">
 			<div class="row">
-				<div class="form-group col-md-12" v-show="source_type == 'book'">
+				<div class="form-group col-md-12" v-show="source_type == 'book' || source_type == 'unpublished_document'">
 					<%= form.hidden_field :author_type, "v-model": "author_type" %>
 					<div class="d-flex">
 						<%= form.label :author_type, "Type of author:", style: "display: block", class: "me-3" %>
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 				<%= fields_for(:author_reference, @author_reference) do |ar| %>
-					<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || source_type != 'book'">
+					<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || !(source_type == 'book' || source_type == 'unpublished_document')">
 						<label style="display: block;">{{ source_type == 'book' ? "Regular author(s)" : "Author(s)" }}</label>
 						<div class="d-flex">
 							<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
@@ -40,7 +40,7 @@
 						</div>
 					</div>
 				<% end %>
-				<div class="form-group col-md-12 mb-2" v-show="author_type == 'corporate' && source_type == 'book'" v-if="source_type != 'handwritten_document'">
+				<div class="form-group col-md-12 mb-2" v-show="author_type == 'corporate' && (source_type == 'book' || source_type == 'unpublished_document') && source_type != 'handwritten_document'">
 					<%= form.label :institution_id, "Corporate author(s)", style: "display: block" %>
 					<div class="d-flex">
 						<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Enter corporate author"} %>
@@ -167,10 +167,10 @@
 						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-location-modal">New</button>
 					</div>
 				</div>
-				<div class="form-group col-md-4 mb-2" v-if="source_type == 'handwritten_document'">
+				<div class="form-group col-md-4 mb-2" v-show="source_type == 'handwritten_document'">
 					<%= form.label :institution_id, "Repository", style: "display: block" %>
 					<div class="d-flex">
-						<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Select institution"} %>
+						<%= form.collection_select :institution_id, Institution.all, :id, :display_name, {include_blank: true}, {class: "form-control", placeholder: "Select institution", id: "handwritten_document_institution_id", name: "modern_source[handwritten_document_institution_id]"} %>
 						<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#modal-0-new-institution-modal">New</button>
 					</div>
 				</div>
@@ -186,22 +186,18 @@
 					<%= form.label :publisher, style: "display: block" %>
 					<%= form.select :publisher, options_for_select(@publishers, modern_source.publisher), {include_blank: true}, {class: "form-control", placeholder: "Publisher"} %>
 				</div>
-				<div class="form-group col-md-2 mb-2" v-show="source_type != 'handwritten_document'" v-if="source_type != 'journal_article'">
+				<div class="form-group col-md-2 mb-2" v-if="source_type != 'journal_article'">
 				<label style="display: block;">{{ source_type == 'web_page' ? "Last modified" : "Year" }}</label>
 					<%= form.text_field :publication_creation_date, class: "form-control", ":placeholder": "source_type == 'web_page' ? 'Date' : 'Year'" %>
 				</div>
 				<div class="col-md-12">
 					<div class="row">
-						<div class="form-group col-md-2 mb-2 d-none">
-							<%= form.label :date_accessed, "Accessed" %>
-							<%= form.text_field :date_accessed, class: "form-control", placeholder: "Date accessed" %>
-						</div>
 						<div class="form-group col-md mb-2">
 							<div id="urls">
 								<div v-for="(source, index) in sources" class="row mb-2">
 									<div class="col-4">
 										<label style="display: block;">Accessed</label>
-										<input type="text" name="source_urls[urls][][date_accessed]" class="form-control accessed-field" v-model="source.accessed" placeholder="Date accessed">			
+										<input type="text" name="source_urls[urls][][date_accessed]" class="form-control accessed-field" v-model="source.accessed" placeholder="Date accessed" :data-index="index">			
 									</div>
 									<div class="col">
 										<label style="display: block;">URL</label>

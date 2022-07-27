@@ -132,7 +132,7 @@
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('bibliography/${params.data.id}', 'modern_source')"><i class='fa-solid fa-arrows-repeat'></i></button>`
             } },
           <% end %>
-          { headerName: "Place of publ.", field: "publication_location_city_orig", hide: false, editable: false },
+          { headerName: "Place of publ.", field: "publication_location_city", hide: false, editable: false },
           // { headerName: "Diocese orig", field: "publication_location_diocese_orig", hide: true, editable: false },
           // { headerName: "Region orig", field: "publication_location_region_orig", hide: true, editable: false },
           { headerName: "Country", field: "publication_location_country", hide: false, editable: false },
@@ -206,7 +206,7 @@
         edition: "<%= modern_source.edition %>",
 
         publication_location_id: "<%= modern_source.publication_location_id %>",
-        publication_location_city_orig: "<%= modern_source.publication_location.try(:city_orig) %>",
+        publication_location_city: "<%= modern_source.publication_location.try(:city) %>",
         publication_location_diocese_orig: "<%= modern_source.publication_location.try(:diocese_orig) %>",
         publication_location_region_orig: "<%= modern_source.publication_location.try(:region_orig) %>",
         publication_location_country: "<%= modern_source.publication_location.try(:country) %>",

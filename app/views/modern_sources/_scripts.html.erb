@@ -33,26 +33,33 @@ $(document).ready(function(){
 		},
 		methods: {
 			addUrl(){
+				let vue = this;
 				this.sources.push({url: '', accessed: ''});
 				setTimeout(function() {
 					$( ".accessed-field" ).last().datepicker({
 				      changeMonth: true,
 				      changeYear: true,
 				      dateFormat: "d MM, yy",
-				      maxDate: "+0"
+				      maxDate: "+0",
+				      onSelect: function() {
+				      	vue.$set(vue.sources[$(this).data('index')],'accessed', $(this).val());
+					    }
 				    });
 				}, 200);
-					
 			}
 		},
 		mounted(){
+			let vue = this;
 			runTomSelects();
 			$('#modern-source-form, #page-title').removeClass('d-none');
 	    $( ".accessed-field" ).datepicker({
 	      changeMonth: true,
 	      changeYear: true,
 	      dateFormat: "d MM, yy",
-	      maxDate: "+0"
+	      maxDate: "+0",
+	      onSelect: function() {
+	      	vue.$set(vue.sources[$(this).data('index')],'accessed', $(this).val());
+		    }
 	    });
 		},
 	});
@@ -92,6 +99,7 @@ function runTomSelects(){
 	  hideSelected: false,
 	});
 	new TomSelect("#modern_source_institution_id",ts_sort_text_asc_max_1);
+	new TomSelect("#handwritten_document_institution_id",ts_sort_text_asc_max_1);
 	new TomSelect("#editor_reference_id",{
 		plugins: ['caret_position'],
 		optgroups: <%= @grouped_people.keys.map{ |k| { value: k, label: k.to_s.humanize } }.to_json.html_safe %>,

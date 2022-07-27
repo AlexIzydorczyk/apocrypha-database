@@ -112,7 +112,7 @@ class ModernSource < ApplicationRecord
       pub = [
         self.document_type,
         self.publication_creation_date
-      ].select{ |b| b.present? }.join(", ") + ". "
+      ].select{ |b| b.present? }.join(". ") + ". "
       s += pub + ". " if pub.present?
     end
 
