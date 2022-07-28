@@ -32,7 +32,7 @@
         ]},
         { headerName: "Location", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
-            { headerName: "Location id", field: "location_id", editable: false, hide: true, suppressColumnsToolPanel: true, cellRenderer: function(params) {
+            { headerName: "Location id", field: "location_id", editable: false, hide: true, suppressColumnsToolPanel: false, cellRenderer: function(params) {
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("locations/${params.value}", "location")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('institutions/${params.data.id}', 'institution')"><i class='fa-solid fa-arrows-repeat'></i></button>`
               } 
             },
