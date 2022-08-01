@@ -73,7 +73,7 @@
 		</div>
 
 		<%= fields_for(:author_reference, @author_reference) do |ar| %>
-			<div class="form-group col-md-12 mb-2" v-show="author_type == 'regular' || source_type != 'book'">
+
 				<label style="display: block;">Author(s)</label>
 				<div class="d-flex">
 					<select class="form-control" multiple="multiple" name="author_reference[id][]" id="author_reference_id" placeholder="Select author(s)">
@@ -87,7 +87,7 @@
 					</select>
 					<button type="button" class="btn btn-outline-action ms-4" data-bs-toggle="modal" data-bs-target="#person-modal-author">New</button>
 				</div>
-			</div>
+
 		<% end %>
 
 	</div>
