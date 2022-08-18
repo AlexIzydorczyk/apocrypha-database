@@ -25,7 +25,7 @@ module IzydorcykyProject
       g.jbuilder          false
     end
 
-    if Rails.env.development?
+    if Rails.env.development? || Rails.env.staging?
       Rack::MiniProfiler.config.enabled = true
     end
   end
