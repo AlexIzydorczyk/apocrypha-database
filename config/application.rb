@@ -26,7 +26,7 @@ module IzydorcykyProject
     end
 
     if Rails.env.development?
-      Rack::MiniProfiler.config.enabled = false
+      Rack::MiniProfiler.config.enabled = true
     end
   end
 end
