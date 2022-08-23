@@ -11,7 +11,7 @@
   const columnDefs = [
     { headerName: "Apocryphon mentioned", children: [ //booklist reference to booklist section
       { headerName: "Apocryphon no", headerTooltip: "Apocryphon no", field: "apocryphon.apocryphon_no", filter: 'agSetColumnFilter'  },
-      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true },
+      { headerName: "Standard Latin title", headerTooltip: "Standard Latin title", field: "apocryphon.main_latin_title", enableRowGroup: true, cellStyle: {"font-weight": "600"} },
       { headerName: "Other Latin titles", headerTooltip: "Other Latin titles", field: "apocryphon.other_latin_titles"  },
       { headerName: "Standard English title", headerTooltip: "Standard English title", field: "apocryphon.main_english_title"  },
       { headerName: "Other English titles", headerTooltip: "Other English titles", field: "apocryphon.other_english_titles"  },
