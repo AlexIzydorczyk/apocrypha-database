@@ -20,7 +20,7 @@ class UserGridStatesController < ApplicationController
 	def get
 		ugs_params = params[:id].present? ? {id: params[:id]} : {record_type: params[:record_type], user: current_user}
 		ugs = UserGridState.where(ugs_params)
-		render json: {state: ugs.first.state, filters: ugs.first.filters}
+		render json: {state: ugs.first.state, filters: ugs.first.filters, title: ugs.first.state_name }
 	end
 
 	def sort

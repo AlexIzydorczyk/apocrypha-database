@@ -184,7 +184,7 @@
           manuscript: {
             show_link: "<%= row['manuscript_show_link'] %>",
             identifier: "<%= row['manuscript_reproduction_online'] %>",
-            reproduction_online: `<%= row['manuscript_urls'].try(:html_safe) %>`,
+            reproduction_online: `<%= row['manuscript_reproduction_online'].try(:html_safe) %>`,
             census_no: "<%= row['manuscript_census_no'] %>",
             status: "<%= row['manuscript_status'] %>",
             institution_name: `<%= row['manuscript_institution_name'].try(:html_safe) %>`,

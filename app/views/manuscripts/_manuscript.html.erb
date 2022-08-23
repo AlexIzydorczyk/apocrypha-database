@@ -263,13 +263,13 @@
     <dd class="col-sm-9"><%= manuscript.database_urls.map{ |du| link_to du.url, du.url }.join(', ').html_safe %></dd><% end %>
     <% if manuscript.correspondents.present? %><dt class="col-sm-3 text-end">Correspondent</dt>
     <dd class="col-sm-9"><%= manuscript.correspondents.map(&:full_name).join(', ') %></dd><% end %>
-    <% if manuscript.transcribers.present? %><dt class="col-sm-3 text-end">Transcriber</dt>
+    <% if manuscript.transcribers.present? %><dt class="col-sm-3 text-end">Transcribed by</dt>
     <dd class="col-sm-9"><%= manuscript.transcribers.map(&:full_name).join(', ') %></dd><% end %>
     <% if manuscript.compilers.present? %><dt class="col-sm-3 text-end">Compiled by</dt>
     <dd class="col-sm-9"><%= manuscript.compilers.map(&:full_name).join(', ') %></dd><% end %>
-    <% if manuscript.created_at.present? %><dt class="col-sm-3 text-end">Ms. created</dt>
+    <% if manuscript.created_at.present? %><dt class="col-sm-3 text-end">Record created</dt>
     <dd class="col-sm-9"><%= manuscript.created_at.strftime('%e %B, %Y') %></dd><% end %>
-    <% if manuscript.updated_at.present? %><dt class="col-sm-3 text-end">Ms. updated</dt>
+    <% if manuscript.updated_at.present? %><dt class="col-sm-3 text-end">Record updated</dt>
     <dd class="col-sm-9"><%= manuscript.updated_at.strftime('%e %B, %Y') %></dd><% end %>
   </dl>
 

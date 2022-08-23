@@ -4,7 +4,7 @@ var default_state_id = <%= UserGridState.where(record_type: record_type, is_defa
 
 $(function() {
 	callBackFunc = typeof updateAllFilterVisiblity === "function" ? updateAllFilterVisiblity : null;
-	setState(<%= @initial_state || "null" %>,<%= @initial_filter || "null" %>,callBackFunc);
+	setState(<%= @initial_state || "null" %>,<%= @initial_filter || "null" %>,callBackFunc, "<%= @initial_title %>");
 });
 
 function getState(parameters, load_new_filters=true) {
@@ -14,7 +14,7 @@ function getState(parameters, load_new_filters=true) {
 		data: parameters,
 		success: function(data) {
 			filters = load_new_filters ? data.filters : gridOptions.api.getFilterModel();
-			setState(data.state, filters);
+			setState(data.state, filters, null, data.title);
 		}
 	})
 	if(parameters.id) setTimeout(function() {
@@ -52,7 +52,7 @@ function setDefaultState(state_id) {
 	})
 }
 
-function setState(state, filters=null, callback){
+function setState(state, filters=null, callback, title=""){
 	console.log("SETTING STATE", state);
 	if(state){
 		gridOptions.columnApi.applyColumnState({
@@ -61,6 +61,8 @@ function setState(state, filters=null, callback){
 		});
 	}
 	if(filters) gridOptions.api.setFilterModel(filters);
+	if(title != "") $("#state-title").text(": " + title);
+	else $("#state-title").text("");
 	if(callback) callback();
 }
 

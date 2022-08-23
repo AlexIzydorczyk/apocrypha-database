@@ -25,6 +25,7 @@ class BooklistSectionsController < ApplicationController
 
     @initial_state = ugs.try(:state).try(:to_json).try(:html_safe)
     @initial_filter = ugs.try(:filters).try(:to_json).try(:html_safe)
+    @initial_title = ugs.try(:state_name)
   end
 
   def show
