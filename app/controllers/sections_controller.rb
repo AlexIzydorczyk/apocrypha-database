@@ -84,7 +84,7 @@ ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT reproduction_urls.url), NULL), '
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT database_urls.url), NULL), ', ') AS manuscript_urls,
 manuscripts.census_no AS manuscript_census_no,
 manuscripts.status AS manuscript_status,
-STRING_AGG(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT('[', repository.name_alt, ']') ELSE '' END)) AS manuscript_institution_name,
+CONCAT(nullif(trim(repository.name), ''), (CASE WHEN repository.name_alt != '' THEN CONCAT(' [', repository.name_alt, ']') ELSE '' END)) AS manuscript_institution_name,
 repository.name_alt AS manuscript_institution_name_alternative,
 repository_location.city AS manuscript_institution_city,
 repository_location.city_alt AS manuscript_institution_city_alt,
