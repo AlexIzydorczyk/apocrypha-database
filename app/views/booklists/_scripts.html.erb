@@ -11,6 +11,7 @@ $(document).ready(function(){
 			date_exact: <%= booklist.date_exact ? "true" : "false" %>,
 			date_to: '<%= booklist.date_to %>', date_from: '<%= booklist.date_from %>',
 			date_to_select: null, date_from_select: null,
+			excerpt_texts: <%= booklist.booklist_sections.order(:id).map(&:relevant_text_orig).to_json.html_safe %>
 		},
 		watch: {
 			date_from(){
@@ -48,6 +49,12 @@ $(document).ready(function(){
 			  maxItems: 1,
 			  maxOptions: null,
 			});
+			let vue = this;
+			addEventListener("trix-change", function(event) {
+        let index = $(event.target).data('index');
+        let content = $('#'+$(event.target).attr('input')).attr('value');
+        vue.$set(vue.excerpt_texts, index, content);
+      });
 		},
 	});
 });

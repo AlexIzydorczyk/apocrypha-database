@@ -68,7 +68,7 @@
       { headerName: "Provenance of booklet or manuscript", headerTooltip: "Provenance of booklet or manuscript", field: "genesis.ownerships" },
     ] },
     { headerName: "Contents", children: [
-      { headerName: "Sequence no", headerTooltip: "Sequence no", field: "content.sequence_no", comparator: numberSort, filter: null, sort: "asc", sortIndex: 1 },
+      { headerName: "Order texts", headerTooltip: "Order texts", field: "content.sequence_no", comparator: numberSort, filter: null, sort: "asc", sortIndex: 1 },
       { headerName: "Apocr./Non-apocr.", headerTooltip: "Apocr./Non-apocr.", field: "content.apocryphal", filter: 'agSetColumnFilter' },
       { headerName: "Contents item", headerTooltip: "Contents item", field: "content.content_item" },
     ]},
@@ -89,7 +89,7 @@
       { headerName: "Title in ms.", headerTooltip: "Title in ms.", field: "text.manuscript_title_orig" },
       { headerName: "Title in ms. (translit.)", headerTooltip: "Title in ms. (translit.)", field: "text.manuscript_title_orig_transliteration" },
       { headerName: "Title in ms. (transla.)", headerTooltip: "Title in ms. (transla.)", field: "text.manuscript_title_translation" },
-      { headerName: "Section no.", headerTooltip: "Section no.", field: "section.section_number", comparator: numberSort, sort: "asc", sortIndex: 2 },
+      { headerName: "Order sections", headerTooltip: "Order sections", field: "section.section_number", comparator: numberSort, sort: "asc", sortIndex: 2 },
       { headerName: "Section name", headerTooltip: "Section name", field: "section.section_name" },
       { headerName: "Pp./ff. incipit", headerTooltip: "Pp./ff. incipit", field: "section.pages_folios_incipit", filter: null },
       { headerName: "Incipit", headerTooltip: "Incipit", field: "section.incipit_orig", cellRenderer: richTextRender },
@@ -242,7 +242,7 @@
     // onColumnVisible: onColumnVisible,
     defaultColDef: defaultColDef,
     suppressMenuHide: true,
-    groupAggFiltering: (params) => !!params.node.group,
+    groupAggFiltering: (params) => params.node.group,
     autoGroupColumnDef: {
       cellRendererParams: {
         // suppressCount: true,
@@ -285,7 +285,9 @@
     enableBrowserTooltips: true,
     aggFuncs: {
       concat: (params) => {
-        let arr = params.values.filter(onlyUnique).map(function(val) {
+        // console.log("params", params);
+        let values = params.colDef.field == "content.content_item" && params.rowNode.childrenAfterSort ? params.rowNode.childrenAfterSort.map( n => n.data ? n.data.content.content_item : '' ) : params.values;
+        let arr = values.filter(onlyUnique).map(function(val) {
           return val == "" || val == [] || val == {} ? '(blank)' : val;
         })
         return arr.join(' ‖ ');

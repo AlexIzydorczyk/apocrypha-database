@@ -44,7 +44,7 @@ texts.extent AS text_extent,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT text_language.language_name), NULL), ', ') AS text_language, -- special
 texts.date_from AS text_date_from,
 texts.date_to AS text_date_to,
-CONCAT((CASE WHEN texts.date_exact AND texts.specific_date != '' THEN 'ca. ' ELSE '' END), texts.specific_date) AS text_specific_date, -- special
+CONCAT((CASE WHEN NOT(texts.date_exact) AND texts.specific_date != '' THEN 'ca. ' ELSE '' END), texts.specific_date) AS text_specific_date, -- special
 texts.no_columns AS text_no_columns,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CONCAT_WS(' ', nullif(trim(text_scribes.first_name_vernacular), ''), nullif(trim(text_scribes.middle_name_vernacular), ''), nullif(trim(text_scribes.prefix_vernacular), ''), nullif(trim(text_scribes.last_name_vernacular), ''), nullif(trim(text_scribes.suffix_vernacular), ''))), NULL), ', ') AS text_scribes, -- special
 texts.script AS text_script,
@@ -53,14 +53,14 @@ texts.notes_on_scribe AS text_notes_on_scribe,
 content_title.id,
 contents.sequence_no AS content_sequence_no,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT CONCAT_WS(', ',
-  nullif(trim(content_title.title_orig), ''),
   nullif(trim(CONCAT_WS(' ',
     nullif(trim(content_author.first_name_vernacular), ''),
     nullif(trim(content_author.middle_name_vernacular), ''),
     nullif(trim(content_author.prefix_vernacular), ''),
     nullif(trim(content_author.last_name_vernacular), ''),
     nullif(trim(content_author.suffix_vernacular), '')
-  )), '')
+  )), ''),
+  nullif(trim(content_title.title_orig), '')
 )), NULL), ', ') AS content_item,
 CASE WHEN content_title.apocryphon_id is null THEN 'Non apocryphal' ELSE 'Apocryphal' END AS content_apocryphal,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT main_eng_title.title_orig), NULL), ', ') AS apocryphon_main_english_title,
@@ -76,7 +76,7 @@ booklets.pages_folios_from AS booklet_pages_folios_from,
 booklets.pages_folios_to AS booklet_pages_folios_to,
 booklets.date_from AS booklet_date_from,
 booklets.date_to AS booklet_date_to,
-CONCAT((CASE WHEN booklets.date_exact AND booklets.specific_date != '' THEN 'ca. ' ELSE '' END), booklets.specific_date) AS booklet_specific_date, -- special
+CONCAT((CASE WHEN NOT(booklets.date_exact) AND booklets.specific_date != '' THEN 'ca. ' ELSE '' END), booklets.specific_date) AS booklet_specific_date, -- special
 booklets.content_type AS booklet_content_type,
 
 CONCAT('/manuscripts/', CAST(manuscripts.id AS varchar)) AS manuscript_show_link,
@@ -103,7 +103,7 @@ manuscripts.dimensions AS manuscript_dimensions,
 CASE WHEN manuscripts.leaf_page_no = '' THEN '' ELSE CONCAT(manuscripts.leaf_page_no, (CASE WHEN manuscripts.is_folios THEN ' ff.' ELSE ' pp.' END)) END AS manuscript_leaf_page_no,
 manuscripts.date_from AS manuscript_date_from,
 manuscripts.date_to AS manuscript_date_to,
-CONCAT((CASE WHEN manuscripts.date_exact AND manuscripts.specific_date != '' THEN 'ca. ' ELSE '' END), manuscripts.specific_date) AS manuscript_specific_date, -- special
+CONCAT((CASE WHEN NOT(manuscripts.date_exact) AND manuscripts.specific_date != '' THEN 'ca. ' ELSE '' END), manuscripts.specific_date) AS manuscript_specific_date, -- special
 manuscripts.content_type AS manuscript_content_type,
 manuscripts.notes AS manuscript_notes,
 ARRAY_TO_STRING(ARRAY_REMOVE(ARRAY_AGG(DISTINCT manuscript_languages.language_name), NULL), ', ') AS manuscript_languages, -- special

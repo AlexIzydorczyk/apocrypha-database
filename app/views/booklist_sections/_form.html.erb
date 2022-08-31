@@ -6,7 +6,8 @@
 	</div>
 	<div class="form-group col-12 mb-2">
 		<%= form.label :relevant_text_orig, "Relevant text", style: "display: block" %>
-		<%= form.text_area :relevant_text_orig, class: "form-control" %>
+		<input type="hidden" name="booklist_section[relevant_text_orig]" v-model="excerpt_texts[<%= bs_index %>]" :id="'booklist_section_<%= bs_index %>_relevant_text_orig'">
+		<component is="trix-editor" spellcheck="false" id="booklist_section_<%= bs_index %>_relevant_text_orig_trix" :input="'booklist_section_<%= bs_index %>_relevant_text_orig'" :data-index="<%= bs_index %>"></component>
 	</div>
 </div>
 

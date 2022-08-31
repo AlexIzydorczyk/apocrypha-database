@@ -328,11 +328,11 @@
 				});
 				let vue = this;
 				addEventListener("trix-change", function(event) {
-          let id = $(event.target).data('section-id');
-          let input = $(event.target).data('field-name');
-          let content = $('#'+$(event.target).attr('input')).attr('value');
-          vue.$set(vue.sections[vue.sections.findIndex(obj => obj.id == id)], input, content);
-        });
+		          let id = $(event.target).data('section-id');
+		          let input = $(event.target).data('field-name');
+		          let content = $('#'+$(event.target).attr('input')).attr('value');
+		          vue.$set(vue.sections[vue.sections.findIndex(obj => obj.id == id)], input, content);
+		        });
 			},
 		});
 	});
