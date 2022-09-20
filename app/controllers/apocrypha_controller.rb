@@ -5,11 +5,13 @@ class ApocryphaController < ApplicationController
 
   def index
     @apocrypha = Apocryphon.all.includes(:languages, :titles, :language_references)
-    if current_user.present?
-      @initial_state = current_user.user_grid_states.find_by(record_type: "Apocryphon").try(:state).try(:to_json).try(:html_safe)
-      @initial_filter = current_user.user_grid_states.find_by(record_type: "Apocryphon").try(:filters).try(:to_json).try(:html_safe)
-      @initial_title = ugs.try(:state_name)
-    end
+
+    ugs = user_signed_in? && current_user.user_grid_states.exists?(record_type: "Apocryphon") ? current_user.user_grid_states.where(record_type: "Apocryphon").first : (UserGridState.exists?(record_type: "Apocryphon", is_default: true) ? UserGridState.where(record_type: "Apocryphon", is_default: true).first : nil)
+
+    @initial_state = ugs.try(:state).try(:to_json).try(:html_safe)
+    @initial_filter = ugs.try(:filters).try(:to_json).try(:html_safe)
+    @initial_title = ugs.try(:state_name)
+    
   end
 
   def show
