@@ -40,11 +40,11 @@
 	<div class="form-group col-md-3 mb-2 d-flex align-items-start pt-4">
 		<%= form.hidden_field :is_folios, "v-model": "is_folios" %>
 		<span @click="is_folios = true" class="pointer">
-			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-dot-circle' : 'fa-circle'"></i>
+			<i class="fa-regular" style="color: var(--orange)" :class="is_folios ? 'fa-circle-dot' : 'fa-circle'"></i>
 			<label>Foliated</label>
 		</span>
 		<span @click="is_folios = false" class="pointer ms-3">
-			<i class="far fa-circle" style="color: var(--orange)" :class="is_folios ? 'fa-circle' : 'fa-dot-circle'"></i>
+			<i class="fa-regular" style="color: var(--orange)" :class="is_folios ? 'fa-circle' : 'fa-circle-dot'"></i>
 			<label>Paginated</label>
 		</span>
 	</div>
