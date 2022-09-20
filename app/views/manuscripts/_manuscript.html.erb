@@ -119,11 +119,11 @@
                 <% end %>
 
                 <% if text.colophon_orig.present? %><dt class="col-sm-4 text-end">Colophon as in ms.</dt>
-                <dd class="col-sm-8"><% if text.colophon_pages_folios_to.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= text.colophon_pages_folios_to %> <% end %><%= text.colophon_orig %></dd><% end %>
+                <dd class="col-sm-8"><% if text.colophon_pages_folios_to.present? %><%= text.find_manuscript.blank? || text.find_manuscript.is_folios ? 'f' : 'p' %>. <%= text.colophon_pages_folios_to %> <% end %><%= text.colophon_orig.try(:html_safe) %></dd><% end %>
                 <% if text.colophon_translation.present? %><dt class="col-sm-4 text-end">Colophon as in ms. translation</dt>
-                <dd class="col-sm-8"><%= text.colophon_translation %></dd><% end %>
+                <dd class="col-sm-8"><%= text.colophon_translation.try(:html_safe) %></dd><% end %>
                 <% if text.colophon_transliteration.present? %><dt class="col-sm-4 text-end">Colophon as in ms. transliteration</dt>
-                <dd class="col-sm-8"><%= text.colophon_transliteration %></dd><% end %>
+                <dd class="col-sm-8"><%= text.colophon_transliteration.try(:html_safe) %></dd><% end %>
 
               <div class="row my-3"></div>
               

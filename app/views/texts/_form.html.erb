@@ -193,9 +193,14 @@
 	</div>
 	<div class="form-group col-md-10 mb-2">
 		<label>Colophon</label>
-		<%= form.text_area :colophon_orig, class: "form-control mb-2 one-line", placeholder: "Colophon" %>
-		<%= form.text_area :colophon_transliteration, class: "form-control mb-2 one-line", placeholder: "Transliteration", "v-show": "not_latin" %>
-		<%= form.text_area :colophon_translation, class: "form-control mb-2 one-line", placeholder: "Translation", "v-show": "not_latin" %>
+		<input type="hidden" name="text[colophon_orig]" v-model="colophon_orig" :id="'colophon_orig'">
+		<component is="trix-editor" data-field-name="colophon_orig" spellcheck="false" :input="'colophon_orig'" placeholder="Colophon"></component>
+		<div v-show="not_latin">
+			<input type="hidden" name="text[colophon_transliteration]" v-model="colophon_transliteration" :id="'colophon_transliteration'">
+			<component is="trix-editor" data-field-name="colophon_transliteration" spellcheck="false" :input="'colophon_transliteration'" placeholder="Transliteration"></component>
+			<input type="hidden" name="text[colophon_translation]" v-model="colophon_translation" :id="'colophon_translation'">
+			<component is="trix-editor" data-field-name="colophon_translation" spellcheck="false" :input="'colophon_translation'" placeholder="Translation"></component>			
+		</div>
 	</div>
 </div>
 
@@ -250,6 +255,9 @@
 			name: 'textVue',
 			el: '#text-form',
 			data: {
+				colophon_orig: "<%= text.colophon_orig.html_safe %>",
+				colophon_transliteration: "<%= text.colophon_transliteration.html_safe %>",
+				colophon_translation: "<%= text.colophon_translation.html_safe %>",
 				add_title: <%= %w(title_pages_folios_to manuscript_title_language_id manuscript_title_orig manuscript_title_orig_transliteration manuscript_title_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				add_colophon: <%= %w(colophon_pages_folios_to colophon_language_id colophon_orig colophon_transliteration colophon_translation).any?{ |f| text[f].present? } ? "true" : "false" %>,
 				date_exact: <%= text.date_exact ? "true" : "false" %>,
@@ -331,7 +339,11 @@
 		          let id = $(event.target).data('section-id');
 		          let input = $(event.target).data('field-name');
 		          let content = $('#'+$(event.target).attr('input')).attr('value');
-		          vue.$set(vue.sections[vue.sections.findIndex(obj => obj.id == id)], input, content);
+		          if(input.includes("colophon")){
+		          	vue.$set(vue, input, content);
+		          } else {
+		          	vue.$set(vue.sections[vue.sections.findIndex(obj => obj.id == id)], input, content);	
+		          }
 		        });
 			},
 		});
