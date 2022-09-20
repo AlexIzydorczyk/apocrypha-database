@@ -54,9 +54,9 @@
       { headerName: "Heading", field: "excerpt.heading_orig"},
       { headerName: "Heading (translit.)", field: "excerpt.heading_orig_transliteration" },
       { headerName: "Heading (transla.)", field: "excerpt.heading_translation" },
-      { headerName: "Relevant text", field: "excerpt.relevant_text_orig"},
-      { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration" },
-      { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation" },
+      { headerName: "Relevant text", field: "excerpt.relevant_text_orig", cellRenderer: richTextRender},
+      { headerName: "Relevant text (translit.)", field: "excerpt.relevant_text_orig_transliteration", cellRenderer: richTextRender },
+      { headerName: "Relevant text (transla.)", field: "excerpt.relevant_text_translation", cellRenderer: richTextRender },
       { headerName: "Notes on relevant text", field: "excerpt.notes"},
       { headerName: "Extant as ms.", field: "excerpt.manuscript"},
     ]},
@@ -221,6 +221,10 @@
       ],
     },
   };
+
+  function richTextRender(p) {
+    return p.value;
+  }
 
   function numberSort(num1, num2){
     return parseInt(num1) - parseInt(num2);
