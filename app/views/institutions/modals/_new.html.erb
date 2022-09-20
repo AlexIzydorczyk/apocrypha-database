@@ -11,7 +11,7 @@
 				<div class="row">
 					<div class="col-md-6 offset-3">
 						<label>Institution name</label>
-						<%= form.text_field :name, class: "form-control mb-2", placeholder: "Standard name used in English, eg., Public Library" %>
+						<%= form.text_field :name, class: "form-control mb-2", placeholder: "Local name" %>
 					</div>
 					<div class="col-md-3">
 						<%= form.label 'lang', "&nbsp;".html_safe, style: "display: block" %>
@@ -22,8 +22,8 @@
 						<%= form.collection_select :writing_system_id, WritingSystem.all, :id, :name, {}, {class: "form-control mb-2", "v-model": "writing_system_id"} %>
 					</div>
 					<div class="col-md-6" v-show="alternative_name">
-						<label>Name of institution: alternative or local name of institution</label>
-						<%= form.text_field :name_alt, class: "form-control mb-2", placeholder: "Alternative or local name, e.g., Публичная библиотека" %>
+						<label>Alternative institution name</label>
+						<%= form.text_field :name_alt, class: "form-control mb-2", placeholder: "English name" %>
 					</div>
 					<div class="col-md-6 offset-3" v-show="alternative_name && writing_system_id != '<%= latin_writing_system_id %>'">
 						<%= form.text_field :name_transliteration, class: "form-control mb-2", placeholder: "Transliteration, e.g., Publichnaia biblioteka" %>
