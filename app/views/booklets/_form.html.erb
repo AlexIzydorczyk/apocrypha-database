@@ -106,6 +106,9 @@
 <h2 id="contents">Booklet contents <%= link_to "Add contents", '#contents', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#addContentModal"} %></h2>
 <%= render 'contents/list', parent: booklet %>
 
+<h2 id="contents">Mentioned in booklists <%= link_to "Add booklist", '#booklists', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#add-booklet-booklist-modal"} %></h2>
+<%= render 'booklet_booklists/list', parent: booklet %>
+
 </div>
 
 <!-- Additional forms -->
@@ -128,7 +131,10 @@
 <%= render 'institutions/modals/new', institution: booklet.genesis_institution, parent: booklet, pid: "#{booklet.genesis_institution_id}-", depth: 0 %>
 <% end %>
 
+<%= render 'booklet_booklists/modals/new', booklet_booklist: BookletBooklist.new, parent: booklet, pid: '', depth: 0 %>
+
 <!-- Scripts -->
 <%= render '/booklets/scripts', booklet: booklet %>
 <%= render '/contents/list_script' %>
 <%= render '/ownerships/list_script' %>
+<%= render '/booklet_booklists/list_script' %>

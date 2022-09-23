@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_19_144702) do
+ActiveRecord::Schema.define(version: 2022_09_23_195332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 2022_07_19_144702) do
     t.index ["content_id"], name: "index_apocrypha_on_content_id"
     t.index ["main_english_title_id"], name: "index_apocrypha_on_main_english_title_id"
     t.index ["main_latin_title_id"], name: "index_apocrypha_on_main_latin_title_id"
+  end
+
+  create_table "booklet_booklists", force: :cascade do |t|
+    t.bigint "booklet_id", null: false
+    t.bigint "booklist_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booklet_id"], name: "index_booklet_booklists_on_booklet_id"
+    t.index ["booklist_id"], name: "index_booklet_booklists_on_booklist_id"
   end
 
   create_table "booklets", force: :cascade do |t|
@@ -535,6 +544,8 @@ ActiveRecord::Schema.define(version: 2022_07_19_144702) do
   add_foreign_key "apocrypha", "contents"
   add_foreign_key "apocrypha", "titles", column: "main_english_title_id"
   add_foreign_key "apocrypha", "titles", column: "main_latin_title_id"
+  add_foreign_key "booklet_booklists", "booklets"
+  add_foreign_key "booklet_booklists", "booklists"
   add_foreign_key "booklets", "institutions", column: "genesis_institution_id"
   add_foreign_key "booklets", "locations", column: "genesis_location_id"
   add_foreign_key "booklets", "manuscripts"

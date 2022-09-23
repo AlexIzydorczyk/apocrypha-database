@@ -7,6 +7,7 @@ class Booklet < ApplicationRecord
   has_many :scribes, through: :scribe_references, source: :person
   has_many :ownerships, -> { order("index ASC") }, dependent: :destroy
   has_many :contents, -> { order("sequence_no ASC") }, dependent: :destroy
+  has_many :booklet_booklists
 
   def display_name
     "Booklet " + self.booklet_no

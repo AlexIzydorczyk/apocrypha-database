@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :booklet_booklists
 
 	devise_for :users
   resources :users

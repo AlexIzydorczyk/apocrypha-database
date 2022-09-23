@@ -12,6 +12,7 @@ class Booklist < ApplicationRecord
   has_many :person_references, as: :record, dependent: :destroy
   has_many :author_references, -> { author }, as: :record, class_name: "PersonReference"
   has_many :authors, through: :author_references, class_name: "Person"
+  has_many :booklet_booklists
 
   def display_name
     "Booklist " + self.id.to_s
