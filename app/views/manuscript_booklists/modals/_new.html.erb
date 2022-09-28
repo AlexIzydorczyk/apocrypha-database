@@ -1,0 +1,52 @@
+<div class="modal" id="add-manuscript-booklist-modal" tabindex="-1" aria-hidden="true" data-depth="<%= depth %>">
+	<%= form_with(model: manuscript_booklist) do |form| %>
+	<% if parent.class == Manuscript %>
+		<input type="hidden" name="manuscript_booklist[manuscript_id]" value="<%= parent.id %>">
+	<% else %>
+		<input type="hidden" name="manuscript_booklist[booklist_id]" value="<%= parent.id %>">
+	<% end %>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add <%= parent.class == Manuscript ? "booklist" : "manuscript" %></h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<label><%= parent.class == Manuscript ? "Booklist" : "Manuscript" %> name</label>
+						<select class="form-control" name="manuscript_booklist[<%= parent.class == Manuscript ? "booklist" : "manuscript" %>_id]" id="manuscript_booklist_<%= parent.class == Manuscript ? "booklist" : "manuscript" %>_id" placeholder="Select a <%= parent.class == Manuscript ? "booklist" : "manuscript" %>">
+								<option></option>
+								<% if parent.class == Manuscript %>
+									<% Booklist.all.each do |b| %>
+										<option value="<%= b.id %>"><%= b.display_name %></option>
+									<% end %>
+								<% else %>
+									<% Manuscript.all.each do |b| %>
+										<option value="<%= b.id %>"><%= b.display_name %></option>
+									<% end %>
+								<% end %>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-action disable-on-click" onclick="saveForm($(this).closest('form'), null, function(){timeoutReload(null, 0);})">Save & Close</button>
+			</div>
+		</div>
+	</div>
+	<% end %>
+</div>
+
+<script type="text/javascript">
+	var institutution_modal_vue;
+	$( document ).ready(function() {
+		manuscript_booklist_vue = new Vue({
+			el: "#add-manuscript-booklist-modal",
+			name: "add-manuscript-booklist-modal",
+			mounted(){
+				new TomSelect("#manuscript_booklist_<%= parent.class == Manuscript ? "booklist" : "manuscript" %>_id",ts_sort_text_asc_max_1);
+			},
+		});
+	});
+</script>

@@ -1,0 +1,20 @@
+<div id="manuscript-booklists-list">
+	<% parent.manuscript_booklists.each do |b| %>
+		<div class="card grey mb-2" id="<%= dom_id b %>">
+			<div class="card-body d-flex align-items-center">
+				<span class="me-auto"><%= parent.class == Manuscript ? b.booklist.display_name : b.manuscript.display_name %></span>
+
+				<%= link_to "Open", parent.class == Manuscript ? edit_booklist_path(b.booklist) : edit_manuscript_path(b.manuscript), class: "btn btn-outline-action" %>
+
+				<div class="dropdown">
+				  <button class="btn btn-outline-action ms-2" type="button" id="manuscript-booklist-options-<%= b.id %>" data-bs-toggle="dropdown" aria-expanded="false">
+				  	<i class="far fa-ellipsis-h"></i>
+				  </button>
+				  <ul class="dropdown-menu" aria-labelledby="manuscript-booklist-options-<%= b.id %>">
+				    <li><button type="button" class="dropdown-item" onclick="deleteManuscriptBooklist(<%= b.id %>)">Delete connection</button></li>
+				  </ul>
+				</div>
+			</div>
+		</div>
+	<% end %>
+</div>

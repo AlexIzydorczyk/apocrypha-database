@@ -149,8 +149,8 @@
 	<%= render 'layouts/save_now', form: form %>
 	<% end %>
 
-	<h2 id="contents">Mentioned in booklets <%= link_to "Add booklet", '#booklets', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#add-booklet-booklist-modal"} %></h2>
-	<%= render 'booklet_booklists/list', parent: booklist %>
+	<h2 id="contents">Mentioned in manuscripts <%= link_to "Add manuscript", '#manuscripts', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#add-manuscript-booklist-modal"} %></h2>
+	<%= render 'manuscript_booklists/list', parent: booklist %>
 
 	<h2>Excerpts <%= button_to 'Add excerpt', booklist_sections_path, class: "btn btn-action", params: { booklist_section: { booklist_id: @booklist.id, sequence_no: @booklist.booklist_sections.count + 1 } } %></h2>
 	<%= render 'booklist_sections/list', booklist: booklist %>
@@ -181,8 +181,8 @@
 <% end %>
 
 <%= render '/languages/modals/new', language: Language.new, pid: "", in_vue: false, parent: booklist %>
-<%= render 'booklet_booklists/modals/new', booklet_booklist: BookletBooklist.new, parent: booklist, pid: '', depth: 0 %>
+<%= render 'manuscript_booklists/modals/new', manuscript_booklist: ManuscriptBooklist.new, parent: booklist, pid: '', depth: 0 %>
 
 <!-- Scripts -->
 <%= render '/booklists/scripts', booklist: booklist %>
-<%= render '/booklet_booklists/list_script' %>
+<%= render '/manuscript_booklists/list_script' %>

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :booklet_booklists
-
 	devise_for :users
   resources :users
   
@@ -104,5 +102,6 @@ Rails.application.routes.draw do
       get :get
     end
   end
+  resources :manuscript_booklists
 
 end

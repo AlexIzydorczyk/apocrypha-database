@@ -231,6 +231,9 @@
 	</div>
 </div>
 
+<h2 id="contents">Mentioned in booklists <%= link_to "Add booklist", '#booklists', class: "btn btn-action", data: { 'bs-toggle': "modal",  'bs-target': "#add-manuscript-booklist-modal"} %></h2>
+<%= render 'manuscript_booklists/list', parent: manuscript %>
+
 <h2>Credits</h2>
 <div class="row">
 	<div class="form-group col-md-12 mb-2" id="correspondent">
@@ -337,7 +340,10 @@
 <%= render 'religious_orders/modals/new', religious_order: ReligiousOrder.new, parent: manuscript, pid: '', depth: 0 %>
 <%= render 'locations/modals/form', location: Location.new, parent: manuscript, pid: '', depth: 0 %>
 
+<%= render 'manuscript_booklists/modals/new', manuscript_booklist: ManuscriptBooklist.new, parent: manuscript, pid: '', depth: 0 %>
+
 <!-- Scripts -->
 <%= render '/manuscripts/scripts', manuscript: manuscript %>
 <%= render '/contents/list_script' %>
 <%= render '/ownerships/list_script' %>
+<%= render '/manuscript_booklists/list_script' %>

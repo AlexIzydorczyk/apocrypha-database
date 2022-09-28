@@ -23,6 +23,7 @@ class Manuscript < ApplicationRecord
   has_many :manuscript_urls, -> { order("index ASC") }, dependent: :destroy
   has_many :database_urls, -> { order("index ASC").where(url_type: 'database') }, class_name: "ManuscriptUrl", foreign_key: "manuscript_id", dependent: :destroy
   has_many :reproduction_urls, -> { order("index ASC").where(url_type: 'reproduction') }, class_name: "ManuscriptUrl", foreign_key: "manuscript_id", dependent: :destroy
+  has_many :manuscript_booklists
 
   def display_name
     d_name = [self.institution.try(:location).present? ? self.institution.location.try(:city) : self.genesis_location.try(:city), self.institution.try(:name), self.shelfmark].select{ |d| d.present? }.join(", ")
