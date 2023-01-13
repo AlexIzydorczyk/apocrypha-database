@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 	devise_for :users
   resources :users
-  
+
 	root to: "application#about"
 
   get 'new_title_or_apocryphon', to: 'apocrypha#form_container'

@@ -15,7 +15,11 @@ class Booklist < ApplicationRecord
   has_many :manuscript_booklists
 
   def display_name
-    "Booklist " + self.id.to_s
+    [self.booklist_no, self.display_library_owner, self.title_orig, self.date].select{ |s| s.present? }.join(", ")
+  end
+
+  def date
+    self.specific_date.present? ? ((self.date_exact ? '' : 'ca. ') + self.specific_date) : (self.date_from.present? && self.date_to.present? ? self.date_from + "-" + self.date_to : "")
   end
 
   def apocrypha_mentioned
