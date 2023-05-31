@@ -47,7 +47,7 @@
         ] },
         { headerName: "Religious order", children: [
           <% if user_signed_in? && current_user.adm_editor? %>
-            { headerName: "Id", field: "religious_order_id", editable: false, hide: true, suppressColumnsToolPanel: true, cellRenderer: function(params) {
+            { headerName: "Id", field: "religious_order_id", editable: false, hide: true, cellRenderer: function(params) {
               return `${params.value} <button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick='openModal("religious_orders/${params.value}", "religious_order")' ${params.value ? "" : "disabled='true'"}><i class='fa-solid fa-pencil'></i></button><button type='button' class='btn btn-outline-secondary btn-sm float-end' onclick="openModal('institutions/${params.data.id}', 'institution', 'religious_order')"><i class='fa-solid fa-arrows-repeat'></i></button>`
               } 
             },
