@@ -23,5 +23,6 @@
       </label>
     </div>
   </div>
+  <%= button_to "Make Non-apocryphal", apocryphon_make_non_apocryphal_path(@apocryphon.id), method: :put, class: "btn btn-action my-2" %>
   <%= render "form", apocryphon: @apocryphon %>
 </div>

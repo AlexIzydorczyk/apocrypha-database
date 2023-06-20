@@ -1,5 +1,5 @@
 class ApocryphaController < ApplicationController
-  before_action :set_apocryphon, only: %i[ show edit update destroy ]
+  before_action :set_apocryphon, only: %i[ show edit update destroy make_non_apocryphal ]
   skip_before_action :authenticate_user!, only: %i[ index ]
   before_action :allow_for_editor, only: %i[ edit update destroy create create_from_booklist ]
 
@@ -97,10 +97,21 @@ class ApocryphaController < ApplicationController
     redirect_to apocrypha_url, notice: "Apocryphon was successfully destroyed."
   end
 
+  def make_non_apocryphal
+    keep = Title.find(@apocryphon.main_latin_title_id) if @apocryphon.main_latin_title_id.present?
+    @apocryphon.titles.where.not(id: keep.try(:id)).each do |title|
+      title.destroy unless title.contents.present?
+    end
+    @apocryphon.titles.update_all(apocryphon_id: nil)
+    @apocryphon.destroy
+    keep.update(language_id: Language.find_by(language_name: "Latin"))
+    redirect_to edit_title_path(keep)
+  end
+
   private
 
   def set_apocryphon
-    @apocryphon = Apocryphon.find(params[:id])
+    @apocryphon = Apocryphon.find(params[:id] || params[:apocryphon_id])
   end
 
   def apocryphon_params

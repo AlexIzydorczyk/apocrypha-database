@@ -28,4 +28,5 @@ class Title < ApplicationRecord
       self.contents.destroy_all
     end
   end
+
 end

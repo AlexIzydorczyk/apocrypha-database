@@ -1,5 +1,5 @@
 class TitlesController < ApplicationController
-  before_action :set_title, only: %i[ show edit update destroy ]
+  before_action :set_title, only: %i[ show edit update destroy make_apocryphal ]
   skip_before_action :authenticate_user!, only: %i[ index ]
   before_action :allow_for_editor, only: %i[ edit update destroy create create_from_content]
 
@@ -101,9 +101,15 @@ class TitlesController < ApplicationController
     end
   end
 
+  def make_apocryphal
+    apocryphon = Apocryphon.create(main_latin_title_id: @title.id)
+    @title.update(apocryphon_id: apocryphon.id)
+    redirect_to edit_apocryphon_path(apocryphon)
+  end
+
   private
     def set_title
-      @title = Title.find(params[:id])
+      @title = Title.find(params[:id] || params[:title_id])
     end
 
     def title_params

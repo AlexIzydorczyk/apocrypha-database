@@ -6,6 +6,7 @@
 
 <h1>Manuscripts<%= button_to 'New manuscript', manuscripts_path, class: "btn btn-action", params: { manuscript: { census_no: "" } } %></h1>
 
+<i>System contains <%= @manuscripts.count %> manuscripts</i>
 
 <div id="manuscripts">
     <%= render 'grid', manuscripts: @manuscripts %>

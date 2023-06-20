@@ -21,7 +21,7 @@
       </label>
     </div>
   </div>
-
+  <%= button_to "Make Apocryphal", title_make_apocryphal_path(@title.id), method: :put, class: "btn btn-action my-2" %>
   <%= render "form", title: @title %>
 </div>
 

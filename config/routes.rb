@@ -40,11 +40,13 @@ Rails.application.routes.draw do
     end
   end
   resources :titles do
+    put :make_apocryphal
     collection do
       post :create_from_content
     end
   end
   resources :apocrypha do
+    put :make_non_apocryphal
     collection do
       post :create_from_booklist
     end
