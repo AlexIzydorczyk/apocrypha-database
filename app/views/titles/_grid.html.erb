@@ -9,6 +9,7 @@
 
 <% titles.each do |title| %>
   <%= button_to "Delete", title_path(title), method: :delete, class: "d-none", id: 'delete_'+title.id.to_s %>
+  <%= button_to "Make Apocryphal", title_make_apocryphal_path(title), method: :put, class: "d-none", id: 'flip_'+title.id.to_s %>
 <% end %>
 
 <% if user_signed_in? && current_user.adm_editor? %>
@@ -47,7 +48,9 @@
 
           
         { headerName: "Actions", field: "links", pinned: "right", editable: false, suppressColumnsToolPanel: true, cellRenderer: function(links) {
-          return "<a href='#' onclick='if(confirm(\"Are you sure you want to delete this Title?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
+          let toggle = links.value.show_toggle ? "<a href='#' class='btn btn-outline-secondary btn-sm' onclick='$("+'"#'+links.value.flip_btn+'"'+").click()'>Make apocryphal</a>" : ""
+          let del = "<a href='#' onclick='if(confirm(\"Are you sure you want to delete this Title?\")){$("+'"#'+links.value.delete_btn+'"'+").click()}' class='btn btn-outline-danger btn-sm'>delete</a>"
+          return toggle + del;
         } }
   ];
 
@@ -63,7 +66,7 @@
         title_translation: "<%= title.title_translation %>",
         language_id: "<%= title.language_id %>",
         italicized: "<%= title.italicized %>",
-        links: { show: "<%= title_path(title) %>", edit: "<%= edit_title_path(title) %>", delete_btn: 'delete_<%= title.id %>' }
+        links: { show: "<%= title_path(title) %>", edit: "<%= edit_title_path(title) %>", delete_btn: 'delete_<%= title.id %>', flip_btn: "flip_<%= title.id %>", show_toggle: <%= title.apocryphon.blank? %> }
       },
     <% end %>
   ];
